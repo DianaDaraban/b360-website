@@ -1,12 +1,18 @@
 :root {
-    --red: #ed1c24;
-    --red-dark: #c4121a;
-    --ink: #414042;          /* logo grey */
-    --ink-strong: #2a292c;
+    --red: #ee3338;          /* Figma UI red */
+    --red-logo: #ed1c24;
+    --red-dark: #b5141c;     /* hover text */
+    --ink: #4a4648;          /* Figma body grey */
+    --ink-strong: #3a3638;   /* Figma heading grey */
     --muted: #6d6b70;
-    --paper: #f6f4f2;        /* warm off-white from the Figma sections */
+    --cream: #f3eae1;        /* Figma: text on photos, sticker backing */
+    --paper: #f6f2ee;
     --white: #fff;
-    --smoke: #8d8a8e;        /* grey photo-overlay sections */
+    --smoke: #8d8a8e;
+
+    /* Figma heading shadows: soft, stacked */
+    --shadow-text: 0 1px 2px rgb(0 0 0 / 0.1), 0 3px 2px rgb(0 0 0 / 0.1), 0 4px 8px rgb(0 0 0 / 0.1);
+    --shadow-text-photo: 0 1px 2px rgb(0 0 0 / 0.25), 0 3px 4px rgb(0 0 0 / 0.2), 0 6px 14px rgb(0 0 0 / 0.25);
 
     --font: var(--font-sans), system-ui, sans-serif;
     --font-head: var(--font-display), var(--font-sans), system-ui, sans-serif;
@@ -15,8 +21,9 @@
     --bar-h: 76px;
     --gutter: 20px;
     --max: 1180px;
-    --radius: 14px;
+    --radius: 16px;
     --shadow: 0 6px 18px rgb(0 0 0 / 0.16);
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 
     color-scheme: light;
 }
@@ -32,10 +39,10 @@ html {
 body {
     margin: 0;
     font-family: var(--font);
-    font-size: 16px;
-    line-height: 1.6;
+    font-size: 17px;
+    line-height: 1.65;
     color: var(--ink);
-    background: var(--paper);
+    background: transparent;
     -webkit-font-smoothing: antialiased;
     /* the sticker curl of a button near the screen edge must not cause sideways scrolling */
     overflow-x: clip;
@@ -47,42 +54,100 @@ h1, h2, h3 {
     margin: 0;
     font-family: var(--font-head);
     font-weight: 700;
-    line-height: 1.12;
+    line-height: 1.15;
     color: var(--ink-strong);
+    text-shadow: var(--shadow-text);
     text-wrap: balance;
 }
-p { margin: 0; }
+p { margin: 0; text-wrap: pretty; }
 strong { font-weight: 650; color: var(--ink-strong); }
 
 html:has(dialog[open]) { overflow: hidden; }
 
 @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }
 
 :focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
 
 /* ---------- layout ---------- */
 .container { width: min(100% - 2 * var(--gutter), var(--max)); margin-inline: auto; }
-.narrow { width: min(100% - 2 * var(--gutter), 760px); margin-inline: auto; }
-.section { padding-block: 56px; }
-.section-title { font-size: clamp(1.6rem, 6vw, 2.5rem); margin-bottom: 24px; }
+.narrow { width: min(100% - 2 * var(--gutter), 720px); margin-inline: auto; }
+.section { padding-block: 64px; }
+.section-title { font-size: clamp(1.7rem, 6vw, 2.6rem); margin-bottom: 28px; }
 .red { color: var(--red); }
-.lead { font-size: 1.08rem; }
-.prose { display: grid; gap: 16px; }
+.lead { font-size: 1.12rem; }
+.prose { display: grid; gap: 16px; text-align: center; }
 .sr-only { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-/* Photo sections from the Figma: a photo washed with a tint so text stays readable */
+/* Photo sections from the Figma: the photo sits under a clear tint and moving colour blobs;
+   text is cream with a soft shadow, like the Figma headings */
 .tinted {
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    color: var(--white);
-    background: var(--smoke);
+    color: var(--cream);
+    background: #514a4d;
 }
-.tinted > .tint-photo { position: absolute; inset: 0; z-index: -2; object-fit: cover; width: 100%; height: 100%; }
-.tinted::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--tint, rgb(70 62 64 / 0.74)); }
-.tinted h1, .tinted h2, .tinted h3, .tinted strong { color: var(--white); }
+.tinted > .tint-photo { position: absolute; inset: 0; z-index: -3; object-fit: cover; width: 100%; height: 100%; }
+.tinted::before { content: ""; position: absolute; inset: 0; z-index: -2; background: var(--tint, rgb(64 52 56 / 0.72)); }
+.tinted h1, .tinted h2, .tinted h3 { color: var(--cream); text-shadow: var(--shadow-text-photo); }
+.tinted strong { color: var(--white); }
+.tinted p, .tinted li { text-shadow: 0 1px 3px rgb(0 0 0 / 0.3); }
+
+/* ---------- floating colour blobs (after DonEat's animated background, in B360 colours) ----------
+   .blobs-page   fixed behind every page, soft and slow
+   .blobs-photo  inside a photo section, above the tint, glowing clearly over the picture */
+.blobs { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: -1; }
+.blobs-page { position: fixed; z-index: -1; mix-blend-mode: multiply; }
+.blobs span {
+    position: absolute;
+    width: var(--s);
+    aspect-ratio: 1;
+    border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
+    background: radial-gradient(circle at 35% 35%, var(--col) 0, color-mix(in srgb, var(--col) 50%, transparent) 40%, transparent 70%);
+    filter: blur(50px);
+    animation: blobFloat var(--d1) ease-in-out infinite, blobMorph var(--d2) ease-in-out infinite alternate;
+    will-change: transform;
+}
+.blobs-page span { opacity: 0.32; }
+.blobs-photo span { opacity: 0.6; mix-blend-mode: screen; filter: blur(40px); }
+.blobs span:nth-child(1) { --s: min(70vw, 520px); --col: #ee3338; --d1: 26s; --d2: 11s; top: 4%; left: -8%; }
+.blobs span:nth-child(2) { --s: min(80vw, 600px); --col: #7bb152; --d1: 34s; --d2: 15s; bottom: -6%; right: -10%; animation-delay: -8s, -3s; }
+.blobs span:nth-child(3) { --s: min(60vw, 420px); --col: #f39a2e; --d1: 22s; --d2: 13s; top: 42%; left: 48%; animation-delay: -14s, -6s; }
+.blobs span:nth-child(4) { --s: min(65vw, 460px); --col: #3b4fa0; --d1: 38s; --d2: 17s; bottom: 18%; left: 12%; animation-delay: -20s, -9s; }
+.blobs-page span:nth-child(2) { --col: #f2b8b0; }
+.blobs-page span:nth-child(4) { --col: #e9cfc0; }
+@keyframes blobFloat {
+    0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+    20% { transform: translate(18vw, -10vh) scale(1.1) rotate(10deg); }
+    40% { transform: translate(-14vw, 16vh) scale(0.92) rotate(-10deg); }
+    60% { transform: translate(12vw, 12vh) scale(1.15) rotate(28deg); }
+    80% { transform: translate(-18vw, -8vh) scale(1.04) rotate(-14deg); }
+}
+@keyframes blobMorph {
+    from { border-radius: 45% 55% 60% 40% / 60% 40% 60% 40%; }
+    to { border-radius: 70% 30% 40% 60% / 50% 70% 30% 50%; }
+}
+
+/* ---------- reveal on scroll (components/Reveal.tsx marks the elements) ---------- */
+[data-reveal] {
+    opacity: 0;
+    translate: 0 28px;
+    filter: blur(6px);
+    transition: opacity 0.7s ease, translate 0.9s var(--ease-out), filter 0.7s ease;
+    transition-delay: calc(var(--i, 0) * 90ms);
+}
+[data-reveal][data-in] { opacity: 1; translate: 0 0; filter: none; }
+
+/* ---------- animated text links ---------- */
+.ulink {
+    text-decoration: none;
+    background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
+    padding-bottom: 2px;
+    transition: background-size 0.4s var(--ease-out), color 0.25s;
+}
+.ulink:hover, .ulink:focus-visible { color: var(--red-dark); background-size: 100% 2px; }
 
 /* ---------- peeling sticker (the B360 signature detail) ----------
    Modelled on a real vinyl sticker: the top-right corner folds back along a 45° line.
@@ -91,16 +156,16 @@ html:has(dialog[open]) { overflow: hidden; }
    ::before  under the flap: the backing paper where the corner came away, then the flap's
              soft shadow on the sticker just past the fold
    ::after   the flap itself: a copy of the element (same pill or circle shape), clipped to the
-             corner triangle and turned over the fold line in 3D, showing the white back of the
+             corner triangle and turned over the fold line in 3D, showing the back of the
              vinyl. Because it is the element's own shape, the curl keeps its rounded edge.
    Only --c and --lift animate, so every part moves together. */
 @property --c { syntax: "<length>"; inherits: true; initial-value: 24px; }
-@property --lift { syntax: "<angle>"; inherits: true; initial-value: 168deg; }
+@property --lift { syntax: "<angle>"; inherits: true; initial-value: 158deg; }
 
 .btn, .peel {
     --c: 24px;
-    --lift: 168deg;
-    --backing: #ece7e4;
+    --lift: 158deg;
+    --backing: var(--cream);
     position: relative;
     isolation: isolate;
     perspective: 240px;
@@ -108,9 +173,9 @@ html:has(dialog[open]) { overflow: hidden; }
     transition: --c 0.45s cubic-bezier(0.3, 0.9, 0.4, 1), --lift 0.45s cubic-bezier(0.3, 0.9, 0.4, 1);
 }
 .btn:hover, .btn:focus-visible, .peel:hover, .peel:focus-visible,
-a:hover > .peel, a:focus-visible > .peel {
+a:hover > .peel, a:focus-visible > .peel, button:hover > .peel {
     --c: 40px;
-    --lift: 128deg;
+    --lift: 124deg;
     transition: --c 0.6s cubic-bezier(0.34, 1.45, 0.5, 1), --lift 0.6s cubic-bezier(0.34, 1.45, 0.5, 1);
 }
 .btn::before, .btn::after, .peel::before, .peel::after {
@@ -124,7 +189,7 @@ a:hover > .peel, a:focus-visible > .peel {
     z-index: 1;
     background: linear-gradient(225deg,
         var(--backing) 0 calc(var(--c) * 0.7071),
-        rgb(40 0 0 / calc(0.42 - (var(--lift) - 128deg) / 180deg)) calc(var(--c) * 0.7071),
+        rgb(40 0 0 / calc(0.42 - (var(--lift) - 124deg) / 180deg)) calc(var(--c) * 0.7071),
         transparent calc(var(--c) * 0.7071 + 4px + (180deg - var(--lift)) / 6deg * 1px));
 }
 .btn::after, .peel::after {
@@ -132,8 +197,8 @@ a:hover > .peel, a:focus-visible > .peel {
     clip-path: polygon(calc(100% - var(--c)) 0, 100% 0, 100% var(--c));
     transform-origin: calc(100% - var(--c)) 0;
     transform: rotate3d(1, 1, 0, var(--lift));
-    /* the back of the vinyl: bright at the tip, a soft pink blush through the middle
-       (after sticker_button2, toned down), deeper rose where it bends at the fold */
+    /* the back of the vinyl: bright at the tip, a soft pink blush through the middle,
+       deeper rose where it bends at the fold */
     background: linear-gradient(225deg,
         #fffdfd 0,
         #fbecec calc(var(--c) * 0.22),
@@ -142,6 +207,8 @@ a:hover > .peel, a:focus-visible > .peel {
         #d99896 calc(var(--c) * 0.67),
         #c27f7d calc(var(--c) * 0.7071));
 }
+/* a sticker that stays put (no hover movement) */
+.peel-still, .peel-still:hover { --lift: 150deg; transition: none; }
 
 /* ---------- buttons: red pill sticker ---------- */
 .btn {
@@ -153,19 +220,20 @@ a:hover > .peel, a:focus-visible > .peel {
     padding: 0 52px 0 28px;
     border: 0;
     border-radius: 999px;
-    background: linear-gradient(40deg, #e30613 55%, #c4121a);
+    background: linear-gradient(40deg, #ee3338 55%, #c9161f);
     color: var(--white);
     font: 700 1rem/1.2 var(--font-head);
     text-decoration: none;
+    text-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
     white-space: nowrap;
-    box-shadow: 0 2px 6px rgb(120 0 0 / 0.25);
+    box-shadow: 0 3px 8px rgb(120 0 0 / 0.25);
     cursor: pointer;
 }
 .btn { --c: 32px; }
 .btn:hover, .btn:focus-visible { --c: 48px; }
 .btn:active { translate: 0 1px; }
 
-/* Secondary: outlined pill, no sticker corner */
+/* Secondary: outlined pill; its arrow sits on a small peeling sticker */
 .btn-ghost {
     display: inline-flex;
     align-items: center;
@@ -177,30 +245,55 @@ a:hover > .peel, a:focus-visible > .peel {
     color: inherit;
     font: 700 1rem/1.2 var(--font-head);
     text-decoration: none;
-    transition: background 0.25s, color 0.25s, border-color 0.25s;
+    transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
 .btn-ghost:hover, .btn-ghost:focus-visible { background: var(--white); border-color: var(--white); color: var(--ink-strong); }
 .btn-ghost:has(.arrow-sticker) { gap: 30px; padding: 0 3px 0 30px; }
+.btn-ghost.on-light:hover, .btn-ghost.on-light:focus-visible { background: var(--ink-strong); border-color: var(--ink-strong); color: var(--white); }
 
-/* The arrow of the outlined button sits on its own small red sticker, which peels like the
-   big buttons when the link is hovered, while the arrow slides forward */
 .arrow-sticker {
-    --c: 13px;
+    --c: 15px;
     width: 40px;
     height: 40px;
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: linear-gradient(40deg, #e30613 55%, #c4121a);
+    background: linear-gradient(40deg, #ee3338 55%, #c9161f);
     color: var(--white);
 }
 /* kept small so the turned-back flap never covers the arrow */
-a:hover > .arrow-sticker, a:focus-visible > .arrow-sticker { --c: 18px; }
+a:hover > .arrow-sticker, a:focus-visible > .arrow-sticker { --c: 19px; }
 .arrow-sticker svg { transition: translate 0.45s cubic-bezier(0.34, 1.45, 0.5, 1); }
 a:hover > .arrow-sticker svg, a:focus-visible > .arrow-sticker svg { translate: 2px 0; }
 
-/* ---------- red brush-tick list ---------- */
-.checklist { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
-.checklist li { display: grid; grid-template-columns: 30px 1fr; gap: 8px; align-items: start; }
-.checklist svg { margin-top: -6px; }
-.checklist strong { display: block; font-size: 1.05rem; }
+/* ---------- Figma list markers ---------- */
+/* red tick (public/figma/check.svg), centred on the first line of each item */
+.checklist { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; text-align: left; }
+.checklist li { display: grid; grid-template-columns: 34px 1fr; column-gap: 10px; }
+.checklist li::before {
+    content: "";
+    grid-row: 1 / span 2;
+    width: 30px;
+    height: 1.65em;
+    background: url("/figma/check.svg") center / 28px auto no-repeat;
+}
+.checklist strong { display: block; font-size: 1.08rem; }
+
+/* small red squares (Figma service page lists) */
+.squares { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; text-align: left; }
+.squares li { display: grid; grid-template-columns: 22px 1fr; }
+.squares li::before { content: ""; width: 9px; height: 9px; margin-top: 0.62em; background: var(--red); border-radius: 1px; }
+
+/* heading with the Figma red dot (public/figma/dot.svg) tucked behind its first letters */
+.dot-title { position: relative; isolation: isolate; display: inline-block; padding-left: 30px; }
+.dot-title::before {
+    content: "";
+    position: absolute;
+    left: -6px;
+    top: 50%;
+    width: 46px;
+    height: 50px;
+    translate: 0 -54%;
+    z-index: -1;
+    background: url("/figma/dot.svg") center / contain no-repeat;
+}

@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Image from "next/image"
+import { Blobs } from "@/components/Blobs"
 import styles from "../form.module.css"
 
 export const metadata: Metadata = {
@@ -14,32 +15,32 @@ const tipVehicul = ["Autoturism", "Autoutilitară", "Camion / Flotă"]
 // Fields and texts from the Figma "Cerere ofertă" screen. Sending is wired in phase 4.
 export default function OfertaPage() {
     return (
-        <>
-            <section className={`tinted ${styles.intro}`}>
-                <Image src="/img/colorful-convertible.webp" alt="" fill priority sizes="100vw" className="tint-photo" />
-                <div className="narrow">
-                    <h1>Cerere ofertă colantare</h1>
-                    <p className="lead">Completează formularul de mai jos și îți vom trimite rapid o ofertă personalizată pentru proiectul tău de colantare auto.</p>
-                </div>
+        <div className={`tinted ${styles.page}`}>
+            <Image src="/img/letters.webp" alt="" fill priority sizes="100vw" className="tint-photo" />
+            <Blobs variant="photo" />
+
+            <section className={`narrow ${styles.intro}`}>
+                <h1>Cerere ofertă colantare</h1>
+                <p>Completează formularul de mai jos și îți vom trimite rapid o ofertă personalizată pentru proiectul tău de colantare auto.</p>
             </section>
 
             <form className={styles.form}>
                 <fieldset className={styles.group}>
+                    <legend><span>Datele de contact</span></legend>
                     <div className={styles.inner}>
-                        <legend>Datele de contact</legend>
                         <label className={styles.field}>Nume și prenume *<input name="nume" autoComplete="name" required /></label>
                         <label className={styles.field}>Companie<input name="companie" autoComplete="organization" /></label>
                         <label className={styles.field}>
                             Telefon *
-                            <span className={styles.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" required /></span>
+                            <span className={styles.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" pattern="[0-9 ]{9,12}" required /></span>
                         </label>
                         <label className={styles.field}>Email *<input name="email" type="email" autoComplete="email" required /></label>
                     </div>
                 </fieldset>
 
                 <fieldset className={styles.group}>
+                    <legend><span>Detalii despre proiect</span></legend>
                     <div className={styles.inner}>
-                        <legend>Detalii despre proiect</legend>
                         <p className={styles.question}>Tip colantare dorit</p>
                         <div className={styles.choices}>
                             {tipColantare.map(t => <label key={t} className={styles.choice}><input type="checkbox" name="tip" value={t} />{t}</label>)}
@@ -68,6 +69,6 @@ export default function OfertaPage() {
                     <p className={styles.note}>Câmpurile marcate cu * sunt obligatorii.</p>
                 </div>
             </form>
-        </>
+        </div>
     )
 }

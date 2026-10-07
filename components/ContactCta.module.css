@@ -1,10 +1,37 @@
 .cta {
-    padding-block: 64px 72px;
-    background: var(--paper);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding-block: 80px 88px;
     text-align: center;
+    background: var(--cream);
 }
-.title { font-size: clamp(1.6rem, 6.5vw, 2.4rem); color: var(--red); }
-.text { margin-top: 10px; font-size: clamp(1.15rem, 4.6vw, 1.45rem); font-weight: 500; line-height: 1.35; color: var(--ink-strong); text-wrap: balance; }
-.actions { margin-top: 28px; display: grid; justify-items: center; gap: 14px; }
-.link { font-weight: 600; text-underline-offset: 4px; }
-.link:hover { color: var(--red); }
+/* the photo only hints at the work: faded, warm, behind a cream veil */
+.photo { z-index: -3; object-fit: cover; opacity: 0.22; filter: grayscale(0.4) sepia(0.25); }
+.cta::before { content: ""; position: absolute; inset: 0; z-index: -2; background: radial-gradient(ellipse at center, rgb(246 242 238 / 0.55), rgb(243 234 225 / 0.85)); }
+
+.blobs { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+.blobs span {
+    position: absolute;
+    width: min(60vw, 420px);
+    aspect-ratio: 1;
+    border-radius: 45% 55% 60% 40% / 60% 40% 60% 40%;
+    filter: blur(46px);
+    opacity: 0.45;
+    mix-blend-mode: multiply;
+    animation: drift 18s ease-in-out infinite alternate, morph 9s ease-in-out infinite alternate;
+}
+.blobs span:nth-child(1) { background: #ee3338; top: -20%; left: -10%; }
+.blobs span:nth-child(2) { background: #f39a2e; bottom: -30%; right: -8%; animation-delay: -6s, -2s; animation-duration: 22s, 11s; }
+.blobs span:nth-child(3) { background: #f2a6b4; top: 30%; left: 40%; width: min(40vw, 280px); animation-delay: -12s, -5s; animation-duration: 16s, 8s; }
+@keyframes drift {
+    0% { translate: 0 0; scale: 1; }
+    50% { translate: 12vw 6vh; scale: 1.12; }
+    100% { translate: -8vw -4vh; scale: 0.95; }
+}
+@keyframes morph { to { border-radius: 70% 30% 40% 60% / 50% 70% 30% 50%; } }
+
+.title { font-size: clamp(1.9rem, 7vw, 2.8rem); color: var(--red); }
+.text { margin-top: 12px; font-size: clamp(1.2rem, 4.8vw, 1.5rem); font-weight: 500; line-height: 1.4; color: var(--ink-strong); text-wrap: balance; }
+.actions { margin-top: 34px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px; }
+.actions :global(.btn-ghost) { color: var(--ink-strong); }

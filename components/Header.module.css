@@ -2,9 +2,9 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgb(255 255 255 / 0.96);
+    background: rgb(255 255 255 / 0.94);
     box-shadow: 0 2px 10px rgb(0 0 0 / 0.08);
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(10px);
 }
 
 .inner {
@@ -18,7 +18,7 @@
 
 .logo img { width: 112px; height: auto; }
 
-/* Figma: two long lines, then a short dash in front of the word */
+/* ---------- burger (Figma: two long lines, then a short dash before the word) ---------- */
 .menuButton {
     display: flex;
     flex-direction: column;
@@ -28,19 +28,28 @@
     border: 0;
     background: none;
     color: var(--ink);
-    font: 700 1.05rem/1 var(--font);
-    font-family: var(--font-head);
+    font: 700 1.05rem/1 var(--font-head);
     letter-spacing: -0.02em;
     cursor: pointer;
 }
-.lines {
-    width: 42px;
-    height: 12px;
-    border-block: 3px solid currentColor;
-    border-radius: 1px;
+.lines { position: relative; width: 42px; height: 12px; }
+.lines::before, .lines::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    width: 100%;
+    height: 3px;
+    border-radius: 2px;
+    background: currentColor;
+    transition: width 0.35s var(--ease-out);
 }
+.lines::before { top: 0; }
+.lines::after { bottom: 0; }
+.menuButton:hover .lines::before { width: 68%; }
+.menuButton:hover .lines::after { width: 86%; }
 .word { display: flex; align-items: center; gap: 3px; }
-.word::before { content: ""; width: 9px; height: 3px; border-radius: 2px; background: currentColor; }
+.word::before { content: ""; width: 9px; height: 3px; border-radius: 2px; background: currentColor; transition: width 0.35s var(--ease-out); }
+.menuButton:hover .word::before { width: 15px; }
 
 .desktopNav { display: none; }
 
@@ -53,14 +62,18 @@
     margin: 0;
     padding: 0;
     border: 0;
-    background: var(--paper);
+    background: rgb(246 242 238 / 0.97);
     color: var(--ink);
+    overflow: auto;
 }
 .menu::backdrop { background: rgb(0 0 0 / 0.3); }
-.menu[open] { display: flex; flex-direction: column; animation: menuIn 0.28s ease-out; }
-@keyframes menuIn { from { opacity: 0; translate: 0 -12px; } }
+.menu[open] { display: flex; flex-direction: column; animation: menuFade 0.32s ease-out both; }
+.menu[data-closing] { animation: menuOut 0.32s ease-in both; }
+@keyframes menuFade { from { opacity: 0; } }
+@keyframes menuOut { to { opacity: 0; } }
 
 .menuTop {
+    flex: none;
     height: var(--header-h);
     padding-inline: var(--gutter);
     display: flex;
@@ -71,11 +84,11 @@
 }
 .menuLogo { width: 112px; height: auto; }
 
-/* Figma close state: the lines cross into an X and "Meniu" runs along the diagonal */
+/* Figma close state: the burger lines swing into an X and "Meniu" turns onto the diagonal */
 .closeButton {
     position: relative;
-    width: 52px;
-    height: 52px;
+    width: 56px;
+    height: 56px;
     border: 0;
     background: none;
     color: var(--ink);
@@ -87,34 +100,53 @@
     top: 50%;
     width: 46px;
     height: 3px;
-    background: currentColor;
     border-radius: 2px;
     translate: -50% -50%;
-    rotate: -45deg;
-    /* gap in the middle for the word */
-    mask: linear-gradient(90deg, #000 0 30%, transparent 30% 70%, #000 70%);
 }
-.cross::before { content: ""; rotate: 90deg; mask: none; }
+/* two halves with a gap in the middle for the word */
+.cross { rotate: -45deg; background: linear-gradient(90deg, currentColor 0 30%, transparent 30% 70%, currentColor 70%); }
+.cross::before { content: ""; rotate: 90deg; background: currentColor; }
 .closeLabel {
     position: absolute;
     left: 50%;
     top: 50%;
     translate: -50% -50%;
     rotate: 45deg;
-    font: 700 0.95rem/1 var(--font);
-    font-family: var(--font-head);
+    font: 700 0.95rem/1 var(--font-head);
 }
+.menu[open] .cross { animation: crossIn 0.55s var(--ease-out) both; }
+.menu[open] .cross::before { animation: barIn 0.55s var(--ease-out) both; }
+.menu[open] .closeLabel { animation: labelIn 0.5s var(--ease-out) 0.1s both; }
+.menu[data-closing] .cross { animation: crossOut 0.3s ease-in both; }
+.menu[data-closing] .cross::before { animation: barOut 0.3s ease-in both; }
+.menu[data-closing] .closeLabel { animation: labelOut 0.25s ease-in both; }
+@keyframes crossIn { from { rotate: 0deg; translate: -50% calc(-50% - 6px); } }
+@keyframes barIn { from { rotate: 0deg; translate: -50% calc(-50% + 12px); } }
+@keyframes labelIn { from { rotate: 0deg; opacity: 0; translate: -50% 60%; } }
+@keyframes crossOut { to { rotate: 0deg; translate: -50% calc(-50% - 6px); } }
+@keyframes barOut { to { rotate: 0deg; translate: -50% calc(-50% + 12px); } }
+@keyframes labelOut { to { rotate: 0deg; opacity: 0; translate: -50% 60%; } }
 
 .menuPanel {
     flex: 1;
     margin: 20px var(--gutter) calc(var(--bar-h) + 24px);
+    padding: 32px 24px;
     display: grid;
     place-items: center;
     background: var(--white);
     box-shadow: var(--shadow);
+    animation: panelIn 0.45s var(--ease-out) both;
 }
-.menuPanel ul { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(18px, 4.5vh, 40px); }
-.menuPanel a {
+.menu[data-closing] .menuPanel { animation: panelOut 0.3s ease-in both; }
+@keyframes panelIn { from { opacity: 0; translate: 0 -24px; scale: 0.97; } }
+@keyframes panelOut { to { opacity: 0; translate: 0 -16px; scale: 0.98; } }
+
+.menuPanel > ul { list-style: none; margin: 0; padding: 0; display: grid; gap: clamp(14px, 3.6vh, 30px); }
+.menuPanel > ul > li { animation: itemIn 0.5s var(--ease-out) both; animation-delay: calc(0.12s + var(--i) * 0.06s); }
+@keyframes itemIn { from { opacity: 0; translate: -18px 0; } }
+
+.menuRow { display: flex; align-items: center; gap: 12px; }
+.menuLink {
     display: flex;
     align-items: center;
     gap: 16px;
@@ -123,16 +155,138 @@
     font-family: var(--font-head);
     letter-spacing: -0.02em;
     text-decoration: none;
+    text-shadow: var(--shadow-text);
+    transition: color 0.25s, translate 0.35s var(--ease-out);
 }
-.menuPanel a[aria-current="page"] { color: var(--red); }
+/* underline drawn right under the word */
+.menuLink span {
+    padding-bottom: 2px;
+    background: linear-gradient(var(--red), var(--red)) 0 100% / 0 3px no-repeat;
+    transition: background-size 0.45s var(--ease-out);
+}
+.menuLink:hover { translate: 6px 0; color: var(--red-dark); }
+.menuLink:hover span, .menuLink[aria-current="page"] span { background-size: 100% 3px; }
+.menuLink[aria-current="page"] { color: var(--red); }
+
+.subToggle {
+    position: relative;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    border-radius: 50%;
+    background: rgb(238 51 56 / 0.1);
+    cursor: pointer;
+}
+.subToggle::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 10px;
+    height: 10px;
+    border-right: 3px solid var(--red);
+    border-bottom: 3px solid var(--red);
+    translate: 0 -2px;
+    rotate: 45deg;
+    transition: rotate 0.35s var(--ease-out), translate 0.35s var(--ease-out);
+}
+.subToggle[aria-expanded="true"]::before { rotate: 225deg; translate: 0 2px; }
+
+.subList {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 52px;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.45s var(--ease-out), padding 0.4s var(--ease-out);
+}
+.subList[data-open] { max-height: 260px; padding-top: 8px; }
+.subList a {
+    display: block;
+    padding: 6px 0;
+    font-size: 1.15rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--ink);
+    transition: color 0.2s, translate 0.3s var(--ease-out);
+}
+.subList a:hover { color: var(--red-dark); translate: 4px 0; }
 
 /* ---------- desktop ---------- */
 @media (min-width: 1024px) {
     .header { --header-h: 84px; }
     .logo img { width: 140px; }
     .menuButton { display: none; }
-    .desktopNav { display: flex; align-items: center; gap: 30px; font-weight: 600; }
-    .desktopNav > a:not(:global(.btn)) { text-decoration: none; padding-block: 6px; border-bottom: 2px solid transparent; }
-    .desktopNav > a:hover, .desktopNav > a[aria-current="page"] { border-color: var(--red); }
-    .desktopNav .desktopPhone { display: inline-flex; align-items: center; gap: 6px; color: var(--red); border: 0 !important; }
+    .desktopNav { display: flex; align-items: center; gap: 24px; font-weight: 600; }
+
+    /* underline grows from the left, right under the word */
+    .navLink {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding-block: 4px;
+        text-decoration: none;
+        transition: color 0.25s;
+    }
+    .navLink::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -1px;
+        height: 3px;
+        border-radius: 3px;
+        background: var(--red);
+        scale: 0 1;
+        transform-origin: left;
+        transition: scale 0.45s var(--ease-out);
+    }
+    .navLink:hover { color: var(--red-dark); }
+    .navLink:hover::after, .navLink[aria-current="page"]::after { scale: 1 1; }
+    .navLink[aria-current="page"] { color: var(--red); }
+    .desktopPhone { display: inline-flex; align-items: center; gap: 6px; color: var(--red); font-weight: 700; }
+
+    /* Servicii dropdown */
+    .dropdown { position: relative; }
+    .chevron { width: 7px; height: 7px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; rotate: 45deg; translate: 0 -2px; transition: rotate 0.3s var(--ease-out), translate 0.3s var(--ease-out); }
+    .dropdown:hover .chevron, .dropdown:focus-within .chevron { rotate: 225deg; translate: 0 2px; }
+    .dropPanel {
+        position: absolute;
+        top: calc(100% + 18px);
+        left: 50%;
+        width: 400px;
+        padding: 14px;
+        border-radius: var(--radius);
+        border: 1px solid rgb(238 51 56 / 0.25);
+        background: var(--white);
+        box-shadow: 0 18px 40px rgb(60 20 20 / 0.18);
+        translate: -50% 10px;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.25s, translate 0.35s var(--ease-out), visibility 0.25s;
+    }
+    /* invisible bridge so the panel stays open while the pointer travels down to it */
+    .dropPanel::before { content: ""; position: absolute; left: 0; right: 0; top: -22px; height: 22px; }
+    .dropdown:hover .dropPanel, .dropdown:focus-within .dropPanel { opacity: 1; visibility: visible; translate: -50% 0; }
+    .dropPanel ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+    .dropItem {
+        display: grid;
+        grid-template-columns: 56px 1fr;
+        gap: 14px;
+        align-items: center;
+        padding: 8px 10px;
+        border-radius: 12px;
+        text-decoration: none;
+        transition: background 0.25s;
+    }
+    .dropItem:hover { background: rgb(238 51 56 / 0.07); }
+    .dropItem strong { display: block; font-family: var(--font-head); color: var(--ink-strong); transition: color 0.2s; }
+    .dropItem:hover strong { color: var(--red-dark); }
+    .dropItem small { display: block; font-size: 0.84rem; font-weight: 400; line-height: 1.35; color: var(--muted); }
+    .dropPhoto { --c: 18px; width: 56px; height: 56px; border-radius: 50%; overflow: hidden; }
+    .dropItem:hover .dropPhoto { --c: 26px; --lift: 124deg; }
+    .dropPhoto img { width: 100%; height: 100%; object-fit: cover; }
+    .dropAll { display: inline-block; margin: 10px 10px 2px; font-weight: 700; color: var(--red); }
 }

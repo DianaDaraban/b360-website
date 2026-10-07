@@ -2,7 +2,10 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { Icon } from "@/components/Icon"
 import { site } from "@/lib/site"
+import { Blobs } from "@/components/Blobs"
+import Image from "next/image"
 import styles from "../content.module.css"
+import form from "../form.module.css"
 
 export const metadata: Metadata = {
     title: "Contact – B360 Corbeanca, Ilfov",
@@ -14,6 +17,7 @@ const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComp
 
 export default function ContactPage() {
     return (
+        <>
         <section className={`section ${styles.white}`}>
             <div className={`narrow ${styles.block}`}>
                 <h1 className={styles.pageTitle}>Contact</h1>
@@ -35,5 +39,35 @@ export default function ContactPage() {
                 <p className={styles.center}><Link href="/oferta" className="btn">Cere ofertă online</Link></p>
             </div>
         </section>
+
+        {/* Messages that are not a quote request: feedback, opinions, proposals */}
+        <section className={`section tinted ${form.page}`} aria-labelledby="mesaj">
+            <Image src="/img/paper.webp" alt="" fill sizes="100vw" className="tint-photo" />
+            <Blobs variant="photo" />
+            <div className="narrow">
+                <h2 id="mesaj" className={styles.subTitle}>Trimite-ne un mesaj</h2>
+                <p className={styles.center}>Feedback, păreri, propuneri de colaborare sau o întrebare. Citim tot ce primim.</p>
+            </div>
+            <form className={form.form}>
+                <div className={form.inner} style={{ marginTop: 24 }}>
+                    <label className={form.field}>Nume *<input name="nume" autoComplete="name" required /></label>
+                    <label className={form.field}>Email *<input name="email" type="email" autoComplete="email" required /></label>
+                    <label className={form.field}>
+                        Despre ce e vorba
+                        <select name="subiect" defaultValue="Feedback">
+                            <option>Feedback</option>
+                            <option>Sugestie</option>
+                            <option>Propunere de colaborare</option>
+                            <option>Întrebare</option>
+                        </select>
+                    </label>
+                    <label className={form.field}>Mesajul tău *<textarea name="mesaj" required minLength={10} /></label>
+                </div>
+                <div className={form.submit}>
+                    <button type="submit" className="btn">Trimite mesajul</button>
+                </div>
+            </form>
+        </section>
+        </>
     )
 }

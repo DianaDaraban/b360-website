@@ -5,6 +5,7 @@ import { Gallery } from "@/components/Gallery"
 import Image from "next/image"
 import gallery from "@/components/Gallery.module.css"
 import { categorii, toateLucrarile } from "@/data/lucrari"
+import { clienti } from "@/data/clienti"
 import styles from "../content.module.css"
 
 export const metadata: Metadata = {
@@ -16,13 +17,13 @@ export const metadata: Metadata = {
 export default function PortofoliuPage() {
     return (
         <>
-            <section className={`section ${styles.white}`}>
+            <section className="section">
                 <div className="container">
                     <h1 className={styles.pageTitle}>Portofoliu</h1>
-                    <p className={styles.center}>Câteva dintre lucrările noastre din ultimii ani. Alege o categorie ca să vezi doar ce te interesează.</p>
+                    <p className={styles.center}>Câteva dintre lucrările noastre din ultimii ani. Alege o categorie sau un client ca să vezi doar ce te interesează.</p>
                     {/* The filter reads ?categorie= on the client; the static HTML (what Google sees) holds the first photos */}
                     <Suspense fallback={<StaticGrid />}>
-                        <Gallery items={toateLucrarile} categories={categorii} />
+                        <Gallery items={toateLucrarile} categories={categorii} clients={clienti.filter(c => c.match).map(({ slug, name, logo }) => ({ slug, name, logo }))} />
                     </Suspense>
                 </div>
             </section>

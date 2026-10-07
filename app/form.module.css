@@ -1,51 +1,136 @@
-/* Form pages from the Figma (Cerere ofertă, Calculator): photo-tinted header, light form panels */
-.intro { padding-block: 40px 32px; }
-.intro h1 { font-size: clamp(1.35rem, 5.4vw, 2rem); text-align: center; margin-bottom: 12px; }
-.intro p { text-align: center; }
+/* Form pages after the Figma "Cerere ofertă" screen: the whole page sits on the faded 3D-letters
+   photo with the colour blobs; each group has a translucent band for its title, cream labels
+   with the Figma text shadow, light fields that show a tick or a cross once filled in. */
+.page { --tint: rgb(120 100 98 / 0.62); padding-bottom: 8px; }
+
+.intro { padding-block: 44px 28px; }
+.intro h1 { font-size: clamp(1.7rem, 6.6vw, 2.6rem); text-align: center; margin-bottom: 14px; }
+.intro p { text-align: center; font-size: clamp(1.1rem, 4.4vw, 1.3rem); color: var(--cream); }
 
 .form { display: grid; gap: 0; }
-.group { padding: 28px var(--gutter); border: 0; margin: 0; display: grid; gap: 14px; }
-.group:nth-of-type(odd) { background: var(--white); }
-.group:nth-of-type(even) { background: #ece8e5; }
-.group legend { float: left; width: 100%; padding: 0; margin-bottom: 6px; font-size: 1.2rem; font-weight: 700; font-family: var(--font-head); color: var(--ink-strong); }
-.inner { width: min(100%, 720px); margin-inline: auto; display: grid; gap: 14px; }
+.group { min-width: 0; margin: 0; padding: 0 0 28px; border: 0; }
+.group legend {
+    float: left;
+    width: 100%;
+    margin-bottom: 18px;
+    padding: 12px var(--gutter);
+    background: rgb(60 45 45 / 0.38);
+    backdrop-filter: blur(3px);
+    box-shadow: inset 0 -2px 0 rgb(238 51 56 / 0.7);
+}
+.group legend span {
+    display: block;
+    width: min(100%, 720px);
+    margin-inline: auto;
+    font: 700 clamp(1.25rem, 5vw, 1.6rem)/1.2 var(--font-head);
+    color: var(--cream);
+    text-shadow: var(--shadow-text-photo);
+}
+.inner { clear: both; width: min(100% - 2 * var(--gutter), 720px); margin-inline: auto; display: grid; gap: 16px; }
 
-.field { display: grid; gap: 6px; font-size: 0.92rem; font-weight: 600; color: var(--ink); }
+.field {
+    position: relative;
+    display: grid;
+    gap: 4px;
+    font-size: 0.98rem;
+    font-weight: 600;
+    color: var(--cream);
+    text-shadow: 0 1px 3px rgb(0 0 0 / 0.35);
+}
 .field input, .field select, .field textarea {
     width: 100%;
     min-height: 46px;
-    padding: 10px 12px;
+    padding: 10px 40px 10px 14px;
     border: 0;
-    border-bottom: 2px solid #c9c4c1;
-    border-radius: 6px 6px 0 0;
-    background: #f3f1ef;
+    border-radius: 8px;
+    background: rgb(243 238 234 / 0.94);
+    box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.12), 0 1px 0 rgb(255 255 255 / 0.4);
     color: var(--ink-strong);
-    font: 400 1rem/1.3 var(--font);
+    font: 500 1.02rem/1.3 var(--font);
+    text-shadow: none;
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 20px;
+    transition: background-color 0.25s, box-shadow 0.25s;
 }
-.field textarea { min-height: 110px; resize: vertical; }
-.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--red); background: var(--white); }
-.field input:user-invalid { border-color: var(--red); }
-.phoneRow { display: grid; grid-template-columns: 64px 1fr; gap: 8px; }
-.phoneRow span { display: grid; place-items: center; min-height: 46px; border-radius: 6px 6px 0 0; background: #e6e2df; font-weight: 600; }
+.field textarea { min-height: 120px; resize: vertical; }
+.field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m5 9 7 7 7-7' fill='none' stroke='%2335558f' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E"); }
+/* red line drawn under the field on focus */
+.field input:focus, .field select:focus, .field textarea:focus {
+    outline: none;
+    background-color: #fff;
+    box-shadow: inset 0 -3px 0 var(--red), 0 6px 16px rgb(0 0 0 / 0.18);
+}
+/* Figma validation marks: blue tick when valid, red cross when not */
+.field input:user-valid:not([type="file"]):not([type="number"]) {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m4 13 5 5L20 6' fill='none' stroke='%2335558f' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.field input:user-invalid {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M6 6l12 12M18 6 6 18' fill='none' stroke='%23ee3338' stroke-width='3.2' stroke-linecap='round'/%3E%3C/svg%3E");
+    box-shadow: inset 0 -3px 0 var(--red);
+}
+.phoneRow { display: grid; grid-template-columns: 70px 1fr; gap: 8px; }
+.phoneRow > span { display: grid; place-items: center; min-height: 46px; border-radius: 8px; background: rgb(243 238 234 / 0.94); color: var(--ink-strong); font-weight: 600; text-shadow: none; }
 
-.question { font-size: 0.92rem; font-weight: 600; margin-top: 4px; }
+.question { margin-top: 6px; font-size: 0.98rem; font-weight: 600; color: var(--cream); text-shadow: 0 1px 3px rgb(0 0 0 / 0.35); }
 .choices { display: grid; gap: 8px; }
-.choice { display: flex; align-items: center; gap: 10px; min-height: 36px; font-size: 1rem; cursor: pointer; }
+/* Figma: options in blue on light pills */
+.choice {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 40px;
+    padding: 6px 14px;
+    border-radius: 8px;
+    background: rgb(243 238 234 / 0.82);
+    color: #35558f;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.25s, translate 0.3s var(--ease-out), box-shadow 0.25s;
+}
+.choice:hover { translate: 4px 0; background: #fff; }
+.choice:has(input:checked) { background: #fff; box-shadow: inset 4px 0 0 var(--red); }
 .choice input { width: 20px; height: 20px; accent-color: var(--red); }
-.otherRow { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; }
+.otherRow { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; }
 
-.submit { padding: 32px var(--gutter) 48px; text-align: center; background: var(--paper); }
-.note { margin-top: 14px; font-size: 0.88rem; color: var(--muted); }
+.submit { padding: 12px var(--gutter) 56px; text-align: center; }
+.note { margin-top: 14px; font-size: 0.9rem; color: var(--cream); }
 
-/* Calculator: selectable zones */
+/* ---------- calculator ---------- */
 .zones { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
-.zone { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 8px 12px; border: 2px solid #d7d2cf; border-radius: 10px; background: var(--white); cursor: pointer; font-weight: 600; }
-.zone:has(input:checked) { border-color: var(--red); background: #fdeeee; }
+.zone {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 50px;
+    padding: 8px 12px;
+    border: 2px solid transparent;
+    border-radius: 10px;
+    background: rgb(243 238 234 / 0.9);
+    color: #35558f;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.25s, background 0.25s, scale 0.3s var(--ease-out);
+}
+.zone:hover { background: #fff; }
+.zone:has(input:checked) { border-color: var(--red); background: #fff; scale: 1.02; }
 .zone input { accent-color: var(--red); width: 18px; height: 18px; }
-.estimate { padding: 20px; border-radius: var(--radius); background: var(--ink-strong); color: var(--white); text-align: center; }
-.estimate strong { display: block; font-size: 1.6rem; color: var(--white); }
+.estimate {
+    padding: 22px;
+    border-radius: var(--radius);
+    background: linear-gradient(140deg, rgb(58 54 56 / 0.92), rgb(90 40 40 / 0.92));
+    color: var(--cream);
+    text-align: center;
+    box-shadow: 0 10px 24px rgb(0 0 0 / 0.25);
+}
+.estimate strong { display: block; margin-top: 4px; font: 700 1.8rem/1.2 var(--font-head); color: var(--white); }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
+    /* desktop calculator: choices on the left, zones and estimate on the right */
+    .calcForm { grid-template-columns: 1fr 1fr; width: min(100% - 2 * var(--gutter), var(--max)); margin-inline: auto; gap: 0 32px; }
+    .calcForm .group legend { padding-inline: 0; background: none; backdrop-filter: none; }
+    .calcForm .inner { width: 100%; }
+    .calcForm .submit { grid-column: 1 / -1; }
     .zones { grid-template-columns: repeat(3, 1fr); }
-    .twoCols { grid-template-columns: 1fr 1fr; }
 }

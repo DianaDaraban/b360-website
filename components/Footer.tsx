@@ -1,27 +1,30 @@
 import Link from "next/link"
 import { nav, site } from "@/lib/site"
+import { Icon } from "./Icon"
 import styles from "./Footer.module.css"
 
+// Three compact rows: brand + contact, the page links, copyright
 export function Footer() {
     return (
         <footer className={styles.footer}>
-            <div className={`container ${styles.grid}`}>
-                <div className={styles.brand}>
-                    <img src="/logo-white.svg" alt="B360 Producție publicitară" width={150} height={76} loading="lazy" />
-                    <p>Colantări și inscripționări profesionale din {site.founded}.</p>
-                </div>
-                <nav aria-label="Subsol">
-                    <ul>
-                        {nav.map(item => <li key={item.href}><Link href={item.href}>{item.label}</Link></li>)}
-                    </ul>
-                </nav>
-                <address>
-                    <a href={site.phoneHref}>{site.phone}</a>
-                    <a href={`mailto:${site.email}`}>{site.email}</a>
+            <div className={`container ${styles.top}`}>
+                <Link href="/" aria-label="B360 – pagina principală">
+                    <img src="/logo-white.svg" alt="B360 Producție publicitară" width={150} height={76} loading="lazy" className={styles.logo} />
+                </Link>
+                <address className={styles.contact}>
+                    <a href={site.phoneHref} className="ulink"><Icon name="phone" size={16} /> {site.phone}</a>
+                    <a href={`mailto:${site.email}`} className="ulink"><Icon name="at" size={16} /> {site.email}</a>
                     <span>{site.address.street}, {site.address.locality}, {site.address.region}</span>
                 </address>
             </div>
-            <p className={`container ${styles.copy}`}>© {new Date().getFullYear()} B360 Producție publicitară</p>
+            <nav aria-label="Subsol" className="container">
+                <ul className={styles.links}>
+                    {nav.map(item => <li key={item.href}><Link href={item.href} className="ulink">{item.label}</Link></li>)}
+                    <li><Link href="/calculator" className="ulink">Calculator</Link></li>
+                    <li><Link href="/oferta" className="ulink">Cerere ofertă</Link></li>
+                </ul>
+            </nav>
+            <p className={`container ${styles.copy}`}>© {new Date().getFullYear()} B360 Producție publicitară · Colantări și inscripționări din {site.founded}</p>
         </footer>
     )
 }

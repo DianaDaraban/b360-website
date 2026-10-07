@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import Image from "next/image"
-import { Icon } from "@/components/Icon"
+import { Blobs } from "@/components/Blobs"
 import { ContactCta } from "@/components/ContactCta"
 import styles from "../content.module.css"
 
@@ -11,10 +11,11 @@ export const metadata: Metadata = {
     alternates: { canonical: "/despre-noi" },
 }
 
+// each offer gets one of the three Figma dots (red sticker with a turned corner)
 const oferim = [
-    { title: "Colantări auto și flote", text: "Soluția ideală pentru companii care doresc un branding mobil și vizibil în trafic." },
-    { title: "Inscripționări vitrine și geamuri", text: "Perfecte pentru magazine, showroom-uri și spații de birouri." },
-    { title: "Printuri publicitare indoor și outdoor", text: "Bannere, mesh-uri, postere și alte materiale de mari sau mici dimensiuni." },
+    { dot: "/figma/dot.svg", title: "Colantări auto și flote", text: "Soluția ideală pentru companii care doresc un branding mobil și vizibil în trafic." },
+    { dot: "/figma/dot2.svg", title: "Inscripționări vitrine și geamuri", text: "Perfecte pentru magazine, showroom-uri și spații de birouri." },
+    { dot: "/figma/dot3.svg", title: "Printuri publicitare indoor și outdoor", text: "Bannere, mesh-uri, postere și alte materiale de mari sau mici dimensiuni." },
 ]
 
 const deCe = [
@@ -30,6 +31,7 @@ export default function DesprePage() {
         <>
             <section className="section tinted">
                 <Image src="/img/wrap-green.webp" alt="" fill priority sizes="100vw" className="tint-photo" />
+                <Blobs variant="photo" />
                 <div className={`narrow ${styles.block}`}>
                     <h1 className={styles.pageTitle}>La <span className="red">B360</span> transformăm ideile în vizibilitate.</h1>
                     <div className="prose">
@@ -61,16 +63,18 @@ export default function DesprePage() {
 
             <section className="section tinted" style={{ "--tint": "rgb(80 72 76 / 0.8)" } as React.CSSProperties}>
                 <Image src="/img/wrap-hands.webp" alt="" fill sizes="100vw" className="tint-photo" />
+                <Blobs variant="photo" />
                 <div className={`narrow ${styles.block}`}>
-                    <p className="lead">
+                    <p className={`lead ${styles.center}`}>
                         La <strong className="red">B360</strong> ne ocupăm de tot procesul – de la <strong>concept grafic</strong>, la{" "}
                         <strong>execuție</strong> și <strong>montaj</strong>.
                     </p>
-                    <p>Oferim:</p>
+                    <p className={styles.center}>Oferim:</p>
                     <ul className={styles.offerList}>
                         {oferim.map(o => (
                             <li key={o.title}>
-                                <h3 className={`${styles.offerTitle}`}>{o.title}</h3>
+                                <img src={o.dot} alt="" width={51} height={55} className={styles.offerDot} />
+                                <h3 className={styles.offerTitle}>{o.title}</h3>
                                 <p>{o.text}</p>
                             </li>
                         ))}
@@ -81,14 +85,15 @@ export default function DesprePage() {
             <section className={`section ${styles.white}`}>
                 <div className={`narrow ${styles.block}`}>
                     <h2 className={styles.subTitle}>De ce să alegi <span className="red">B360</span>?</h2>
-                    <ul className="checklist">
-                        {deCe.map(item => <li key={item}><Icon name="check" size={30} /><span>{item}</span></li>)}
+                    <ul className={`checklist ${styles.checks}`}>
+                        {deCe.map(item => <li key={item}><span>{item}</span></li>)}
                     </ul>
                 </div>
             </section>
 
             <section className="section tinted">
                 <Image src="/img/letters-3d.webp" alt="" fill sizes="100vw" className="tint-photo" />
+                <Blobs variant="photo" />
                 <div className={`narrow ${styles.block} ${styles.center}`}>
                     <h2 className={styles.subTitle}>Misiunea noastră</h2>
                     <p>

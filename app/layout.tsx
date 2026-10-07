@@ -3,6 +3,8 @@ import { Funnel_Display, Funnel_Sans } from "next/font/google"
 import { Header } from "@/components/Header"
 import { BottomBar } from "@/components/BottomBar"
 import { Footer } from "@/components/Footer"
+import { Blobs } from "@/components/Blobs"
+import { Reveal } from "@/components/Reveal"
 import { site } from "@/lib/site"
 import "./globals.css"
 
@@ -53,10 +55,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     return (
         <html lang="ro" className={`${display.variable} ${sans.variable}`}>
             <body>
+                <Blobs variant="page" />
                 <Header />
                 <main>{children}</main>
                 <Footer />
                 <BottomBar />
+                <Reveal />
                 <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }} />
             </body>
         </html>

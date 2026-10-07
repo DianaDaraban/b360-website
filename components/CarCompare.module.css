@@ -1,0 +1,50 @@
+.compare { position: relative; margin: 0; padding: 36px 0 20px; }
+
+.stage { position: relative; aspect-ratio: 2 / 1; }
+.car { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+/* the integral side is everything left of the diagonal; the diagonal leans like the Figma line */
+.integral { clip-path: polygon(0 0, calc(var(--split) + 12%) 0, calc(var(--split) - 12%) 100%, 0 100%); }
+.integral[data-recolour] { filter: hue-rotate(95deg) saturate(1.35) brightness(1.05); }
+.divider {
+    position: absolute;
+    top: -14%;
+    bottom: -14%;
+    left: var(--split);
+    width: 2px;
+    background: var(--ink-strong);
+    rotate: 25deg;
+    pointer-events: none;
+}
+
+.labels { display: flex; justify-content: space-between; margin-top: 10px; font: 700 1.05rem/1.2 var(--font-head); color: var(--ink-strong); text-shadow: var(--shadow-text); }
+.labels span:first-child { translate: 0 -260%; }
+
+/* Figma: grey pill handles with arrows; here one range input styled as the pill */
+.handle { display: block; margin-top: 18px; }
+.handle input {
+    width: 100%;
+    height: 22px;
+    appearance: none;
+    background: transparent;
+    cursor: ew-resize;
+}
+.handle input::-webkit-slider-runnable-track { height: 2px; background: var(--ink-strong); }
+.handle input::-moz-range-track { height: 2px; background: var(--ink-strong); }
+.handle input::-webkit-slider-thumb {
+    appearance: none;
+    width: 110px;
+    height: 16px;
+    margin-top: -7px;
+    border-radius: 999px;
+    border: 3px solid #fff;
+    background: #d9d6d4 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10'%3E%3Cpath d='M6 5h88M6 5l4-3M6 5l4 3M94 5l-4-3M94 5l-4 3' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center / 90% 70% no-repeat;
+    box-shadow: 0 1px 4px rgb(0 0 0 / 0.25);
+}
+.handle input::-moz-range-thumb {
+    width: 104px;
+    height: 10px;
+    border-radius: 999px;
+    border: 3px solid #fff;
+    background: #d9d6d4;
+    box-shadow: 0 1px 4px rgb(0 0 0 / 0.25);
+}

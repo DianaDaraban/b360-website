@@ -1,4 +1,5 @@
 import lucrari from "./lucrari.json"
+import { clienti } from "./clienti"
 
 export type Lucrare = { src: string; cat: string; client: string | null; w: number; h: number }
 
@@ -15,7 +16,14 @@ export const categorii = [
 
 const withAlt = (lucrari as Lucrare[]).map(l => {
     const cat = categorii.find(c => c.slug === l.cat)
-    return { ...l, alt: [cat?.singular, l.client].filter(Boolean).join(" – ") }
+    const client = l.client ? clienti.find(c => c.match?.test(l.client!)) : undefined
+    return {
+        ...l,
+        alt: [cat?.singular, client?.name ?? l.client].filter(Boolean).join(" – "),
+        catLabel: cat?.label ?? "",
+        clientName: client?.name ?? l.client,
+        clientSlug: client?.slug ?? null,
+    }
 })
 
 // Round-robin over the categories so the unfiltered gallery starts varied, not with 17 coaches

@@ -1,59 +1,20 @@
-/* Shared styles for the text pages (Despre noi, Servicii) */
-.block { display: grid; gap: 18px; }
+/* Shared styles for the text pages (Despre noi, Contact) */
+.block { display: grid; gap: 20px; }
+.block > p, .block > .prose p { text-align: center; }
 .center { text-align: center; }
-.white { background: var(--white); }
+.white { background: rgb(255 255 255 / 0.72); }
 
-.pageTitle { font-size: clamp(1.7rem, 7vw, 2.8rem); text-align: center; margin-bottom: 8px; }
-.subTitle { font-size: clamp(1.35rem, 5.4vw, 2rem); text-align: center; margin-top: 20px; }
-:global(.tinted) .pageTitle, :global(.tinted) .subTitle { color: var(--white); }
+.pageTitle { font-size: clamp(1.8rem, 7vw, 3rem); text-align: center; margin-bottom: 8px; }
+.subTitle { font-size: clamp(1.4rem, 5.6vw, 2.1rem); text-align: center; margin-top: 24px; }
 
-/* Figma: section titles start with a small red peeled sticker */
-.offerTitle {
-    position: relative;
-    padding-left: 34px;
-    font-size: 1.2rem;
-}
-.offerTitle::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
-    width: 30px;
-    height: 30px;
-    translate: 0 -50%;
-    border-radius: 50%;
-    background: var(--red);
-    -webkit-mask: linear-gradient(225deg, transparent 8.5px, #000 8.5px);
-    mask: linear-gradient(225deg, transparent 8.5px, #000 8.5px);
-}
-.offerTitle::after {
-    content: "";
-    position: absolute;
-    left: 18px;
-    top: calc(50% - 15px);
-    width: 12px;
-    height: 12px;
-    clip-path: polygon(0 0, 100% 100%, 0 100%);
-    background: linear-gradient(45deg, #fff 0%, #f8ece8 45%, #e7b3a7 100%);
-}
-.serviceTitle { font-size: clamp(1.3rem, 5.4vw, 1.8rem); padding-left: 40px; }
+/* Figma offer list: the dot sticker sits behind the start of the title, text indented below */
+.offerList { list-style: none; margin: 8px auto 0; padding: 0; display: grid; gap: 30px; max-width: 560px; text-align: left; }
+.offerList li { position: relative; isolation: isolate; padding-left: 26px; }
+.offerDot { position: absolute; left: 0; top: -14px; width: 51px; height: 55px; z-index: -1; }
+.offerTitle { font-size: 1.25rem; padding-left: 4px; }
+.offerList p { margin-top: 8px; padding-left: 52px; }
 
-.offerList { list-style: none; margin: 0; padding: 0; display: grid; gap: 24px; }
-.offerList p { margin-top: 6px; padding-left: 34px; }
-
-.jumpList { list-style: none; margin: 16px 0 0; padding: 0; display: grid; gap: 18px; }
-.jumpList a { display: flex; align-items: center; gap: 16px; text-decoration: none; font-weight: 650; font-size: 1.1rem; color: var(--ink-strong); }
-.jumpList [data-side="right"] a { flex-direction: row-reverse; text-align: right; }
-.jumpPhoto { --c: 38px; flex: none; width: 92px; height: 92px; border-radius: 50%; overflow: hidden; }
-.jumpPhoto img { width: 100%; height: 100%; object-fit: cover; }
-.jumpList a:hover { color: var(--red); }
-
-:global(.tinted .checklist) span { color: rgb(255 255 255 / 0.92); }
-
-@media (min-width: 768px) {
-    .jumpList { grid-template-columns: repeat(2, 1fr); }
-    .jumpList [data-side="right"] a { flex-direction: row; text-align: left; }
-}
+.checks { max-width: 560px; margin-inline: auto; font-size: 1.08rem; }
 
 .contactList { list-style: none; margin: 12px 0; padding: 0; display: grid; gap: 14px; }
 .contactList li { display: grid; grid-template-columns: 52px 1fr; gap: 14px; align-items: center; padding: 16px; border-radius: var(--radius); background: var(--paper); }

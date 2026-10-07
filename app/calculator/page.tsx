@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import Image from "next/image"
+import { Blobs } from "@/components/Blobs"
 import styles from "../form.module.css"
 
 export const metadata: Metadata = {
@@ -17,19 +18,19 @@ const zone = ["Capotă", "Plafon", "Portbagaj", "Uși laterale", "Aripi", "Bară
 
 export default function CalculatorPage() {
     return (
-        <>
-            <section className={`tinted ${styles.intro}`}>
-                <Image src="/img/racing-stripes.webp" alt="" fill priority sizes="100vw" className="tint-photo" />
-                <div className="narrow">
-                    <h1>Calculează rapid costul colantării sau inscripționării tale</h1>
-                    <p>Selectează tipul de lucrare, alege zonele dorite și primești instant o estimare orientativă de preț.</p>
-                </div>
+        <div className={`tinted ${styles.page}`}>
+            <Image src="/img/letters.webp" alt="" fill priority sizes="100vw" className="tint-photo" />
+            <Blobs variant="photo" />
+
+            <section className={`narrow ${styles.intro}`}>
+                <h1>Calculează rapid costul colantării sau inscripționării tale</h1>
+                <p>Selectează tipul de lucrare, alege zonele dorite și primești instant o estimare orientativă de preț.</p>
             </section>
 
-            <form className={styles.form}>
+            <form className={`${styles.form} ${styles.calcForm}`}>
                 <fieldset className={styles.group}>
+                    <legend><span>Lucrarea</span></legend>
                     <div className={styles.inner}>
-                        <legend className="sr-only">Lucrarea</legend>
                         <label className={styles.field}>Alege tipul de serviciu<select name="serviciu">{servicii.map(s => <option key={s}>{s}</option>)}</select></label>
                         <label className={styles.field}>Alege tipul de autovehicul<select name="vehicul">{vehicule.map(s => <option key={s}>{s}</option>)}</select></label>
                         <label className={styles.field}>Alege tipul de folie<select name="folie">{folii.map(s => <option key={s}>{s}</option>)}</select></label>
@@ -42,8 +43,8 @@ export default function CalculatorPage() {
                 </fieldset>
 
                 <fieldset className={styles.group}>
+                    <legend><span>Selectează elementele</span></legend>
                     <div className={styles.inner}>
-                        <legend>Selectează elementele</legend>
                         <div className={styles.zones}>
                             {zone.map(z => <label key={z} className={styles.zone}><input type="checkbox" name="zone" value={z} />{z}</label>)}
                         </div>
@@ -60,6 +61,6 @@ export default function CalculatorPage() {
                     <p className={styles.note}>Estimarea e orientativă. Prețul final îl confirmăm după ce vedem vehiculul și grafica.</p>
                 </div>
             </form>
-        </>
+        </div>
     )
 }

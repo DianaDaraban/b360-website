@@ -3,22 +3,10 @@ import Link from "next/link"
 import { servicii } from "@/data/servicii"
 import { ContactCta } from "@/components/ContactCta"
 import { Icon } from "@/components/Icon"
+import { Blobs } from "@/components/Blobs"
+import { clienti } from "@/data/clienti"
 import styles from "./home.module.css"
 
-const clienti = [
-    ["mercedes-benz", "Mercedes-Benz"],
-    ["city-grill", "City Grill"],
-    ["tiriac-auto", "Țiriac Auto"],
-    ["carrefour", "Carrefour"],
-    ["continental", "Continental"],
-    ["ravitex", "Ravitex"],
-    ["polach", "Polach"],
-    ["amgen", "Amgen"],
-    ["draper-tools", "Draper Tools"],
-    ["jaguar", "Jaguar"],
-    ["basilica-travel", "Basilica Travel"],
-    ["astra-giurgiu", "Astra Giurgiu"],
-] as const
 
 // Hero slideshow, like the old WordPress header: photos crossfade under a moving colour wash
 const heroPhotos = ["/img/hero-graffiti.webp", "/img/colorful-convertible.webp", "/img/hero-dragon.webp", "/img/storefront-stickers.webp"]
@@ -41,6 +29,7 @@ export default function Home() {
                         <Image key={src} src={src} alt="" fill priority={i === 0} sizes="100vw" className={styles.slide} />
                     ))}
                 </div>
+                <Blobs variant="photo" />
                 <div className={`container ${styles.heroText}`}>
                     <p className={styles.kicker}>Din 2012 · Corbeanca, Ilfov</p>
                     <h1>
@@ -68,7 +57,7 @@ export default function Home() {
                 <ul className={styles.serviceRail}>
                     {servicii.map(s => (
                         <li key={s.slug}>
-                            <Link href={`/servicii#${s.slug}`} className={styles.serviceCard}>
+                            <Link href={`/servicii/${s.slug}`} className={styles.serviceCard}>
                                 <Image src={s.image} alt="" width={600} height={600} sizes="(min-width: 1024px) 280px, 46vw" />
                                 <span>{s.short}</span>
                             </Link>
@@ -79,12 +68,21 @@ export default function Home() {
 
             <section className={`section tinted ${styles.clients}`} aria-labelledby="clienti">
                 <Image src="/img/wrap-salon.webp" alt="" fill sizes="100vw" className="tint-photo" />
+                <Blobs variant="photo" />
                 <div className="container">
                     <h2 id="clienti" className="section-title">Clienții noștri fideli</h2>
                     <ul className={styles.logos}>
-                        {clienti.map(([file, name]) => (
-                            <li key={file} className="peel">
-                                <img src={`/clienti/${file}.webp`} alt={name} width={300} height={139} loading="lazy" />
+                        {clienti.slice(0, 12).map(c => (
+                            <li key={c.slug}>
+                                {c.match ? (
+                                    <Link href={`/portofoliu?client=${c.slug}`} className={`${styles.logo} peel`} title={`Lucrări pentru ${c.name}`}>
+                                        <img src={`/clienti/${c.logo}.webp`} alt={c.name} width={300} height={139} loading="lazy" />
+                                    </Link>
+                                ) : (
+                                    <span className={`${styles.logo} peel`}>
+                                        <img src={`/clienti/${c.logo}.webp`} alt={c.name} width={300} height={139} loading="lazy" />
+                                    </span>
+                                )}
                             </li>
                         ))}
                     </ul>
