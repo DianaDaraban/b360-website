@@ -6,9 +6,12 @@
 }
 .top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; }
 .logo { width: 110px; height: auto; }
-.contact { font-style: normal; display: flex; flex-wrap: wrap; gap: 6px 22px; }
-.contact a { display: inline-flex; align-items: center; gap: 6px; color: var(--cream); }
-.contact svg { --red: var(--cream); color: var(--red); }
+.contact { font-style: normal; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px 40px; font-size: 1.05rem; }
+.contact a { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; color: var(--cream); }
+/* Figma contact icons: cream outline with the red piece; the phone is all red */
+.contact svg { flex: none; color: var(--cream); transition: scale 0.35s var(--ease-out); }
+.contact a:first-child svg { color: var(--red); }
+.contact a:hover svg { scale: 1.15; }
 
 .links {
     list-style: none;
@@ -16,6 +19,7 @@
     padding: 16px 0;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;   /* links spread across the whole footer */
     gap: 6px 22px;
     border-block: 1px solid rgb(243 234 225 / 0.12);
 }

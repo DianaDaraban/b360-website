@@ -1,8 +1,10 @@
 import type { Metadata } from "next"
 import Image from "next/image"
+import Link from "next/link"
 import { Blobs } from "@/components/Blobs"
 import { ContactCta } from "@/components/ContactCta"
-import styles from "../content.module.css"
+import { Icon } from "@/components/Icon"
+import styles from "./about.module.css"
 
 export const metadata: Metadata = {
     title: "Despre noi – colantări și producție publicitară din 2012",
@@ -11,96 +13,126 @@ export const metadata: Metadata = {
     alternates: { canonical: "/despre-noi" },
 }
 
-// each offer gets one of the three Figma dots (red sticker with a turned corner)
-const oferim = [
-    { dot: "/figma/dot.svg", title: "Colantări auto și flote", text: "Soluția ideală pentru companii care doresc un branding mobil și vizibil în trafic." },
-    { dot: "/figma/dot2.svg", title: "Inscripționări vitrine și geamuri", text: "Perfecte pentru magazine, showroom-uri și spații de birouri." },
-    { dot: "/figma/dot3.svg", title: "Printuri publicitare indoor și outdoor", text: "Bannere, mesh-uri, postere și alte materiale de mari sau mici dimensiuni." },
+// The page reads in short blocks: numbers, the story in two sentences, the three steps of
+// the work, the offer, the reasons to choose B360 and the mission as one line.
+const cifre = [
+    { value: "2012", label: "anul în care am început" },
+    { value: "10+", label: "ani de experiență" },
+    { value: "3 în 1", label: "design, producție și montaj" },
 ]
 
+const pasi = [
+    { title: "Concept grafic", text: "Pornim de la brandul tău și propunem grafica potrivită pentru suport." },
+    { title: "Producție", text: "Printăm și decupăm pe materiale premium, cu echipamente moderne." },
+    { title: "Montaj", text: "Aplicăm atent și verificăm fiecare detaliu înainte de predare." },
+]
+
+const oferim = [
+    { icon: "car", title: "Colantări auto și flote", text: "Branding mobil, vizibil în trafic.", href: "/servicii/colantare-auto" },
+    { icon: "store", title: "Vitrine și geamuri", text: "Pentru magazine, showroom-uri și birouri.", href: "/servicii/colantare-vitrine" },
+    { icon: "printer", title: "Print indoor și outdoor", text: "Bannere, mesh-uri, postere, de orice dimensiune.", href: "/servicii" },
+] as const
+
 const deCe = [
-    "Experiență de peste 10 ani în domeniu",
-    "Colaborări stabile și de lungă durată cu branduri locale și naționale",
-    "Soluții personalizate pentru fiecare client",
-    "Montaj profesionist și rezultate durabile",
-    "Servicii complete de producție publicitară, toate într-un singur loc",
+    { title: "10+ ani", text: "de experiență în domeniu" },
+    { title: "Clienți fideli", text: "branduri locale și naționale, de ani buni" },
+    { title: "Personalizat", text: "o soluție gândită pentru fiecare client" },
+    { title: "Durabil", text: "montaj profesionist, rezultate care rezistă" },
+    { title: "Totul într-un loc", text: "de la idee la montaj, fără intermediari" },
 ]
 
 export default function DesprePage() {
     return (
         <>
-            <section className="section tinted">
+            <section className={`tinted ${styles.hero}`}>
                 <Image src="/img/wrap-green.webp" alt="" fill priority sizes="100vw" className="tint-photo" />
                 <Blobs variant="photo" />
-                <div className={`narrow ${styles.block}`}>
-                    <h1 className={styles.pageTitle}>La <span className="red">B360</span> transformăm ideile în vizibilitate.</h1>
-                    <div className="prose">
-                        <p>
-                            Din 2012 oferim servicii complete de <strong>colantări</strong> și <strong>inscripționări auto</strong>, ajutând
-                            companiile să își consolideze brandul prin soluții creative și durabile.
-                        </p>
-                        <p>
-                            Suntem partenerul de încredere pentru firme care vor să fie remarcate în piață, fie prin <strong>colantări auto</strong> și{" "}
-                            <strong>branding de flote</strong>, fie prin <strong>inscripționări vitrine, litere volumetrice</strong> sau{" "}
-                            <strong>printuri publicitare indoor și outdoor</strong>.
-                        </p>
-                    </div>
+                <div className="container">
+                    <p className={styles.kicker}>Despre noi</p>
+                    <h1 className={styles.title}>La <span className="red">B360</span> transformăm ideile în vizibilitate.</h1>
+                    <p className={styles.lead}>Colantări auto, branding de flote, vitrine și print publicitar, de la concept grafic la montaj.</p>
+                    <ul className={styles.stats}>
+                        {cifre.map(c => (
+                            <li key={c.value}><strong>{c.value}</strong><span>{c.label}</span></li>
+                        ))}
+                    </ul>
+                </div>
+            </section>
 
-                    <h2 className={styles.subTitle}>Peste <span className="red">10 ani</span> de experiență în colantări și producție publicitară</h2>
-                    <div className="prose">
-                        <p>
-                            De la primul proiect realizat în 2012 și până astăzi, am crescut alături de clienți care ne-au rămas fideli peste ani.
-                            Acest lucru ne confirmă profesionalismul și seriozitatea cu care tratăm fiecare lucrare.
-                        </p>
-                        <p>
-                            Echipa noastră este formată din specialiști în <strong>design grafic, producție și montaj</strong>, cu experiență dovedită
-                            în <strong>publicitate vizuală</strong>. Folosim materiale de calitate premium și echipamente moderne pentru a asigura
-                            rezultate durabile și estetice.
-                        </p>
+            <section className="section">
+                <div className={`container ${styles.story}`}>
+                    <div className={styles.storyText}>
+                        <p className={styles.eyebrow}>Povestea pe scurt</p>
+                        <h2 className={styles.h2}>Peste <span className="red">10 ani</span> alături de clienți care ne-au rămas fideli</h2>
+                        <p>Am pornit în 2012 cu colantări auto și am crescut odată cu clienții noștri. Faptul că revin an de an e cea mai bună dovadă de seriozitate.</p>
+                        <p>Echipa noastră acoperă <strong>design grafic, producție și montaj</strong>, așa că tot proiectul rămâne într-o singură mână.</p>
                     </div>
+                    <figure className={styles.storyPhoto}>
+                        <Image src="/img/wrap-hands.webp" alt="Montaj folie pe caroseria unei mașini" width={720} height={540} sizes="(min-width: 1024px) 520px, 92vw" />
+                        <span className={`${styles.badge} peel`}>din<br /><strong>2012</strong></span>
+                    </figure>
+                </div>
+            </section>
+
+            <section className={`section ${styles.band}`}>
+                <div className="container">
+                    <p className={styles.eyebrow}>Cum lucrăm</p>
+                    <h2 className={styles.h2}>Trei pași, o singură echipă</h2>
+                    <ol className={styles.steps}>
+                        {pasi.map((p, i) => (
+                            <li key={p.title}>
+                                <span className={styles.stepNo}>0{i + 1}</span>
+                                <h3>{p.title}</h3>
+                                <p>{p.text}</p>
+                            </li>
+                        ))}
+                    </ol>
                 </div>
             </section>
 
             <section className="section tinted" style={{ "--tint": "rgb(80 72 76 / 0.8)" } as React.CSSProperties}>
                 <Image src="/img/wrap-hands.webp" alt="" fill sizes="100vw" className="tint-photo" />
                 <Blobs variant="photo" />
-                <div className={`narrow ${styles.block}`}>
-                    <p className={`lead ${styles.center}`}>
-                        La <strong className="red">B360</strong> ne ocupăm de tot procesul – de la <strong>concept grafic</strong>, la{" "}
-                        <strong>execuție</strong> și <strong>montaj</strong>.
-                    </p>
-                    <p className={styles.center}>Oferim:</p>
-                    <ul className={styles.offerList}>
+                <div className="container">
+                    <p className={`${styles.eyebrow} ${styles.onPhoto}`}>Ce oferim</p>
+                    <h2 className={styles.h2}>Producție publicitară completă</h2>
+                    <ul className={styles.offers}>
                         {oferim.map(o => (
                             <li key={o.title}>
-                                <img src={o.dot} alt="" width={51} height={55} className={styles.offerDot} />
-                                <h3 className={styles.offerTitle}>{o.title}</h3>
-                                <p>{o.text}</p>
+                                <Link href={o.href} className={styles.offer}>
+                                    <span className={`${styles.offerIcon} peel`} aria-hidden="true"><Icon name={o.icon} size={30} /></span>
+                                    <h3>{o.title}</h3>
+                                    <p>{o.text}</p>
+                                    <span className="arrow-sticker peel" aria-hidden="true"><Icon name="arrow" size={18} /></span>
+                                </Link>
                             </li>
                         ))}
                     </ul>
                 </div>
             </section>
 
-            <section className={`section ${styles.white}`}>
-                <div className={`narrow ${styles.block}`}>
-                    <h2 className={styles.subTitle}>De ce să alegi <span className="red">B360</span>?</h2>
-                    <ul className={`checklist ${styles.checks}`}>
-                        {deCe.map(item => <li key={item}><span>{item}</span></li>)}
+            <section className="section">
+                <div className="container">
+                    <p className={styles.eyebrow}>De ce B360</p>
+                    <h2 className={styles.h2}>Cinci motive să lucrăm împreună</h2>
+                    <ul className={styles.reasons}>
+                        {deCe.map(r => (
+                            <li key={r.title}>
+                                <strong>{r.title}</strong>
+                                <span>{r.text}</span>
+                            </li>
+                        ))}
                     </ul>
                 </div>
             </section>
 
-            <section className="section tinted">
+            <section className={`tinted ${styles.mission}`}>
                 <Image src="/img/letters-3d.webp" alt="" fill sizes="100vw" className="tint-photo" />
                 <Blobs variant="photo" />
-                <div className={`narrow ${styles.block} ${styles.center}`}>
-                    <h2 className={styles.subTitle}>Misiunea noastră</h2>
-                    <p>
-                        Credem că fiecare brand merită să fie vizibil și memorabil. Misiunea noastră este să oferim clienților nu doar materiale
-                        publicitare, ci <strong>soluții care atrag atenția, cresc încrederea și susțin dezvoltarea afacerii.</strong>
-                    </p>
-                    <p>Pentru noi, fiecare proiect reprezintă o oportunitate de a crea <strong>o nouă poveste de succes.</strong></p>
+                <div className="narrow">
+                    <p className={`${styles.eyebrow} ${styles.onPhoto}`}>Misiunea noastră</p>
+                    <blockquote className={styles.quote}>Fiecare brand merită să fie vizibil și memorabil.</blockquote>
+                    <p className={styles.quoteText}>Nu livrăm doar materiale publicitare, ci soluții care atrag atenția, cresc încrederea și ajută afacerea să crească.</p>
                 </div>
             </section>
 

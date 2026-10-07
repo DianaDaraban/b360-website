@@ -12,9 +12,9 @@ export function Footer() {
                     <img src="/logo-white.svg" alt="B360 Producție publicitară" width={150} height={76} loading="lazy" className={styles.logo} />
                 </Link>
                 <address className={styles.contact}>
-                    <a href={site.phoneHref} className="ulink"><Icon name="phone" size={16} /> {site.phone}</a>
-                    <a href={`mailto:${site.email}`} className="ulink"><Icon name="at" size={16} /> {site.email}</a>
-                    <span>{site.address.street}, {site.address.locality}, {site.address.region}</span>
+                    <a href={site.phoneHref} className="ulink"><Icon name="phone" size={22} /> {site.phone}</a>
+                    <a href={`mailto:${site.email}`} className="ulink"><Icon name="at" size={22} /> {site.email}</a>
+                    <a href={site.mapsUrl} target="_blank" rel="noopener" className="ulink"><Icon name="home" size={22} /> {site.address.street}, {site.address.locality}, {site.address.region}</a>
                 </address>
             </div>
             <nav aria-label="Subsol" className="container">

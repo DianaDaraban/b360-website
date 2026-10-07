@@ -7,8 +7,8 @@
     background: var(--cream);
 }
 /* the photo only hints at the work: faded, warm, behind a cream veil */
-.photo { z-index: -3; object-fit: cover; opacity: 0.22; filter: grayscale(0.4) sepia(0.25); }
-.cta::before { content: ""; position: absolute; inset: 0; z-index: -2; background: radial-gradient(ellipse at center, rgb(246 242 238 / 0.55), rgb(243 234 225 / 0.85)); }
+.photo { z-index: -3; object-fit: cover; opacity: 0.5; filter: grayscale(0.2) sepia(0.15); }
+.cta::before { content: ""; position: absolute; inset: 0; z-index: -2; background: radial-gradient(ellipse at center, rgb(246 242 238 / 0.5), rgb(243 234 225 / 0.62)); }
 
 .blobs { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
 .blobs span {
@@ -31,7 +31,10 @@
 }
 @keyframes morph { to { border-radius: 70% 30% 40% 60% / 50% 70% 30% 50%; } }
 
+.inner { width: fit-content; max-width: calc(100% - 2 * var(--gutter)); margin-inline: auto; }
 .title { font-size: clamp(1.9rem, 7vw, 2.8rem); color: var(--red); }
-.text { margin-top: 12px; font-size: clamp(1.2rem, 4.8vw, 1.5rem); font-weight: 500; line-height: 1.4; color: var(--ink-strong); text-wrap: balance; }
-.actions { margin-top: 34px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px; }
+.text { margin-top: 12px; font-size: clamp(1.15rem, 4.4vw, 1.4rem); font-weight: 500; line-height: 1.4; color: var(--ink-strong); text-wrap: balance; }
+.actions { margin-top: 34px; display: flex; flex-wrap: wrap; justify-content: space-evenly; align-items: center; gap: 16px; }
+/* on wide screens the sentence stays on one line */
+@media (min-width: 1024px) { .text { white-space: nowrap; } }
 .actions :global(.btn-ghost) { color: var(--ink-strong); }

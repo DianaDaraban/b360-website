@@ -1,0 +1,60 @@
+.carousel { position: relative; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 6px; }
+
+/* the strip: native horizontal scroll with snapping; padding leaves room for shadows and peels */
+.track {
+    list-style: none;
+    margin: 0;
+    padding: 14px 6px 22px;
+    display: grid;
+    grid-auto-flow: column;
+    gap: var(--carousel-gap, 18px);
+    /* overflow-x alone would make the strip scroll vertically too (the peeled corners stick out),
+       so the mouse wheel used to push the items up out of sight */
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 6px;
+    scrollbar-width: none;
+    /* long, eased fade at an end only while there is more to scroll that way */
+    --fade-l: linear-gradient(90deg, transparent 0, rgb(0 0 0 / 0.08) 14%, rgb(0 0 0 / 0.3) 36%, rgb(0 0 0 / 0.65) 57%, rgb(0 0 0 / 0.9) 79%, #000);
+    --fade-r: linear-gradient(270deg, transparent 0, rgb(0 0 0 / 0.08) 14%, rgb(0 0 0 / 0.3) 36%, rgb(0 0 0 / 0.65) 57%, rgb(0 0 0 / 0.9) 79%, #000);
+    mask: var(--fade-l) left / 14% 100% no-repeat, linear-gradient(#000, #000) center / 72% 100% no-repeat, var(--fade-r) right / 14% 100% no-repeat;
+}
+.track[data-start] { mask: linear-gradient(#000, #000) left / 86% 100% no-repeat, var(--fade-r) right / 14% 100% no-repeat; }
+.track[data-end] { mask: var(--fade-l) left / 14% 100% no-repeat, linear-gradient(#000, #000) right / 86% 100% no-repeat; }
+.track[data-start][data-end] { mask: none; }
+.track::-webkit-scrollbar { display: none; }
+.track > li { scroll-snap-align: start; }
+
+/* arrows: plain red chevrons, no disc */
+.arrow {
+    flex: none;
+    width: 44px;
+    height: 64px;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--carousel-arrow, var(--red));
+    cursor: pointer;
+    transition: opacity 0.3s, color 0.25s;
+}
+.arrow svg { width: 34px; height: 34px; filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.2)); transition: translate 0.3s var(--ease-out); }
+.arrow:hover { color: var(--carousel-arrow-hover, var(--red-dark)); }
+.arrow:disabled { opacity: 0.2; cursor: default; }
+.prev:hover:not(:disabled) svg { translate: -4px 0; }
+.next:hover:not(:disabled) svg { translate: 4px 0; }
+
+/* on phones the strip is swiped; the arrows sit underneath */
+@media (max-width: 767px) {
+    .carousel { grid-template-columns: 1fr 1fr; }
+    .track { grid-column: 1 / -1; grid-row: 1; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
+    .prev { grid-row: 2; justify-self: end; margin-right: 8px; }
+    .next { grid-row: 2; justify-self: start; margin-left: 8px; }
+}
+/* on wide screens the arrows move out into the margin, beyond the content column */
+@media (min-width: 1320px) {
+    .carousel { margin-inline: -64px; }
+}

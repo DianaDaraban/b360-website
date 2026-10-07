@@ -11,13 +11,14 @@ export function ContactCta() {
         <section className={styles.cta} aria-labelledby="contacteaza">
             <Image src="/img/wrap-hands.webp" alt="" fill sizes="100vw" className={styles.photo} />
             <div className={styles.blobs} aria-hidden="true"><span /><span /><span /></div>
-            <div className="narrow">
+            {/* as wide as the sentence: the buttons spread evenly under it */}
+            <div className={styles.inner}>
                 <h2 id="contacteaza" className={styles.title}>Contactează-ne acum</h2>
                 <p className={styles.text}>pentru o ofertă personalizată și hai să lucrăm împreună la imaginea brandului tău!</p>
                 <div className={styles.actions}>
                     <a href={site.phoneHref} className="btn"><Icon name="phone" size={20} /> {site.phone}</a>
-                    <Link href="/oferta" className="btn-ghost on-light">
-                        Cere ofertă online
+                    <Link href="/calculator" className="btn-ghost on-light">
+                        <Icon name="calculator" size={20} /> Calculează costul
                         <span className="arrow-sticker peel" aria-hidden="true"><Icon name="arrow" size={18} /></span>
                     </Link>
                 </div>

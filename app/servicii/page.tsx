@@ -15,14 +15,13 @@ export const metadata: Metadata = {
 export default function ServiciiPage() {
     return (
         <>
-            <section className="section">
-                <div className="narrow prose">
+            <section className={styles.section}>
+                <div className={`narrow prose ${styles.head}`}>
                     <h1 className={styles.title}>Servicii de colantare și producție publicitară</h1>
                     <p className="lead">
                         Din 2012, la <strong className="red">B360</strong> realizăm servicii complete de colantări și producție publicitară pentru
-                        companii și branduri care vor să fie vizibile.
+                        companii și branduri care vor să fie vizibile, cu materiale premium, de la concept grafic până la execuție și montaj.
                     </p>
-                    <p>Folosim materiale premium și oferim soluții personalizate, de la concept grafic până la execuție și montaj.</p>
                 </div>
 
                 <ul className={`container ${styles.grid}`}>
@@ -30,7 +29,7 @@ export default function ServiciiPage() {
                         <li key={s.slug}>
                             <Link href={`/servicii/${s.slug}`} className={styles.card}>
                                 <span className={styles.photo}>
-                                    <Image src={s.image} alt="" width={640} height={480} sizes="(min-width: 1024px) 380px, (min-width: 640px) 46vw, 92vw" />
+                                    <Image src={s.image} alt="" width={640} height={480} sizes="(min-width: 900px) 260px, 40vw" />
                                 </span>
                                 <span className={styles.body}>
                                     <span className={styles.cardTitle}>{s.short}</span>

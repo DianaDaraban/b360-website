@@ -1,50 +1,58 @@
-.compare { position: relative; margin: 0; padding: 36px 0 20px; }
+.compare { position: relative; margin: 0; padding: 28px 0 12px; }
 
-.stage { position: relative; aspect-ratio: 2 / 1; }
-.car { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-/* the integral side is everything left of the diagonal; the diagonal leans like the Figma line */
+/* the photos are cropped to the grey studio band around the car (2000 x 726) */
+.stage { position: relative; aspect-ratio: 2000 / 726; overflow: hidden; border-radius: var(--radius); background: #ebebeb; }
+.car { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* the integral side is everything left of the diagonal; the line leans 12 % of the width each way */
 .integral { clip-path: polygon(0 0, calc(var(--split) + 12%) 0, calc(var(--split) - 12%) 100%, 0 100%); }
-.integral[data-recolour] { filter: hue-rotate(95deg) saturate(1.35) brightness(1.05); }
+
+/* red diagonal: runs from (split + 12 %, top) to (split - 12 %, bottom), so it crosses the middle at the split */
 .divider {
     position: absolute;
-    top: -14%;
-    bottom: -14%;
+    top: 50%;
     left: var(--split);
-    width: 2px;
-    background: var(--ink-strong);
-    rotate: 25deg;
+    width: 4px;
+    /* the diagonal spans 24 % of the width (0.66 of the height, the stage being 2.75 : 1) over the full
+       height: 33.5 degrees off vertical, about 1.2 times the height long */
+    height: 125%;
+    translate: -50% -50%;
+    rotate: 33.5deg;
+    background: linear-gradient(var(--red), #c9161f);
+    box-shadow: 0 0 0 1px rgb(243 234 225 / 0.7), 0 0 12px rgb(238 51 56 / 0.45);
     pointer-events: none;
 }
-
-.labels { display: flex; justify-content: space-between; margin-top: 10px; font: 700 1.05rem/1.2 var(--font-head); color: var(--ink-strong); text-shadow: var(--shadow-text); }
-.labels span:first-child { translate: 0 -260%; }
-
-/* Figma: grey pill handles with arrows; here one range input styled as the pill */
-.handle { display: block; margin-top: 18px; }
-.handle input {
-    width: 100%;
-    height: 22px;
-    appearance: none;
-    background: transparent;
-    cursor: ew-resize;
+/* the handle sits on the line, a red sticker with a cream ring that stands out of it */
+.knob {
+    --c: 18px;
+    --lift: 140deg;
+    position: absolute;
+    top: 50%;
+    left: var(--split);
+    width: 44px;
+    height: 44px;
+    translate: -50% -50%;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: linear-gradient(40deg, #ee3338 55%, #c9161f);
+    color: var(--cream);
+    box-shadow: 0 0 0 3px var(--cream), 0 4px 12px rgb(80 0 0 / 0.3);
+    pointer-events: none;
+    transition: scale 0.3s var(--ease-out), box-shadow 0.3s;
 }
-.handle input::-webkit-slider-runnable-track { height: 2px; background: var(--ink-strong); }
-.handle input::-moz-range-track { height: 2px; background: var(--ink-strong); }
-.handle input::-webkit-slider-thumb {
-    appearance: none;
-    width: 110px;
-    height: 16px;
-    margin-top: -7px;
-    border-radius: 999px;
-    border: 3px solid #fff;
-    background: #d9d6d4 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10'%3E%3Cpath d='M6 5h88M6 5l4-3M6 5l4 3M94 5l-4-3M94 5l-4 3' stroke='%23fff' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") center / 90% 70% no-repeat;
-    box-shadow: 0 1px 4px rgb(0 0 0 / 0.25);
-}
-.handle input::-moz-range-thumb {
-    width: 104px;
-    height: 10px;
-    border-radius: 999px;
-    border: 3px solid #fff;
-    background: #d9d6d4;
-    box-shadow: 0 1px 4px rgb(0 0 0 / 0.25);
+.stage:hover .knob, .stage:has(input:focus-visible) .knob { scale: 1.08; }
+.stage:has(input:focus-visible) .knob { box-shadow: 0 0 0 3px var(--cream), 0 0 0 6px var(--red), 0 4px 12px rgb(80 0 0 / 0.3); }
+/* a small hint that it can be dragged: the arrows nudge once in a while */
+.knob svg { animation: nudge 3.2s ease-in-out infinite; }
+@keyframes nudge { 0%, 70%, 100% { translate: 0 0; } 78% { translate: -3px 0; } 86% { translate: 3px 0; } }
+
+/* transparent range input over the whole picture: drag anywhere */
+.range { position: absolute; inset: 0; z-index: 2; }
+.range input { width: 100%; height: 100%; margin: 0; appearance: none; background: transparent; cursor: ew-resize; opacity: 0; }
+
+.labels { display: flex; justify-content: space-between; margin-top: 12px; font: 700 1.05rem/1.2 var(--font-head); color: var(--ink-strong); text-shadow: var(--shadow-text); }
+.labels span::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 8px; border-radius: 50%; background: var(--red); vertical-align: 1px; }
+
+@media (min-width: 768px) {
+    .knob { width: 48px; height: 48px; }
 }

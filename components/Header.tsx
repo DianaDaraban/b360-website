@@ -4,7 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useRef, useState } from "react"
 import { Icon } from "./Icon"
-import { nav, site } from "@/lib/site"
+import { nav } from "@/lib/site"
 import { servicii } from "@/data/servicii"
 import styles from "./Header.module.css"
 
@@ -13,6 +13,13 @@ export function Header() {
     const menu = useRef<HTMLDialogElement>(null)
     const [closing, setClosing] = useState(false)
     const [subOpen, setSubOpen] = useState(false)
+    // a click inside the Servicii dropdown navigates, so the panel must fold away even though the
+    // pointer is still over it; it opens again on the next hover
+    const [dropClosed, setDropClosed] = useState(false)
+    const closeDrop = () => {
+        setDropClosed(true)
+        ;(document.activeElement as HTMLElement | null)?.blur()
+    }
     const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href))
 
     const openMenu = () => {
@@ -37,17 +44,22 @@ export function Header() {
                 </Link>
 
                 <nav className={styles.desktopNav} aria-label="Principal">
+                    {pathname !== "/" && (
+                        <Link href="/" className={`${styles.navLink} ${styles.homeLink}`}>
+                            <Icon name="home" size={20} /> Acasă
+                        </Link>
+                    )}
                     <Link href="/despre-noi" className={styles.navLink} aria-current={isActive("/despre-noi") ? "page" : undefined}>Despre noi</Link>
 
-                    <div className={styles.dropdown}>
-                        <Link href="/servicii" className={styles.navLink} aria-current={isActive("/servicii") ? "page" : undefined} aria-haspopup="true">
+                    <div className={styles.dropdown} data-closed={dropClosed || undefined} onMouseLeave={() => setDropClosed(false)}>
+                        <Link href="/servicii" onClick={closeDrop} className={styles.navLink} aria-current={isActive("/servicii") ? "page" : undefined} aria-haspopup="true">
                             Servicii <span className={styles.chevron} aria-hidden="true" />
                         </Link>
                         <div className={styles.dropPanel}>
                             <ul>
                                 {servicii.map(s => (
                                     <li key={s.slug}>
-                                        <Link href={`/servicii/${s.slug}`} className={styles.dropItem}>
+                                        <Link href={`/servicii/${s.slug}`} onClick={closeDrop} className={styles.dropItem}>
                                             <span className={`${styles.dropPhoto} peel`}><img src={s.image} alt="" width={56} height={56} /></span>
                                             <span>
                                                 <strong>{s.short}</strong>
@@ -57,18 +69,15 @@ export function Header() {
                                     </li>
                                 ))}
                             </ul>
-                            <Link href="/servicii" className={`${styles.dropAll} ulink`}>Toate serviciile →</Link>
+                            <Link href="/servicii" onClick={closeDrop} className={`${styles.dropAll} ulink`}>Toate serviciile →</Link>
                         </div>
                     </div>
 
                     <Link href="/portofoliu" className={styles.navLink} aria-current={isActive("/portofoliu") ? "page" : undefined}>Portofoliu</Link>
-                    <Link href="/calculator" className={styles.navLink} aria-current={isActive("/calculator") ? "page" : undefined}>
+                    <Link href="/calculator" className={`${styles.navLink} ${styles.calcLink}`} aria-current={isActive("/calculator") ? "page" : undefined}>
                         <Icon name="calculator" size={20} /> Calculator
                     </Link>
                     <Link href="/contact" className={styles.navLink} aria-current={isActive("/contact") ? "page" : undefined}>Contact</Link>
-                    <a href={site.phoneHref} className={`${styles.desktopPhone} ulink`}>
-                        <Icon name="phone" size={18} /> {site.phone}
-                    </a>
                     <Link href="/oferta" className="btn">Cere ofertă</Link>
                 </nav>
 

@@ -1,10 +1,10 @@
 import type { Metadata } from "next"
+import Image from "next/image"
 import Link from "next/link"
+import { Blobs } from "@/components/Blobs"
 import { Icon } from "@/components/Icon"
 import { site } from "@/lib/site"
-import { Blobs } from "@/components/Blobs"
-import Image from "next/image"
-import styles from "../content.module.css"
+import styles from "./contact.module.css"
 import form from "../form.module.css"
 
 export const metadata: Metadata = {
@@ -13,61 +13,61 @@ export const metadata: Metadata = {
     alternates: { canonical: "/contact" },
 }
 
-const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`B360, ${site.address.street}, ${site.address.locality}, ${site.address.region}`)}`
+const canale = [
+    { icon: "phone", label: "Telefon", value: site.phone, href: site.phoneHref, note: "cel mai rapid răspuns" },
+    { icon: "at", label: "Email", value: site.email, href: `mailto:${site.email}`, note: "pentru detalii și fișiere" },
+    { icon: "home", label: "Atelier", value: `${site.address.street}, ${site.address.locality}`, href: site.mapsUrl, note: "deschide în Google Maps" },
+] as const
 
+// One photo section: the ways to reach us on the left, the message form on the right
 export default function ContactPage() {
     return (
-        <>
-        <section className={`section ${styles.white}`}>
-            <div className={`narrow ${styles.block}`}>
-                <h1 className={styles.pageTitle}>Contact</h1>
-                <p className={styles.center}>Spune-ne ce vrei să colantezi și revenim cu o ofertă.</p>
-                <ul className={styles.contactList}>
-                    <li>
-                        <Icon name="phone" size={28} />
-                        <span><strong>Telefon</strong><a href={site.phoneHref}>{site.phone}</a></span>
-                    </li>
-                    <li>
-                        <Icon name="at" size={28} />
-                        <span><strong>Email</strong><a href={`mailto:${site.email}`}>{site.email}</a></span>
-                    </li>
-                    <li>
-                        <Icon name="home" size={28} />
-                        <span><strong>Atelier</strong><a href={mapsUrl} target="_blank" rel="noopener">{site.address.street}, {site.address.locality}, {site.address.region}</a></span>
-                    </li>
-                </ul>
-                <p className={styles.center}><Link href="/oferta" className="btn">Cere ofertă online</Link></p>
-            </div>
-        </section>
-
-        {/* Messages that are not a quote request: feedback, opinions, proposals */}
-        <section className={`section tinted ${form.page}`} aria-labelledby="mesaj">
-            <Image src="/img/paper.webp" alt="" fill sizes="100vw" className="tint-photo" />
+        <section className={`tinted ${form.page} ${styles.page}`}>
+            <Image src="/img/paper.webp" alt="" fill priority sizes="100vw" className="tint-photo" />
             <Blobs variant="photo" />
-            <div className="narrow">
-                <h2 id="mesaj" className={styles.subTitle}>Trimite-ne un mesaj</h2>
-                <p className={styles.center}>Feedback, păreri, propuneri de colaborare sau o întrebare. Citim tot ce primim.</p>
-            </div>
-            <form className={form.form}>
-                <div className={form.inner} style={{ marginTop: 24 }}>
-                    <label className={form.field}>Nume *<input name="nume" autoComplete="name" required /></label>
-                    <label className={form.field}>Email *<input name="email" type="email" autoComplete="email" required /></label>
-                    <label className={form.field}>
-                        Despre ce e vorba
-                        <select name="subiect" defaultValue="Feedback">
-                            <option>Feedback</option>
-                            <option>Sugestie</option>
-                            <option>Propunere de colaborare</option>
-                            <option>Întrebare</option>
-                        </select>
-                    </label>
-                    <label className={form.field}>Mesajul tău *<textarea name="mesaj" required minLength={10} /></label>
+            <div className={`container ${styles.grid}`}>
+                <div className={styles.side}>
+                    <p className={styles.eyebrow}>Contact</p>
+                    <h1 className={styles.title}>Hai să vorbim</h1>
+                    <p className={styles.lead}>Spune-ne ce vrei să colantezi și revenim cu o ofertă.</p>
+                    <ul className={styles.channels}>
+                        {canale.map(c => (
+                            <li key={c.label}>
+                                <a href={c.href} className={styles.channel} {...(c.icon === "home" ? { target: "_blank", rel: "noopener" } : {})}>
+                                    <span className={`${styles.channelIcon} peel`}><Icon name={c.icon} size={26} /></span>
+                                    <span className={styles.channelText}>
+                                        <small>{c.label}</small>
+                                        <strong>{c.value}</strong>
+                                        <em>{c.note}</em>
+                                    </span>
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                    <Link href="/oferta" className="btn">Cere ofertă online</Link>
                 </div>
-                <div className={form.submit}>
+
+                {/* Messages that are not a quote request: feedback, opinions, proposals */}
+                <form className={`${form.form} ${styles.card}`} aria-labelledby="mesaj">
+                    <h2 id="mesaj" className={styles.cardTitle}>Trimite-ne un mesaj</h2>
+                    <p className={styles.cardText}>Feedback, păreri, propuneri de colaborare sau o întrebare. Citim tot ce primim.</p>
+                    <div className={styles.fields}>
+                        <label className={form.field}>Nume *<input name="nume" autoComplete="name" required /></label>
+                        <label className={form.field}>Email *<input name="email" type="email" autoComplete="email" required /></label>
+                        <label className={`${form.field} ${styles.wide}`}>
+                            Despre ce e vorba
+                            <select name="subiect" defaultValue="Feedback">
+                                <option>Feedback</option>
+                                <option>Sugestie</option>
+                                <option>Propunere de colaborare</option>
+                                <option>Întrebare</option>
+                            </select>
+                        </label>
+                        <label className={`${form.field} ${styles.wide}`}>Mesajul tău *<textarea name="mesaj" required minLength={10} /></label>
+                    </div>
                     <button type="submit" className="btn">Trimite mesajul</button>
-                </div>
-            </form>
+                </form>
+            </div>
         </section>
-        </>
     )
 }

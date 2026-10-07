@@ -4,7 +4,9 @@ import { servicii } from "@/data/servicii"
 import { ContactCta } from "@/components/ContactCta"
 import { Icon } from "@/components/Icon"
 import { Blobs } from "@/components/Blobs"
-import { clienti } from "@/data/clienti"
+import { Carousel } from "@/components/Carousel"
+import { ScrollCue } from "@/components/ScrollCue"
+import { clienti, tilts } from "@/data/clienti"
 import styles from "./home.module.css"
 
 
@@ -12,18 +14,24 @@ import styles from "./home.module.css"
 const heroPhotos = ["/img/hero-graffiti.webp", "/img/colorful-convertible.webp", "/img/hero-dragon.webp", "/img/storefront-stickers.webp"]
 
 const lucrariRecente = [
-    { src: "/lucrari/autoturisme/castrol.webp", alt: "Colantare autoturism Castrol" },
-    { src: "/lucrari/autocare/flixbus.webp", alt: "Inscripționare autocar Flixbus" },
-    { src: "/lucrari/autoutilitare/ambulanta-1.webp", alt: "Inscripționare ambulanță" },
-    { src: "/lucrari/autoturisme/masina-de-curse-1.webp", alt: "Colantare mașină de curse" },
-    { src: "/lucrari/camioane/ravitex-1.webp", alt: "Inscripționare camion Ravitex" },
-    { src: "/lucrari/vitrine/godac.webp", alt: "Colantare vitrină Godac" },
+    { src: "/lucrari/autoturisme/castrol.webp", alt: "Colantare autoturism Castrol", cat: "autoturisme", label: "Autoturisme" },
+    { src: "/lucrari/autocare/flixbus.webp", alt: "Inscripționare autocar Flixbus", cat: "autocare", label: "Autocare" },
+    { src: "/lucrari/autoutilitare/ambulanta-1.webp", alt: "Inscripționare ambulanță", cat: "autoutilitare", label: "Autoutilitare" },
+    { src: "/lucrari/autoturisme/masina-de-curse-1.webp", alt: "Colantare mașină de curse", cat: "autoturisme", label: "Autoturisme" },
+    { src: "/lucrari/camioane/ravitex-1.webp", alt: "Inscripționare camion Ravitex", cat: "camioane", label: "Camioane" },
+    { src: "/lucrari/vitrine/godac.webp", alt: "Colantare vitrină Godac", cat: "vitrine", label: "Vitrine" },
+    { src: "/lucrari/camioane/holcim-1.webp", alt: "Inscripționare camion Holcim", cat: "camioane", label: "Camioane" },
+    { src: "/lucrari/vitrine/tiriac-auto-1.webp", alt: "Colantare vitrină Țiriac Auto", cat: "vitrine", label: "Vitrine" },
 ]
+
+// empty red stickers after the logos, waiting for the clients still to come
+const EMPTY_STICKERS = 4
+
 
 export default function Home() {
     return (
-        <>
-            <section className={styles.hero}>
+        <div className="snap-page">
+            <section className={`snap-slide ${styles.hero}`}>
                 <div className={styles.slides} aria-hidden="true">
                     {heroPhotos.map((src, i) => (
                         <Image key={src} src={src} alt="" fill priority={i === 0} sizes="100vw" className={styles.slide} />
@@ -41,69 +49,88 @@ export default function Home() {
                         vitrine și stickere, de la concept grafic la montaj.
                     </p>
                     <div className={styles.heroActions}>
-                        <Link href="/oferta" className="btn">Cere ofertă</Link>
-                        <Link href="/portofoliu" className="btn-ghost">
-                            Vezi lucrările
-                            <span className="arrow-sticker peel" aria-hidden="true"><Icon name="arrow" size={18} /></span>
-                        </Link>
+                        <Link href="/calculator" className="btn"><Icon name="calculator" size={20} /> Calculează costul</Link>
+                        <Link href="/portofoliu" className="btn">Vezi lucrările</Link>
                     </div>
                 </div>
             </section>
 
-            <section className={`section ${styles.services}`} aria-labelledby="servicii">
+            <section className={`section snap-slide ${styles.services}`} aria-labelledby="servicii">
                 <div className="container">
                     <h2 id="servicii" className="section-title">Servicii</h2>
                 </div>
-                <ul className={styles.serviceRail}>
+                {/* Figma: long pill buttons, each closed by a round photo sticker that alternates sides */}
+                <ul className={`container ${styles.servicePills}`}>
                     {servicii.map(s => (
                         <li key={s.slug}>
-                            <Link href={`/servicii/${s.slug}`} className={styles.serviceCard}>
-                                <Image src={s.image} alt="" width={600} height={600} sizes="(min-width: 1024px) 280px, 46vw" />
-                                <span>{s.short}</span>
+                            <Link href={`/servicii/${s.slug}`} className={styles.servicePill}>
+                                <span className={`${styles.serviceDot} peel`}>
+                                    <Image src={s.image} alt="" width={300} height={300} sizes="(min-width: 1024px) 150px, 96px" />
+                                </span>
+                                <span className={styles.serviceText}>
+                                    <strong>{s.short}</strong>
+                                    <small>{s.teaser}</small>
+                                </span>
+                                <span className="arrow-sticker peel" aria-hidden="true"><Icon name="arrow" size={20} /></span>
                             </Link>
                         </li>
                     ))}
                 </ul>
             </section>
 
-            <section className={`section tinted ${styles.clients}`} aria-labelledby="clienti">
+            {/* clients and recent work share one screen */}
+            <div className={`snap-slide ${styles.pair}`}>
+            <section className={`tinted ${styles.clients}`} aria-labelledby="clienti">
                 <Image src="/img/wrap-salon.webp" alt="" fill sizes="100vw" className="tint-photo" />
                 <Blobs variant="photo" />
                 <div className="container">
-                    <h2 id="clienti" className="section-title">Clienții noștri fideli</h2>
-                    <ul className={styles.logos}>
-                        {clienti.slice(0, 12).map(c => (
-                            <li key={c.slug}>
-                                {c.match ? (
-                                    <Link href={`/portofoliu?client=${c.slug}`} className={`${styles.logo} peel`} title={`Lucrări pentru ${c.name}`}>
-                                        <img src={`/clienti/${c.logo}.webp`} alt={c.name} width={300} height={139} loading="lazy" />
-                                    </Link>
-                                ) : (
-                                    <span className={`${styles.logo} peel`}>
-                                        <img src={`/clienti/${c.logo}.webp`} alt={c.name} width={300} height={139} loading="lazy" />
-                                    </span>
-                                )}
+                    <h2 id="clienti" className={styles.clientsTitle}>Clienții noștri fideli</h2>
+                    <Carousel label="Clienți" className={styles.clientStrip}>
+                        {clienti.map((c, i) => {
+                            const style = { "--tilt": `${tilts[i % tilts.length]}deg` } as React.CSSProperties
+                            const logo = <img src={`/clienti/${c.logo}.webp`} alt={c.name} width={300} height={139} loading="lazy" />
+                            return (
+                                <li key={c.slug}>
+                                    {c.match
+                                        ? <Link href={`/portofoliu?client=${c.slug}`} className="client-sticker peel" style={style} title={`Lucrări pentru ${c.name}`}>{logo}</Link>
+                                        : <span className="client-sticker peel" style={style} title={c.name}>{logo}</span>}
+                                </li>
+                            )
+                        })}
+                        {Array.from({ length: EMPTY_STICKERS }, (_, i) => (
+                            <li key={`gol-${i}`} aria-hidden="true">
+                                <span className="client-sticker peel" style={{ "--tilt": `${tilts[(clienti.length + i) % tilts.length]}deg` } as React.CSSProperties} />
                             </li>
                         ))}
-                    </ul>
+                    </Carousel>
                 </div>
             </section>
 
-            <section className={`section ${styles.recent}`} aria-labelledby="lucrari">
+            <section className={styles.recent} aria-labelledby="lucrari">
                 <div className="container">
-                    <h2 id="lucrari" className="section-title">Cele mai recente lucrări</h2>
-                    <ul className={styles.workGrid}>
+                    <h2 id="lucrari" className={`section-title ${styles.recentTitle}`}>Cele mai recente lucrări</h2>
+                    <Carousel label="Cele mai recente lucrări" className={styles.workStrip}>
                         {lucrariRecente.map(l => (
                             <li key={l.src}>
-                                <Image src={l.src} alt={l.alt} width={600} height={600} sizes="(min-width: 1024px) 380px, 31vw" />
+                                <Link href={`/portofoliu?categorie=${l.cat}`} className={styles.work}>
+                                    <Image src={l.src} alt={l.alt} width={640} height={480} sizes="(min-width: 768px) 360px, 78vw" />
+                                    <span className={styles.workCaption}>
+                                        <small>{l.label}</small>
+                                        <strong>{l.alt}</strong>
+                                    </span>
+                                </Link>
                             </li>
                         ))}
-                    </ul>
+                    </Carousel>
                     <p className={styles.more}><Link href="/portofoliu" className="btn">Vezi tot portofoliul</Link></p>
                 </div>
             </section>
+            </div>
 
-            <ContactCta />
-        </>
+            <div className="snap-slide snap-last">
+                <ContactCta />
+            </div>
+            <ScrollCue />
+        </div>
     )
 }

@@ -23,3 +23,6 @@ export const clienti: Client[] = [
 ]
 
 export const clientCuLucrari = (c: Client) => Boolean(c.match)
+
+// Each client sticker is turned by its own angle, so the peeled corners point every which way (Figma)
+export const tilts = [-20, 35, -65, 10, 80, -40, 55, -5, 115, -95, 25, -50, 70, -15, 140, -80, 5, 45, -30, 95]

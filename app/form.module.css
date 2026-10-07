@@ -44,7 +44,7 @@
     border: 0;
     border-radius: 8px;
     background: rgb(243 238 234 / 0.94);
-    box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.12), 0 1px 0 rgb(255 255 255 / 0.4);
+    box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.12), 0 1px 0 rgb(243 234 225 / 0.4);
     color: var(--ink-strong);
     font: 500 1.02rem/1.3 var(--font);
     text-shadow: none;
@@ -58,7 +58,7 @@
 /* red line drawn under the field on focus */
 .field input:focus, .field select:focus, .field textarea:focus {
     outline: none;
-    background-color: #fff;
+    background-color: #f3eae1;
     box-shadow: inset 0 -3px 0 var(--red), 0 6px 16px rgb(0 0 0 / 0.18);
 }
 /* Figma validation marks: blue tick when valid, red cross when not */
@@ -89,8 +89,8 @@
     cursor: pointer;
     transition: background 0.25s, translate 0.3s var(--ease-out), box-shadow 0.25s;
 }
-.choice:hover { translate: 4px 0; background: #fff; }
-.choice:has(input:checked) { background: #fff; box-shadow: inset 4px 0 0 var(--red); }
+.choice:hover { translate: 4px 0; background: #f3eae1; }
+.choice:has(input:checked) { background: #f3eae1; box-shadow: inset 4px 0 0 var(--red); }
 .choice input { width: 20px; height: 20px; accent-color: var(--red); }
 .otherRow { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; }
 
@@ -113,8 +113,8 @@
     cursor: pointer;
     transition: border-color 0.25s, background 0.25s, scale 0.3s var(--ease-out);
 }
-.zone:hover { background: #fff; }
-.zone:has(input:checked) { border-color: var(--red); background: #fff; scale: 1.02; }
+.zone:hover { background: #f3eae1; }
+.zone:has(input:checked) { border-color: var(--red); background: #f3eae1; scale: 1.02; }
 .zone input { accent-color: var(--red); width: 18px; height: 18px; }
 .estimate {
     padding: 22px;

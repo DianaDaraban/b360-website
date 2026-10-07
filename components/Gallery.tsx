@@ -3,6 +3,8 @@
 import Image from "next/image"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useRef, useState } from "react"
+import { Carousel } from "./Carousel"
+import { tilts } from "@/data/clienti"
 import styles from "./Gallery.module.css"
 
 type Item = { src: string; cat: string; alt: string; w: number; h: number; catLabel: string; clientName: string | null; clientSlug: string | null }
@@ -42,20 +44,22 @@ export function Gallery({ items, categories, clients }: { items: Item[]; categor
                 ))}
             </div>
 
-            {/* client stickers: the logo on a red disc whose corner peels; pressing one shows only that client's work */}
-            <div className={styles.clients} role="group" aria-label="Filtrează după client">
-                {clients.map(c => (
-                    <button
-                        key={c.slug}
-                        className={`${styles.clientSticker} peel`}
-                        aria-pressed={client === c.slug}
-                        onClick={() => go(client === c.slug ? "" : `client=${c.slug}`)}
-                        title={c.name}
-                    >
-                        <img src={`/clienti/${c.logo}.webp`} alt={c.name} width={300} height={139} />
-                    </button>
+            {/* client stickers in a carousel: pressing one shows only that client's work */}
+            <Carousel label="Filtrează după client" className={styles.clients}>
+                {clients.map((c, i) => (
+                    <li key={c.slug}>
+                        <button
+                            className={`client-sticker peel ${styles.clientSticker}`}
+                            style={{ "--tilt": `${tilts[i % tilts.length]}deg` } as React.CSSProperties}
+                            aria-pressed={client === c.slug}
+                            onClick={() => go(client === c.slug ? "" : `client=${c.slug}`)}
+                            title={c.name}
+                        >
+                            <img src={`/clienti/${c.logo}.webp`} alt={c.name} width={300} height={139} />
+                        </button>
+                    </li>
                 ))}
-            </div>
+            </Carousel>
 
             <p className={styles.count} aria-live="polite">
                 {filtered.length} {filtered.length === 1 ? "lucrare" : "lucrări"}
@@ -66,7 +70,7 @@ export function Gallery({ items, categories, clients }: { items: Item[]; categor
                 {visible.map((item, i) => (
                     <li key={item.src} style={{ "--n": i % PAGE } as React.CSSProperties}>
                         <button className={styles.frame} onClick={() => show(i)} aria-label={`Mărește: ${item.alt}`}>
-                            <Image src={item.src} alt={item.alt} width={480} height={480} sizes="(min-width: 1024px) 290px, (min-width: 640px) 31vw, 47vw" />
+                            <span className={styles.photo}><Image src={item.src} alt={item.alt} width={480} height={480} sizes="(min-width: 1024px) 290px, (min-width: 640px) 31vw, 47vw" /></span>
                             <span className={styles.caption} aria-hidden="true">
                                 <small>{item.catLabel}</small>
                                 {item.clientName && <strong>{item.clientName}</strong>}

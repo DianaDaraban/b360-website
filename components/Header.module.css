@@ -2,9 +2,9 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgb(255 255 255 / 0.94);
+    /* no backdrop-filter: next to the 3D sticker flaps Chrome makes blurred layers flicker away */
+    background: rgb(243 234 225 / 0.98);
     box-shadow: 0 2px 10px rgb(0 0 0 / 0.08);
-    backdrop-filter: blur(10px);
 }
 
 .inner {
@@ -218,7 +218,10 @@
     .header { --header-h: 84px; }
     .logo img { width: 140px; }
     .menuButton { display: none; }
-    .desktopNav { display: flex; align-items: center; gap: 24px; font-weight: 600; }
+    .desktopNav { display: flex; align-items: center; gap: clamp(22px, 2.6vw, 40px); font-weight: 600; }
+    .desktopNav > :global(.btn) { margin-left: 8px; }
+    .homeLink { animation: homeIn 0.45s var(--ease-out) both; }
+    @keyframes homeIn { from { opacity: 0; translate: -8px 0; } }
 
     /* underline grows from the left, right under the word */
     .navLink {
@@ -246,7 +249,12 @@
     .navLink:hover { color: var(--red-dark); }
     .navLink:hover::after, .navLink[aria-current="page"]::after { scale: 1 1; }
     .navLink[aria-current="page"] { color: var(--red); }
-    .desktopPhone { display: inline-flex; align-items: center; gap: 6px; color: var(--red); font-weight: 700; }
+    /* Calculator stands out: an outlined red pill whose icon "types" every few seconds */
+    .calcLink { padding: 7px 16px 7px 12px; border: 1.5px solid rgb(238 51 56 / 0.6); border-radius: 999px; color: var(--red); background: rgb(238 51 56 / 0.06); transition: color 0.25s, background 0.3s, border-color 0.3s; }
+    .calcLink::after { display: none; }
+    .calcLink:hover, .calcLink[aria-current="page"] { color: var(--cream); background: var(--red); border-color: var(--red); }
+    .calcLink svg { animation: calcTap 4s ease-in-out infinite; }
+    @keyframes calcTap { 0%, 80%, 100% { rotate: 0deg; scale: 1; } 84% { rotate: -12deg; scale: 1.15; } 88% { rotate: 10deg; } 92% { rotate: -6deg; } 96% { rotate: 0deg; scale: 1; } }
 
     /* Servicii dropdown */
     .dropdown { position: relative; }
@@ -270,6 +278,8 @@
     /* invisible bridge so the panel stays open while the pointer travels down to it */
     .dropPanel::before { content: ""; position: absolute; left: 0; right: 0; top: -22px; height: 22px; }
     .dropdown:hover .dropPanel, .dropdown:focus-within .dropPanel { opacity: 1; visibility: visible; translate: -50% 0; }
+    .dropdown[data-closed]:hover .dropPanel, .dropdown[data-closed] .dropPanel { opacity: 0; visibility: hidden; translate: -50% 10px; }
+    .dropdown[data-closed]:hover .chevron { rotate: 45deg; translate: 0 -2px; }
     .dropPanel ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
     .dropItem {
         display: grid;
@@ -285,8 +295,17 @@
     .dropItem strong { display: block; font-family: var(--font-head); color: var(--ink-strong); transition: color 0.2s; }
     .dropItem:hover strong { color: var(--red-dark); }
     .dropItem small { display: block; font-size: 0.84rem; font-weight: 400; line-height: 1.35; color: var(--muted); }
-    .dropPhoto { --c: 18px; width: 56px; height: 56px; border-radius: 50%; overflow: hidden; }
-    .dropItem:hover .dropPhoto { --c: 26px; --lift: 124deg; }
-    .dropPhoto img { width: 100%; height: 100%; object-fit: cover; }
+    /* round photo stickers: corner visibly lifted at rest, peeling far back on hover, with a real shadow */
+    .dropPhoto {
+        --c: 24px;
+        --lift: 138deg;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        box-shadow: 0 0 0 3px var(--cream), 0 4px 10px rgb(60 20 20 / 0.28), 0 1px 3px rgb(0 0 0 / 0.18);
+        transition: --c 0.45s cubic-bezier(0.3, 0.9, 0.4, 1), --lift 0.45s cubic-bezier(0.3, 0.9, 0.4, 1), translate 0.35s var(--ease-out), box-shadow 0.35s;
+    }
+    .dropItem:hover .dropPhoto { --c: 40px; --lift: 108deg; translate: 0 -2px; box-shadow: 0 0 0 3px var(--cream), 0 10px 18px rgb(60 20 20 / 0.32), 0 2px 4px rgb(0 0 0 / 0.2); }
+    .dropPhoto img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
     .dropAll { display: inline-block; margin: 10px 10px 2px; font-weight: 700; color: var(--red); }
 }

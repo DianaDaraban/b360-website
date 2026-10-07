@@ -24,7 +24,8 @@
 }
 .side span { max-width: 9ch; }
 .right { justify-content: flex-end; text-align: right; }
-.at { font-size: 2.6rem; font-weight: 700; line-height: 1; max-width: none !important; }
+/* Figma mail icon, with its drop shadow */
+.at { flex: none; max-width: none !important; filter: drop-shadow(0 4px 2px rgb(0 0 0 / 0.25)); }
 .home { gap: 6px; font-size: 1.2rem; font-family: var(--font-head); }
 .home svg { --red: var(--white); }
 
@@ -42,7 +43,7 @@
     display: grid;
     place-items: center;
     border-radius: 50%;
-    background: radial-gradient(circle at 40% 35%, #fff 55%, #ece8e6);
+    background: radial-gradient(circle at 40% 35%, #f3eae1 55%, #ece8e6);
     color: var(--ink);
 }
 .phone:hover > span { --c: 44px; }
