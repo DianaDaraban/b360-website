@@ -132,12 +132,15 @@ a:hover > .peel, a:focus-visible > .peel {
     clip-path: polygon(calc(100% - var(--c)) 0, 100% 0, 100% var(--c));
     transform-origin: calc(100% - var(--c)) 0;
     transform: rotate3d(1, 1, 0, var(--lift));
-    /* the back of the vinyl: bright at the tip, shaded where it bends at the fold */
+    /* the back of the vinyl: bright at the tip, a soft pink blush through the middle
+       (after sticker_button2, toned down), deeper rose where it bends at the fold */
     background: linear-gradient(225deg,
-        #fff 0,
-        #f7f1ef calc(var(--c) * 0.3),
-        #dccfcb calc(var(--c) * 0.62),
-        #b9a6a2 calc(var(--c) * 0.7071));
+        #fffdfd 0,
+        #fbecec calc(var(--c) * 0.22),
+        #f3d0cf calc(var(--c) * 0.42),
+        #eab3b1 calc(var(--c) * 0.58),
+        #d99896 calc(var(--c) * 0.67),
+        #c27f7d calc(var(--c) * 0.7071));
 }
 
 /* ---------- buttons: red pill sticker ---------- */
