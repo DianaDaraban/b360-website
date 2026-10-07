@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { servicii } from "@/data/servicii"
 import { ContactCta } from "@/components/ContactCta"
+import { Icon } from "@/components/Icon"
 import styles from "./home.module.css"
 
 const clienti = [
@@ -19,6 +20,9 @@ const clienti = [
     ["astra-giurgiu", "Astra Giurgiu"],
 ] as const
 
+// Hero slideshow, like the old WordPress header: photos crossfade under a moving colour wash
+const heroPhotos = ["/img/hero-graffiti.webp", "/img/colorful-convertible.webp", "/img/hero-dragon.webp", "/img/storefront-stickers.webp"]
+
 const lucrariRecente = [
     { src: "/lucrari/autoturisme/castrol.webp", alt: "Colantare autoturism Castrol" },
     { src: "/lucrari/autocare/flixbus.webp", alt: "Inscripționare autocar Flixbus" },
@@ -32,17 +36,24 @@ export default function Home() {
     return (
         <>
             <section className={styles.hero}>
-                <Image src="/img/hero-graffiti.webp" alt="" fill priority sizes="100vw" className={styles.heroPhoto} />
+                <div className={styles.slides} aria-hidden="true">
+                    {heroPhotos.map((src, i) => (
+                        <Image key={src} src={src} alt="" fill priority={i === 0} sizes="100vw" className={styles.slide} />
+                    ))}
+                </div>
                 <div className={`container ${styles.heroText}`}>
                     <p className={styles.kicker}>Din 2012 · Corbeanca, Ilfov</p>
-                    <h1>Colantări auto și inscripționări publicitare</h1>
-                    <p className="lead">
+                    <h1>
+                        <span className={styles.h1Main}>Colantări auto</span>
+                        <span className={styles.h1Sub}>și inscripționări <em>publicitare</em></span>
+                    </h1>
+                    <p className={styles.heroLead}>
                         La <strong>B360</strong> transformăm ideile în vizibilitate: colantări auto, branding de flote,
                         vitrine și stickere, de la concept grafic la montaj.
                     </p>
                     <div className={styles.heroActions}>
-                        <Link href="/oferta" className="btn peel">Cere ofertă</Link>
-                        <Link href="/portofoliu" className={styles.textLink}>Vezi lucrările</Link>
+                        <Link href="/oferta" className="btn">Cere ofertă</Link>
+                        <Link href="/portofoliu" className="btn-ghost">Vezi lucrările <Icon name="arrow" size={20} /></Link>
                     </div>
                 </div>
             </section>
@@ -87,7 +98,7 @@ export default function Home() {
                             </li>
                         ))}
                     </ul>
-                    <p className={styles.more}><Link href="/portofoliu" className="btn peel">Vezi tot portofoliul</Link></p>
+                    <p className={styles.more}><Link href="/portofoliu" className="btn">Vezi tot portofoliul</Link></p>
                 </div>
             </section>
 

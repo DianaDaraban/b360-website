@@ -1,17 +1,14 @@
 import type { Metadata, Viewport } from "next"
-import { Archivo } from "next/font/google"
+import { Funnel_Display, Funnel_Sans } from "next/font/google"
 import { Header } from "@/components/Header"
 import { BottomBar } from "@/components/BottomBar"
 import { Footer } from "@/components/Footer"
 import { site } from "@/lib/site"
 import "./globals.css"
 
-const archivo = Archivo({
-    subsets: ["latin", "latin-ext"],
-    axes: ["wdth"],
-    variable: "--font-archivo",
-    display: "swap",
-})
+// Funnel Display: the font of the B360 sticker buttons; Funnel Sans for running text
+const display = Funnel_Display({ subsets: ["latin", "latin-ext"], variable: "--font-display", display: "swap" })
+const sans = Funnel_Sans({ subsets: ["latin", "latin-ext"], variable: "--font-sans", display: "swap" })
 
 export const metadata: Metadata = {
     metadataBase: new URL(site.url),
@@ -54,7 +51,7 @@ const localBusiness = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <html lang="ro" className={archivo.variable}>
+        <html lang="ro" className={`${display.variable} ${sans.variable}`}>
             <body>
                 <Header />
                 <main>{children}</main>

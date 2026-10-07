@@ -7,7 +7,7 @@
 .group { padding: 28px var(--gutter); border: 0; margin: 0; display: grid; gap: 14px; }
 .group:nth-of-type(odd) { background: var(--white); }
 .group:nth-of-type(even) { background: #ece8e5; }
-.group legend { float: left; width: 100%; padding: 0; margin-bottom: 6px; font-size: 1.2rem; font-weight: 700; font-stretch: 115%; color: var(--ink-strong); }
+.group legend { float: left; width: 100%; padding: 0; margin-bottom: 6px; font-size: 1.2rem; font-weight: 700; font-family: var(--font-head); color: var(--ink-strong); }
 .inner { width: min(100%, 720px); margin-inline: auto; display: grid; gap: 14px; }
 
 .field { display: grid; gap: 6px; font-size: 0.92rem; font-weight: 600; color: var(--ink); }

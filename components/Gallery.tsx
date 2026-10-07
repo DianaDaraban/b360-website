@@ -52,7 +52,7 @@ export function Gallery({ items, categories }: { items: Item[]; categories: read
 
             {shown < filtered.length && (
                 <p className={styles.more}>
-                    <button className="btn peel" onClick={() => setShown(s => s + PAGE)}>
+                    <button className="btn" onClick={() => setShown(s => s + PAGE)}>
                         Mai multe lucrări ({filtered.length - shown})
                     </button>
                 </p>

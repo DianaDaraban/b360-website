@@ -62,7 +62,7 @@ export default function ServiciiPage() {
                                 ))}
                             </ul>
                             <p className={styles.center}>
-                                <Link href={`/portofoliu?categorie=${s.portfolio.category}`} className="btn peel">{s.portfolio.label}</Link>
+                                <Link href={`/portofoliu?categorie=${s.portfolio.category}`} className="btn">{s.portfolio.label}</Link>
                             </p>
                         </div>
                     </section>

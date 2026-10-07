@@ -32,7 +32,7 @@ export default function ContactPage() {
                         <span><strong>Atelier</strong><a href={mapsUrl} target="_blank" rel="noopener">{site.address.street}, {site.address.locality}, {site.address.region}</a></span>
                     </li>
                 </ul>
-                <p className={styles.center}><Link href="/oferta" className="btn peel">Cere ofertă online</Link></p>
+                <p className={styles.center}><Link href="/oferta" className="btn">Cere ofertă online</Link></p>
             </div>
         </section>
     )

@@ -64,7 +64,7 @@ export default function OfertaPage() {
                 </fieldset>
 
                 <div className={styles.submit}>
-                    <button type="submit" className="btn peel">Trimite cererea de ofertă</button>
+                    <button type="submit" className="btn">Trimite cererea de ofertă</button>
                     <p className={styles.note}>Câmpurile marcate cu * sunt obligatorii.</p>
                 </div>
             </form>

@@ -28,7 +28,7 @@ export function Header() {
                     <a href={site.phoneHref} className={styles.desktopPhone}>
                         <Icon name="phone" size={18} /> {site.phone}
                     </a>
-                    <Link href="/oferta" className="btn peel">Cere ofertă</Link>
+                    <Link href="/oferta" className="btn">Cere ofertă</Link>
                 </nav>
 
                 <button className={styles.menuButton} onClick={() => menu.current?.showModal()} aria-haspopup="dialog">

@@ -56,7 +56,7 @@ export default function CalculatorPage() {
                 </fieldset>
 
                 <div className={styles.submit}>
-                    <button type="submit" className="btn peel">Trimite cererea de ofertă</button>
+                    <button type="submit" className="btn">Trimite cererea de ofertă</button>
                     <p className={styles.note}>Estimarea e orientativă. Prețul final îl confirmăm după ce vedem vehiculul și grafica.</p>
                 </div>
             </form>

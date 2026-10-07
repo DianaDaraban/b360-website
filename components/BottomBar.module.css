@@ -25,7 +25,7 @@
 .side span { max-width: 9ch; }
 .right { justify-content: flex-end; text-align: right; }
 .at { font-size: 2.6rem; font-weight: 700; line-height: 1; max-width: none !important; }
-.home { gap: 6px; font-size: 1.2rem; font-stretch: 115%; }
+.home { gap: 6px; font-size: 1.2rem; font-family: var(--font-head); }
 .home svg { --red: var(--white); }
 
 /* The white sticker rises above the bar, corner peeling */
@@ -36,7 +36,7 @@
     filter: drop-shadow(0 4px 6px rgb(0 0 0 / 0.28));
 }
 .phone > span {
-    --peel: 30px;
+    --peel: 34px;
     width: 76px;
     height: 76px;
     display: grid;
@@ -44,9 +44,9 @@
     border-radius: 50%;
     background: radial-gradient(circle at 40% 35%, #fff 55%, #ece8e6);
     color: var(--ink);
-    transition: --peel 0.25s ease, scale 0.2s;
+    transition: --peel 0.5s cubic-bezier(0.22, 1, 0.36, 1), scale 0.2s;
 }
-.phone:hover > span { --peel: 38px; }
+.phone:hover > span { --peel: 44px; }
 .phone:active > span { scale: 0.96; }
 
 @media (min-width: 1024px) {
