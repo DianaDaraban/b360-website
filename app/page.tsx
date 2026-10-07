@@ -1,65 +1,97 @@
-import Image from "next/image";
+import Image from "next/image"
+import Link from "next/link"
+import { servicii } from "@/data/servicii"
+import { ContactCta } from "@/components/ContactCta"
+import styles from "./home.module.css"
+
+const clienti = [
+    ["mercedes-benz", "Mercedes-Benz"],
+    ["city-grill", "City Grill"],
+    ["tiriac-auto", "Țiriac Auto"],
+    ["carrefour", "Carrefour"],
+    ["continental", "Continental"],
+    ["ravitex", "Ravitex"],
+    ["polach", "Polach"],
+    ["amgen", "Amgen"],
+    ["draper-tools", "Draper Tools"],
+    ["jaguar", "Jaguar"],
+    ["basilica-travel", "Basilica Travel"],
+    ["astra-giurgiu", "Astra Giurgiu"],
+] as const
+
+const lucrariRecente = [
+    { src: "/lucrari/autoturisme/castrol.webp", alt: "Colantare autoturism Castrol" },
+    { src: "/lucrari/autocare/flixbus.webp", alt: "Inscripționare autocar Flixbus" },
+    { src: "/lucrari/autoutilitare/ambulanta-1.webp", alt: "Inscripționare ambulanță" },
+    { src: "/lucrari/autoturisme/masina-de-curse-1.webp", alt: "Colantare mașină de curse" },
+    { src: "/lucrari/camioane/ravitex-1.webp", alt: "Inscripționare camion Ravitex" },
+    { src: "/lucrari/vitrine/godac.webp", alt: "Colantare vitrină Godac" },
+]
 
 export default function Home() {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+    return (
+        <>
+            <section className={styles.hero}>
+                <Image src="/img/hero-graffiti.webp" alt="" fill priority sizes="100vw" className={styles.heroPhoto} />
+                <div className={`container ${styles.heroText}`}>
+                    <p className={styles.kicker}>Din 2012 · Corbeanca, Ilfov</p>
+                    <h1>Colantări auto și inscripționări publicitare</h1>
+                    <p className="lead">
+                        La <strong>B360</strong> transformăm ideile în vizibilitate: colantări auto, branding de flote,
+                        vitrine și stickere, de la concept grafic la montaj.
+                    </p>
+                    <div className={styles.heroActions}>
+                        <Link href="/oferta" className="btn peel">Cere ofertă</Link>
+                        <Link href="/portofoliu" className={styles.textLink}>Vezi lucrările</Link>
+                    </div>
+                </div>
+            </section>
+
+            <section className={`section ${styles.services}`} aria-labelledby="servicii">
+                <div className="container">
+                    <h2 id="servicii" className="section-title">Servicii</h2>
+                </div>
+                <ul className={styles.serviceRail}>
+                    {servicii.map(s => (
+                        <li key={s.slug}>
+                            <Link href={`/servicii#${s.slug}`} className={styles.serviceCard}>
+                                <Image src={s.image} alt="" width={600} height={600} sizes="(min-width: 1024px) 280px, 46vw" />
+                                <span>{s.short}</span>
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
+            </section>
+
+            <section className={`section tinted ${styles.clients}`} aria-labelledby="clienti">
+                <Image src="/img/wrap-salon.webp" alt="" fill sizes="100vw" className="tint-photo" />
+                <div className="container">
+                    <h2 id="clienti" className="section-title">Clienții noștri fideli</h2>
+                    <ul className={styles.logos}>
+                        {clienti.map(([file, name]) => (
+                            <li key={file} className="peel">
+                                <img src={`/clienti/${file}.webp`} alt={name} width={300} height={139} loading="lazy" />
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            </section>
+
+            <section className={`section ${styles.recent}`} aria-labelledby="lucrari">
+                <div className="container">
+                    <h2 id="lucrari" className="section-title">Cele mai recente lucrări</h2>
+                    <ul className={styles.workGrid}>
+                        {lucrariRecente.map(l => (
+                            <li key={l.src}>
+                                <Image src={l.src} alt={l.alt} width={600} height={600} sizes="(min-width: 1024px) 380px, 31vw" />
+                            </li>
+                        ))}
+                    </ul>
+                    <p className={styles.more}><Link href="/portofoliu" className="btn peel">Vezi tot portofoliul</Link></p>
+                </div>
+            </section>
+
+            <ContactCta />
+        </>
+    )
 }

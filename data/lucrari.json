@@ -1,0 +1,1563 @@
+[
+ {
+  "src": "/lucrari/autocare/academia-politie.webp",
+  "cat": "autocare",
+  "client": "Academia Politie",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/astra.webp",
+  "cat": "autocare",
+  "client": "Astra",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/basilica.webp",
+  "cat": "autocare",
+  "client": "Basilica",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/boss.webp",
+  "cat": "autocare",
+  "client": "Boss",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/autocare/brasov.webp",
+  "cat": "autocare",
+  "client": "Brasov",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/autocare/dunarea-braila.webp",
+  "cat": "autocare",
+  "client": "Dunarea Braila",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/fcu-craiova.webp",
+  "cat": "autocare",
+  "client": "FCU Craiova",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/flixbus.webp",
+  "cat": "autocare",
+  "client": "Flixbus",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/junii-sibiului.webp",
+  "cat": "autocare",
+  "client": "Junii Sibiului",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/mercedes-benz.webp",
+  "cat": "autocare",
+  "client": "Mercedes Benz",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/autocare/rapid.webp",
+  "cat": "autocare",
+  "client": "Rapid",
+  "w": 1600,
+  "h": 901
+ },
+ {
+  "src": "/lucrari/autocare/ravitex-elba.webp",
+  "cat": "autocare",
+  "client": "Ravitex Elba",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/ravitex.webp",
+  "cat": "autocare",
+  "client": "Ravitex",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/sinaia.webp",
+  "cat": "autocare",
+  "client": "Sinaia",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/stb.webp",
+  "cat": "autocare",
+  "client": "STB",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/targu-mures.webp",
+  "cat": "autocare",
+  "client": "Targu Mures",
+  "w": 1600,
+  "h": 720
+ },
+ {
+  "src": "/lucrari/autocare/transfero.webp",
+  "cat": "autocare",
+  "client": "Transfero",
+  "w": 1599,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/ab-tehnic.webp",
+  "cat": "autoturisme",
+  "client": "AB Tehnic",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/autoturisme/animaland.webp",
+  "cat": "autoturisme",
+  "client": "Animaland",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/b360.webp",
+  "cat": "autoturisme",
+  "client": "B",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/castrol-2.webp",
+  "cat": "autoturisme",
+  "client": "Castrol",
+  "w": 1600,
+  "h": 721
+ },
+ {
+  "src": "/lucrari/autoturisme/castrol-3.webp",
+  "cat": "autoturisme",
+  "client": "Castrol",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/castrol-4.webp",
+  "cat": "autoturisme",
+  "client": "Castrol",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/castrol-5.webp",
+  "cat": "autoturisme",
+  "client": "Castrol",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/castrol-6.webp",
+  "cat": "autoturisme",
+  "client": "Castrol",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/castrol-7.webp",
+  "cat": "autoturisme",
+  "client": "Castrol",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/castrol.webp",
+  "cat": "autoturisme",
+  "client": "Castrol",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/autoturisme/city-grill-1.webp",
+  "cat": "autoturisme",
+  "client": "City Grill",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/autoturisme/city-grill-2.webp",
+  "cat": "autoturisme",
+  "client": "City Grill",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/city-grill-3.webp",
+  "cat": "autoturisme",
+  "client": "City Grill",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/city-grill-4.webp",
+  "cat": "autoturisme",
+  "client": "City Grill",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/city-grill-5.webp",
+  "cat": "autoturisme",
+  "client": "City Grill",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/city-grill-6.webp",
+  "cat": "autoturisme",
+  "client": "City Grill",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/city-grill-7.webp",
+  "cat": "autoturisme",
+  "client": "City Grill",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/ddd-fix.webp",
+  "cat": "autoturisme",
+  "client": "DDD Fix",
+  "w": 1600,
+  "h": 901
+ },
+ {
+  "src": "/lucrari/autoturisme/decoriciu.webp",
+  "cat": "autoturisme",
+  "client": "Decoriciu",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/fli.webp",
+  "cat": "autoturisme",
+  "client": "FLI",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/iulius-meinl.webp",
+  "cat": "autoturisme",
+  "client": "Iulius Meinl",
+  "w": 1496,
+  "h": 1496
+ },
+ {
+  "src": "/lucrari/autoturisme/kamis.webp",
+  "cat": "autoturisme",
+  "client": "Kamis",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/martini.webp",
+  "cat": "autoturisme",
+  "client": "Martini",
+  "w": 1496,
+  "h": 1496
+ },
+ {
+  "src": "/lucrari/autoturisme/masina-de-curse-1.webp",
+  "cat": "autoturisme",
+  "client": "Masina de curse",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/autoturisme/masina-de-curse-2.webp",
+  "cat": "autoturisme",
+  "client": "Masina de curse",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/autoturisme/masina-de-curse-3.webp",
+  "cat": "autoturisme",
+  "client": "Masina de curse",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/autoturisme/masina-de-curse-4.webp",
+  "cat": "autoturisme",
+  "client": "Masina de curse",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/autoturisme/masina-de-curse-5.webp",
+  "cat": "autoturisme",
+  "client": "Masina de curse",
+  "w": 1600,
+  "h": 901
+ },
+ {
+  "src": "/lucrari/autoturisme/masina-de-curse-6.webp",
+  "cat": "autoturisme",
+  "client": "Masina de curse",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/masina-de-curse-7.webp",
+  "cat": "autoturisme",
+  "client": "Masina de curse",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/masina-de-teren.webp",
+  "cat": "autoturisme",
+  "client": "Masina de teren",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/autoturisme/mtt.webp",
+  "cat": "autoturisme",
+  "client": "MTT",
+  "w": 1000,
+  "h": 750
+ },
+ {
+  "src": "/lucrari/autoturisme/netafim-1.webp",
+  "cat": "autoturisme",
+  "client": "Netafim",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/autoturisme/netafim-2.webp",
+  "cat": "autoturisme",
+  "client": "Netafim",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/autoturisme/netafim-3.webp",
+  "cat": "autoturisme",
+  "client": "Netafim",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/autoturisme/optimal.webp",
+  "cat": "autoturisme",
+  "client": "Optimal",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/pattex.webp",
+  "cat": "autoturisme",
+  "client": "Pattex",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/pm-solutions.webp",
+  "cat": "autoturisme",
+  "client": "PM Solutions",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/prodomo.webp",
+  "cat": "autoturisme",
+  "client": "Prodomo",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/autoturisme/rom-service.webp",
+  "cat": "autoturisme",
+  "client": "Rom Service",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/scoala-moto-iancu.webp",
+  "cat": "autoturisme",
+  "client": "Scoala Moto Iancu",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/autoturisme/simplex.webp",
+  "cat": "autoturisme",
+  "client": "Simplex",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/stadler.webp",
+  "cat": "autoturisme",
+  "client": "Stadler",
+  "w": 1496,
+  "h": 1496
+ },
+ {
+  "src": "/lucrari/autoturisme/tb.webp",
+  "cat": "autoturisme",
+  "client": "TB",
+  "w": 1600,
+  "h": 901
+ },
+ {
+  "src": "/lucrari/autoturisme/terraqueen.webp",
+  "cat": "autoturisme",
+  "client": "Terraqueen",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/theotop.webp",
+  "cat": "autoturisme",
+  "client": "Theotop",
+  "w": 1600,
+  "h": 901
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-1.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-2.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-3.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1496,
+  "h": 1496
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-4.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1496,
+  "h": 1496
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-5.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1496,
+  "h": 1496
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-6.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1496,
+  "h": 1496
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-7.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1496,
+  "h": 1496
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-8.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 901
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-9.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-10.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 901
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-11.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 901
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-12.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-13.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-14.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-15.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-16.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-17.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-18.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-19.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-20.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-21.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-22.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-23.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-24.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-25.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-26.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-27.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-28.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1599,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-29.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 721
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-30.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 721
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-31.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 721
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-32.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/tiriac-auto-33.webp",
+  "cat": "autoturisme",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/top-smart-1.webp",
+  "cat": "autoturisme",
+  "client": "Top Smart",
+  "w": 1600,
+  "h": 901
+ },
+ {
+  "src": "/lucrari/autoturisme/top-smart-2.webp",
+  "cat": "autoturisme",
+  "client": "Top Smart",
+  "w": 1600,
+  "h": 901
+ },
+ {
+  "src": "/lucrari/autoturisme/top-smart-3.webp",
+  "cat": "autoturisme",
+  "client": "Top Smart",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/top-smart-4.webp",
+  "cat": "autoturisme",
+  "client": "Top Smart",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/academia-de-politie.webp",
+  "cat": "autoutilitare",
+  "client": "Academia de Politie",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/ambulanta-1.webp",
+  "cat": "autoutilitare",
+  "client": "Ambulanta",
+  "w": 1496,
+  "h": 1496
+ },
+ {
+  "src": "/lucrari/autoutilitare/ambulanta-2.webp",
+  "cat": "autoutilitare",
+  "client": "Ambulanta",
+  "w": 1496,
+  "h": 1496
+ },
+ {
+  "src": "/lucrari/autoutilitare/ambulanta-3.webp",
+  "cat": "autoutilitare",
+  "client": "Ambulanta",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/animaland-1.webp",
+  "cat": "autoutilitare",
+  "client": "Animaland",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/animaland-2.webp",
+  "cat": "autoutilitare",
+  "client": "Animaland",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/augsburg.webp",
+  "cat": "autoutilitare",
+  "client": "Augsburg",
+  "w": 899,
+  "h": 1599
+ },
+ {
+  "src": "/lucrari/autoutilitare/b360-2.webp",
+  "cat": "autoutilitare",
+  "client": "B360",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/cargus.webp",
+  "cat": "autoutilitare",
+  "client": "Cargus",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/autoutilitare/city-grill-1.webp",
+  "cat": "autoutilitare",
+  "client": "City Grill",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/autoutilitare/city-grill-2.webp",
+  "cat": "autoutilitare",
+  "client": "City Grill",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/autoutilitare/cleanup.webp",
+  "cat": "autoutilitare",
+  "client": "CleanUp",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/autoutilitare/compania-municipala.webp",
+  "cat": "autoutilitare",
+  "client": "Compania Municipala",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/crucea-rosie.webp",
+  "cat": "autoutilitare",
+  "client": "Crucea Rosie",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/autoutilitare/ddd-nord.webp",
+  "cat": "autoutilitare",
+  "client": "DDD Nord",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/dhl.webp",
+  "cat": "autoutilitare",
+  "client": "DHL",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/dls-catering-1.webp",
+  "cat": "autoutilitare",
+  "client": "DLS Catering",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/dls-catering-2.webp",
+  "cat": "autoutilitare",
+  "client": "DLS Catering",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/drapper-1.webp",
+  "cat": "autoutilitare",
+  "client": "Drapper",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/drapper-2.webp",
+  "cat": "autoutilitare",
+  "client": "Drapper",
+  "w": 1280,
+  "h": 960
+ },
+ {
+  "src": "/lucrari/autoutilitare/drapper-3.webp",
+  "cat": "autoutilitare",
+  "client": "Drapper",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/elegant-catering-1.webp",
+  "cat": "autoutilitare",
+  "client": "Elegant Catering",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/elegant-catering-2.webp",
+  "cat": "autoutilitare",
+  "client": "Elegant Catering",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/floor4you.webp",
+  "cat": "autoutilitare",
+  "client": "Floor4You",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/autoutilitare/frigotherm.webp",
+  "cat": "autoutilitare",
+  "client": "Frigotherm",
+  "w": 1600,
+  "h": 901
+ },
+ {
+  "src": "/lucrari/autoutilitare/holcim-1.webp",
+  "cat": "autoutilitare",
+  "client": "Holcim",
+  "w": 1599,
+  "h": 899
+ },
+ {
+  "src": "/lucrari/autoutilitare/holcim.webp",
+  "cat": "autoutilitare",
+  "client": "Holcim",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/ics-cooling.webp",
+  "cat": "autoutilitare",
+  "client": "ICS Cooling",
+  "w": 1600,
+  "h": 901
+ },
+ {
+  "src": "/lucrari/autoutilitare/ilfov-adopta-1.webp",
+  "cat": "autoutilitare",
+  "client": "Ilfov Adopta",
+  "w": 1600,
+  "h": 720
+ },
+ {
+  "src": "/lucrari/autoutilitare/ilfov-adopta-2.webp",
+  "cat": "autoutilitare",
+  "client": "Ilfov Adopta",
+  "w": 1600,
+  "h": 720
+ },
+ {
+  "src": "/lucrari/autoutilitare/iulius-meinl.webp",
+  "cat": "autoutilitare",
+  "client": "Iulius Meinl",
+  "w": 1125,
+  "h": 2000
+ },
+ {
+  "src": "/lucrari/autoutilitare/litera.webp",
+  "cat": "autoutilitare",
+  "client": "Litera",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/autoutilitare/mecano-valmar.webp",
+  "cat": "autoutilitare",
+  "client": "Mecano Valmar",
+  "w": 1600,
+  "h": 721
+ },
+ {
+  "src": "/lucrari/autoutilitare/natural-food-catering.webp",
+  "cat": "autoutilitare",
+  "client": "Natural Food Catering",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/autoutilitare/optimal-solutions-1.webp",
+  "cat": "autoutilitare",
+  "client": "Optimal Solutions",
+  "w": 1600,
+  "h": 721
+ },
+ {
+  "src": "/lucrari/autoutilitare/optimal-solutions-2.webp",
+  "cat": "autoutilitare",
+  "client": "Optimal Solutions",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/optimal-solutions-3.webp",
+  "cat": "autoutilitare",
+  "client": "Optimal Solutions",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/optimal-solutions-4.webp",
+  "cat": "autoutilitare",
+  "client": "Optimal Solutions",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/optimal-solutions-5.webp",
+  "cat": "autoutilitare",
+  "client": "Optimal Solutions",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/patzaikin.webp",
+  "cat": "autoutilitare",
+  "client": "Patzaikin",
+  "w": 1600,
+  "h": 1193
+ },
+ {
+  "src": "/lucrari/autoutilitare/petkus.webp",
+  "cat": "autoutilitare",
+  "client": "Petkus",
+  "w": 1496,
+  "h": 1496
+ },
+ {
+  "src": "/lucrari/autoutilitare/rapid.webp",
+  "cat": "autoutilitare",
+  "client": "Rapid",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/ravitex.webp",
+  "cat": "autoutilitare",
+  "client": "Ravitex",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/sameday.webp",
+  "cat": "autoutilitare",
+  "client": "Sameday",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/autoutilitare/setup-stories-1.webp",
+  "cat": "autoutilitare",
+  "client": "Setup Stories",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/autoutilitare/setup-stories-2.webp",
+  "cat": "autoutilitare",
+  "client": "Setup Stories",
+  "w": 1496,
+  "h": 1496
+ },
+ {
+  "src": "/lucrari/autoutilitare/sterileco.webp",
+  "cat": "autoutilitare",
+  "client": "Sterileco",
+  "w": 1600,
+  "h": 2133
+ },
+ {
+  "src": "/lucrari/autoutilitare/theotop.webp",
+  "cat": "autoutilitare",
+  "client": "Theotop",
+  "w": 1600,
+  "h": 901
+ },
+ {
+  "src": "/lucrari/autoutilitare/tiriac-auto-1.webp",
+  "cat": "autoutilitare",
+  "client": "Tiriac Auto",
+  "w": 1496,
+  "h": 1496
+ },
+ {
+  "src": "/lucrari/autoutilitare/tiriac-auto-2.webp",
+  "cat": "autoutilitare",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 720
+ },
+ {
+  "src": "/lucrari/autoutilitare/tiriac-auto-3.webp",
+  "cat": "autoutilitare",
+  "client": "Tiriac Auto",
+  "w": 1496,
+  "h": 1496
+ },
+ {
+  "src": "/lucrari/autoutilitare/tiriac-auto-4.webp",
+  "cat": "autoutilitare",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/tiriac-auto-5.webp",
+  "cat": "autoutilitare",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/tiriac-auto-6.webp",
+  "cat": "autoutilitare",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/tiriac-auto-7.webp",
+  "cat": "autoutilitare",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/tiriac-auto-8.webp",
+  "cat": "autoutilitare",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/tiriac-auto-9.webp",
+  "cat": "autoutilitare",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/tiriac-auto-10.webp",
+  "cat": "autoutilitare",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/tiriac-auto-11.webp",
+  "cat": "autoutilitare",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/tiriac-auto-12.webp",
+  "cat": "autoutilitare",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/tiriac-auto-13.webp",
+  "cat": "autoutilitare",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/total-vic.webp",
+  "cat": "autoutilitare",
+  "client": "Total Vic",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/transfero-1.webp",
+  "cat": "autoutilitare",
+  "client": "Transfero",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/autoutilitare/transfero-2.webp",
+  "cat": "autoutilitare",
+  "client": "Transfero",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/vulcanizare-mobila.webp",
+  "cat": "autoutilitare",
+  "client": "Vulcanizare Mobila",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/crucea-rosie.webp",
+  "cat": "camioane",
+  "client": "Crucea Rosie",
+  "w": 1496,
+  "h": 1496
+ },
+ {
+  "src": "/lucrari/camioane/drapper.webp",
+  "cat": "camioane",
+  "client": "Drapper",
+  "w": 1599,
+  "h": 899
+ },
+ {
+  "src": "/lucrari/camioane/holcim-1.webp",
+  "cat": "camioane",
+  "client": "Holcim",
+  "w": 1600,
+  "h": 900
+ },
+ {
+  "src": "/lucrari/camioane/holcim-2.webp",
+  "cat": "camioane",
+  "client": "Holcim",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/ibb.webp",
+  "cat": "camioane",
+  "client": "IBB",
+  "w": 1600,
+  "h": 721
+ },
+ {
+  "src": "/lucrari/camioane/iveco.webp",
+  "cat": "camioane",
+  "client": "Iveco",
+  "w": 1600,
+  "h": 720
+ },
+ {
+  "src": "/lucrari/camioane/lebada-luxury-1.webp",
+  "cat": "camioane",
+  "client": "Lebada Luxury",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/lebada-luxury-2.webp",
+  "cat": "camioane",
+  "client": "Lebada Luxury",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/polach-1.webp",
+  "cat": "camioane",
+  "client": "Polach",
+  "w": 1600,
+  "h": 899
+ },
+ {
+  "src": "/lucrari/camioane/polach-2.webp",
+  "cat": "camioane",
+  "client": "Polach",
+  "w": 1600,
+  "h": 899
+ },
+ {
+  "src": "/lucrari/camioane/polach-3.webp",
+  "cat": "camioane",
+  "client": "Polach",
+  "w": 1600,
+  "h": 899
+ },
+ {
+  "src": "/lucrari/camioane/polach-4.webp",
+  "cat": "camioane",
+  "client": "Polach",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/porr.webp",
+  "cat": "camioane",
+  "client": "Porr",
+  "w": 1600,
+  "h": 721
+ },
+ {
+  "src": "/lucrari/camioane/pragosa.webp",
+  "cat": "camioane",
+  "client": "Pragosa",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/ravitex-1.webp",
+  "cat": "camioane",
+  "client": "Ravitex",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/ravitex-2.webp",
+  "cat": "camioane",
+  "client": "Ravitex",
+  "w": 1280,
+  "h": 851
+ },
+ {
+  "src": "/lucrari/camioane/ravitex-3.webp",
+  "cat": "camioane",
+  "client": "Ravitex",
+  "w": 1280,
+  "h": 851
+ },
+ {
+  "src": "/lucrari/camioane/ravitex-4.webp",
+  "cat": "camioane",
+  "client": "Ravitex",
+  "w": 1280,
+  "h": 851
+ },
+ {
+  "src": "/lucrari/camioane/ravitex-5.webp",
+  "cat": "camioane",
+  "client": "Ravitex",
+  "w": 1600,
+  "h": 899
+ },
+ {
+  "src": "/lucrari/camioane/ravitex-6.webp",
+  "cat": "camioane",
+  "client": "Ravitex",
+  "w": 1600,
+  "h": 899
+ },
+ {
+  "src": "/lucrari/camioane/ravitex-7.webp",
+  "cat": "camioane",
+  "client": "Ravitex",
+  "w": 1600,
+  "h": 899
+ },
+ {
+  "src": "/lucrari/camioane/ravitex-8.webp",
+  "cat": "camioane",
+  "client": "Ravitex",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/rkm-logistics-1.webp",
+  "cat": "camioane",
+  "client": "RKM Logistics",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/rkm-logistics-2.webp",
+  "cat": "camioane",
+  "client": "RKM Logistics",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/samaritenii.webp",
+  "cat": "camioane",
+  "client": "Samaritenii",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/signalistica/butoaie.webp",
+  "cat": "signalistica",
+  "client": "butoaie",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/signalistica/cazi.webp",
+  "cat": "signalistica",
+  "client": "cazi",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/signalistica/city-grill-1.webp",
+  "cat": "signalistica",
+  "client": "City Grill",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/signalistica/city-grill-2.webp",
+  "cat": "signalistica",
+  "client": "City Grill",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/signalistica/italia-star-1.webp",
+  "cat": "signalistica",
+  "client": "Italia Star",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/signalistica/italia-star-2.webp",
+  "cat": "signalistica",
+  "client": "Italia Star",
+  "w": 1600,
+  "h": 2133
+ },
+ {
+  "src": "/lucrari/signalistica/ravitex-1.webp",
+  "cat": "signalistica",
+  "client": "Ravitex",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/signalistica/ravitex-2.webp",
+  "cat": "signalistica",
+  "client": "Ravitex",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/signalistica/rca-asigurat.webp",
+  "cat": "signalistica",
+  "client": "RCA Asigurat",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/signalistica/tiriac-auro.webp",
+  "cat": "signalistica",
+  "client": "Tiriac Auro",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/speciale/1.webp",
+  "cat": "speciale",
+  "client": null,
+  "w": 1600,
+  "h": 721
+ },
+ {
+  "src": "/lucrari/speciale/2.webp",
+  "cat": "speciale",
+  "client": null,
+  "w": 1530,
+  "h": 2040
+ },
+ {
+  "src": "/lucrari/speciale/3.webp",
+  "cat": "speciale",
+  "client": null,
+  "w": 1530,
+  "h": 2040
+ },
+ {
+  "src": "/lucrari/speciale/4.webp",
+  "cat": "speciale",
+  "client": null,
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/speciale/allegro.webp",
+  "cat": "speciale",
+  "client": "Allegro",
+  "w": 511,
+  "h": 768
+ },
+ {
+  "src": "/lucrari/speciale/drapper-1.webp",
+  "cat": "speciale",
+  "client": "Drapper",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/speciale/drapper-2.webp",
+  "cat": "speciale",
+  "client": "Drapper",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/speciale/drapper.webp",
+  "cat": "speciale",
+  "client": "Drapper",
+  "w": 1600,
+  "h": 313
+ },
+ {
+  "src": "/lucrari/stickere/1.webp",
+  "cat": "stickere",
+  "client": null,
+  "w": 1600,
+  "h": 2847
+ },
+ {
+  "src": "/lucrari/stickere/2.webp",
+  "cat": "stickere",
+  "client": null,
+  "w": 1600,
+  "h": 899
+ },
+ {
+  "src": "/lucrari/stickere/3.webp",
+  "cat": "stickere",
+  "client": null,
+  "w": 1600,
+  "h": 2133
+ },
+ {
+  "src": "/lucrari/stickere/4.webp",
+  "cat": "stickere",
+  "client": null,
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/vitrine/amgen.webp",
+  "cat": "vitrine",
+  "client": "Amgen",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/vitrine/bacania-cu-dichis.webp",
+  "cat": "vitrine",
+  "client": "Bacania cu Dichis",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/vitrine/godac.webp",
+  "cat": "vitrine",
+  "client": "Godac",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/vitrine/niculeasa.webp",
+  "cat": "vitrine",
+  "client": "Niculeasa",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/vitrine/tiriac-auto-1.webp",
+  "cat": "vitrine",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1600
+ },
+ {
+  "src": "/lucrari/vitrine/tiriac-auto-2.webp",
+  "cat": "vitrine",
+  "client": "Tiriac Auto",
+  "w": 923,
+  "h": 2048
+ },
+ {
+  "src": "/lucrari/vitrine/tiriac-auto-3.webp",
+  "cat": "vitrine",
+  "client": "Tiriac Auto",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/vitrine/tiriac-auto-4.webp",
+  "cat": "vitrine",
+  "client": "Tiriac Auto",
+  "w": 1500,
+  "h": 2000
+ },
+ {
+  "src": "/lucrari/vitrine/transfero.webp",
+  "cat": "vitrine",
+  "client": "Transfero",
+  "w": 1024,
+  "h": 575
+ },
+ {
+  "src": "/lucrari/vitrine/wipro-1.webp",
+  "cat": "vitrine",
+  "client": "Wipro",
+  "w": 1600,
+  "h": 1193
+ },
+ {
+  "src": "/lucrari/vitrine/wipro-2.webp",
+  "cat": "vitrine",
+  "client": "Wipro",
+  "w": 1600,
+  "h": 2147
+ }
+]

@@ -1,0 +1,51 @@
+/* Form pages from the Figma (Cerere ofertă, Calculator): photo-tinted header, light form panels */
+.intro { padding-block: 40px 32px; }
+.intro h1 { font-size: clamp(1.35rem, 5.4vw, 2rem); text-align: center; margin-bottom: 12px; }
+.intro p { text-align: center; }
+
+.form { display: grid; gap: 0; }
+.group { padding: 28px var(--gutter); border: 0; margin: 0; display: grid; gap: 14px; }
+.group:nth-of-type(odd) { background: var(--white); }
+.group:nth-of-type(even) { background: #ece8e5; }
+.group legend { float: left; width: 100%; padding: 0; margin-bottom: 6px; font-size: 1.2rem; font-weight: 700; font-stretch: 115%; color: var(--ink-strong); }
+.inner { width: min(100%, 720px); margin-inline: auto; display: grid; gap: 14px; }
+
+.field { display: grid; gap: 6px; font-size: 0.92rem; font-weight: 600; color: var(--ink); }
+.field input, .field select, .field textarea {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 12px;
+    border: 0;
+    border-bottom: 2px solid #c9c4c1;
+    border-radius: 6px 6px 0 0;
+    background: #f3f1ef;
+    color: var(--ink-strong);
+    font: 400 1rem/1.3 var(--font);
+}
+.field textarea { min-height: 110px; resize: vertical; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--red); background: var(--white); }
+.field input:user-invalid { border-color: var(--red); }
+.phoneRow { display: grid; grid-template-columns: 64px 1fr; gap: 8px; }
+.phoneRow span { display: grid; place-items: center; min-height: 46px; border-radius: 6px 6px 0 0; background: #e6e2df; font-weight: 600; }
+
+.question { font-size: 0.92rem; font-weight: 600; margin-top: 4px; }
+.choices { display: grid; gap: 8px; }
+.choice { display: flex; align-items: center; gap: 10px; min-height: 36px; font-size: 1rem; cursor: pointer; }
+.choice input { width: 20px; height: 20px; accent-color: var(--red); }
+.otherRow { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; }
+
+.submit { padding: 32px var(--gutter) 48px; text-align: center; background: var(--paper); }
+.note { margin-top: 14px; font-size: 0.88rem; color: var(--muted); }
+
+/* Calculator: selectable zones */
+.zones { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.zone { display: flex; align-items: center; gap: 8px; min-height: 48px; padding: 8px 12px; border: 2px solid #d7d2cf; border-radius: 10px; background: var(--white); cursor: pointer; font-weight: 600; }
+.zone:has(input:checked) { border-color: var(--red); background: #fdeeee; }
+.zone input { accent-color: var(--red); width: 18px; height: 18px; }
+.estimate { padding: 20px; border-radius: var(--radius); background: var(--ink-strong); color: var(--white); text-align: center; }
+.estimate strong { display: block; font-size: 1.6rem; color: var(--white); }
+
+@media (min-width: 768px) {
+    .zones { grid-template-columns: repeat(3, 1fr); }
+    .twoCols { grid-template-columns: 1fr 1fr; }
+}

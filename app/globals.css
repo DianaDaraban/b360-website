@@ -1,26 +1,131 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+    --red: #ed1c24;
+    --red-dark: #c4121a;
+    --ink: #414042;          /* logo grey */
+    --ink-strong: #2a292c;
+    --muted: #6d6b70;
+    --paper: #f6f4f2;        /* warm off-white from the Figma sections */
+    --white: #fff;
+    --smoke: #8d8a8e;        /* grey photo-overlay sections */
+
+    --font: var(--font-archivo), system-ui, sans-serif;
+
+    --header-h: 64px;
+    --bar-h: 76px;
+    --gutter: 20px;
+    --max: 1180px;
+    --radius: 14px;
+    --shadow: 0 6px 18px rgb(0 0 0 / 0.16);
+
+    color-scheme: light;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+*, *::before, *::after { box-sizing: border-box; }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--header-h) + 12px);
+    background: var(--paper);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    font-family: var(--font);
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink);
+    background: var(--paper);
+    -webkit-font-smoothing: antialiased;
 }
+
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; }
+h1, h2, h3 {
+    margin: 0;
+    font-stretch: 115%;
+    line-height: 1.12;
+    color: var(--ink-strong);
+    text-wrap: balance;
+}
+p { margin: 0; }
+strong { font-weight: 650; color: var(--ink-strong); }
+
+html:has(dialog[open]) { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+
+/* ---------- layout ---------- */
+.container { width: min(100% - 2 * var(--gutter), var(--max)); margin-inline: auto; }
+.narrow { width: min(100% - 2 * var(--gutter), 760px); margin-inline: auto; }
+.section { padding-block: 56px; }
+.section-title { font-size: clamp(1.6rem, 6vw, 2.5rem); margin-bottom: 24px; }
+.red { color: var(--red); }
+.lead { font-size: 1.08rem; }
+.prose { display: grid; gap: 16px; }
+.sr-only { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* Photo sections from the Figma: a photo washed with a tint so text stays readable */
+.tinted {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    color: var(--white);
+    background: var(--smoke);
+}
+.tinted > .tint-photo { position: absolute; inset: 0; z-index: -2; object-fit: cover; width: 100%; height: 100%; }
+.tinted::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--tint, rgb(70 62 64 / 0.74)); }
+.tinted h1, .tinted h2, .tinted h3, .tinted strong { color: var(--white); }
+
+/* ---------- peeled sticker corner (the B360 signature detail) ----------
+   The element's top-right corner is cut diagonally with a mask and the ::after flap folds
+   back over the cut, like a sticker starting to lift. --peel is the corner square size. */
+.peel {
+    --peel: 26px;
+    position: relative;
+    -webkit-mask: linear-gradient(225deg, transparent calc(var(--peel) * 0.7071), #000 calc(var(--peel) * 0.7071));
+    mask: linear-gradient(225deg, transparent calc(var(--peel) * 0.7071), #000 calc(var(--peel) * 0.7071));
+    transition: --peel 0.25s ease;
+}
+.peel::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: var(--peel);
+    height: var(--peel);
+    clip-path: polygon(0 0, 100% 100%, 0 100%);
+    background: linear-gradient(45deg, #fff 0%, #f8ece8 45%, #e7b3a7 100%);
+    pointer-events: none;
+}
+@property --peel { syntax: "<length>"; inherits: true; initial-value: 26px; }
+
+/* ---------- buttons ---------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 50px;
+    padding: 12px 30px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--red);
+    color: var(--white);
+    font: 600 1rem/1.2 var(--font);
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s, --peel 0.25s ease;
+}
+.btn:hover { background: var(--red-dark); --peel: 34px; }
+.btn:active { translate: 0 1px; }
+
+/* ---------- red brush-tick list ---------- */
+.checklist { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }
+.checklist li { display: grid; grid-template-columns: 30px 1fr; gap: 8px; align-items: start; }
+.checklist svg { margin-top: -6px; }
+.checklist strong { display: block; font-size: 1.05rem; }

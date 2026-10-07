@@ -1,0 +1,92 @@
+/* ---------- hero ---------- */
+.hero {
+    position: relative;
+    isolation: isolate;
+    min-height: min(calc(100svh - var(--header-h) - var(--bar-h)), 760px);
+    display: flex;
+    align-items: flex-end;
+    padding-block: 48px 64px;
+    color: var(--white);
+    overflow: hidden;
+}
+.heroPhoto { z-index: -2; object-fit: cover; object-position: 60% center; }
+.hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(180deg, rgb(20 18 20 / 0.1) 20%, rgb(20 18 20 / 0.82) 78%);
+}
+.heroText { display: grid; gap: 16px; max-width: 680px; margin-left: max(var(--gutter), (100% - var(--max)) / 2); }
+.hero h1 { color: var(--white); font-size: clamp(2.1rem, 9vw, 3.8rem); letter-spacing: -0.02em; }
+.hero strong { color: var(--white); }
+.kicker { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgb(255 255 255 / 0.85); }
+.heroActions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; margin-top: 8px; }
+.textLink { font-weight: 600; text-underline-offset: 5px; }
+
+/* ---------- services: the Figma's soft pastel band with square photo cards ---------- */
+.services {
+    background:
+        radial-gradient(120% 80% at 0% 0%, #e2ece0 0%, transparent 60%),
+        radial-gradient(120% 90% at 100% 100%, #f1dccf 0%, transparent 60%),
+        #efe9e2;
+}
+.serviceRail {
+    list-style: none;
+    margin: 0;
+    padding: 4px var(--gutter) 16px;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: min(46vw, 280px);
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+}
+.serviceRail::-webkit-scrollbar { display: none; }
+.serviceRail li { scroll-snap-align: start; }
+.serviceCard { display: grid; gap: 10px; text-decoration: none; font-weight: 650; color: var(--ink-strong); }
+.serviceCard img { width: 100%; aspect-ratio: 1; object-fit: cover; box-shadow: var(--shadow); transition: scale 0.35s cubic-bezier(.34, 1.56, .64, 1); }
+.serviceCard:hover img { scale: 1.04; }
+
+/* ---------- clients: red stickers with peeling corners ---------- */
+.clients { --tint: rgb(150 128 132 / 0.78); }
+.logos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+.logos li {
+    --peel: 26px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--red);
+    transition: --peel 0.3s ease;
+}
+.logos li:hover { --peel: 34px; }
+/* Logos are full colour; the Figma shows them white on the red sticker */
+.logos img { width: 78%; height: auto; filter: brightness(0) invert(1); }
+
+/* ---------- recent work ---------- */
+.recent { background: #9a979b; }
+.recent h2 { color: var(--white); }
+.workGrid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.workGrid img { width: 100%; aspect-ratio: 1; object-fit: cover; box-shadow: var(--shadow); }
+.more { margin-top: 28px; text-align: center; }
+
+@media (min-width: 768px) {
+    .logos { grid-template-columns: repeat(6, 1fr); gap: 20px; }
+    .logos li { --peel: 34px; }
+    .logos li:hover { --peel: 44px; }
+    .workGrid { gap: 18px; }
+}
+@media (min-width: 1024px) {
+    .hero { min-height: 640px; align-items: center; }
+    .serviceRail { width: min(100% - 2 * var(--gutter), var(--max)); margin-inline: auto; padding-inline: 0; grid-auto-flow: row; grid-template-columns: repeat(4, 1fr); overflow: visible; }
+}

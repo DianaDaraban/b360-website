@@ -1,0 +1,10 @@
+.cta {
+    padding-block: 64px 72px;
+    background: var(--paper);
+    text-align: center;
+}
+.title { font-size: clamp(1.6rem, 6.5vw, 2.4rem); color: var(--red); }
+.text { margin-top: 10px; font-size: clamp(1.15rem, 4.6vw, 1.45rem); font-weight: 500; line-height: 1.35; color: var(--ink-strong); text-wrap: balance; }
+.actions { margin-top: 28px; display: grid; justify-items: center; gap: 14px; }
+.link { font-weight: 600; text-underline-offset: 4px; }
+.link:hover { color: var(--red); }
