@@ -149,8 +149,8 @@ a:hover > .peel, a:focus-visible > .peel {
     align-items: center;
     justify-content: center;
     gap: 10px;
-    min-height: 52px;
-    padding: 12px 52px 12px 28px;
+    height: 50px;
+    padding: 0 52px 0 28px;
     border: 0;
     border-radius: 999px;
     background: linear-gradient(40deg, #e30613 55%, #c4121a);
@@ -170,8 +170,8 @@ a:hover > .peel, a:focus-visible > .peel {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    min-height: 52px;
-    padding: 12px 26px;
+    height: 50px;
+    padding: 0 26px;
     border: 2px solid currentColor;
     border-radius: 999px;
     color: inherit;
@@ -180,8 +180,24 @@ a:hover > .peel, a:focus-visible > .peel {
     transition: background 0.25s, color 0.25s, border-color 0.25s;
 }
 .btn-ghost:hover, .btn-ghost:focus-visible { background: var(--white); border-color: var(--white); color: var(--ink-strong); }
-.btn-ghost svg { transition: translate 0.25s; }
-.btn-ghost:hover svg { translate: 4px 0; }
+.btn-ghost:has(.arrow-sticker) { gap: 30px; padding: 0 3px 0 30px; }
+
+/* The arrow of the outlined button sits on its own small red sticker, which peels like the
+   big buttons when the link is hovered, while the arrow slides forward */
+.arrow-sticker {
+    --c: 13px;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: linear-gradient(40deg, #e30613 55%, #c4121a);
+    color: var(--white);
+}
+/* kept small so the turned-back flap never covers the arrow */
+a:hover > .arrow-sticker, a:focus-visible > .arrow-sticker { --c: 18px; }
+.arrow-sticker svg { transition: translate 0.45s cubic-bezier(0.34, 1.45, 0.5, 1); }
+a:hover > .arrow-sticker svg, a:focus-visible > .arrow-sticker svg { translate: 2px 0; }
 
 /* ---------- red brush-tick list ---------- */
 .checklist { list-style: none; margin: 0; padding: 0; display: grid; gap: 18px; }

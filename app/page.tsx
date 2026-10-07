@@ -53,7 +53,10 @@ export default function Home() {
                     </p>
                     <div className={styles.heroActions}>
                         <Link href="/oferta" className="btn">Cere ofertă</Link>
-                        <Link href="/portofoliu" className="btn-ghost">Vezi lucrările <Icon name="arrow" size={20} /></Link>
+                        <Link href="/portofoliu" className="btn-ghost">
+                            Vezi lucrările
+                            <span className="arrow-sticker peel" aria-hidden="true"><Icon name="arrow" size={18} /></span>
+                        </Link>
                     </div>
                 </div>
             </section>
