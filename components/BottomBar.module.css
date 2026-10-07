@@ -36,7 +36,7 @@
     filter: drop-shadow(0 4px 6px rgb(0 0 0 / 0.28));
 }
 .phone > span {
-    --peel: 34px;
+    --c: 30px;
     width: 76px;
     height: 76px;
     display: grid;
@@ -44,9 +44,8 @@
     border-radius: 50%;
     background: radial-gradient(circle at 40% 35%, #fff 55%, #ece8e6);
     color: var(--ink);
-    transition: --peel 0.5s cubic-bezier(0.22, 1, 0.36, 1), scale 0.2s;
 }
-.phone:hover > span { --peel: 44px; }
+.phone:hover > span { --c: 44px; }
 .phone:active > span { scale: 0.96; }
 
 @media (min-width: 1024px) {

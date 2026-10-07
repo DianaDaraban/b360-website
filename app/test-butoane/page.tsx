@@ -6,9 +6,9 @@ import styles from "./test.module.css"
 export const metadata: Metadata = { title: "Test butoane", robots: { index: false, follow: false } }
 
 const variante = [
-    { cls: "", name: "1 · Se ridică", note: "colțul crește și se ridică în 3D (sticker_button1)" },
-    { cls: styles.peelOff, name: "2 · Se dezlipește", note: "colțul se desprinde și dispare (sticker_button)" },
-    { cls: styles.still, name: "3 · Fix", note: "colțul stă pe loc, doar culoarea se schimbă (sticker_button2)" },
+    { cls: "", name: "1 · Se ridică", note: "la hover colțul se dezlipește puțin și se ridică" },
+    { cls: styles.peelOff, name: "2 · Se dezlipește mult", note: "la hover colțul se desprinde mult, aproape vertical" },
+    { cls: styles.breeze, name: "3 · Adiere", note: "și fără hover colțul se mișcă ușor, ca atins de aer" },
 ]
 
 export default function TestButoane() {
@@ -26,7 +26,7 @@ export default function TestButoane() {
                         <button className="sticker_button2">Vezi portofoliu de lucrari</button>
                     </div>
 
-                    <h2 className={styles.rowTitle}>Refăcute: aceeași geometrie la orice lățime</h2>
+                    <h2 className={styles.rowTitle}>Variantele noi: colțul real al stickerului, întors pe linia de îndoire</h2>
                     {variante.map(v => (
                         <div key={v.name} className={styles.variant}>
                             <p><strong>{v.name}</strong> – {v.note}</p>

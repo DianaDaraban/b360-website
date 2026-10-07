@@ -19,7 +19,7 @@ export function BottomBar() {
                 <span>Calcul estimativ colantare</span>
             </Link>
 
-            {/* The mask on .peel clips anything outside the element, so the shadow sits on the link around it */}
+            {/* The drop shadow sits on the link so it follows the round sticker */}
             <a href={site.phoneHref} className={styles.phone} aria-label={`Sună-ne: ${site.phone}`}>
                 <span className="peel">
                     <Icon name="phone" size={34} />
