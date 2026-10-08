@@ -18,7 +18,7 @@ export function Reveal() {
         if (matchMedia("(prefers-reduced-motion: reduce)").matches) return
         const elements = [...document.querySelectorAll<HTMLElement>(SELECTOR)]
             // skip nested matches (a p inside an li that already animates) and the dialog/lightbox
-            .filter(el => !el.parentElement?.closest("[data-reveal], dialog") && !el.closest("dialog"))
+            .filter(el => !el.parentElement?.closest("[data-reveal], dialog") && !el.closest("dialog, [data-no-reveal]"))
 
         const observer = new IntersectionObserver(entries => {
             for (const entry of entries) {

@@ -158,7 +158,7 @@ export default async function ServiciuPage({ params }: Props) {
                 </div>
             </section>
 
-            <div className="snap-slide snap-last" data-label="Contact">
+            <div className="snap-slide snap-last snap-cta" data-label="Contact">
                 <ContactCta />
             </div>
             <ScrollCue />

@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import { useRouter, useSearchParams } from "next/navigation"
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Carousel } from "./Carousel"
 import { tilts } from "@/data/clienti"
 import styles from "./Gallery.module.css"
@@ -22,6 +22,15 @@ export function Gallery({ items, categories, clients }: { items: Item[]; categor
     const [open, setOpen] = useState<number | null>(null)
     const [loaded, setLoaded] = useState<string | null>(null)
     const dialog = useRef<HTMLDialogElement>(null)
+    const filters = useRef<HTMLDivElement>(null)
+
+    // the pressed category chip is brought to the middle of the (scrollable) chip strip
+    useEffect(() => {
+        const strip = filters.current
+        const chip = strip?.querySelector<HTMLElement>("[aria-pressed='true']")
+        if (!strip || !chip || strip.scrollWidth <= strip.clientWidth) return
+        strip.scrollTo({ left: chip.offsetLeft - (strip.clientWidth - chip.offsetWidth) / 2, behavior: "smooth" })
+    }, [category, client])
 
     const filtered = client ? items.filter(i => i.clientSlug === client) : category ? items.filter(i => i.cat === category) : items
     const visible = filtered.slice(0, shown)
@@ -38,7 +47,7 @@ export function Gallery({ items, categories, clients }: { items: Item[]; categor
 
     return (
         <>
-            <div className={styles.filters} role="group" aria-label="Filtrează după categorie">
+            <div ref={filters} className={styles.filters} role="group" aria-label="Filtrează după categorie">
                 <button className={styles.chip} aria-pressed={!category && !client} onClick={() => go("")}>Toate</button>
                 {categories.map(c => (
                     <button key={c.slug} className={styles.chip} aria-pressed={category === c.slug && !client} onClick={() => go(`categorie=${c.slug}`)}>{c.label}</button>

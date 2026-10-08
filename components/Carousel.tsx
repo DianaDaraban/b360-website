@@ -29,7 +29,7 @@ export function Carousel({ label, children, className = "" }: { label: string; c
     const move = (dir: 1 | -1) => track.current?.scrollBy({ left: dir * track.current.clientWidth * 0.8, behavior: "smooth" })
 
     return (
-        <div className={`${styles.carousel} ${className}`} role="region" aria-label={label}>
+        <div className={`${styles.carousel} ${className}`} role="region" aria-label={label} data-no-reveal>
             <button type="button" className={`${styles.arrow} ${styles.prev}`} onClick={() => move(-1)} disabled={atStart} aria-label="Înapoi">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </button>

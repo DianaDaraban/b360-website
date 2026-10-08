@@ -302,6 +302,7 @@ a:hover > .arrow-sticker svg, a:focus-visible > .arrow-sticker svg { translate: 
    ~0.29 of the diameter, so --c is set as a share of --d. */
 .client-sticker {
     --d: 112px;
+    --backing: var(--cream);
     --c: calc(var(--d) * 0.42);
     --lift: 136deg;
     width: var(--d);
@@ -311,8 +312,8 @@ a:hover > .arrow-sticker svg, a:focus-visible > .arrow-sticker svg { translate: 
     padding: 0;
     border: 0;
     border-radius: 50%;
-    background: linear-gradient(40deg, #ee3338 55%, #c9161f);
-    box-shadow: 0 6px 16px rgb(80 0 0 / 0.3);
+    background: linear-gradient(40deg, #4a4446 50%, #2b2729);
+    box-shadow: 0 6px 16px rgb(20 10 12 / 0.35), inset 0 0 0 2px rgb(238 51 56 / 0.55);
     rotate: var(--tilt, 0deg);
     cursor: pointer;
 }
@@ -325,8 +326,16 @@ a:hover > .arrow-sticker svg, a:focus-visible > .arrow-sticker svg { translate: 
    footer and the "Contactează-ne acum" block are left out ---------- */
 @media (max-width: 1023px) {
     .site-footer, .contact-cta { display: none; }
-    /* the last section must not end under the fixed bottom bar */
-    main { padding-bottom: calc(var(--bar-h) + env(safe-area-inset-bottom) + 16px); }
+    /* the last visible section takes the room above the fixed bottom bar itself (inside its own
+       background), so no blank strip shows under it */
+    /* .snap-cta = a snap screen holding only the contact block */
+    .snap-cta { display: none; }
+    main > :last-child:not(.snap-page),
+    .snap-page > :has(+ .snap-cta),
+    main > :has(+ .contact-cta),
+    .snap-last > :has(+ .contact-cta) {
+        padding-bottom: calc(var(--bar-h) + env(safe-area-inset-bottom) + 40px) !important;
+    }
 }
 
 /* ---------- section snapping (Home) ----------

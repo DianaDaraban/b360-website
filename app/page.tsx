@@ -31,7 +31,7 @@ const EMPTY_STICKERS = 4
 export default function Home() {
     return (
         <div className="snap-page">
-            <section className={`snap-slide ${styles.hero}`} data-label="Început">
+            <section className={`snap-slide hero-sheen ${styles.hero}`} data-label="Început">
                 <div className={styles.slides} aria-hidden="true">
                     {heroPhotos.map((src, i) => (
                         <Image key={src} src={src} alt="" fill priority={i === 0} sizes="100vw" className={styles.slide} />
@@ -39,10 +39,18 @@ export default function Home() {
                 </div>
                 <Blobs variant="photo" />
                 <div className={`container ${styles.heroText}`}>
-                    <p className={styles.kicker}>Din 2012 · Corbeanca, Ilfov</p>
+                    <p className={styles.kicker}>Din 2012</p>
                     <h1>
-                        <span className={styles.h1Main}>Colantări auto</span>
-                        <span className={styles.h1Sub}>și inscripționări <em>publicitare</em></span>
+                        {/* revealed word by word like vinyl being applied (styles in globals) */}
+                        <span className={styles.h1Main}>
+                            <span className="reveal-word" style={{ "--i": 0 } as React.CSSProperties}><span>Colantări</span></span>{" "}
+                            <span className="reveal-word" style={{ "--i": 1 } as React.CSSProperties}><span>auto</span></span>
+                        </span>
+                        <span className={styles.h1Sub}>
+                            <span className="reveal-word" style={{ "--i": 2 } as React.CSSProperties}><span>și</span></span>{" "}
+                            <span className="reveal-word" style={{ "--i": 3 } as React.CSSProperties}><span>inscripționări</span></span>{" "}
+                            <em className="reveal-word" style={{ "--i": 4 } as React.CSSProperties}><span>publicitare</span></em>
+                        </span>
                     </h1>
                     <p className={styles.heroLead}>
                         La <strong>B360</strong> transformăm ideile în vizibilitate: colantări auto, branding de flote,
@@ -128,7 +136,7 @@ export default function Home() {
             </section>
             </div>
 
-            <div className="snap-slide snap-last" data-label="Contact">
+            <div className="snap-slide snap-last snap-cta" data-label="Contact">
                 <ContactCta />
             </div>
             <ScrollCue />

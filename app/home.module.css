@@ -61,14 +61,19 @@
 .h1Sub em { font-style: normal; color: var(--red); text-shadow: 0 2px 18px rgb(0 0 0 / 0.35); }
 .heroLead { max-width: 620px; margin-top: 28px; line-height: 1.65; font-size: clamp(1.02rem, 3.6vw, 1.2rem); color: rgb(243 234 225 / 0.9); }
 .hero strong { color: var(--white); }
+.heroLead, .heroActions, .kicker { animation: heroUp 0.8s var(--ease-out) both; }
+.kicker { animation-delay: 0.1s; }
+.heroLead { animation-delay: 0.9s; }
+.heroActions { animation-delay: 1.1s; }
+@keyframes heroUp { from { opacity: 0; translate: 0 18px; } }
 /* outlined, the same width; a light veil keeps them readable over the photos */
 .heroActions :global(.btn-ghost) { min-width: 250px; background: rgb(20 14 16 / 0.28); border-color: rgb(243 234 225 / 0.85); }
 .heroActions :global(.btn-ghost):hover { background: var(--cream); color: var(--ink-strong); }
 .heroActions { justify-self: stretch; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 40px; margin-top: 40px; }
 
-/* phones: the two hero buttons stacked, centred, the same width */
+/* phones: the two hero buttons stacked, centred, the same width, with room around them */
 @media (max-width: 767px) {
-    .heroActions { flex-direction: column; justify-content: center; align-items: center; }
+    .heroActions { flex-direction: column; justify-content: center; align-items: center; gap: 18px; margin-top: 56px; }
     .heroActions :global(.btn-ghost) { min-width: 250px; }
 }
 
@@ -105,13 +110,16 @@
     text-decoration: none;
     transition: translate 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out), border-color 0.35s, background 0.35s;
 }
-/* from tablet up every second pill mirrors: the photo closes it on the right (phones keep one
-   reading direction, the text has too little room when it is right-aligned) */
-@media (min-width: 768px) {
-    .servicePills li:nth-child(even) .servicePill { grid-template-columns: auto 1fr var(--dot); padding: 0 0 0 14px; }
-    .servicePills li:nth-child(even) .serviceDot { order: 3; }
-    .servicePills li:nth-child(even) .serviceText { order: 2; text-align: right; }
-    .servicePills li:nth-child(even) :global(.arrow-sticker) { order: 1; }
+/* every second pill mirrors: the photo closes it on the right */
+.servicePills li:nth-child(even) .servicePill { grid-template-columns: auto 1fr var(--dot); padding: 0 0 0 12px; }
+.servicePills li:nth-child(even) .serviceDot { order: 3; }
+.servicePills li:nth-child(even) .serviceText { order: 2; text-align: right; }
+.servicePills li:nth-child(even) :global(.arrow-sticker) { order: 1; }
+@media (max-width: 767px) {
+    .servicePill { --dot: 78px; gap: 12px; padding-right: 12px; }
+    .servicePills { gap: 26px; }
+    .serviceDot { margin-block: -6px; }
+    .servicePill :global(.arrow-sticker) { width: 34px; height: 34px; }
 }
 .servicePill:hover, .servicePill:focus-visible {
     translate: 0 -4px;

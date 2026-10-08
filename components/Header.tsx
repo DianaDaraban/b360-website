@@ -122,7 +122,10 @@ export function Header() {
                                     <ul id="menu-servicii" className={styles.subList} data-open={subOpen || undefined}>
                                         {servicii.map(s => (
                                             <li key={s.slug}>
-                                                <Link href={`/servicii/${s.slug}`} onClick={closeMenu}>{s.short}</Link>
+                                                <Link href={`/servicii/${s.slug}`} onClick={closeMenu} className={styles.subItem}>
+                                                    <span className={`${styles.subPhoto} peel`}><img src={s.image} alt="" width={44} height={44} /></span>
+                                                    <span>{s.short}</span>
+                                                </Link>
                                             </li>
                                         ))}
                                     </ul>
