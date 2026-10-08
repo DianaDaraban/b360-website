@@ -28,7 +28,7 @@ export default function ContactPage() {
             <Blobs variant="photo" />
             <div className={`container ${styles.grid}`}>
                 <div className={styles.side}>
-                    <p className={styles.eyebrow}>Contact</p>
+                    <p className="eyebrow start">Contact</p>
                     <h1 className={styles.title}>Hai să vorbim</h1>
                     <p className={styles.lead}>Spune-ne ce vrei să colantezi și revenim cu o ofertă.</p>
                     <ul className={styles.channels}>

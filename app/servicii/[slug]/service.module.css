@@ -8,8 +8,7 @@
 .hero :global(.container) { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }
 .hero :global(.tint-photo) { animation: settle 14s var(--ease-out) both; }
 @keyframes settle { from { scale: 1.16; } }
-.heroKicker { font-size: 0.82rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: #ff9a9c; animation: fadeUp 0.7s var(--ease-out) both; }
-.heroKicker::before, .heroKicker::after { content: ""; display: inline-block; width: 26px; height: 2px; margin-inline: 10px; vertical-align: middle; background: currentColor; border-radius: 2px; }
+.heroKicker { margin: 0; animation: fadeUp 0.7s var(--ease-out) both; }
 .hero h1 { margin: 0 0 6px; max-width: 1000px; font-size: clamp(2.2rem, 8.4vw, 4.8rem); line-height: 1.08; }
 /* the title is revealed word by word by red blocks (RevealTitle, styles in globals) */
 .heroTeaser { max-width: 560px; font-size: clamp(1.05rem, 3.8vw, 1.25rem); color: var(--cream); animation: fadeUp 0.8s var(--ease-out) both; animation-delay: calc(0.6s + var(--n) * 0.12s); }
@@ -33,13 +32,12 @@
 .back span { font-size: 1.4rem; }
 .back:hover { gap: 14px; }
 
-.eyebrow { margin-bottom: 8px; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--red); text-align: center; }
-.onPhoto { color: #ff9a9c; }
 
 /* intro: text beside the photo */
 .intro { display: grid; gap: 30px; align-items: center; }
 .introText { display: grid; gap: 14px; }
-.introText .eyebrow { text-align: left; margin: 0; }
+/* 'Pe scurt' and its title centred over the column, like the other section headings */
+.introText .leadTitle { text-align: center; }
 .leadTitle { font-size: clamp(1.5rem, 5.4vw, 2.3rem); }
 .introPhoto { margin: 0; }
 .introPhoto img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 24px; box-shadow: 0 18px 40px rgb(60 20 20 / 0.18); }
@@ -270,8 +268,6 @@
     .overview .typeGrid { grid-template-columns: 1fr; }
     .detailsGrid { grid-template-columns: 1fr 1fr; gap: 48px; }
     .details .benefits { grid-template-columns: 1fr 1fr; }
-    .detailsTitle { text-align: left; }
-    .details .eyebrow { text-align: left; }
     .details .banner { grid-template-columns: 1fr auto; padding: 18px 30px; }
 }
 /* short windows: tighten so each screen still fits */

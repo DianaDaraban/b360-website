@@ -109,7 +109,7 @@ export function Header() {
                             <li key={item.href} style={{ "--i": i } as React.CSSProperties}>
                                 <div className={styles.menuRow}>
                                     <Link href={item.href} onClick={closeMenu} aria-current={isActive(item.href) ? "page" : undefined} className={styles.menuLink}>
-                                        <Icon name={item.icon} size={34} />
+                                        <Icon name={item.icon} size={26} />
                                         <span>{item.label}</span>
                                     </Link>
                                     {item.href === "/servicii" && (

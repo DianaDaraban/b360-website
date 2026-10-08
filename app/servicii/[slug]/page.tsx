@@ -66,7 +66,7 @@ export default async function ServiciuPage({ params }: Props) {
                 <Blobs variant="photo" />
                 <div className="container" style={{ "--n": s.title.split(" ").length } as React.CSSProperties}>
                     <Link href="/servicii" className={styles.back}><span aria-hidden="true">←</span> Toate serviciile</Link>
-                    <p className={styles.heroKicker}>Servicii B360</p>
+                    <p className={`eyebrow ${styles.heroKicker}`}>Servicii B360</p>
                     <RevealTitle text={s.title} delay={0.2} />
                     <p className={styles.heroTeaser}>{s.teaser}</p>
                     <Link href="/oferta" className={`btn ${styles.heroCta}`}>Cere o ofertă personalizată</Link>
@@ -77,7 +77,7 @@ export default async function ServiciuPage({ params }: Props) {
             <section className={`section snap-slide ${styles.overview}`} data-label="Pe scurt">
                 <div className={`container ${styles.overviewGrid}`}>
                     <div className={styles.introText}>
-                        <p className={styles.eyebrow}>Pe scurt</p>
+                        <p className="eyebrow">Pe scurt</p>
                         <h2 className={styles.leadTitle}>{s.lead.title}</h2>
                         <p className={styles.leadText}><Rich text={s.lead.text} /></p>
                         <h3 className={styles.checkTitle}>{s.typesTitle}</h3>
@@ -122,7 +122,7 @@ export default async function ServiciuPage({ params }: Props) {
                 <div className="container">
                     <div className={styles.detailsGrid}>
                         <div>
-                            <p className={`${styles.eyebrow} ${styles.onPhoto}`}>Beneficii</p>
+                            <p className="eyebrow">Beneficii</p>
                             <h2 className={styles.detailsTitle}>{benefitsTitle[s.slug] ?? "Beneficii"}</h2>
                             <ul className={styles.benefits}>
                                 {s.benefits.map(b => {
@@ -133,7 +133,7 @@ export default async function ServiciuPage({ params }: Props) {
                             </ul>
                         </div>
                         <div>
-                            <p className={`${styles.eyebrow} ${styles.onPhoto}`}>Întrebări frecvente</p>
+                            <p className="eyebrow">Întrebări frecvente</p>
                             <h2 className={styles.detailsTitle}>Ce ne întreabă clienții</h2>
                             <div className={styles.faqList}>
                                 {s.faq.map(f => (

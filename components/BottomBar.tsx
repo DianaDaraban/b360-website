@@ -22,7 +22,7 @@ export function BottomBar() {
             {/* The drop shadow sits on the link so it follows the round sticker */}
             <a href={site.phoneHref} className={styles.phone} aria-label={`Sună-ne: ${site.phone}`}>
                 <span className="peel">
-                    <Icon name="phone" size={34} />
+                    <Icon name="phone" size={46} />
                 </span>
             </a>
 

@@ -37,7 +37,9 @@
     filter: drop-shadow(0 4px 6px rgb(0 0 0 / 0.28));
 }
 .phone > span {
-    --c: 30px;
+    /* corner clearly lifted at rest (on a circle the fold shows past ~0.29 of the diameter) */
+    --c: 36px;
+    --lift: 132deg;
     width: 76px;
     height: 76px;
     display: grid;
@@ -46,7 +48,7 @@
     background: radial-gradient(circle at 40% 35%, #f3eae1 55%, #ece8e6);
     color: var(--ink);
 }
-.phone:hover > span { --c: 44px; }
+.phone:hover > span { --c: 48px; --lift: 112deg; }
 .phone:active > span { scale: 0.96; }
 
 @media (min-width: 1024px) {

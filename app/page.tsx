@@ -39,7 +39,7 @@ export default function Home() {
                 </div>
                 <Blobs variant="photo" />
                 <div className={`container ${styles.heroText}`}>
-                    <p className={styles.kicker}>Din 2012</p>
+                    <p className={`eyebrow on-photo ${styles.kicker}`}>Din 2012</p>
                     <h1>
                         {/* revealed word by word like vinyl being applied (styles in globals) */}
                         <span className={styles.h1Main}>

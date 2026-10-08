@@ -83,6 +83,22 @@ html:has(dialog[open]) { overflow: hidden; }
 .red { color: var(--red); }
 .lead { font-size: 1.12rem; }
 .prose { display: grid; gap: 16px; text-align: center; }
+/* small section heading: red capitals between two short lines; pinkish on photos */
+.eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 0 0 8px;
+    font: 700 0.8rem/1.2 var(--font-head);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red);
+    text-shadow: none;
+}
+.eyebrow::before, .eyebrow::after { content: ""; flex: none; width: 24px; height: 2px; border-radius: 2px; background: currentColor; }
+.tinted .eyebrow, .eyebrow.on-photo { color: #ff9a9c; }
+.eyebrow.start { justify-content: flex-start; }
 .sr-only { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 /* Photo sections from the Figma: the photo sits under a clear tint and moving colour blobs;
@@ -313,7 +329,7 @@ a:hover > .arrow-sticker svg, a:focus-visible > .arrow-sticker svg { translate: 
     border: 0;
     border-radius: 50%;
     background: linear-gradient(40deg, #4a4446 50%, #2b2729);
-    box-shadow: 0 6px 16px rgb(20 10 12 / 0.35), inset 0 0 0 2px rgb(238 51 56 / 0.55);
+    box-shadow: 0 6px 16px rgb(20 10 12 / 0.35), inset 0 0 0 1px rgb(238 51 56 / 0.22);
     rotate: var(--tilt, 0deg);
     cursor: pointer;
 }

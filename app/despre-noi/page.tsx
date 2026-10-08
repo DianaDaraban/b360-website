@@ -51,7 +51,7 @@ export default function DesprePage() {
                 <Image src="/img/wrap-green.webp" alt="" fill priority sizes="100vw" className="tint-photo" />
                 <Blobs variant="photo" />
                 <div className="container">
-                    <p className={styles.kicker}>Despre noi</p>
+                    <p className={`eyebrow ${styles.kicker}`}>Despre noi</p>
                     <RevealTitle className={styles.title} text="La B360 transformăm ideile în vizibilitate." red={["B360"]} delay={0.15} />
                     <p className={styles.lead}>Colantări auto, branding de flote, vitrine și print publicitar, de la concept grafic la montaj.</p>
                     <ul className={styles.stats}>
@@ -67,7 +67,7 @@ export default function DesprePage() {
             <section className="section">
                 <div className={`container ${styles.story}`}>
                     <div className={styles.storyText}>
-                        <p className={styles.eyebrow}>Povestea pe scurt</p>
+                        <p className="eyebrow">Povestea pe scurt</p>
                         <h2 className={styles.h2}>Peste <span className="red">10 ani</span> alături de clienți care ne-au rămas fideli</h2>
                         <p>Am pornit în 2012 cu colantări auto și am crescut odată cu clienții noștri. Faptul că revin an de an e cea mai bună dovadă de seriozitate.</p>
                         <p>Echipa noastră acoperă <strong>design grafic, producție și montaj</strong>, așa că tot proiectul rămâne într-o singură mână.</p>
@@ -81,7 +81,7 @@ export default function DesprePage() {
 
             <section className={`section ${styles.band}`}>
                 <div className="container">
-                    <p className={styles.eyebrow}>Cum lucrăm</p>
+                    <p className="eyebrow">Cum lucrăm</p>
                     <h2 className={styles.h2}>Trei pași, o singură echipă</h2>
                     <ol className={styles.steps}>
                         {pasi.map((p, i) => (
@@ -102,7 +102,7 @@ export default function DesprePage() {
                 <Image src="/img/wrap-hands.webp" alt="" fill sizes="100vw" className="tint-photo" />
                 <Blobs variant="photo" />
                 <div className="container">
-                    <p className={`${styles.eyebrow} ${styles.onPhoto}`}>Ce oferim</p>
+                    <p className="eyebrow">Ce oferim</p>
                     <h2 className={styles.h2}>Producție publicitară completă</h2>
                     <ul className={styles.offers}>
                         {oferim.map(o => (
@@ -121,7 +121,7 @@ export default function DesprePage() {
 
             <section className="section">
                 <div className="container">
-                    <p className={styles.eyebrow}>De ce B360</p>
+                    <p className="eyebrow">De ce B360</p>
                     <h2 className={styles.h2}>Cinci motive să lucrăm împreună</h2>
                     <ul className={styles.reasons}>
                         {deCe.map(r => (
@@ -141,7 +141,7 @@ export default function DesprePage() {
                 <Image src="/img/letters-3d.webp" alt="" fill sizes="100vw" className="tint-photo" />
                 <Blobs variant="photo" />
                 <div className="narrow">
-                    <p className={`${styles.eyebrow} ${styles.onPhoto}`}>Misiunea noastră</p>
+                    <p className="eyebrow">Misiunea noastră</p>
                     <blockquote className={styles.quote}>Fiecare brand merită să fie vizibil și memorabil.</blockquote>
                     <p className={styles.quoteText}>Nu livrăm doar materiale publicitare, ci soluții care atrag atenția, cresc încrederea și ajută afacerea să crească.</p>
                 </div>
