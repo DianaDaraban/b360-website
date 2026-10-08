@@ -26,7 +26,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
     themeColor: "#f3eae1",
-    colorScheme: "light",
+    // "only light" stops forced dark modes (Chrome auto dark, Samsung Internet) from recolouring the site
+    colorScheme: "only light",
 }
 
 // LocalBusiness data so Google can show the address and phone next to the results

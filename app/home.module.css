@@ -99,11 +99,14 @@
     text-decoration: none;
     transition: translate 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out), border-color 0.35s, background 0.35s;
 }
-/* every second pill mirrors: the photo closes it on the right */
-.servicePills li:nth-child(even) .servicePill { grid-template-columns: auto 1fr var(--dot); padding: 0 0 0 14px; }
-.servicePills li:nth-child(even) .serviceDot { order: 3; }
-.servicePills li:nth-child(even) .serviceText { order: 2; text-align: right; }
-.servicePills li:nth-child(even) :global(.arrow-sticker) { order: 1; }
+/* from tablet up every second pill mirrors: the photo closes it on the right (phones keep one
+   reading direction, the text has too little room when it is right-aligned) */
+@media (min-width: 768px) {
+    .servicePills li:nth-child(even) .servicePill { grid-template-columns: auto 1fr var(--dot); padding: 0 0 0 14px; }
+    .servicePills li:nth-child(even) .serviceDot { order: 3; }
+    .servicePills li:nth-child(even) .serviceText { order: 2; text-align: right; }
+    .servicePills li:nth-child(even) :global(.arrow-sticker) { order: 1; }
+}
 .servicePill:hover, .servicePill:focus-visible {
     translate: 0 -4px;
     border-color: var(--red-logo);

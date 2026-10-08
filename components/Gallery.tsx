@@ -84,7 +84,7 @@ export function Gallery({ items, categories, clients }: { items: Item[]; categor
             {shown < filtered.length && (
                 <p className={styles.more}>
                     <button className="btn-ghost on-light" onClick={() => setShown(s => s + PAGE)}>
-                        Mai multe lucrări ({filtered.length - shown})
+                        Mai multe lucrări
                     </button>
                 </p>
             )}
