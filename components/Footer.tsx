@@ -6,7 +6,7 @@ import styles from "./Footer.module.css"
 // Three compact rows: brand + contact, the page links, copyright
 export function Footer() {
     return (
-        <footer className={styles.footer}>
+        <footer className={`site-footer ${styles.footer}`}>
             <div className={`container ${styles.top}`}>
                 <Link href="/" aria-label="B360 – pagina principală">
                     <img src="/logo-white.svg" alt="B360 Producție publicitară" width={150} height={76} loading="lazy" className={styles.logo} />

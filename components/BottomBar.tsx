@@ -34,7 +34,7 @@ export function BottomBar() {
             ) : (
                 <Link href="/oferta" className={`${styles.side} ${styles.right}`}>
                     <span>Cerere ofertă colantare</span>
-                    <Icon name="mail" size={38} className={styles.at} />
+                    <Icon name="at" size={36} className={styles.at} />
                 </Link>
             )}
         </nav>

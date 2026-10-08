@@ -8,7 +8,7 @@ import styles from "./ContactCta.module.css"
 // the floating colour blobs
 export function ContactCta() {
     return (
-        <section className={styles.cta} aria-labelledby="contacteaza">
+        <section className={`contact-cta ${styles.cta}`} aria-labelledby="contacteaza">
             <Image src="/img/wrap-hands.webp" alt="" fill sizes="100vw" className={styles.photo} />
             <div className={styles.blobs} aria-hidden="true"><span /><span /><span /></div>
             {/* as wide as the sentence: the buttons spread evenly under it */}

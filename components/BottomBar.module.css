@@ -24,8 +24,8 @@
 }
 .side span { max-width: 9ch; }
 .right { justify-content: flex-end; text-align: right; }
-/* Figma mail icon, with its drop shadow */
-.at { flex: none; max-width: none !important; filter: drop-shadow(0 4px 2px rgb(0 0 0 / 0.25)); }
+/* Figma split @: white body, the cut pieces in a light red that reads on the red bar */
+.at { flex: none; max-width: none !important; --red: #ffb3b5; color: var(--white); filter: drop-shadow(0 3px 2px rgb(0 0 0 / 0.25)); }
 .home { gap: 6px; font-size: 1.2rem; font-family: var(--font-head); }
 .home svg { --red: var(--white); }
 

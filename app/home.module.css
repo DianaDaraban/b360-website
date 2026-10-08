@@ -66,6 +66,12 @@
 .heroActions :global(.btn-ghost):hover { background: var(--cream); color: var(--ink-strong); }
 .heroActions { justify-self: stretch; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 40px; margin-top: 40px; }
 
+/* phones: the two hero buttons stacked, centred, the same width */
+@media (max-width: 767px) {
+    .heroActions { flex-direction: column; justify-content: center; align-items: center; }
+    .heroActions :global(.btn-ghost) { min-width: 250px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .slide { animation: none; }
     .slide:not(:first-child) { display: none; }

@@ -22,7 +22,7 @@
 .menuButton {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: stretch;   /* the two lines run as wide as the "- Meniu" row */
     gap: 3px;
     padding: 8px 0 8px 12px;
     border: 0;
@@ -32,7 +32,7 @@
     letter-spacing: -0.02em;
     cursor: pointer;
 }
-.lines { position: relative; width: 42px; height: 12px; }
+.lines { position: relative; width: 100%; height: 12px; }
 .lines::before, .lines::after {
     content: "";
     position: absolute;
@@ -105,7 +105,8 @@
 }
 /* two halves with a gap in the middle for the word */
 .cross { rotate: -45deg; background: linear-gradient(90deg, currentColor 0 30%, transparent 30% 70%, currentColor 70%); }
-.cross::before { content: ""; rotate: 90deg; background: currentColor; }
+/* the word "Meniu" itself is the second stroke of the X: no bar runs along it */
+.cross::before { content: none; }
 .closeLabel {
     position: absolute;
     left: 50%;

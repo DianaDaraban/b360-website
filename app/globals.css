@@ -321,6 +321,14 @@ a:hover > .arrow-sticker svg, a:focus-visible > .arrow-sticker svg { translate: 
 .client-sticker img { width: 78%; height: 66%; object-fit: contain; rotate: calc(var(--tilt, 0deg) * -1); filter: brightness(0) invert(93%) sepia(10%); pointer-events: none; }
 @media (min-width: 768px) { .client-sticker { --d: 150px; } }
 
+/* ---------- phones and tablets: the bottom bar carries phone, quote and calculator, so the
+   footer and the "Contactează-ne acum" block are left out ---------- */
+@media (max-width: 1023px) {
+    .site-footer, .contact-cta { display: none; }
+    /* the last section must not end under the fixed bottom bar */
+    main { padding-bottom: calc(var(--bar-h) + env(safe-area-inset-bottom) + 16px); }
+}
+
 /* ---------- section snapping (Home) ----------
    On a desktop with a mouse every .snap-slide fills the screen under the header and the wheel
    moves from one to the next; small sections are grouped into one slide in the page markup. */
