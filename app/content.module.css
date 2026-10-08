@@ -1,2 +1,5 @@
 /* Shared page heading (Portofoliu) */
-.pageTitle { font-size: clamp(1.8rem, 7vw, 3rem); text-align: center; margin-bottom: 8px; }
+.pageTitle { font-size: clamp(1.8rem, 7vw, 3rem); text-align: center; margin-bottom: 6px; }
+.center { text-align: center; text-wrap: balance; }
+/* Portofoliu: a short head so the photos show up on the first screen */
+.compact { padding-top: 32px; }

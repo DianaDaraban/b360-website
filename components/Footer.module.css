@@ -9,9 +9,8 @@
 .contact { font-style: normal; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px 40px; font-size: 1.05rem; }
 .contact a { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; color: var(--cream); }
 /* Figma contact icons: cream outline with the red piece; the phone is all red */
-.contact svg { flex: none; color: var(--cream); transition: scale 0.35s var(--ease-out); }
+.contact svg { flex: none; color: var(--cream); }
 .contact a:first-child svg { color: var(--red); }
-.contact a:hover svg { scale: 1.15; }
 
 .links {
     list-style: none;
@@ -31,4 +30,10 @@
 
 @media (min-width: 1024px) {
     .footer { padding-bottom: 24px; }
+    /* on the contact page the whole page fits one screen: a slimmer footer */
+    :global(body:has(.contact-page)) .footer { padding: 12px 0 10px; font-size: 0.85rem; }
+    :global(body:has(.contact-page)) .logo { width: 80px; }
+    :global(body:has(.contact-page)) .contact { font-size: 0.95rem; }
+    :global(body:has(.contact-page)) .links { margin-top: 8px; padding: 7px 0; }
+    :global(body:has(.contact-page)) .copy { margin-top: 6px; font-size: 0.75rem; }
 }

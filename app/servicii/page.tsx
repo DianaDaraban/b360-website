@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { ContactCta } from "@/components/ContactCta"
+import { ScrollCue } from "@/components/ScrollCue"
 import { servicii } from "@/data/servicii"
 import styles from "./servicii.module.css"
 
@@ -14,8 +15,8 @@ export const metadata: Metadata = {
 
 export default function ServiciiPage() {
     return (
-        <>
-            <section className={styles.section}>
+        <div className="snap-page">
+            <section className={`snap-slide ${styles.section}`} data-label="Servicii">
                 <div className={`narrow prose ${styles.head}`}>
                     <h1 className={styles.title}>Servicii de colantare și producție publicitară</h1>
                     <p className="lead">
@@ -36,7 +37,7 @@ export default function ServiciiPage() {
                                     <span className={styles.text}>{s.intro}</span>
                                     <span className={styles.more}>
                                         Află mai mult
-                                        <span className="arrow-sticker peel" aria-hidden="true">
+                                        <span className="arrow-sticker" aria-hidden="true">
                                             <svg viewBox="0 0 24 24" width="18" height="18"><path d="M4 12h15m-6-6 6 6-6 6" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
                                         </span>
                                     </span>
@@ -46,7 +47,10 @@ export default function ServiciiPage() {
                     ))}
                 </ul>
             </section>
-            <ContactCta />
-        </>
+            <div className="snap-slide snap-last" data-label="Contact">
+                <ContactCta />
+            </div>
+            <ScrollCue />
+        </div>
     )
 }

@@ -3,7 +3,10 @@ import Image from "next/image"
 import Link from "next/link"
 import { Blobs } from "@/components/Blobs"
 import { ContactCta } from "@/components/ContactCta"
+import { CountUp } from "@/components/CountUp"
 import { Icon } from "@/components/Icon"
+import { RevealTitle } from "@/components/RevealTitle"
+import { ScrollCue } from "@/components/ScrollCue"
 import styles from "./about.module.css"
 
 export const metadata: Metadata = {
@@ -16,8 +19,8 @@ export const metadata: Metadata = {
 // The page reads in short blocks: numbers, the story in two sentences, the three steps of
 // the work, the offer, the reasons to choose B360 and the mission as one line.
 const cifre = [
-    { value: "2012", label: "anul în care am început" },
-    { value: "10+", label: "ani de experiență" },
+    { value: <CountUp from={1990} to={2012} />, label: "anul în care am început" },
+    { value: <CountUp to={10} suffix="+" />, label: "ani de experiență" },
     { value: "3 în 1", label: "design, producție și montaj" },
 ]
 
@@ -43,22 +46,24 @@ const deCe = [
 
 export default function DesprePage() {
     return (
-        <>
-            <section className={`tinted ${styles.hero}`}>
+        <div className="snap-page">
+            <section className={`tinted snap-slide hero-sheen ${styles.hero}`} data-label="Început">
                 <Image src="/img/wrap-green.webp" alt="" fill priority sizes="100vw" className="tint-photo" />
                 <Blobs variant="photo" />
                 <div className="container">
                     <p className={styles.kicker}>Despre noi</p>
-                    <h1 className={styles.title}>La <span className="red">B360</span> transformăm ideile în vizibilitate.</h1>
+                    <RevealTitle className={styles.title} text="La B360 transformăm ideile în vizibilitate." red={["B360"]} delay={0.15} />
                     <p className={styles.lead}>Colantări auto, branding de flote, vitrine și print publicitar, de la concept grafic la montaj.</p>
                     <ul className={styles.stats}>
                         {cifre.map(c => (
-                            <li key={c.value}><strong>{c.value}</strong><span>{c.label}</span></li>
+                            <li key={c.label}><strong>{c.value}</strong><span>{c.label}</span></li>
                         ))}
                     </ul>
                 </div>
             </section>
 
+            {/* story and the three steps share one screen */}
+            <div className={`snap-slide ${styles.pair}`} data-label="Povestea">
             <section className="section">
                 <div className={`container ${styles.story}`}>
                     <div className={styles.storyText}>
@@ -89,7 +94,10 @@ export default function DesprePage() {
                     </ol>
                 </div>
             </section>
+            </div>
 
+            {/* what we offer and why B360, on one screen */}
+            <div className={`snap-slide ${styles.pair}`} data-label="Ce oferim">
             <section className="section tinted" style={{ "--tint": "rgb(80 72 76 / 0.8)" } as React.CSSProperties}>
                 <Image src="/img/wrap-hands.webp" alt="" fill sizes="100vw" className="tint-photo" />
                 <Blobs variant="photo" />
@@ -103,7 +111,7 @@ export default function DesprePage() {
                                     <span className={`${styles.offerIcon} peel`} aria-hidden="true"><Icon name={o.icon} size={30} /></span>
                                     <h3>{o.title}</h3>
                                     <p>{o.text}</p>
-                                    <span className="arrow-sticker peel" aria-hidden="true"><Icon name="arrow" size={18} /></span>
+                                    <span className="arrow-sticker" aria-hidden="true"><Icon name="arrow" size={18} /></span>
                                 </Link>
                             </li>
                         ))}
@@ -125,7 +133,10 @@ export default function DesprePage() {
                     </ul>
                 </div>
             </section>
+            </div>
 
+            {/* the mission line closes the page together with the contact block and the footer */}
+            <div className="snap-slide snap-last" data-label="Misiunea">
             <section className={`tinted ${styles.mission}`}>
                 <Image src="/img/letters-3d.webp" alt="" fill sizes="100vw" className="tint-photo" />
                 <Blobs variant="photo" />
@@ -137,6 +148,8 @@ export default function DesprePage() {
             </section>
 
             <ContactCta />
-        </>
+            </div>
+            <ScrollCue />
+        </div>
     )
 }

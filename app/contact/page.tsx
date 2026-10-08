@@ -3,6 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Blobs } from "@/components/Blobs"
 import { Icon } from "@/components/Icon"
+import { Select } from "@/components/Select"
 import { site } from "@/lib/site"
 import styles from "./contact.module.css"
 import form from "../form.module.css"
@@ -16,13 +17,13 @@ export const metadata: Metadata = {
 const canale = [
     { icon: "phone", label: "Telefon", value: site.phone, href: site.phoneHref, note: "cel mai rapid răspuns" },
     { icon: "at", label: "Email", value: site.email, href: `mailto:${site.email}`, note: "pentru detalii și fișiere" },
-    { icon: "home", label: "Atelier", value: `${site.address.street}, ${site.address.locality}`, href: site.mapsUrl, note: "deschide în Google Maps" },
+    { icon: "home", label: "Atelier", value: `${site.address.street}, ${site.address.locality}`, href: site.wazeUrl, note: "deschide în Waze" },
 ] as const
 
 // One photo section: the ways to reach us on the left, the message form on the right
 export default function ContactPage() {
     return (
-        <section className={`tinted ${form.page} ${styles.page}`}>
+        <section className={`tinted contact-page ${form.page} ${styles.page}`}>
             <Image src="/img/paper.webp" alt="" fill priority sizes="100vw" className="tint-photo" />
             <Blobs variant="photo" />
             <div className={`container ${styles.grid}`}>
@@ -44,7 +45,7 @@ export default function ContactPage() {
                             </li>
                         ))}
                     </ul>
-                    <Link href="/oferta" className="btn">Cere ofertă online</Link>
+                    <Link href="/oferta" className="btn-ghost">Cere ofertă online</Link>
                 </div>
 
                 {/* Messages that are not a quote request: feedback, opinions, proposals */}
@@ -54,15 +55,10 @@ export default function ContactPage() {
                     <div className={styles.fields}>
                         <label className={form.field}>Nume *<input name="nume" autoComplete="name" required /></label>
                         <label className={form.field}>Email *<input name="email" type="email" autoComplete="email" required /></label>
-                        <label className={`${form.field} ${styles.wide}`}>
-                            Despre ce e vorba
-                            <select name="subiect" defaultValue="Feedback">
-                                <option>Feedback</option>
-                                <option>Sugestie</option>
-                                <option>Propunere de colaborare</option>
-                                <option>Întrebare</option>
-                            </select>
-                        </label>
+                        <div className={`${form.field} ${styles.topic}`}>
+                            <span id="subiect-label">Despre ce e vorba</span>
+                            <Select name="subiect" labelledBy="subiect-label" options={["Feedback", "Sugestie", "Propunere de colaborare", "Întrebare"]} />
+                        </div>
                         <label className={`${form.field} ${styles.wide}`}>Mesajul tău *<textarea name="mesaj" required minLength={10} /></label>
                     </div>
                     <button type="submit" className="btn">Trimite mesajul</button>

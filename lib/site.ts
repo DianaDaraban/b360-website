@@ -7,8 +7,9 @@ export const site = {
     email: "office@b360.ro",
     address: { street: "Strada Ogorului 2", locality: "Corbeanca", region: "Ilfov", country: "RO" },
     founded: 2012,
-    get mapsUrl() {
-        return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`B360, ${this.address.street}, ${this.address.locality}, ${this.address.region}`)}`
+    // the workshop address opens in Waze: the app with navigation on a phone, the Waze map in a browser
+    get wazeUrl() {
+        return `https://waze.com/ul?q=${encodeURIComponent(`${this.address.street}, ${this.address.locality}, ${this.address.region}`)}&navigate=yes`
     },
 }
 

@@ -61,6 +61,9 @@
 .h1Sub em { font-style: normal; color: var(--red); text-shadow: 0 2px 18px rgb(0 0 0 / 0.35); }
 .heroLead { max-width: 620px; margin-top: 28px; line-height: 1.65; font-size: clamp(1.02rem, 3.6vw, 1.2rem); color: rgb(243 234 225 / 0.9); }
 .hero strong { color: var(--white); }
+/* outlined, the same width; a light veil keeps them readable over the photos */
+.heroActions :global(.btn-ghost) { min-width: 250px; background: rgb(20 14 16 / 0.28); border-color: rgb(243 234 225 / 0.85); }
+.heroActions :global(.btn-ghost):hover { background: var(--cream); color: var(--ink-strong); }
 .heroActions { justify-self: stretch; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px 40px; margin-top: 40px; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -71,6 +74,9 @@
 
 /* ---------- services: long pill buttons closed by a round photo sticker (Figma zig-zag) ---------- */
 .services {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     background:
         radial-gradient(120% 80% at 0% 0%, #e2ece0 0%, transparent 60%),
         radial-gradient(120% 90% at 100% 100%, #f1dccf 0%, transparent 60%),
@@ -141,33 +147,49 @@
 .work {
     position: relative;
     display: block;
+    width: 100%;
     height: 100%;
-    padding: 5px;
-    border-radius: 22px;
-    background: linear-gradient(140deg, var(--cream), #eadccf);
-    box-shadow: 0 6px 18px rgb(60 30 30 / 0.12);
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: #2b2729;
+    box-shadow: 0 6px 16px rgb(40 20 20 / 0.12);
     overflow: hidden;
     text-decoration: none;
-    transition: translate 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out), rotate 0.45s var(--ease-out);
+    cursor: pointer;
+    transition: box-shadow 0.45s var(--ease-out);
 }
-.work img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 18px; transition: scale 0.7s var(--ease-out), filter 0.4s; }
-.work:hover, .work:focus-visible { box-shadow: 0 18px 34px rgb(120 30 30 / 0.22), 0 0 0 2px rgb(238 51 56 / 0.55); }
-.work:hover img { scale: 1.05; filter: saturate(1.15); }
-/* caption slides up from the bottom edge (always shown on touch screens) */
+.work::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    height: 3px;
+    background: var(--red);
+    scale: 0 1;
+    transform-origin: left;
+    transition: scale 0.5s var(--ease-out);
+}
+.work:hover, .work:focus-visible { box-shadow: 0 16px 32px rgb(40 20 20 / 0.24); }
+.work:hover::after, .work:focus-visible::after { scale: 1 1; }
+.work img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 0; transition: scale 0.8s var(--ease-out), filter 0.5s; }
+.work:hover img, .work:focus-visible img { scale: 1.06; filter: brightness(0.85) saturate(1.1); }
 .workCaption {
     position: absolute;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: grid;
     gap: 2px;
-    padding: 34px 16px 14px;
-    border-radius: 0 0 18px 18px;
-    background: linear-gradient(transparent, rgb(30 15 15 / 0.8));
+    padding: 40px 16px 14px;
+    border-radius: 0;
+    background: linear-gradient(transparent, rgb(20 12 14 / 0.82));
     color: var(--cream);
     text-align: left;
     opacity: 0;
-    translate: 0 30%;
+    translate: 0 12px;
     transition: opacity 0.35s, translate 0.45s var(--ease-out);
 }
 .workCaption small { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #ff9a9c; }

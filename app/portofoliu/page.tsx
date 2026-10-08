@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 export default function PortofoliuPage() {
     return (
         <>
-            <section className="section">
+            <section className={`section ${styles.compact}`}>
                 <div className="container">
                     <h1 className={styles.pageTitle}>Portofoliu</h1>
                     <p className={styles.center}>Câteva dintre lucrările noastre din ultimii ani. Alege o categorie sau un client ca să vezi doar ce te interesează.</p>

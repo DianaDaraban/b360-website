@@ -108,6 +108,8 @@ export const servicii: Serviciu[] = [
         faq: [
             { q: "Trebuie să închid magazinul pentru montaj?", a: "De obicei nu. Montăm din exterior sau în afara programului, în funcție de vitrină." },
             { q: "Cât rezistă o folie pe vitrină?", a: "Depinde de folie: de la câteva luni pentru campanii până la câțiva ani pentru branding permanent." },
+            { q: "Realizați și grafica pentru vitrină?", a: "Da. Echipa noastră de design pregătește grafica pornind de la identitatea brandului tău, apoi o producem și o montăm." },
+            { q: "Folia se poate scoate fără urme?", a: "Da. La finalul unei campanii îndepărtăm folia, iar geamul rămâne curat, gata pentru următoarea grafică." },
         ],
         portfolio: { label: "Vezi portofoliu colantări vitrine", category: "vitrine" },
         metaDescription: "Colantări vitrine: folii sablate, colorate, printate sau cu protecție UV și solară. Branding permanent sau temporar pentru magazine, showroom-uri și birouri.",
@@ -136,6 +138,8 @@ export const servicii: Serviciu[] = [
         faq: [
             { q: "Se vede folia PPF pe mașină?", a: "Practic nu. Folia e transparentă și urmărește forma caroseriei." },
             { q: "Cât durează montajul?", a: "Pentru zonele expuse, de obicei o zi; pentru toată mașina, câteva zile." },
+            { q: "Cât rezistă folia PPF?", a: "O folie PPF de calitate, montată corect, rezistă de regulă câțiva ani, fără să se îngălbenească." },
+            { q: "Cum se întreține mașina după montaj?", a: "Se spală normal, ca orice mașină. Recomandăm doar să eviți spălătoriile cu perii în primele zile după montaj." },
         ],
         portfolio: { label: "Vezi portofoliu colantări auto", category: "autoturisme" },
         metaDescription: "Folie PPF transparentă pentru protecția vopselei: integral sau pe zonele expuse (bară, capotă, aripi, oglinzi). Montaj profesionist B360.",

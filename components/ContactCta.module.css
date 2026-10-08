@@ -34,7 +34,27 @@
 .inner { width: fit-content; max-width: calc(100% - 2 * var(--gutter)); margin-inline: auto; }
 .title { font-size: clamp(1.9rem, 7vw, 2.8rem); color: var(--red); }
 .text { margin-top: 12px; font-size: clamp(1.15rem, 4.4vw, 1.4rem); font-weight: 500; line-height: 1.4; color: var(--ink-strong); text-wrap: balance; }
-.actions { margin-top: 34px; display: flex; flex-wrap: wrap; justify-content: space-evenly; align-items: center; gap: 16px; }
+.actions { list-style: none; margin: 34px 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.action { display: grid; justify-items: center; gap: 10px; text-decoration: none; font: 700 0.92rem/1.2 var(--font-head); color: var(--ink-strong); }
+/* cream sticker with the icon: the corner lifts on hover, the label turns red */
+/* on a circle the fold only shows past ~0.29 of the diameter */
+.icon {
+    --c: 28px;
+    --lift: 140deg;
+    width: 68px;
+    height: 68px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--cream);
+    color: var(--ink-strong);
+    box-shadow: 0 0 0 1px rgb(238 51 56 / 0.35), 0 8px 18px rgb(80 20 20 / 0.18);
+    transition: --c 0.45s, --lift 0.45s, box-shadow 0.3s, translate 0.35s var(--ease-out);
+}
+.actions li:first-child .icon { color: var(--red); }
+.action:hover .icon { --c: 40px; --lift: 114deg; translate: 0 -3px; box-shadow: 0 0 0 1px rgb(238 51 56 / 0.35), 0 12px 24px rgb(80 20 20 / 0.24); }
+.action:hover > span:last-child { color: var(--red); }
+@media (min-width: 768px) { .icon { width: 76px; height: 76px; } .actions { gap: 32px; } }
 /* on wide screens the sentence stays on one line */
 @media (min-width: 1024px) { .text { white-space: nowrap; } }
 .actions :global(.btn-ghost) { color: var(--ink-strong); }

@@ -31,7 +31,7 @@ const EMPTY_STICKERS = 4
 export default function Home() {
     return (
         <div className="snap-page">
-            <section className={`snap-slide ${styles.hero}`}>
+            <section className={`snap-slide ${styles.hero}`} data-label="Început">
                 <div className={styles.slides} aria-hidden="true">
                     {heroPhotos.map((src, i) => (
                         <Image key={src} src={src} alt="" fill priority={i === 0} sizes="100vw" className={styles.slide} />
@@ -49,13 +49,14 @@ export default function Home() {
                         vitrine și stickere, de la concept grafic la montaj.
                     </p>
                     <div className={styles.heroActions}>
-                        <Link href="/calculator" className="btn"><Icon name="calculator" size={20} /> Calculează costul</Link>
-                        <Link href="/portofoliu" className="btn">Vezi lucrările</Link>
+                        <Link href="/calculator" className="btn-ghost"><Icon name="calculator" size={20} /> Calculează costul</Link>
+                        <Link href="/portofoliu" className="btn-ghost"><Icon name="gallery" size={20} /> Vezi lucrările</Link>
                     </div>
                 </div>
             </section>
 
-            <section className={`section snap-slide ${styles.services}`} aria-labelledby="servicii">
+            <section className={`section snap-slide ${styles.services}`} aria-labelledby="servicii" data-label="Servicii">
+                <Blobs variant="soft" />
                 <div className="container">
                     <h2 id="servicii" className="section-title">Servicii</h2>
                 </div>
@@ -71,7 +72,7 @@ export default function Home() {
                                     <strong>{s.short}</strong>
                                     <small>{s.teaser}</small>
                                 </span>
-                                <span className="arrow-sticker peel" aria-hidden="true"><Icon name="arrow" size={20} /></span>
+                                <span className="arrow-sticker" aria-hidden="true"><Icon name="arrow" size={20} /></span>
                             </Link>
                         </li>
                     ))}
@@ -79,7 +80,7 @@ export default function Home() {
             </section>
 
             {/* clients and recent work share one screen */}
-            <div className={`snap-slide ${styles.pair}`}>
+            <div className={`snap-slide ${styles.pair}`} data-label="Clienți și lucrări">
             <section className={`tinted ${styles.clients}`} aria-labelledby="clienti">
                 <Image src="/img/wrap-salon.webp" alt="" fill sizes="100vw" className="tint-photo" />
                 <Blobs variant="photo" />
@@ -122,12 +123,12 @@ export default function Home() {
                             </li>
                         ))}
                     </Carousel>
-                    <p className={styles.more}><Link href="/portofoliu" className="btn">Vezi tot portofoliul</Link></p>
+                    <p className={styles.more}><Link href="/portofoliu" className="btn-ghost on-light">Vezi tot portofoliul</Link></p>
                 </div>
             </section>
             </div>
 
-            <div className="snap-slide snap-last">
+            <div className="snap-slide snap-last" data-label="Contact">
                 <ContactCta />
             </div>
             <ScrollCue />

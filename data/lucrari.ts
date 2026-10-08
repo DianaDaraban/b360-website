@@ -9,12 +9,14 @@ export const categorii = [
     { slug: "autocare", label: "Autocare", singular: "Inscripționare autocar" },
     { slug: "camioane", label: "Camioane și cisterne", singular: "Inscripționare camion" },
     { slug: "vitrine", label: "Vitrine", singular: "Colantare vitrină" },
-    { slug: "signalistica", label: "Signalistică", singular: "Signalistică" },
-    { slug: "stickere", label: "Stickere", singular: "Stickere" },
+    // signage photos are filed under stickers (too few of either to stand alone)
+    { slug: "stickere", label: "Stickere și signalistică", singular: "Stickere și signalistică" },
     { slug: "speciale", label: "Moto, bărci, avioane", singular: "Inscripționare" },
 ] as const
 
-const withAlt = (lucrari as Lucrare[]).map(l => {
+const merged: Record<string, string> = { signalistica: "stickere" }
+const withAlt = (lucrari as Lucrare[]).map(raw => {
+    const l = { ...raw, cat: merged[raw.cat] ?? raw.cat }
     const cat = categorii.find(c => c.slug === l.cat)
     const client = l.client ? clienti.find(c => c.match?.test(l.client!)) : undefined
     return {

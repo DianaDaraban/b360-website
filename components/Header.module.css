@@ -229,21 +229,22 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        padding-block: 4px;
+        padding-block: 2px;
         text-decoration: none;
         transition: color 0.25s;
     }
+    /* thin red line drawn out from the middle, right under the word */
     .navLink::after {
         content: "";
         position: absolute;
         left: 0;
         right: 0;
-        bottom: -1px;
-        height: 3px;
-        border-radius: 3px;
+        bottom: 0;
+        height: 1.5px;
+        border-radius: 2px;
         background: var(--red);
         scale: 0 1;
-        transform-origin: left;
+        transform-origin: center;
         transition: scale 0.45s var(--ease-out);
     }
     .navLink:hover { color: var(--red-dark); }

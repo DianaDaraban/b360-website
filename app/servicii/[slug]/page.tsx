@@ -2,12 +2,13 @@ import type { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import { Fragment } from "react"
 import { Blobs } from "@/components/Blobs"
 import { CarCompare } from "@/components/CarCompare"
 import { ContactCta } from "@/components/ContactCta"
 import { Icon } from "@/components/Icon"
 import { Rich } from "@/components/Rich"
+import { RevealTitle } from "@/components/RevealTitle"
+import { ScrollCue } from "@/components/ScrollCue"
 import { getServiciu, servicii } from "@/data/servicii"
 import { site } from "@/lib/site"
 import styles from "./service.module.css"
@@ -57,112 +58,111 @@ export default async function ServiciuPage({ params }: Props) {
         },
     ]
     const gallery = `/portofoliu?categorie=${s.portfolio.category}`
-    const words = s.title.split(" ")
 
     return (
-        <>
-            <section className={`tinted ${styles.hero}`}>
+        <div className="snap-page">
+            <section className={`tinted snap-slide hero-sheen ${styles.hero}`} data-label="Început">
                 <Image src={s.hero} alt="" fill priority sizes="100vw" className="tint-photo" />
                 <Blobs variant="photo" />
-                <div className="container" style={{ "--n": words.length } as React.CSSProperties}>
+                <div className="container" style={{ "--n": s.title.split(" ").length } as React.CSSProperties}>
                     <Link href="/servicii" className={styles.back}><span aria-hidden="true">←</span> Toate serviciile</Link>
                     <p className={styles.heroKicker}>Servicii B360</p>
-                    <h1 aria-label={s.title}>
-                        {words.map((w, i) => <Fragment key={i}><span aria-hidden="true" className={styles.word} style={{ "--i": i } as React.CSSProperties}>{w}</span>{" "}</Fragment>)}
-                    </h1>
+                    <RevealTitle text={s.title} delay={0.2} />
                     <p className={styles.heroTeaser}>{s.teaser}</p>
                     <Link href="/oferta" className={`btn ${styles.heroCta}`}>Cere o ofertă personalizată</Link>
                 </div>
             </section>
 
-            {/* intro beside the service photo */}
-            <section className={`section ${styles.light}`}>
-                <div className={`container ${styles.intro}`}>
+            {/* overview: the intro on the left, the kinds of work as cards on the right */}
+            <section className={`section snap-slide ${styles.overview}`} data-label="Pe scurt">
+                <div className={`container ${styles.overviewGrid}`}>
                     <div className={styles.introText}>
                         <p className={styles.eyebrow}>Pe scurt</p>
                         <h2 className={styles.leadTitle}>{s.lead.title}</h2>
-                        <p className="lead"><Rich text={s.lead.text} /></p>
+                        <p className={styles.leadText}><Rich text={s.lead.text} /></p>
+                        <h3 className={styles.checkTitle}>{s.typesTitle}</h3>
+                        <p className={styles.typesText}>{s.typesText}</p>
                     </div>
-                    <figure className={styles.introPhoto}>
-                        <Image src={s.image} alt="" width={720} height={540} sizes="(min-width: 1024px) 500px, 92vw" />
-                    </figure>
+                    <div className={styles.typeGrid}>
+                        {s.types.map(t => (
+                            <div key={t.title} className={styles.type}>
+                                {/* Figma: chevrons, the title, then a dotted line with an arrow running to the gallery sticker */}
+                                <Link href={gallery} className={styles.typeHead}>
+                                    <span className={styles.chevrons} aria-hidden="true" />
+                                    <h3>{t.title}</h3>
+                                    <span className={styles.trail} aria-hidden="true" />
+                                    <span className={styles.trailLabel} aria-hidden="true">Vezi lucrările</span>
+                                    <span className={`${styles.galleryDot} peel`} aria-hidden="true"><Icon name="gallery" size={22} /></span>
+                                    <span className="sr-only">Vezi lucrările din galerie</span>
+                                </Link>
+                                <ul className="squares">
+                                    {t.items.map(i => <li key={i}>{i}</li>)}
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
 
-            <section className={`section ${styles.types}`}>
-                <div className="narrow">
-                    <h2 className={styles.checkTitle}>{s.typesTitle}</h2>
-                    <p className={styles.typesText}>{s.typesText}</p>
-                    {s.types.map(t => (
-                        <div key={t.title} className={styles.type}>
-                            {/* Figma: chevrons, the title, then a dotted line with an arrow running to the gallery sticker */}
-                            <Link href={gallery} className={styles.typeHead}>
-                                <span className={styles.chevrons} aria-hidden="true" />
-                                <h3>{t.title}</h3>
-                                <span className={styles.trail} aria-hidden="true" />
-                                <span className={styles.trailLabel} aria-hidden="true">Vezi lucrările</span>
-                                <span className={`${styles.galleryDot} peel`} aria-hidden="true"><Icon name="gallery" size={24} /></span>
-                                <span className="sr-only">Vezi lucrările din galerie</span>
-                            </Link>
-                            <ul className="squares">
-                                {t.items.map(i => <li key={i}>{i}</li>)}
-                            </ul>
-                        </div>
-                    ))}
-                    {s.comparison && <CarCompare />}
-                </div>
-            </section>
+            {/* the integral / partial slider gets a screen of its own */}
+            {s.comparison && (
+                <section className={`section snap-slide ${styles.types}`} data-label="Integral sau parțial">
+                    <div className="narrow">
+                        <h2 className={styles.center}>Integral sau parțial?</h2>
+                        <p className={styles.compareHint}>Trage de linie ca să compari cele două variante pe aceeași mașină.</p>
+                        <CarCompare />
+                    </div>
+                </section>
+            )}
 
-            <section className="section tinted">
+            {/* benefits and FAQ side by side on one photo screen; the fleet / PPF note as a strip under them */}
+            <section className={`section tinted snap-slide ${styles.details}`} data-label="Beneficii și întrebări">
                 <Image src={s.benefitsPhoto} alt="" fill sizes="100vw" className="tint-photo" />
                 <Blobs variant="photo" />
                 <div className="container">
-                    <p className={`${styles.eyebrow} ${styles.onPhoto}`}>Beneficii</p>
-                    <h2 className={styles.center}>{benefitsTitle[s.slug] ?? "Beneficii"}</h2>
-                    <ul className={styles.benefits}>
-                        {s.benefits.map(b => {
-                            // "Promovare mobilă 24/7 – brandul tău e vizibil…": the part before the dash is the tile title
-                            const [title, rest] = b.split(/ – /)
-                            return <li key={b}><strong>{title}</strong>{rest && <span>{rest}</span>}</li>
-                        })}
-                    </ul>
-                </div>
-            </section>
-
-            {s.extra && (
-                <section className="section">
-                    <div className="container">
-                        {/* highlighted banner: the question, the answer and the portfolio button */}
+                    <div className={styles.detailsGrid}>
+                        <div>
+                            <p className={`${styles.eyebrow} ${styles.onPhoto}`}>Beneficii</p>
+                            <h2 className={styles.detailsTitle}>{benefitsTitle[s.slug] ?? "Beneficii"}</h2>
+                            <ul className={styles.benefits}>
+                                {s.benefits.map(b => {
+                                    // "Promovare mobilă 24/7 – brandul tău e vizibil…": the part before the dash is the title
+                                    const [title, rest] = b.split(/ – /)
+                                    return <li key={b}><strong>{title}</strong>{rest && <span>{rest}</span>}</li>
+                                })}
+                            </ul>
+                        </div>
+                        <div>
+                            <p className={`${styles.eyebrow} ${styles.onPhoto}`}>Întrebări frecvente</p>
+                            <h2 className={styles.detailsTitle}>Ce ne întreabă clienții</h2>
+                            <div className={styles.faqList}>
+                                {s.faq.map(f => (
+                                    <details key={f.q} className={styles.faqItem}>
+                                        <summary>{f.q}</summary>
+                                        <p>{f.a}</p>
+                                    </details>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                    {s.extra && (
                         <div className={styles.banner}>
                             <div>
                                 <p className={styles.question}>{s.extra.question}</p>
                                 <h2>{s.extra.title}</h2>
                                 <p><Rich text={s.extra.text} /></p>
                             </div>
-                            <Link href={gallery} className="btn">{s.portfolio.label}</Link>
+                            <Link href={gallery} className="btn-ghost">{s.portfolio.label}</Link>
                         </div>
-                    </div>
-                </section>
-            )}
-
-            <section className={`section tinted ${styles.faq}`}>
-                <Image src="/img/paper.webp" alt="" fill sizes="100vw" className="tint-photo" />
-                <Blobs variant="photo" />
-                <div className="narrow">
-                    <h2 className={styles.center}>Întrebări frecvente (FAQ)</h2>
-                    <div className={styles.faqList}>
-                        {s.faq.map(f => (
-                            <details key={f.q} className={styles.faqItem}>
-                                <summary>{f.q}</summary>
-                                <p>{f.a}</p>
-                            </details>
-                        ))}
-                    </div>
+                    )}
                 </div>
             </section>
 
-            <ContactCta />
+            <div className="snap-slide snap-last" data-label="Contact">
+                <ContactCta />
+            </div>
+            <ScrollCue />
             <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-        </>
+        </div>
     )
 }

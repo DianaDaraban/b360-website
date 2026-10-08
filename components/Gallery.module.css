@@ -1,6 +1,6 @@
 /* ---------- category chips ---------- */
 .filters {
-    margin: 30px calc(-1 * var(--gutter)) 18px;
+    margin: 18px calc(-1 * var(--gutter)) 6px;
     padding: 6px var(--gutter);
     display: flex;
     gap: 10px;
@@ -74,16 +74,15 @@
 
 /* ---------- client stickers (shared look in globals .client-sticker) ---------- */
 /* small stickers like before, with plenty of room between them */
-.clients { --carousel-gap: 40px; margin: 0 0 10px; }
+.clients { --carousel-gap: 40px; margin: 0 0 14px; }
 .clients li { display: grid; place-items: center; padding: 2px; }
 .clients :global(.client-sticker) { --d: 78px; }
 .clientSticker { opacity: 0.92; transition: --c 0.45s cubic-bezier(0.3, 0.9, 0.4, 1), --lift 0.45s cubic-bezier(0.3, 0.9, 0.4, 1), opacity 0.3s, scale 0.35s var(--ease-out), box-shadow 0.35s; }
 .clientSticker:hover { opacity: 1; }
 .clientSticker[aria-pressed="true"] { --c: calc(var(--d) * 0.6); --lift: 108deg; opacity: 1; scale: 1.06; box-shadow: 0 0 0 4px var(--cream), 0 0 0 6px var(--red), 0 8px 18px rgb(80 0 0 / 0.3); }
 
-.count { margin-bottom: 18px; text-align: center; color: var(--muted); }
 
-/* ---------- photo frames: a cream mat, rounded, lifting and tilting slightly on hover ---------- */
+/* ---------- photo cards: editorial, small radius, red line drawn along the bottom on hover ---------- */
 .grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
 .grid li { animation: tileIn 0.6s var(--ease-out) both; animation-delay: calc(var(--n) * 35ms); }
 @keyframes tileIn { from { opacity: 0; translate: 0 18px; scale: 0.96; } }
@@ -91,43 +90,51 @@
     position: relative;
     display: block;
     width: 100%;
-    padding: 5px;
+    height: 100%;
+    padding: 0;
     border: 0;
-    border-radius: 18px;
-    background: linear-gradient(140deg, #f3eae1, #f3eae1);
-    box-shadow: 0 4px 14px rgb(60 30 30 / 0.12);
+    border-radius: 6px;
+    background: #2b2729;
+    box-shadow: 0 6px 16px rgb(40 20 20 / 0.12);
     overflow: hidden;
+    text-decoration: none;
     cursor: zoom-in;
-    transition: translate 0.45s var(--ease-out), box-shadow 0.45s var(--ease-out), rotate 0.45s var(--ease-out);
+    transition: box-shadow 0.45s var(--ease-out);
 }
-.frame img {
-    width: 100%;
-    aspect-ratio: 1;
-    object-fit: cover;
-    border-radius: 14px;
-    transition: scale 0.6s var(--ease-out), filter 0.4s;
+.frame::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    height: 3px;
+    background: var(--red);
+    scale: 0 1;
+    transform-origin: left;
+    transition: scale 0.5s var(--ease-out);
 }
-/* hover: the frame stays put, the photo zooms in place from its centre inside the mat */
-.frame:hover, .frame:focus-visible { box-shadow: 0 16px 30px rgb(120 30 30 / 0.22), 0 0 0 2px rgb(238 51 56 / 0.55); }
-.photo { display: block; overflow: hidden; border-radius: 14px; }
-.frame:hover img { scale: 1.08; filter: saturate(1.15); }
-/* caption slides up from the bottom edge */
+.frame:hover, .frame:focus-visible { box-shadow: 0 16px 32px rgb(40 20 20 / 0.24); }
+.frame:hover::after, .frame:focus-visible::after { scale: 1 1; }
+.frame img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 0; transition: scale 0.8s var(--ease-out), filter 0.5s; }
+.frame:hover img, .frame:focus-visible img { scale: 1.06; filter: brightness(0.85) saturate(1.1); }
 .caption {
     position: absolute;
-    left: 5px;
-    right: 5px;
-    bottom: 5px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: grid;
     gap: 2px;
-    padding: 28px 12px 10px;
-    border-radius: 0 0 14px 14px;
-    background: linear-gradient(transparent, rgb(30 15 15 / 0.82));
+    padding: 40px 16px 14px;
+    border-radius: 0;
+    background: linear-gradient(transparent, rgb(20 12 14 / 0.82));
     color: var(--cream);
     text-align: left;
     opacity: 0;
-    translate: 0 30%;
+    translate: 0 12px;
     transition: opacity 0.35s, translate 0.45s var(--ease-out);
 }
+.photo { display: block; overflow: hidden; }
 .caption small { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
 .caption strong { font: 700 0.95rem/1.2 var(--font-head); color: var(--white); }
 .frame:hover .caption, .frame:focus-visible .caption { opacity: 1; translate: 0 0; }
@@ -151,7 +158,13 @@
 .lightbox::backdrop { background: transparent; }
 .lightbox figure { margin: 0; display: grid; gap: 12px; justify-items: center; padding: 64px 12px 24px; animation: photoIn 0.45s var(--ease-out); }
 @keyframes photoIn { from { opacity: 0; scale: 0.96; } }
-.lightbox img { max-width: min(100%, 1200px); max-height: calc(100dvh - 140px); width: auto; height: auto; object-fit: contain; border-radius: 10px; }
+.lightbox img { max-width: min(100%, 1200px); max-height: calc(100dvh - 140px); width: auto; height: auto; object-fit: contain; border-radius: 6px; }
+.lbStage { display: grid; }
+.lbStage > img { grid-area: 1 / 1; }
+.lbThumb { filter: blur(6px); scale: 1.01; }
+.lbFull { opacity: 0; transition: opacity 0.35s ease; }
+.lbFull[data-loaded] { opacity: 1; }
+.preload { position: absolute; width: 1px !important; height: 1px !important; opacity: 0; pointer-events: none; }
 .lightbox figcaption { font-weight: 600; color: var(--cream); }
 .close, .prev, .next {
     position: fixed;
@@ -159,9 +172,12 @@
     height: 52px;
     border: 0;
     border-radius: 50%;
+    /* SVG icons centred in the disc (text glyphs sat off-centre) */
+    display: grid;
+    place-items: center;
+    padding: 0;
     background: rgb(243 234 225 / 0.12);
     color: var(--white);
-    font: 400 2rem/1 var(--font);
     cursor: pointer;
     transition: background 0.25s, scale 0.25s;
 }
@@ -176,5 +192,8 @@
 }
 @media (min-width: 1024px) {
     .grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
-    .filters { justify-content: center; flex-wrap: wrap; margin-inline: 0; }
+    /* all categories on one row */
+    .filters { justify-content: center; flex-wrap: nowrap; gap: 8px; margin-inline: 0; }
+    .chip { padding: 8px 16px; font-size: 0.88rem; }
+    .chip[aria-pressed="true"] { padding: 10px 34px 10px 18px; }
 }

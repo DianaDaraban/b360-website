@@ -20,6 +20,7 @@ export function Gallery({ items, categories, clients }: { items: Item[]; categor
     const client = params.get("client") ?? ""
     const [shown, setShown] = useState(PAGE)
     const [open, setOpen] = useState<number | null>(null)
+    const [loaded, setLoaded] = useState<string | null>(null)
     const dialog = useRef<HTMLDialogElement>(null)
 
     const filtered = client ? items.filter(i => i.clientSlug === client) : category ? items.filter(i => i.cat === category) : items
@@ -61,7 +62,7 @@ export function Gallery({ items, categories, clients }: { items: Item[]; categor
                 ))}
             </Carousel>
 
-            <p className={styles.count} aria-live="polite">
+            <p className="sr-only" aria-live="polite">
                 {filtered.length} {filtered.length === 1 ? "lucrare" : "lucrări"}
                 {client && <> pentru <strong>{clients.find(c => c.slug === client)?.name}</strong></>}
             </p>
@@ -82,7 +83,7 @@ export function Gallery({ items, categories, clients }: { items: Item[]; categor
 
             {shown < filtered.length && (
                 <p className={styles.more}>
-                    <button className="btn" onClick={() => setShown(s => s + PAGE)}>
+                    <button className="btn-ghost on-light" onClick={() => setShown(s => s + PAGE)}>
                         Mai multe lucrări ({filtered.length - shown})
                     </button>
                 </p>
@@ -98,13 +99,32 @@ export function Gallery({ items, categories, clients }: { items: Item[]; categor
             >
                 {open !== null && filtered[open] && (
                     <figure key={filtered[open].src}>
-                        <Image src={filtered[open].src} alt={filtered[open].alt} width={filtered[open].w} height={filtered[open].h} sizes="100vw" />
+                        {/* the grid thumbnail (already in the browser cache) shows at once; the large photo fades in over it */}
+                        <span className={styles.lbStage}>
+                            <Image src={filtered[open].src} alt="" aria-hidden width={filtered[open].w} height={filtered[open].h} sizes="(min-width: 1024px) 290px, (min-width: 640px) 31vw, 47vw" className={styles.lbThumb} />
+                            <Image
+                                src={filtered[open].src}
+                                alt={filtered[open].alt}
+                                width={filtered[open].w}
+                                height={filtered[open].h}
+                                sizes="(min-width: 1240px) 1200px, 100vw"
+                                priority
+                                className={styles.lbFull}
+                                data-loaded={loaded === filtered[open].src || undefined}
+                                onLoad={() => setLoaded(filtered[open].src)}
+                            />
+                        </span>
                         <figcaption>{filtered[open].alt}</figcaption>
                     </figure>
                 )}
-                <button className={styles.close} onClick={() => dialog.current?.close()} aria-label="Închide">×</button>
-                <button className={styles.prev} onClick={() => step(-1)} aria-label="Lucrarea anterioară">‹</button>
-                <button className={styles.next} onClick={() => step(1)} aria-label="Lucrarea următoare">›</button>
+                {/* the neighbours load in the background, so the arrows feel instant */}
+                {open !== null && filtered.length > 1 && [open - 1, open + 1].map(n => {
+                    const item = filtered[(n + filtered.length) % filtered.length]
+                    return <Image key={`pre-${item.src}`} src={item.src} alt="" aria-hidden width={item.w} height={item.h} sizes="(min-width: 1240px) 1200px, 100vw" loading="eager" className={styles.preload} />
+                })}
+                <button className={styles.close} onClick={() => dialog.current?.close()} aria-label="Închide"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg></button>
+                <button className={styles.prev} onClick={() => step(-1)} aria-label="Lucrarea anterioară"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg></button>
+                <button className={styles.next} onClick={() => step(1)} aria-label="Lucrarea următoare"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg></button>
             </dialog>
         </>
     )

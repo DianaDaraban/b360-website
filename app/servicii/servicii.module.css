@@ -30,8 +30,9 @@
     translate: 0 -4px;
     box-shadow: 0 16px 32px rgb(120 20 20 / 0.15);
 }
-.photo { display: block; min-height: 100%; overflow: hidden; }
-.photo img { width: 100%; height: 100%; object-fit: cover; transition: scale 0.7s var(--ease-out); }
+/* the photo fills the tile's height without setting it (the text decides how tall a tile is) */
+.photo { position: relative; display: block; min-height: 120px; overflow: hidden; }
+.photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: scale 0.7s var(--ease-out); }
 .card:hover .photo img { scale: 1.07; }
 
 .body { display: flex; flex-direction: column; gap: 8px; padding: 16px 16px 14px; text-align: left; }
@@ -50,11 +51,19 @@
 .card:hover .more :global(.arrow-sticker) { --c: 19px; --lift: 124deg; }
 .card:hover .more svg { translate: 2px 0; }
 
+/* desktop: heading and the four tiles fit the window with room around them, whatever its
+   height; sizes follow the window height (vh) between a small and the full size */
 @media (min-width: 900px) {
-    .section { padding-top: 44px; }
-    .grid { grid-template-columns: repeat(2, 1fr); gap: 22px; margin-top: 36px; }
-    .card { min-height: 210px; }
-    .body { padding: 22px 24px 18px; gap: 10px; }
-    .cardTitle { font-size: 1.3rem; }
-    .text { font-size: 0.98rem; -webkit-line-clamp: 4; }
+    .section { padding-block: clamp(14px, 4vh, 48px); }
+    .head { gap: clamp(4px, 1vh, 10px); }
+    .title { font-size: clamp(1.5rem, 4.6vh, 2.5rem); }
+    .head p { font-size: clamp(0.88rem, 2vh, 1.12rem); line-height: 1.5; }
+    .grid { grid-template-columns: repeat(2, 1fr); gap: clamp(10px, 2.2vh, 20px); margin-top: clamp(10px, 3vh, 30px); max-width: 1080px; margin-inline: auto; }
+    .card { min-height: 0; grid-template-columns: 34% 1fr; border-radius: 16px; }
+    .photo { min-height: 0; }
+    .body { padding: clamp(8px, 1.8vh, 18px) 20px clamp(8px, 1.6vh, 16px); gap: clamp(3px, 0.8vh, 8px); }
+    .cardTitle { font-size: clamp(1rem, 2.6vh, 1.25rem); }
+    .text { font-size: clamp(0.8rem, 1.9vh, 0.95rem); line-height: 1.45; -webkit-line-clamp: 2; }
+    .more { padding-top: 2px; font-size: clamp(0.82rem, 1.9vh, 0.95rem); }
+    .more :global(.arrow-sticker) { width: clamp(28px, 4.4vh, 40px); height: clamp(28px, 4.4vh, 40px); }
 }

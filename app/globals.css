@@ -117,6 +117,7 @@ html:has(dialog[open]) { overflow: hidden; }
 }
 .blobs-page span { opacity: 0.32; }
 .blobs-photo span { opacity: 0.6; mix-blend-mode: screen; filter: blur(40px); }
+.blobs-soft span { opacity: 0.4; mix-blend-mode: multiply; filter: blur(46px); }
 .blobs span:nth-child(1) { --s: min(70vw, 520px); --col: #ee3338; --d1: 26s; --d2: 11s; top: 4%; left: -8%; }
 .blobs span:nth-child(2) { --s: min(80vw, 600px); --col: #7bb152; --d1: 34s; --d2: 15s; bottom: -6%; right: -10%; animation-delay: -8s, -3s; }
 .blobs span:nth-child(3) { --s: min(60vw, 420px); --col: #f39a2e; --d1: 22s; --d2: 13s; top: 42%; left: 48%; animation-delay: -14s, -6s; }
@@ -146,13 +147,14 @@ html:has(dialog[open]) { overflow: hidden; }
 [data-reveal][data-in] { opacity: 1; translate: 0 0; filter: none; }
 
 /* ---------- animated text links ---------- */
+/* hairline drawn out from the middle, right under the letters */
 .ulink {
     text-decoration: none;
-    background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat;
-    padding-bottom: 2px;
-    transition: background-size 0.4s var(--ease-out), color 0.25s;
+    background: linear-gradient(currentColor, currentColor) 50% calc(100% - 1px) / 0 1px no-repeat;
+    padding-bottom: 1px;
+    transition: background-size 0.45s var(--ease-out), color 0.25s;
 }
-.ulink:hover, .ulink:focus-visible { color: var(--red-dark); background-size: 100% 2px; }
+.ulink:hover, .ulink:focus-visible { color: var(--red-dark); background-size: 100% 1px; }
 
 /* ---------- peeling sticker (the B360 signature detail) ----------
    Modelled on a real vinyl sticker: the top-right corner folds back along a 45° line.
@@ -252,6 +254,7 @@ a:hover > .peel, a:focus-visible > .peel, button:hover > .peel {
     text-decoration: none;
     transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
+.btn-ghost { justify-content: center; transition: background 0.3s, color 0.3s, border-color 0.3s; }
 .btn-ghost:hover, .btn-ghost:focus-visible { background: var(--white); border-color: var(--white); color: var(--ink-strong); }
 .btn-ghost:has(.arrow-sticker) { gap: 26px; padding: 0 4px 0 26px; }
 .btn-ghost.on-light:hover, .btn-ghost.on-light:focus-visible { background: var(--ink-strong); border-color: var(--ink-strong); color: var(--white); }
@@ -328,4 +331,44 @@ a:hover > .arrow-sticker svg, a:focus-visible > .arrow-sticker svg { translate: 
     .snap-slide { min-height: calc(100svh - var(--header-h)); display: flex; flex-direction: column; justify-content: center; }
     /* the closing call to action keeps its own height; the footer follows it */
     .snap-slide.snap-last { min-height: 0; display: block; }
+}
+
+/* ---------- headings revealed like vinyl being applied (components/RevealTitle) ----------
+   A red block sweeps in from the left over each word, then pulls away to the right; the word
+   appears the moment the block covers it. */
+.reveal-word { position: relative; display: inline-block; }
+.reveal-word > span { display: inline-block; opacity: 0; animation: rwText 0.01s linear both; animation-delay: calc(var(--d, 0s) + 0.35s + var(--i) * 0.12s); }
+.reveal-word::after {
+    content: "";
+    position: absolute;
+    inset: 0.08em -0.06em 0.02em;
+    background: linear-gradient(90deg, #ee3338, #c9161f);
+    border-radius: 3px;
+    scale: 0 1;
+    transform-origin: left;
+    animation: rwBlock 0.7s cubic-bezier(0.77, 0, 0.18, 1) both;
+    animation-delay: calc(var(--d, 0s) + var(--i) * 0.12s);
+}
+@keyframes rwText { to { opacity: 1; } }
+@keyframes rwBlock {
+    0% { scale: 0 1; transform-origin: left; }
+    50% { scale: 1 1; transform-origin: left; }
+    50.01% { transform-origin: right; }
+    100% { scale: 0 1; transform-origin: right; }
+}
+
+/* ---------- gloss sweeping over a hero photo, like light running along fresh vinyl ---------- */
+.hero-sheen::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 38%, rgb(255 255 255 / 0.16) 47%, rgb(255 255 255 / 0.32) 50%, rgb(255 255 255 / 0.16) 53%, transparent 62%) 0 0 / 300% 100% no-repeat;
+    animation: sheen 7s ease-in-out 1.6s infinite;
+}
+@keyframes sheen { 0% { background-position: 120% 0; } 45%, 100% { background-position: -20% 0; } }
+@media (prefers-reduced-motion: reduce) {
+    .reveal-word > span { opacity: 1; animation: none; }
+    .reveal-word::after, .hero-sheen::after { animation: none; display: none; }
 }
