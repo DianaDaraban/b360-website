@@ -76,7 +76,7 @@ export function Header() {
 
                     <Link href="/portofoliu" className={styles.navLink} aria-current={isActive("/portofoliu") ? "page" : undefined}>Portofoliu</Link>
                     <Link href="/calculator" className={`${styles.navLink} ${styles.calcLink}`} aria-current={isActive("/calculator") ? "page" : undefined}>
-                        <Icon name="calculator" size={20} /> Calculator
+                        <Icon name="calculator" size={20} uncut /> Calculator
                     </Link>
                     <Link href="/contact" className={styles.navLink} aria-current={isActive("/contact") ? "page" : undefined}>Contact</Link>
                     <Link href="/oferta" className="btn">Cere ofertă</Link>

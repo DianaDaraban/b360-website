@@ -99,10 +99,11 @@ const icons: Record<IconName, { box: string; node: React.ReactNode }> = {
 // empty strip between them. Same geometry as the generator: cut at 95, half-gap 5, 120 x 120 box.
 const CUT = new Set<IconName>(["phone", "calculator", "gallery", "store", "printer"])
 
-export function Icon({ name, size = 24, className }: { name: IconName; size?: number; className?: string }) {
+// uncut: the plain one-colour glyph (where the red corner would clash, e.g. on a red hover)
+export function Icon({ name, size = 24, className, uncut }: { name: IconName; size?: number; className?: string; uncut?: boolean }) {
     const { box, node } = icons[name]
     const id = useId().replace(/:/g, "")
-    if (CUT.has(name)) {
+    if (CUT.has(name) && !uncut) {
         return (
             <svg viewBox={box} width={size} height={size} className={className} aria-hidden="true" focusable="false">
                 <defs>
