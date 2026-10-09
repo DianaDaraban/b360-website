@@ -52,7 +52,8 @@ export async function POST(req: Request) {
     const files = data.getAll("fisiere").filter((f): f is File => f instanceof File && f.size > 0)
     if (files.reduce((n, f) => n + f.size, 0) > MAX_FILES_BYTES) return reply(413, { error: "files" })
 
-    const key = process.env.RESEND_API_KEY
+    // trimmed: a key pasted through some shells arrives with an invisible BOM in front
+    const key = process.env.RESEND_API_KEY?.replace(/^\uFEFF/, "").trim()
     if (!key) return reply(503, { error: "not-configured" })
 
     // every filled field, grouped (checkbox lists joined), known fields first
