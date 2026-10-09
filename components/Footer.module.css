@@ -10,7 +10,6 @@
 .contact a { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; color: var(--cream); }
 /* Figma contact icons: cream outline with the red piece; the phone is all red */
 .contact svg { flex: none; color: var(--cream); }
-.contact a:first-child svg { color: var(--red); }
 
 .links {
     list-style: none;

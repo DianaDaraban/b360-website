@@ -1,3 +1,4 @@
+import { useId } from "react"
 import type { IconName } from "@/lib/site"
 
 // Icons exported from the Figma file. The grey parts (#505050 in Figma) use currentColor and the
@@ -93,8 +94,26 @@ const icons: Record<IconName, { box: string; node: React.ReactNode }> = {
     },
 }
 
+// Icons cut on the diagonal (the B360 icon style, from the Figma script): the glyph is drawn twice,
+// the top-left corner (x + y < 90) in red, the rest in the text colour (x + y > 100), with a 10-unit
+// empty strip between them. Same geometry as the generator: cut at 95, half-gap 5, 120 x 120 box.
+const CUT = new Set<IconName>(["phone", "calculator", "gallery", "store", "printer"])
+
 export function Icon({ name, size = 24, className }: { name: IconName; size?: number; className?: string }) {
     const { box, node } = icons[name]
+    const id = useId().replace(/:/g, "")
+    if (CUT.has(name)) {
+        return (
+            <svg viewBox={box} width={size} height={size} className={className} aria-hidden="true" focusable="false">
+                <defs>
+                    <clipPath id={`${id}r`}><polygon points="-200,-200 290,-200 -200,290" /></clipPath>
+                    <clipPath id={`${id}g`}><polygon points="300,-200 400,-200 400,400 -200,400 -200,300" /></clipPath>
+                </defs>
+                <g clipPath={`url(#${id}r)`} style={{ color: "var(--red)" }}>{node}</g>
+                <g clipPath={`url(#${id}g)`}>{node}</g>
+            </svg>
+        )
+    }
     return (
         <svg viewBox={box} width={size} height={size} className={className} aria-hidden="true" focusable="false">
             {node}

@@ -51,7 +51,6 @@
     box-shadow: 0 0 0 1px rgb(238 51 56 / 0.35), 0 8px 18px rgb(80 20 20 / 0.18);
     transition: --c 0.45s, --lift 0.45s, box-shadow 0.3s, translate 0.35s var(--ease-out);
 }
-.actions li:first-child .icon { color: var(--red); }
 .action:hover .icon { --c: 40px; --lift: 114deg; translate: 0 -3px; box-shadow: 0 0 0 1px rgb(238 51 56 / 0.35), 0 12px 24px rgb(80 20 20 / 0.24); }
 .action:hover > span:last-child { color: var(--red); }
 @media (min-width: 768px) { .icon { width: 76px; height: 76px; } .actions { gap: 32px; } }

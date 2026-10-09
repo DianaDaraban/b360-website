@@ -28,6 +28,8 @@
 .at { flex: none; max-width: none !important; --red: #ffb3b5; color: var(--white); filter: drop-shadow(0 3px 2px rgb(0 0 0 / 0.25)); }
 .home { gap: 6px; font-size: 1.2rem; font-family: var(--font-head); }
 .home svg { --red: var(--white); }
+/* cut icons on the red bar: the corner piece in light pink, like the split @ */
+.side svg { --red: #ffb3b5; }
 
 /* The white sticker rises above the bar, corner peeling */
 .phone {
