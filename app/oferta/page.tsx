@@ -70,7 +70,7 @@ export default function OfertaPage() {
                     <div className={styles.block}>
                         <h2 className={styles.blockTitle}><span>2</span>Proiectul</h2>
                         <p className={styles.question}>Tip colantare</p>
-                        <Pills name="tip" options={tipColantare} />
+                        <Pills name="tip" type="radio" options={tipColantare} />
                         <p className={styles.question}>Tip vehicul</p>
                         <Pills name="vehicul" options={tipVehicul} other={{ label: "Alt tip", name: "altTip", placeholder: "ex. motocicletă, barcă" }} />
                         <div className={styles.twoCols}>
