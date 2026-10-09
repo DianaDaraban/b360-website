@@ -1,0 +1,75 @@
+/* ---------- pills ---------- */
+.pills { display: flex; flex-wrap: wrap; gap: 8px; text-shadow: none; }
+.pill { position: relative; cursor: pointer; }
+.pill input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.pill span {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 8px 16px;
+    border: 1.5px solid rgb(243 234 225 / 0.45);
+    border-radius: 999px;
+    background: rgb(40 30 32 / 0.35);
+    color: var(--cream);
+    font: 600 0.92rem/1.2 var(--font-head);
+    transition: background 0.25s, border-color 0.25s, color 0.25s, translate 0.3s var(--ease-out);
+}
+.pill:hover span { border-color: var(--cream); translate: 0 -1px; }
+.pill input:focus-visible + span { outline: 3px solid var(--cream); outline-offset: 2px; }
+/* chosen: red pill with a cream tick */
+.pill input:checked + span { border-color: var(--red); background: linear-gradient(40deg, #ee3338 55%, #c9161f); color: var(--white); box-shadow: 0 4px 12px rgb(80 0 0 / 0.3); }
+.pill input:checked + span::before { content: ""; width: 5px; height: 10px; margin: -3px 2px 0 0; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; rotate: 45deg; }
+
+.otherInput {
+    width: 0;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: rgb(243 238 234 / 0.94);
+    color: var(--ink-strong);
+    font: 500 0.95rem/1.2 var(--font);
+    opacity: 0;
+    transition: width 0.35s var(--ease-out), opacity 0.25s, padding 0.35s;
+}
+.otherInput[data-open] { width: 200px; padding: 8px 14px; opacity: 1; }
+.otherInput:focus { outline: none; box-shadow: inset 0 -2px 0 var(--red); }
+
+/* ---------- stepper ---------- */
+.stepper { justify-self: start; display: inline-grid; grid-template-columns: 40px 64px 40px; align-items: center; border-radius: 999px; background: rgb(243 238 234 / 0.94); box-shadow: inset 0 2px 4px rgb(0 0 0 / 0.12); overflow: hidden; }
+.stepper button { height: 40px; border: 0; background: none; color: var(--red); font: 700 1.3rem/1 var(--font); cursor: pointer; transition: background 0.2s; }
+.stepper button:hover:not(:disabled) { background: rgb(238 51 56 / 0.12); }
+.stepper button:disabled { color: var(--muted); opacity: 0.5; cursor: default; }
+.stepper input { width: 100%; height: 40px; border: 0; background: none; text-align: center; color: var(--ink-strong); font: 700 1.05rem/1 var(--font); -moz-appearance: textfield; }
+.stepper input::-webkit-inner-spin-button, .stepper input::-webkit-outer-spin-button { appearance: none; margin: 0; }
+.stepper input:focus { outline: none; }
+
+/* ---------- file drop zone ---------- */
+.drop {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1.5px dashed rgb(243 234 225 / 0.55);
+    border-radius: 14px;
+    background: rgb(40 30 32 / 0.3);
+    color: var(--cream);
+    cursor: pointer;
+    text-shadow: none;
+    transition: border-color 0.25s, background 0.25s;
+}
+.drop input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.drop:hover, .drop[data-over] { border-color: var(--cream); background: rgb(60 30 32 / 0.45); }
+.drop:focus-within { outline: 3px solid var(--cream); outline-offset: 2px; }
+.drop[data-error] { border-color: #ff9a9c; }
+/* a cloud with an arrow, drawn in CSS: a cream disc with an up arrow */
+.dropIcon { position: relative; flex: none; width: 42px; height: 42px; border-radius: 50%; background: var(--cream); }
+.dropIcon::before { content: ""; position: absolute; left: 50%; top: 12px; width: 2.5px; height: 18px; margin-left: -1.25px; background: var(--red); border-radius: 2px; }
+.dropIcon::after { content: ""; position: absolute; left: 50%; top: 12px; width: 10px; height: 10px; margin-left: -5px; border-left: 2.5px solid var(--red); border-top: 2.5px solid var(--red); rotate: 45deg; transform-origin: center; translate: 0 1px; }
+.drop:hover .dropIcon::before, .drop:hover .dropIcon::after { animation: lift 0.6s var(--ease-out); }
+@keyframes lift { 50% { translate: 0 -3px; } }
+.dropText { display: grid; gap: 2px; min-width: 0; }
+.dropText strong { font: 700 0.95rem/1.3 var(--font-head); color: var(--cream); overflow-wrap: anywhere; }
+.dropText small { font-size: 0.8rem; color: rgb(243 234 225 / 0.75); }
+.drop[data-error] small { color: #ffb3b5; }

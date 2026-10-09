@@ -1,8 +1,12 @@
 import type { Metadata } from "next"
 import Image from "next/image"
 import { Blobs } from "@/components/Blobs"
+import { FileDrop, Pills, Stepper } from "@/components/FormBits"
+import { Icon } from "@/components/Icon"
 import { Consent, SmartForm } from "@/components/SmartForm"
-import styles from "../form.module.css"
+import { site } from "@/lib/site"
+import form from "../form.module.css"
+import styles from "./oferta.module.css"
 
 export const metadata: Metadata = {
     title: "Cerere ofertă colantare",
@@ -13,64 +17,90 @@ export const metadata: Metadata = {
 const tipColantare = ["Integrală", "Parțială", "Sticker / elemente personalizate"]
 const tipVehicul = ["Autoturism", "Autoutilitară", "Camion / Flotă"]
 
-// Fields and texts from the Figma "Cerere ofertă" screen; sent by SmartForm to /api/form.
+const pasi = [
+    { title: "Completezi formularul", text: "Ne spui ce vrei și, dacă ai, atașezi grafica sau câteva poze." },
+    { title: "Analizăm proiectul", text: "Vedem suprafețele, materialele potrivite și timpul de lucru." },
+    { title: "Primești oferta", text: "Revenim cu prețul și propunerea, de obicei în aceeași zi lucrătoare." },
+]
+
+// Quote request (Figma "Cerere ofertă"): the steps and quick contacts on the left, the form card on
+// the right; sent by SmartForm to /api/form
 export default function OfertaPage() {
     return (
-        <div className={`tinted ${styles.page}`}>
+        <section className={`tinted ${form.page} ${styles.page}`}>
             <Image src="/img/letters.webp" alt="" fill priority sizes="100vw" className="tint-photo" />
             <Blobs variant="photo" />
 
-            <section className={`narrow ${styles.intro}`}>
-                <h1>Cerere ofertă colantare</h1>
-                <p>Completează formularul de mai jos și îți vom trimite rapid o ofertă personalizată pentru proiectul tău de colantare auto.</p>
-            </section>
+            <div className={`container ${styles.grid}`}>
+                <div className={styles.side}>
+                    <p className="eyebrow start">Cerere ofertă</p>
+                    <h1 className={styles.title}>Spune-ne ce vrei să colantăm</h1>
+                    <p className={styles.lead}>Îți trimitem rapid o ofertă personalizată pentru mașina, flota sau vitrina ta.</p>
 
-            <SmartForm kind="oferta" className={styles.form}>
-                <fieldset className={styles.group}>
-                    <legend><span>Datele de contact</span></legend>
-                    <div className={styles.inner}>
-                        <label className={styles.field}>Nume și prenume *<input name="nume" autoComplete="name" required /></label>
-                        <label className={styles.field}>Companie<input name="companie" autoComplete="organization" /></label>
-                        <label className={styles.field}>
-                            Telefon *
-                            <span className={styles.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" pattern="[0-9 ]{9,12}" required /></span>
-                        </label>
-                        <label className={styles.field}>Email *<input name="email" type="email" autoComplete="email" required /></label>
+                    <ol className={styles.steps}>
+                        {pasi.map((p, i) => (
+                            <li key={p.title}>
+                                <span className={styles.stepNo}>{i + 1}</span>
+                                <span><strong>{p.title}</strong><small>{p.text}</small></span>
+                            </li>
+                        ))}
+                    </ol>
+
+                    <p className={styles.quickTitle}>Preferi să vorbim direct?</p>
+                    <div className={styles.quick}>
+                        <a href={site.phoneHref} className={styles.quickLink}><span className={`${styles.quickIcon} peel`}><Icon name="phone" size={22} /></span>{site.phone}</a>
+                        <a href={`mailto:${site.email}`} className={styles.quickLink}><span className={`${styles.quickIcon} peel`}><Icon name="at" size={22} /></span>{site.email}</a>
                     </div>
-                </fieldset>
+                </div>
 
-                <fieldset className={styles.group}>
-                    <legend><span>Detalii despre proiect</span></legend>
-                    <div className={styles.inner}>
-                        <p className={styles.question}>Tip colantare dorit</p>
-                        <div className={styles.choices}>
-                            {tipColantare.map(t => <label key={t} className={styles.choice}><input type="checkbox" name="tip" value={t} />{t}</label>)}
+                <SmartForm kind="oferta" className={`${form.form} ${styles.card}`} aria-label="Cerere ofertă colantare">
+                    <div className={styles.block}>
+                        <h2 className={styles.blockTitle}><span>1</span>Datele tale</h2>
+                        <div className={styles.fields}>
+                            <label className={form.field}>Nume și prenume *<input name="nume" autoComplete="name" required /></label>
+                            <label className={form.field}>Companie<input name="companie" autoComplete="organization" /></label>
+                            <label className={form.field}>
+                                Telefon *
+                                <span className={form.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" pattern="[0-9 ]{9,12}" required /></span>
+                            </label>
+                            <label className={form.field}>Email *<input name="email" type="email" autoComplete="email" required /></label>
                         </div>
-                        <label className={styles.field}>Număr vehicule<input name="vehicule" type="number" min={1} defaultValue={1} inputMode="numeric" /></label>
+                    </div>
+
+                    <div className={styles.block}>
+                        <h2 className={styles.blockTitle}><span>2</span>Proiectul</h2>
+                        <p className={styles.question}>Tip colantare</p>
+                        <Pills name="tip" options={tipColantare} />
                         <p className={styles.question}>Tip vehicul</p>
-                        <div className={styles.choices}>
-                            {tipVehicul.map(t => <label key={t} className={styles.choice}><input type="checkbox" name="vehicul" value={t} />{t}</label>)}
-                            <div className={styles.otherRow}>
-                                <label className={styles.choice}><input type="checkbox" name="vehicul" value="Alt tip" />Alt tip</label>
-                                <label className={styles.field}><span className="sr-only">Ce tip de vehicul</span><input name="altTip" placeholder="ex. motocicletă" /></label>
+                        <Pills name="vehicul" options={tipVehicul} other={{ label: "Alt tip", name: "altTip", placeholder: "ex. motocicletă, barcă" }} />
+                        <div className={styles.twoCols}>
+                            <div>
+                                <p className={styles.question}>Număr vehicule</p>
+                                <Stepper name="vehicule" label="Număr vehicule" />
+                            </div>
+                            <div>
+                                <p className={styles.question}>Ai deja designul grafic?</p>
+                                <Pills name="design" type="radio" options={["Da", "Nu, vreau grafică"]} />
                             </div>
                         </div>
-                        <p className={styles.question}>Ai deja designul grafic?</p>
-                        <div className={styles.choices}>
-                            <label className={styles.choice}><input type="radio" name="design" value="da" />Da</label>
-                            <label className={styles.choice}><input type="radio" name="design" value="nu" />Nu, vreau să fie realizată grafica</label>
-                        </div>
-                        <label className={styles.field}>Atașare fișiere<input name="fisiere" type="file" multiple accept="image/*,.pdf,.ai,.eps,.svg,.cdr" /><small className={styles.hint}>Până la 4 MB în total. Fișierele mai mari ni le poți trimite pe email.</small></label>
-                        <label className={styles.field}>Informații suplimentare<textarea name="mesaj" /></label>
                     </div>
-                </fieldset>
 
-                <div className={styles.submit}>
-                    <Consent />
-                    <button type="submit" className="btn">Trimite cererea de ofertă</button>
-                    <p className={styles.note}>Câmpurile marcate cu * sunt obligatorii.</p>
-                </div>
-            </SmartForm>
-        </div>
+                    <div className={styles.block}>
+                        <h2 className={styles.blockTitle}><span>3</span>Detalii și fișiere</h2>
+                        <FileDrop name="fisiere" accept="image/*,.pdf,.ai,.eps,.svg,.cdr" maxMb={4} />
+                        <label className={form.field}>
+                            <span className="sr-only">Informații suplimentare</span>
+                            <textarea name="mesaj" placeholder="Informații suplimentare: culori, termen, unde e mașina, orice ne ajută." />
+                        </label>
+                    </div>
+
+                    {/* consent on the left, the send button on the right */}
+                    <div className={styles.sendRow}>
+                        <Consent />
+                        <button type="submit" className="btn">Trimite cererea</button>
+                    </div>
+                </SmartForm>
+            </div>
+        </section>
     )
 }
