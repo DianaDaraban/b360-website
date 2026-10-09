@@ -4,6 +4,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useRef, useState } from "react"
 import { Icon } from "./Icon"
+import { LegalInfo } from "./LegalInfo"
 import { nav } from "@/lib/site"
 import { servicii } from "@/data/servicii"
 import styles from "./Header.module.css"
@@ -133,6 +134,7 @@ export function Header() {
                             </li>
                         ))}
                     </ul>
+                    <LegalInfo className={styles.menuLegal} onNavigate={closeMenu} />
                 </nav>
             </dialog>
         </header>

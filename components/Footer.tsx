@@ -1,9 +1,10 @@
 import Link from "next/link"
 import { nav, site } from "@/lib/site"
 import { Icon } from "./Icon"
+import { LegalInfo } from "./LegalInfo"
 import styles from "./Footer.module.css"
 
-// Three compact rows: brand + contact, the page links, copyright
+// Three compact rows: brand + contact, the page links, copyright with the legal details
 export function Footer() {
     return (
         <footer className={`site-footer ${styles.footer}`}>
@@ -24,7 +25,10 @@ export function Footer() {
                     <li><Link href="/oferta" className="ulink">Cerere ofertă</Link></li>
                 </ul>
             </nav>
-            <p className={`container ${styles.copy}`}>© {new Date().getFullYear()} B360 Producție publicitară · Colantări și inscripționări din {site.founded}</p>
+            <div className={`container ${styles.bottom}`}>
+                <p className={styles.copy}>© {new Date().getFullYear()} B360 Producție publicitară · Colantări și inscripționări din {site.founded}</p>
+                <LegalInfo className={styles.legal} />
+            </div>
         </footer>
     )
 }

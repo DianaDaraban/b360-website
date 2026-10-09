@@ -26,7 +26,14 @@
 .links a:hover { color: #ff8a8d; }
 .footer :global(.ulink):hover { color: #ff8a8d; }
 
-.copy { margin-top: 14px; font-size: 0.8rem; color: rgb(243 234 225 / 0.55); }
+.bottom { margin-top: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 24px; }
+.copy { font-size: 0.8rem; color: rgb(243 234 225 / 0.55); }
+.legal { font-size: 0.78rem; color: rgb(243 234 225 / 0.55); text-align: right; }
+/* desktop: company line, privacy link and the ANPC pictogram on one row */
+@media (min-width: 1024px) {
+    .legal { display: flex; align-items: center; gap: 18px; }
+    .legal :global(.legal-links) { margin: 0; }
+}
 
 @media (min-width: 1024px) {
     .footer { padding-bottom: 24px; }
@@ -35,5 +42,7 @@
     :global(body:has(.contact-page)) .logo { width: 80px; }
     :global(body:has(.contact-page)) .contact { font-size: 0.95rem; }
     :global(body:has(.contact-page)) .links { margin-top: 8px; padding: 7px 0; }
-    :global(body:has(.contact-page)) .copy { margin-top: 6px; font-size: 0.75rem; }
+    :global(body:has(.contact-page)) .bottom { margin-top: 6px; }
+    :global(body:has(.contact-page)) .legal :global(.legal-badge img) { width: 112px; }
+    :global(body:has(.contact-page)) .copy { font-size: 0.75rem; }
 }

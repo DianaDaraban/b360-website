@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Image from "next/image"
 import { Blobs } from "@/components/Blobs"
+import { Consent, SmartForm } from "@/components/SmartForm"
 import styles from "../form.module.css"
 
 export const metadata: Metadata = {
@@ -12,7 +13,7 @@ export const metadata: Metadata = {
 const tipColantare = ["Integrală", "Parțială", "Sticker / elemente personalizate"]
 const tipVehicul = ["Autoturism", "Autoutilitară", "Camion / Flotă"]
 
-// Fields and texts from the Figma "Cerere ofertă" screen. Sending is wired in phase 4.
+// Fields and texts from the Figma "Cerere ofertă" screen; sent by SmartForm to /api/form.
 export default function OfertaPage() {
     return (
         <div className={`tinted ${styles.page}`}>
@@ -24,7 +25,7 @@ export default function OfertaPage() {
                 <p>Completează formularul de mai jos și îți vom trimite rapid o ofertă personalizată pentru proiectul tău de colantare auto.</p>
             </section>
 
-            <form className={styles.form}>
+            <SmartForm kind="oferta" className={styles.form}>
                 <fieldset className={styles.group}>
                     <legend><span>Datele de contact</span></legend>
                     <div className={styles.inner}>
@@ -59,16 +60,17 @@ export default function OfertaPage() {
                             <label className={styles.choice}><input type="radio" name="design" value="da" />Da</label>
                             <label className={styles.choice}><input type="radio" name="design" value="nu" />Nu, vreau să fie realizată grafica</label>
                         </div>
-                        <label className={styles.field}>Atașare fișiere<input name="fisiere" type="file" multiple accept="image/*,.pdf,.ai,.eps,.svg,.cdr" /></label>
+                        <label className={styles.field}>Atașare fișiere<input name="fisiere" type="file" multiple accept="image/*,.pdf,.ai,.eps,.svg,.cdr" /><small className={styles.hint}>Până la 4 MB în total. Fișierele mai mari ni le poți trimite pe email.</small></label>
                         <label className={styles.field}>Informații suplimentare<textarea name="mesaj" /></label>
                     </div>
                 </fieldset>
 
                 <div className={styles.submit}>
+                    <Consent />
                     <button type="submit" className="btn">Trimite cererea de ofertă</button>
                     <p className={styles.note}>Câmpurile marcate cu * sunt obligatorii.</p>
                 </div>
-            </form>
+            </SmartForm>
         </div>
     )
 }

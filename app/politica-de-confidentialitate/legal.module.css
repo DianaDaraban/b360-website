@@ -1,0 +1,16 @@
+/* Legal text page: a readable column on the cream background */
+.page { padding-block: 48px 72px; }
+.doc { padding: 34px 28px; border: 1px solid rgb(238 51 56 / 0.2); border-radius: 20px; background: rgb(243 234 225 / 0.85); box-shadow: 0 8px 24px rgb(60 20 20 / 0.06); }
+.doc h1 { font-size: clamp(1.8rem, 6vw, 2.6rem); text-align: center; }
+.updated { margin: 6px 0 18px; text-align: center; font-size: 0.88rem; color: var(--muted); }
+.doc h2 { margin: 30px 0 10px; font-size: 1.25rem; text-shadow: none; }
+.doc p, .doc li { font-size: 1rem; line-height: 1.7; }
+.doc p + p { margin-top: 10px; }
+.doc ul { margin: 8px 0; padding-left: 22px; display: grid; gap: 6px; }
+.doc li::marker { color: var(--red); }
+.doc a { color: var(--red-dark); text-underline-offset: 3px; }
+.back { margin-top: 34px; text-align: center; }
+
+@media (min-width: 768px) {
+    .doc { padding: 48px 56px; }
+}

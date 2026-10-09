@@ -94,7 +94,10 @@
 .choice input { width: 20px; height: 20px; accent-color: var(--red); }
 .otherRow { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: center; }
 
-.submit { padding: 12px var(--gutter) 56px; text-align: center; }
+.submit { padding: 12px var(--gutter) 56px; text-align: center; display: grid; justify-items: center; gap: 16px; }
+.submit :global(.consent) { max-width: 560px; text-align: left; }
+.hint { font-size: 0.82rem; font-weight: 500; opacity: 0.85; }
+.contactRow { gap: 16px; }
 .note { margin-top: 14px; font-size: 0.9rem; color: var(--cream); }
 
 /* ---------- calculator ---------- */
@@ -132,5 +135,7 @@
     .calcForm .group legend { padding-inline: 0; background: none; backdrop-filter: none; }
     .calcForm .inner { width: 100%; }
     .calcForm .submit { grid-column: 1 / -1; }
+    .calcForm .wideGroup { grid-column: 1 / -1; }
+    .calcForm .contactRow { grid-template-columns: repeat(3, 1fr); }
     .zones { grid-template-columns: repeat(3, 1fr); }
 }

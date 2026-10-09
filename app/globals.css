@@ -99,6 +99,30 @@ html:has(dialog[open]) { overflow: hidden; }
 .eyebrow::before, .eyebrow::after { content: ""; flex: none; width: 24px; height: 2px; border-radius: 2px; background: currentColor; }
 .tinted .eyebrow, .eyebrow.on-photo { color: #ff9a9c; }
 .eyebrow.start { justify-content: flex-start; }
+/* ---------- site forms (components/SmartForm) ---------- */
+.form-body { display: contents; margin: 0; padding: 0; border: 0; min-width: 0; }
+.consent { display: flex; align-items: flex-start; gap: 10px; font-size: 0.86rem; font-weight: 500; line-height: 1.45; color: var(--cream); text-shadow: 0 1px 3px rgb(0 0 0 / 0.3); cursor: pointer; }
+.consent input { flex: none; width: 18px; height: 18px; margin-top: 1px; accent-color: var(--red); }
+.consent a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.form-status { margin-top: 10px; font-size: 0.92rem; color: var(--cream); text-align: center; }
+.form-error { padding: 10px 14px; border-radius: 10px; background: rgb(150 20 25 / 0.55); }
+.form-status a { color: inherit; font-weight: 700; }
+.form-done { display: grid; justify-items: center; gap: 10px; padding: 40px 24px; text-align: center; color: var(--cream); }
+.form-done h2 { color: var(--cream); font-size: clamp(1.5rem, 5vw, 2rem); }
+.form-done a { color: inherit; font-weight: 700; }
+.form-done .btn-ghost { margin-top: 10px; }
+/* a red sticker with a tick that pops in */
+.form-done-tick { position: relative; width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(40deg, #ee3338 55%, #c9161f); box-shadow: 0 8px 20px rgb(80 0 0 / 0.35); animation: tickPop 0.6s cubic-bezier(0.34, 1.6, 0.5, 1) both; }
+.form-done-tick::after { content: ""; position: absolute; left: 24px; top: 15px; width: 14px; height: 26px; border-right: 4px solid var(--cream); border-bottom: 4px solid var(--cream); rotate: 45deg; }
+@keyframes tickPop { from { scale: 0.4; opacity: 0; } }
+
+/* ---------- legal block (components/LegalInfo) ---------- */
+.legal-info p + p { margin-top: 6px; }
+.legal-links { display: flex; flex-wrap: wrap; align-items: center; justify-content: inherit; gap: 8px 16px; }
+.legal-info a { color: inherit; }
+.legal-badge img { width: 150px; height: auto; border-radius: 4px; }
+.legal-info:not(.legal-center) .legal-links { justify-content: flex-end; }
+
 .sr-only { position: absolute !important; width: 1px !important; height: 1px !important; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
 /* Photo sections from the Figma: the photo sits under a clear tint and moving colour blobs;

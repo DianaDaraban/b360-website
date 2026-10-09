@@ -7,6 +7,13 @@ export const site = {
     email: "office@b360.ro",
     address: { street: "Strada Ogorului 2", locality: "Corbeanca", region: "Ilfov", country: "RO" },
     founded: 2012,
+    // B360 is the brand of Red Division SRL (legal identity for the footer, privacy policy, ANPC)
+    company: {
+        name: "Red Division SRL",
+        cui: "RO29533761",
+        regCom: "J40/241/12.01.2012",
+        seat: "Str. Gârleni nr. 8, bl. C83, sc. A, et. 4, ap. 27, Sector 6, București",
+    },
     // the workshop address opens in Waze: the app with navigation on a phone, the Waze map in a browser
     get wazeUrl() {
         return `https://waze.com/ul?q=${encodeURIComponent(`${this.address.street}, ${this.address.locality}, ${this.address.region}`)}&navigate=yes`

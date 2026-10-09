@@ -4,6 +4,7 @@ import Link from "next/link"
 import { Blobs } from "@/components/Blobs"
 import { Icon } from "@/components/Icon"
 import { Select } from "@/components/Select"
+import { Consent, SmartForm } from "@/components/SmartForm"
 import { site } from "@/lib/site"
 import styles from "./contact.module.css"
 import form from "../form.module.css"
@@ -49,7 +50,7 @@ export default function ContactPage() {
                 </div>
 
                 {/* Messages that are not a quote request: feedback, opinions, proposals */}
-                <form className={`${form.form} ${styles.card}`} aria-labelledby="mesaj">
+                <SmartForm kind="contact" className={`${form.form} ${styles.card}`} aria-labelledby="mesaj">
                     <h2 id="mesaj" className={styles.cardTitle}>Trimite-ne un mesaj</h2>
                     <p className={styles.cardText}>Feedback, păreri, propuneri de colaborare sau o întrebare. Citim tot ce primim.</p>
                     <div className={styles.fields}>
@@ -61,8 +62,12 @@ export default function ContactPage() {
                         </div>
                         <label className={`${form.field} ${styles.wide}`}>Mesajul tău *<textarea name="mesaj" required minLength={10} /></label>
                     </div>
-                    <button type="submit" className="btn">Trimite mesajul</button>
-                </form>
+                    {/* consent on the left, the send button on the right */}
+                    <div className={styles.sendRow}>
+                        <Consent />
+                        <button type="submit" className="btn">Trimite mesajul</button>
+                    </div>
+                </SmartForm>
             </div>
         </section>
     )
