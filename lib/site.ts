@@ -7,6 +7,7 @@ export const site = {
     email: "office@b360.ro",
     address: { street: "Strada Ogorului 2", locality: "Corbeanca", region: "Ilfov", country: "RO" },
     founded: 2012,
+    hours: { label: "Luni – Vineri, 9:00 – 18:00", days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "18:00" },
     // B360 is the brand of Red Division SRL (legal identity for the footer, privacy policy, ANPC)
     company: {
         name: "Red Division SRL",

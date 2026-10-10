@@ -62,7 +62,7 @@
 .drop input { position: absolute; opacity: 0; width: 1px; height: 1px; }
 .drop:hover, .drop[data-over] { border-color: var(--cream); background: rgb(60 30 32 / 0.45); }
 .drop:focus-within { outline: 3px solid var(--cream); outline-offset: 2px; }
-.drop[data-error] { border-color: #ff9a9c; }
+.drop[data-error] { border-color: #ffb3b5; }
 /* a cloud with an arrow, drawn in CSS: a cream disc with an up arrow */
 .dropIcon { position: relative; flex: none; width: 42px; height: 42px; border-radius: 50%; background: var(--cream); }
 .dropIcon::before { content: ""; position: absolute; left: 50%; top: 12px; width: 2.5px; height: 18px; margin-left: -1.25px; background: var(--red); border-radius: 2px; }

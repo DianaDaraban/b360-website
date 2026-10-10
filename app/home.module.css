@@ -147,7 +147,7 @@
 
 /* ---------- clients: a carousel of red round stickers ---------- */
 /* a narrow band: small title, one row of stickers */
-.clients { --tint: rgb(150 128 132 / 0.78); --carousel-arrow: var(--cream); --carousel-arrow-hover: #ff9a9c; padding-block: 26px 14px; }
+.clients { --tint: rgb(150 128 132 / 0.78); --carousel-arrow: var(--cream); --carousel-arrow-hover: #ffb3b5; padding-block: 26px 14px; }
 .clientsTitle { margin-bottom: 4px; font-size: clamp(1.3rem, 4.6vw, 1.8rem); }
 .clients h2, .services h2 { text-align: center; }
 .clientStrip { --carousel-gap: 30px; }
@@ -208,7 +208,7 @@
     translate: 0 12px;
     transition: opacity 0.35s, translate 0.45s var(--ease-out);
 }
-.workCaption small { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #ff9a9c; }
+.workCaption small { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #ffb3b5; }
 .workCaption strong { font: 700 1rem/1.25 var(--font-head); color: var(--cream); }
 .work:hover .workCaption, .work:focus-visible .workCaption { opacity: 1; translate: 0 0; }
 @media (hover: none) { .workCaption { opacity: 1; translate: 0 0; } }

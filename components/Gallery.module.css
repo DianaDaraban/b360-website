@@ -135,7 +135,7 @@
     transition: opacity 0.35s, translate 0.45s var(--ease-out);
 }
 .photo { display: block; overflow: hidden; }
-.caption small { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
+.caption small { font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
 .caption strong { font: 700 0.95rem/1.2 var(--font-head); color: var(--white); }
 .frame:hover .caption, .frame:focus-visible .caption { opacity: 1; translate: 0 0; }
 

@@ -97,7 +97,7 @@ html:has(dialog[open]) { overflow: hidden; }
     text-shadow: none;
 }
 .eyebrow::before, .eyebrow::after { content: ""; flex: none; width: 24px; height: 2px; border-radius: 2px; background: currentColor; }
-.tinted .eyebrow, .eyebrow.on-photo { color: #ff9a9c; }
+.tinted .eyebrow, .eyebrow.on-photo { color: #ffb3b5; }
 .eyebrow.start { justify-content: flex-start; }
 /* ---------- site forms (components/SmartForm) ---------- */
 .form-body { display: contents; margin: 0; padding: 0; border: 0; min-width: 0; }
@@ -378,13 +378,22 @@ a:hover > .arrow-sticker svg, a:focus-visible > .arrow-sticker svg { translate: 
     }
 }
 
+/* ---------- lighter motion on phones and tablets (speed and battery) ---------- */
+@media (max-width: 1023px) {
+    .blobs-photo, .blobs-soft { display: none; }
+    .blobs-page span { animation: none; }
+    .hero-sheen::after { animation-duration: 12s; }
+}
+
 /* ---------- section snapping (Home) ----------
    On a desktop with a mouse every .snap-slide fills the screen under the header and the wheel
    moves from one to the next; small sections are grouped into one slide in the page markup. */
 .snap-slide { scroll-snap-align: start; }
 @media (min-width: 1024px) and (hover: hover) {
     :root { --header-h: 84px; }
-    html:has(.snap-page) { scroll-snap-type: y mandatory; scroll-padding-top: var(--header-h); }
+    /* proximity: it only settles on a section when you stop near one, and never holds you back */
+    html:has(.snap-page) { scroll-snap-type: y proximity; scroll-padding-top: var(--header-h); }
+    html:has(.snap-page) .site-footer { scroll-snap-align: end; }
     .snap-slide { min-height: calc(100svh - var(--header-h)); display: flex; flex-direction: column; justify-content: center; }
     /* the closing call to action keeps its own height; the footer follows it */
     .snap-slide.snap-last { min-height: 0; display: block; }

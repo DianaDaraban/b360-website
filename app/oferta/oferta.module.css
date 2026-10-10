@@ -44,7 +44,7 @@
 .block { display: grid; gap: 10px; }
 .block + .block { padding-top: 20px; border-top: 1px solid rgb(243 234 225 / 0.15); }
 .blockTitle { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; font-size: 1.2rem; color: var(--cream); }
-.blockTitle span { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--red); color: #ff9a9c; font-size: 0.85rem; text-shadow: none; }
+.blockTitle span { display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; border: 1.5px solid var(--red); color: #ffb3b5; font-size: 0.85rem; text-shadow: none; }
 .fields { display: grid; gap: 12px; }
 .question { margin-top: 4px; font-size: 0.92rem; font-weight: 600; color: var(--cream); }
 .twoCols { display: grid; gap: 10px; }

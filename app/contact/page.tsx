@@ -46,6 +46,7 @@ export default function ContactPage() {
                             </li>
                         ))}
                     </ul>
+                    <p className={styles.hours}><span aria-hidden="true" className={styles.clock} />Program: <strong>{site.hours.label}</strong></p>
                     <Link href="/oferta" className="btn-ghost">Cere ofertă online</Link>
                 </div>
 

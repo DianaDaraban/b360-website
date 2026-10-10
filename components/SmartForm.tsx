@@ -88,7 +88,7 @@ export function Consent() {
         <label className="consent">
             <input type="checkbox" name="gdpr" value="da" required />
             <span>
-                Sunt de acord cu prelucrarea datelor mele pentru a primi un răspuns, conform{" "}
+                Sunt de acord cu prelucrarea datelor conform{" "}
                 <Link href="/politica-de-confidentialitate" target="_blank">Politicii de confidențialitate</Link>. *
             </span>
         </label>

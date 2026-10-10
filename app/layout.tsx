@@ -50,6 +50,8 @@ const localBusiness = {
         addressCountry: site.address.country,
     },
     areaServed: "RO",
+    openingHoursSpecification: [{ "@type": "OpeningHoursSpecification", dayOfWeek: site.hours.days, opens: site.hours.opens, closes: site.hours.closes }],
+    parentOrganization: { "@type": "Organization", name: site.company.name, taxID: site.company.cui },
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
