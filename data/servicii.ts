@@ -20,6 +20,7 @@ export type Serviciu = {
     extra?: { title: string; question: string; text: string }
     faq: { q: string; a: string }[]
     portfolio: { label: string; category: string }
+    showcase?: boolean       // a screen with the service's projects from the gallery
     metaDescription: string
 }
 
@@ -113,6 +114,38 @@ export const servicii: Serviciu[] = [
         ],
         portfolio: { label: "Vezi portofoliu colantări vitrine", category: "vitrine" },
         metaDescription: "Colantări vitrine: folii sablate, colorate, printate sau cu protecție UV și solară. Branding permanent sau temporar pentru magazine, showroom-uri și birouri.",
+    },
+    {
+        slug: "tapet-printat",
+        title: "Tapet Printat Personalizat și Montaj",
+        short: "Tapet printat",
+        teaser: "Pereți cu imaginea aleasă de tine, printați și montați de noi",
+        image: "/lucrari/proiecte/tapet-balon-cu-aer-cald/1.webp",
+        hero: "/lucrari/proiecte/tapet-living-abstract/1.webp",
+        intro: "Printăm tapet personalizat cu orice imagine, la dimensiunea exactă a peretelui, și îl montăm noi: pentru case, birouri, restaurante și magazine.",
+        lead: {
+            title: "Un perete care spune povestea ta",
+            text: "Printăm **tapet personalizat** în atelierul **B360**, la dimensiunea exactă a peretelui, cu imaginea aleasă de tine sau cu o grafică făcută de noi. Ne ocupăm de tot: măsurători, pregătirea fișierului, print și **montaj**.",
+        },
+        typesTitle: "Ce realizăm",
+        typesText: "De la o cameră de copil la recepția unei firme, tapetul printat schimbă complet un spațiu.",
+        types: [
+            { title: "Tapet pentru acasă", items: ["Living, dormitor, camera copiilor", "Peisaje, flori, abstract sau fotografiile tale", "Pe tot peretele sau doar pe o porțiune"] },
+            { title: "Tapet pentru spații comerciale", items: ["Birouri, recepții și săli de ședință", "Restaurante, cafenele, hoteluri și magazine", "Branding pe perete, în culorile firmei"] },
+        ],
+        benefits: ["Orice imagine – fotografia ta, o grafică din bănci de imagini sau un design făcut de noi", "Pe măsura peretelui – printăm exact la dimensiunile camerei, fără îmbinări nepotrivite", "Print de calitate – culori vii, rezistente la lumină, pe materiale pentru interior", "Montaj inclus – echipa noastră pregătește peretele și aplică tapetul"],
+        benefitsPhoto: "/lucrari/proiecte/tapet-flori-de-cires/1.webp",
+        extra: { title: "Tapet pentru firma ta", question: "Ai un birou, un restaurant sau un magazin?", text: "Transformăm pereții în **branding**: logo, culorile firmei sau imagini care spun povestea afacerii tale." },
+        faq: [
+            { q: "Pot folosi o fotografie făcută de mine?", a: "Da, dacă are rezoluția potrivită pentru dimensiunea peretelui. O verificăm noi și îți spunem sincer cum va arăta; dacă nu ajunge, îți propunem alternative." },
+            { q: "Cum aflu ce dimensiune îmi trebuie?", a: "Ne trimiți lățimea și înălțimea peretelui, iar pentru proiecte mai mari venim noi la măsurători. Printăm cu o mică rezervă pentru o potrivire exactă la montaj." },
+            { q: "Pe ce pereți se poate monta tapetul?", a: "Pe pereți netezi, uscați și curați, vopsiți sau gletuiți. Dacă peretele are denivelări sau igrasie, le evaluăm înainte de montaj." },
+            { q: "Cât durează de la comandă la montaj?", a: "De obicei câteva zile: aprobăm împreună grafica, printăm în atelierul nostru și programăm montajul." },
+            { q: "Se poate curăța tapetul?", a: "Da, cu o lavetă ușor umedă, fără detergenți agresivi." },
+        ],
+        portfolio: { label: "Vezi toate lucrările cu tapet", category: "tapet" },
+        showcase: true,
+        metaDescription: "Tapet printat personalizat cu orice imagine, la dimensiunea peretelui, cu montaj inclus. Pentru case, birouri, restaurante și magazine. Print în atelierul B360.",
     },
     {
         slug: "folie-ppf",

@@ -139,6 +139,28 @@
 .caption strong { font: 700 0.95rem/1.2 var(--font-head); color: var(--white); }
 .frame:hover .caption, .frame:focus-visible .caption { opacity: 1; translate: 0 0; }
 
+/* projects with three photos or more: a wide tile, the cover large and two photos stacked beside it */
+.grid .wide { grid-column: span 2; }
+.collage { display: grid; grid-template-columns: 2fr 1fr; grid-template-rows: 1fr 1fr; gap: 3px; height: 100%; aspect-ratio: 2; }
+.collage .photo:first-child { grid-row: span 2; }
+.collage img { height: 100%; aspect-ratio: auto; }
+/* how many photos the project holds */
+.count {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgb(20 12 14 / 0.72);
+    color: var(--white);
+    font: 700 0.8rem/1 var(--font-head);
+    backdrop-filter: blur(4px);
+}
+
 .more { margin-top: 30px; text-align: center; }
 
 /* ---------- lightbox ---------- */
@@ -158,14 +180,26 @@
 .lightbox::backdrop { background: transparent; }
 .lightbox figure { margin: 0; display: grid; gap: 12px; justify-items: center; padding: 64px 12px 24px; animation: photoIn 0.45s var(--ease-out); }
 @keyframes photoIn { from { opacity: 0; scale: 0.96; } }
-.lightbox img { max-width: min(100%, 1200px); max-height: calc(100dvh - 140px); width: auto; height: auto; object-fit: contain; border-radius: 6px; }
+.lightbox img { max-width: min(100%, 1200px); max-height: calc(100dvh - 220px); width: auto; height: auto; object-fit: contain; border-radius: 6px; }
 .lbStage { display: grid; }
 .lbStage > img { grid-area: 1 / 1; }
 .lbThumb { filter: blur(6px); scale: 1.01; }
+/* the placeholder fills the frame of the large photo and goes once that has loaded */
+.lightbox .lbThumb { width: 100%; height: 100%; max-height: none; object-fit: contain; }
+.lbStage:has(.lbFull[data-loaded]) .lbThumb { visibility: hidden; }
 .lbFull { opacity: 0; transition: opacity 0.35s ease; }
 .lbFull[data-loaded] { opacity: 1; }
 .preload { position: absolute; width: 1px !important; height: 1px !important; opacity: 0; pointer-events: none; }
-.lightbox figcaption { font-weight: 600; color: var(--cream); }
+.lightbox figcaption strong { color: var(--white); }
+.lightbox figcaption { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px 14px; padding-inline: 56px; font-weight: 600; color: var(--cream); text-align: center; }
+.lbCount { font: 700 0.85rem/1 var(--font-head); color: rgb(243 234 225 / 0.65); }
+/* the project's photos as a strip of thumbnails under the large photo */
+.strip { list-style: none; margin: 0; padding: 4px; display: flex; gap: 8px; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+.strip::-webkit-scrollbar { display: none; }
+.strip img { width: 72px; height: 54px; max-height: none; object-fit: cover; border-radius: 4px; }
+.strip button { display: block; padding: 0; border: 2px solid transparent; border-radius: 6px; background: none; opacity: 0.55; cursor: pointer; transition: opacity 0.25s, border-color 0.25s; }
+.strip button:hover { opacity: 0.9; }
+.strip button[aria-current] { opacity: 1; border-color: var(--red); }
 .close, .prev, .next {
     position: fixed;
     width: 52px;
@@ -192,8 +226,8 @@
 }
 @media (min-width: 1024px) {
     .grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
-    /* all categories on one row */
-    .filters { justify-content: center; flex-wrap: nowrap; gap: 8px; margin-inline: 0; }
+    /* all categories in view, centred (a second row when they don't fit on one) */
+    .filters { justify-content: center; flex-wrap: wrap; gap: 8px; margin-inline: 0; overflow: visible; }
     .chip { padding: 8px 16px; font-size: 0.88rem; }
     .chip[aria-pressed="true"] { padding: 10px 34px 10px 18px; }
 }

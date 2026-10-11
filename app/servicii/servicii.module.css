@@ -59,6 +59,8 @@
     .title { font-size: clamp(1.5rem, 4.6vh, 2.5rem); }
     .head p { font-size: clamp(0.88rem, 2vh, 1.12rem); line-height: 1.5; }
     .grid { grid-template-columns: repeat(2, 1fr); gap: clamp(10px, 2.2vh, 20px); margin-top: clamp(10px, 3vh, 30px); max-width: 1080px; margin-inline: auto; }
+    /* an odd last card sits centred under the others */
+    .grid > :last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - clamp(10px, 2.2vh, 20px) / 2); }
     .card { min-height: 0; grid-template-columns: 34% 1fr; border-radius: 16px; }
     .photo { min-height: 0; }
     .body { padding: clamp(8px, 1.8vh, 18px) 20px clamp(8px, 1.6vh, 16px); gap: clamp(3px, 0.8vh, 8px); }

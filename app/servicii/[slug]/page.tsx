@@ -9,6 +9,7 @@ import { Icon } from "@/components/Icon"
 import { Rich } from "@/components/Rich"
 import { RevealTitle } from "@/components/RevealTitle"
 import { ScrollCue } from "@/components/ScrollCue"
+import { proiecte } from "@/data/lucrari"
 import { getServiciu, servicii } from "@/data/servicii"
 import { site } from "@/lib/site"
 import styles from "./service.module.css"
@@ -18,6 +19,7 @@ const benefitsTitle: Record<string, string> = {
     "autocolante-inscriptionari": "De ce stickere personalizate",
     "colantare-vitrine": "Beneficiile colantării vitrinelor",
     "folie-ppf": "Beneficiile foliei PPF",
+    "tapet-printat": "De ce tapet printat",
 }
 
 type Props = { params: Promise<{ slug: string }> }
@@ -58,6 +60,7 @@ export default async function ServiciuPage({ params }: Props) {
         },
     ]
     const gallery = `/portofoliu?categorie=${s.portfolio.category}`
+    const showcase = s.showcase ? proiecte.filter(p => p.cat === s.portfolio.category) : []
 
     return (
         <div className="snap-page">
@@ -103,6 +106,30 @@ export default async function ServiciuPage({ params }: Props) {
                     </div>
                 </div>
             </section>
+
+            {/* the service's own projects, each a card into the gallery */}
+            {showcase.length > 0 && (
+                <section className={`section snap-slide ${styles.showcase}`} data-label="Lucrări">
+                    <div className="container">
+                        <p className={`eyebrow ${styles.showcaseKicker}`}>Din atelier, pe pereți</p>
+                        <h2 className={styles.center}>Lucrări realizate</h2>
+                        <ul className={styles.showcaseGrid}>
+                            {showcase.map((p, i) => (
+                                <li key={p.slug} className={i === 0 ? styles.showcaseFirst : undefined}>
+                                    <Link href={gallery} className={styles.showcaseCard}>
+                                        <Image src={p.photos[0].src} alt={p.photos[0].alt} width={p.photos[0].w} height={p.photos[0].h} sizes={i === 0 ? "(min-width: 1024px) 600px, 100vw" : "(min-width: 1024px) 300px, 50vw"} />
+                                        <span className={styles.showcaseCaption}>
+                                            <strong>{p.title}</strong>
+                                            <small>{p.photos.length} {p.photos.length === 1 ? "fotografie" : "fotografii"}</small>
+                                        </span>
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                        <p className={styles.showcaseMore}><Link href={gallery} className="btn-ghost on-light">{s.portfolio.label}</Link></p>
+                    </div>
+                </section>
+            )}
 
             {/* the integral / partial slider gets a screen of its own */}
             {s.comparison && (

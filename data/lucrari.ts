@@ -1,7 +1,9 @@
 import lucrari from "./lucrari.json"
+import proiecteNoi from "./proiecte.json"
 import { clienti } from "./clienti"
 
 export type Lucrare = { src: string; cat: string; client: string | null; w: number; h: number }
+type ProiectRaw = { slug: string; title: string; client: string | null; cat: string; photos: { src: string; w: number; h: number }[] }
 
 export const categorii = [
     { slug: "autoturisme", label: "Autoturisme", singular: "Colantare autoturism" },
@@ -9,26 +11,64 @@ export const categorii = [
     { slug: "autocare", label: "Autocare", singular: "Inscripționare autocar" },
     { slug: "camioane", label: "Camioane și cisterne", singular: "Inscripționare camion" },
     { slug: "vitrine", label: "Vitrine", singular: "Colantare vitrină" },
+    { slug: "tapet", label: "Tapet printat", singular: "Tapet printat" },
     // signage photos are filed under stickers (too few of either to stand alone)
     { slug: "stickere", label: "Stickere și signalistică", singular: "Stickere și signalistică" },
     { slug: "speciale", label: "Moto, bărci, avioane", singular: "Inscripționare" },
 ] as const
 
+export type Foto = { src: string; w: number; h: number; alt: string }
+// A project: one job (a car, a fleet, a room) with one or more photos. The gallery shows one tile
+// per project; projects with three photos or more get a wide collage tile.
+export type Proiect = {
+    slug: string
+    title: string
+    cat: string
+    catLabel: string
+    clientName: string | null
+    clientSlug: string | null
+    photos: Foto[]
+}
+
 const merged: Record<string, string> = { signalistica: "stickere" }
-const withAlt = (lucrari as Lucrare[]).map(raw => {
-    const l = { ...raw, cat: merged[raw.cat] ?? raw.cat }
-    const cat = categorii.find(c => c.slug === l.cat)
-    const client = l.client ? clienti.find(c => c.match?.test(l.client!)) : undefined
+const findClient = (name: string | null) => (name ? clienti.find(c => c.match?.test(name)) : undefined)
+const label = (slug: string) => categorii.find(c => c.slug === slug)
+
+// the new projects (Freepik cut-out + one shared look), newest work first
+const noi: Proiect[] = (proiecteNoi as ProiectRaw[]).map(p => {
+    const client = findClient(p.client)
     return {
-        ...l,
-        alt: [cat?.singular, client?.name ?? l.client].filter(Boolean).join(" – "),
-        catLabel: cat?.label ?? "",
-        clientName: client?.name ?? l.client,
+        slug: p.slug,
+        title: p.title,
+        cat: p.cat,
+        catLabel: label(p.cat)?.label ?? "",
+        clientName: client?.name ?? p.client,
         clientSlug: client?.slug ?? null,
+        photos: p.photos.map((f, i) => ({ ...f, alt: p.photos.length > 1 ? `${p.title} (${i + 1} din ${p.photos.length})` : p.title })),
     }
 })
 
-// Round-robin over the categories so the unfiltered gallery starts varied, not with 17 coaches
-const queues = categorii.map(c => withAlt.filter(l => l.cat === c.slug))
-export const toateLucrarile: typeof withAlt = []
-while (queues.some(q => q.length)) for (const q of queues) if (q.length) toateLucrarile.push(q.shift()!)
+// the older photos: one project per client and category (holcim-1, holcim-2 ... belong together)
+const vechi: Proiect[] = []
+for (const raw of lucrari as Lucrare[]) {
+    const cat = merged[raw.cat] ?? raw.cat
+    const client = findClient(raw.client)
+    const clientName = client?.name ?? raw.client
+    const slug = clientName ? `${cat}-${clientName}` : raw.src
+    let p = vechi.find(v => v.slug === slug)
+    if (!p) {
+        p = { slug, title: [label(cat)?.singular, clientName].filter(Boolean).join(" – "), cat, catLabel: label(cat)?.label ?? "", clientName, clientSlug: client?.slug ?? null, photos: [] }
+        vechi.push(p)
+    }
+    p.photos.push({ src: raw.src, w: raw.w, h: raw.h, alt: p.title })
+}
+
+// Round-robin over the categories so the unfiltered gallery starts varied, not with a run of coaches
+const roundRobin = (list: Proiect[]) => {
+    const queues = categorii.map(c => list.filter(l => l.cat === c.slug))
+    const out: Proiect[] = []
+    while (queues.some(q => q.length)) for (const q of queues) if (q.length) out.push(q.shift()!)
+    return out
+}
+export const proiecte: Proiect[] = [...roundRobin(noi), ...roundRobin(vechi)]
+export const toateFotografiile = proiecte.flatMap(p => p.photos)

@@ -4,13 +4,13 @@ import { ContactCta } from "@/components/ContactCta"
 import { Gallery } from "@/components/Gallery"
 import Image from "next/image"
 import gallery from "@/components/Gallery.module.css"
-import { categorii, toateLucrarile } from "@/data/lucrari"
+import { categorii, proiecte, toateFotografiile } from "@/data/lucrari"
 import { clienti } from "@/data/clienti"
 import styles from "../content.module.css"
 
 export const metadata: Metadata = {
     title: "Portofoliu – lucrări de colantare auto, flote și vitrine",
-    description: `Peste ${Math.floor(toateLucrarile.length / 10) * 10} de lucrări B360: autoturisme, autoutilitare, autocare, camioane, vitrine și stickere, pentru Țiriac Auto, City Grill, Castrol, Ravitex și alții.`,
+    description: `Peste ${Math.floor(toateFotografiile.length / 10) * 10} de lucrări B360: autoturisme, autoutilitare, autocare, camioane, vitrine, tapet printat și stickere, pentru Țiriac Auto, City Grill, Castrol, Ravitex și alții.`,
     alternates: { canonical: "/portofoliu" },
 }
 
@@ -20,10 +20,10 @@ export default function PortofoliuPage() {
             <section className={`section ${styles.compact}`}>
                 <div className="container">
                     <h1 className={styles.pageTitle}>Portofoliu</h1>
-                    <p className={styles.center}>Câteva dintre lucrările noastre din ultimii ani. Alege o categorie sau un client ca să vezi doar ce te interesează.</p>
+                    <p className={styles.center}>Proiectele noastre din ultimii ani, de la o singură mașină la flote întregi. Deschide un proiect ca să vezi toate fotografiile, sau alege o categorie ori un client.</p>
                     {/* The filter reads ?categorie= on the client; the static HTML (what Google sees) holds the first photos */}
                     <Suspense fallback={<StaticGrid />}>
-                        <Gallery items={toateLucrarile} categories={categorii} clients={clienti.filter(c => c.match).map(({ slug, name, logo }) => ({ slug, name, logo }))} />
+                        <Gallery items={proiecte} categories={categorii} clients={clienti.filter(c => c.match).map(({ slug, name, logo }) => ({ slug, name, logo }))} />
                     </Suspense>
                 </div>
             </section>
@@ -35,8 +35,8 @@ export default function PortofoliuPage() {
 function StaticGrid() {
     return (
         <ul className={gallery.grid} style={{ marginTop: 28 }}>
-            {toateLucrarile.slice(0, 24).map(item => (
-                <li key={item.src}>
+            {proiecte.slice(0, 24).map(({ slug, photos: [item] }) => (
+                <li key={slug}>
                     <Image src={item.src} alt={item.alt} width={400} height={400} sizes="(min-width: 1024px) 290px, (min-width: 640px) 31vw, 47vw" />
                 </li>
             ))}
