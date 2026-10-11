@@ -1,31 +1,17 @@
-/* Technical-drawing look: cream body, dark ink lines, pale glass */
-.svg { display: block; width: 100%; height: auto; user-select: none; -webkit-tap-highlight-color: transparent; }
-.shadow { fill: rgb(60 30 30 / 0.12); }
-.body { fill: #fbf7f2; }
-.outline { fill: none; stroke: #3a3638; stroke-width: 3.5; stroke-linejoin: round; pointer-events: none; }
-.seam { stroke: #3a3638; stroke-width: 1.6; stroke-dasharray: 2 0; opacity: 0.55; }
-.belt { stroke: #3a3638; stroke-width: 1.2; opacity: 0.3; }
-.glass { fill: #cfdbe3; stroke: #3a3638; stroke-width: 2.4; stroke-linejoin: round; pointer-events: none; }
-.well { fill: #efe7df; }
-.tyre { fill: #2b2729; }
-.rim { fill: #8d8a8e; stroke: #4a4446; stroke-width: 3; }
-.hub { fill: #3a3638; }
-.mirror { fill: #fbf7f2; stroke: #3a3638; stroke-width: 2.4; pointer-events: none; }
+.svg { display: block; width: 100%; height: auto; isolation: isolate; user-select: none; -webkit-tap-highlight-color: transparent; }
+.shadow { fill: rgb(40 20 20 / 0.16); filter: blur(10px); }
 
-/* chosen work */
-.fill { stroke: none; }
-.wrap.fill { fill: #f6a623; fill-opacity: 0.88; }
-.ins.fill { fill: #2e9cca; fill-opacity: 0.8; }
-.edge { fill: none; stroke-width: 12; stroke-linejoin: round; }
-.wrap.edge { stroke: #ffd400; }
-.ins.edge { stroke: #156f97; }
+/* paint: multiplied onto the white car, so its shading shows through like real film */
+.paint { mix-blend-mode: multiply; }
+.wrapFill { fill: #f7a823; }
+.insFill { fill: #2f9fd0; }
+.logo { mix-blend-mode: normal; }
 
-/* click areas: transparent, a light red tint on hover */
+/* thick contours around the chosen pieces */
+.wrapEdge { fill: none; stroke: #ffd400; stroke-width: 14; stroke-linejoin: round; }
+.insEdge { fill: none; stroke: #0f6d96; stroke-width: 12; stroke-linejoin: round; }
+
+/* click areas: invisible, a light red tint over the car on hover */
 .hit { fill: transparent; cursor: pointer; transition: fill 0.2s; }
-.hit:hover { fill: rgb(238 51 56 / 0.14); }
-.hit[data-on]:hover { fill: rgb(255 255 255 / 0.18); }
-
-.mirrorHit { fill: #fbf7f2; stroke: #3a3638; stroke-width: 2.4; cursor: pointer; transition: fill 0.2s; }
-.mirrorHit:hover { fill: #f7d6d6; }
-.mirrorHit.wrap { fill: #f6a623; stroke: #ffd400; stroke-width: 5; }
-.mirrorHit.ins { fill: #2e9cca; stroke: #156f97; stroke-width: 5; }
+.hit:hover { fill: rgb(238 51 56 / 0.22); }
+.hit[data-on]:hover { fill: rgb(255 255 255 / 0.22); }

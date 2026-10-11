@@ -41,20 +41,20 @@ export const panelLabel = (id: string) => {
 }
 export const panelKind = (id: string) => id.replace(/-(st|dr)$/, "") as PanelKind
 
-// ---------- drawing geometry (viewBox 0 0 1000 420, car facing left, ground at y 388) ----------
+// ---------- photo geometry ----------
+// Each body type has two photos (public/calculator/<id>-side.webp and <id>-top.webp), 1600 x 640,
+// car facing left on a transparent background. Panels are outlined on the photo in those pixel
+// coordinates; the colour is laid only over the car itself (the photo's alpha) in multiply mode,
+// so the car's own light and shadow show through like a real film. The right side is the left
+// photo mirrored.
 type Pt = [number, number]
 export type SideGeometry = {
-    body: Pt[]                              // closed silhouette, smoothed when drawn
-    windows: Pt[][]                         // side windows (not clickable)
-    belt: number                            // window line: inscription stops here
-    wheels: { x: number; y: number; r: number }[]
-    // vertical strips, front to back: [panel kind, x from, x to]
-    strips: [PanelKind, number, number][]
-    mirror: [number, number, number, number] // x, y, w, h
+    panels: [PanelKind, Pt[]][]   // each panel's outline on the side photo
+    belt: Pt[]                    // window line, front to back: inscription covers what is below it
 }
 export type TopGeometry = {
-    length: number                          // x of the rear end
-    strips: [PanelKind | "parbriz" | "luneta", number, number][]
+    // vertical bands on the top photo: [panel kind, x from, x to]; glass between them is skipped
+    panels: [PanelKind, number, number][]
 }
 export type BodyType = { id: BodyId; label: string; side: SideGeometry; top: TopGeometry }
 
@@ -63,80 +63,86 @@ export const bodyTypes: BodyType[] = [
         id: "hatchback",
         label: "Hatchback",
         side: {
-            body: [[62, 322], [80, 272], [280, 240], [400, 152], [660, 142], [800, 178], [858, 204], [878, 272], [880, 334], [860, 352], [100, 352]],
-            windows: [
-                [[300, 236], [404, 160], [536, 155], [536, 236]],
-                [[548, 236], [548, 155], [690, 151], [790, 186], [800, 236]],
+            panels: [
+                ["bara-fata", [[95, 330], [200, 320], [240, 410], [240, 530], [95, 525]]],
+                ["aripa-fata", [[130, 290], [440, 262], [505, 275], [500, 330], [512, 505], [480, 530], [240, 530], [240, 410], [200, 320]]],
+                ["usa-fata", [[505, 275], [555, 240], [700, 125], [895, 115], [885, 500], [512, 505], [500, 330]]],
+                ["usa-spate", [[895, 115], [1155, 125], [1245, 240], [1230, 330], [1180, 420], [1100, 495], [885, 500]]],
+                ["aripa-spate", [[1155, 125], [1320, 125], [1440, 230], [1475, 270], [1495, 390], [1420, 400], [1300, 370], [1200, 420], [1100, 495], [1180, 420], [1230, 330], [1245, 240]]],
+                ["bara-spate", [[1420, 400], [1495, 390], [1505, 460], [1490, 520], [1400, 525], [1395, 450]]],
+                ["oglinda", [[555, 240], [590, 222], [615, 232], [605, 288], [560, 280]]],
             ],
-            belt: 236,
-            wheels: [{ x: 212, y: 330, r: 56 }, { x: 735, y: 330, r: 56 }],
-            strips: [["bara-fata", 40, 118], ["aripa-fata", 118, 296], ["usa-fata", 296, 542], ["usa-spate", 542, 742], ["aripa-spate", 742, 832], ["bara-spate", 832, 900]],
-            mirror: [276, 218, 30, 18],
+            belt: [[0, 282], [510, 278], [890, 258], [1245, 245], [1600, 240]],
         },
-        top: { length: 880, strips: [["bara-fata", 60, 108], ["capota", 108, 280], ["parbriz", 280, 400], ["plafon", 400, 800], ["portbagaj", 800, 862], ["bara-spate", 862, 880]] },
+        top: { panels: [["bara-fata", 173, 225], ["capota", 225, 464], ["plafon", 712, 1248], ["portbagaj", 1248, 1400], ["bara-spate", 1400, 1430]] },
     },
     {
         id: "sedan",
         label: "Sedan",
         side: {
-            body: [[62, 322], [78, 268], [300, 236], [420, 150], [630, 146], [770, 212], [920, 226], [944, 268], [946, 330], [920, 352], [100, 352]],
-            windows: [
-                [[318, 232], [424, 158], [540, 155], [540, 232]],
-                [[552, 232], [552, 155], [626, 154], [748, 214], [748, 232]],
+            panels: [
+                ["bara-fata", [[50, 330], [140, 330], [195, 420], [195, 530], [50, 530]]],
+                ["aripa-fata", [[140, 270], [470, 255], [468, 330], [478, 470], [460, 530], [200, 530], [195, 420], [140, 330]]],
+                ["usa-fata", [[470, 255], [520, 240], [650, 140], [860, 125], [850, 500], [500, 512], [480, 480], [468, 330]]],
+                ["usa-spate", [[860, 125], [1110, 130], [1230, 250], [1220, 330], [1170, 400], [1110, 470], [1060, 500], [850, 500]]],
+                ["aripa-spate", [[1110, 130], [1380, 225], [1515, 240], [1495, 370], [1340, 385], [1130, 505], [1060, 505], [1110, 470], [1170, 400], [1220, 330], [1232, 250]]],
+                ["bara-spate", [[1340, 385], [1495, 370], [1550, 385], [1545, 520], [1360, 525]]],
+                ["oglinda", [[500, 262], [525, 235], [580, 232], [580, 282], [505, 285]]],
             ],
-            belt: 232,
-            wheels: [{ x: 225, y: 330, r: 58 }, { x: 780, y: 330, r: 58 }],
-            strips: [["bara-fata", 40, 120], ["aripa-fata", 120, 312], ["usa-fata", 312, 548], ["usa-spate", 548, 742], ["aripa-spate", 742, 880], ["bara-spate", 880, 960]],
-            mirror: [292, 214, 30, 18],
+            belt: [[0, 272], [500, 272], [860, 262], [1230, 255], [1600, 250]],
         },
-        top: { length: 946, strips: [["bara-fata", 60, 110], ["capota", 110, 300], ["parbriz", 300, 420], ["plafon", 420, 630], ["luneta", 630, 770], ["portbagaj", 770, 900], ["bara-spate", 900, 946]] },
+        top: { panels: [["bara-fata", 124, 175], ["capota", 175, 464], ["plafon", 672, 1104], ["portbagaj", 1320, 1448], ["bara-spate", 1448, 1480]] },
     },
     {
         id: "break",
         label: "Break",
         side: {
-            body: [[62, 322], [78, 268], [300, 236], [420, 150], [820, 144], [918, 172], [940, 230], [944, 330], [920, 352], [100, 352]],
-            windows: [
-                [[318, 232], [424, 158], [540, 155], [540, 232]],
-                [[552, 232], [552, 155], [700, 153], [700, 232]],
-                [[712, 232], [712, 153], [818, 152], [900, 180], [906, 232]],
+            panels: [
+                ["bara-fata", [[55, 350], [170, 345], [205, 430], [205, 540], [55, 525]]],
+                ["aripa-fata", [[100, 330], [420, 285], [490, 290], [488, 350], [500, 520], [470, 545], [205, 540], [205, 430], [170, 345]]],
+                ["usa-fata", [[490, 290], [540, 250], [690, 150], [870, 145], [850, 515], [500, 520], [488, 350]]],
+                ["usa-spate", [[870, 145], [1155, 150], [1220, 255], [1210, 340], [1150, 420], [1105, 510], [850, 515]]],
+                ["aripa-spate", [[1155, 150], [1345, 150], [1440, 225], [1500, 260], [1520, 330], [1525, 400], [1400, 410], [1300, 380], [1180, 450], [1105, 510], [1150, 420], [1210, 340], [1220, 255]]],
+                ["bara-spate", [[1400, 410], [1525, 400], [1550, 430], [1545, 520], [1380, 530], [1370, 460]]],
+                ["oglinda", [[540, 262], [560, 245], [595, 248], [590, 290], [545, 288]]],
             ],
-            belt: 232,
-            wheels: [{ x: 225, y: 330, r: 58 }, { x: 785, y: 330, r: 58 }],
-            strips: [["bara-fata", 40, 120], ["aripa-fata", 120, 312], ["usa-fata", 312, 548], ["usa-spate", 548, 706], ["aripa-spate", 706, 890], ["bara-spate", 890, 960]],
-            mirror: [292, 214, 30, 18],
+            belt: [[0, 295], [495, 290], [865, 275], [1220, 265], [1600, 260]],
         },
-        top: { length: 944, strips: [["bara-fata", 60, 110], ["capota", 110, 300], ["parbriz", 300, 420], ["plafon", 420, 880], ["portbagaj", 880, 922], ["bara-spate", 922, 944]] },
+        top: { panels: [["bara-fata", 133, 185], ["capota", 185, 416], ["plafon", 648, 1304], ["portbagaj", 1304, 1440], ["bara-spate", 1440, 1470]] },
     },
     {
         id: "suv",
         label: "SUV",
         side: {
-            body: [[60, 300], [72, 240], [300, 206], [410, 122], [800, 114], [900, 142], [930, 210], [934, 318], [910, 340], [90, 340]],
-            windows: [
-                [[318, 206], [414, 130], [545, 126], [545, 206]],
-                [[558, 206], [558, 126], [720, 124], [720, 206]],
-                [[732, 206], [732, 124], [800, 122], [886, 152], [896, 206]],
+            panels: [
+                ["bara-fata", [[60, 330], [160, 310], [220, 370], [225, 500], [60, 500]]],
+                ["aripa-fata", [[95, 285], [420, 215], [510, 220], [505, 300], [512, 450], [480, 480], [225, 480], [220, 370], [160, 310]]],
+                ["usa-fata", [[510, 220], [560, 175], [700, 75], [905, 65], [895, 440], [512, 450], [505, 300]]],
+                ["usa-spate", [[905, 65], [1185, 75], [1245, 180], [1250, 300], [1210, 330], [1140, 420], [890, 440]]],
+                ["aripa-spate", [[1185, 75], [1300, 70], [1390, 90], [1460, 180], [1500, 240], [1520, 380], [1420, 390], [1320, 330], [1250, 300], [1245, 180]]],
+                ["bara-spate", [[1420, 390], [1520, 380], [1540, 440], [1520, 500], [1400, 505]]],
+                ["oglinda", [[560, 190], [600, 165], [630, 180], [625, 225], [565, 220]]],
             ],
-            belt: 206,
-            wheels: [{ x: 220, y: 322, r: 66 }, { x: 775, y: 322, r: 66 }],
-            strips: [["bara-fata", 40, 115], ["aripa-fata", 115, 312], ["usa-fata", 312, 552], ["usa-spate", 552, 726], ["aripa-spate", 726, 880], ["bara-spate", 880, 950]],
-            mirror: [290, 188, 32, 20],
+            belt: [[0, 225], [510, 222], [900, 210], [1245, 200], [1600, 195]],
         },
-        top: { length: 934, strips: [["bara-fata", 60, 110], ["capota", 110, 300], ["parbriz", 300, 410], ["plafon", 410, 860], ["portbagaj", 860, 912], ["bara-spate", 912, 934]] },
+        top: { panels: [["bara-fata", 171, 225], ["capota", 225, 464], ["plafon", 688, 1240], ["portbagaj", 1240, 1405], ["bara-spate", 1405, 1430]] },
     },
     {
         id: "utilitara",
         label: "Utilitară",
         side: {
-            body: [[60, 300], [70, 222], [190, 188], [300, 82], [950, 76], [960, 98], [962, 330], [940, 348], [90, 348]],
-            windows: [[[205, 192], [305, 96], [390, 94], [390, 192]]],
-            belt: 200,
-            wheels: [{ x: 210, y: 328, r: 60 }, { x: 790, y: 328, r: 60 }],
-            strips: [["bara-fata", 40, 110], ["aripa-fata", 110, 205], ["usa-fata", 205, 400], ["usa-culisanta", 400, 620], ["panou-lateral", 620, 905], ["bara-spate", 905, 980]],
-            mirror: [180, 176, 30, 22],
+            panels: [
+                ["bara-fata", [[135, 400], [250, 395], [255, 470], [250, 545], [135, 540]]],
+                ["aripa-fata", [[150, 370], [190, 330], [300, 300], [355, 345], [355, 440], [420, 500], [430, 545], [255, 545], [255, 470], [250, 395], [135, 400]]],
+                ["usa-fata", [[300, 300], [460, 180], [600, 162], [595, 420], [575, 530], [430, 545], [420, 500], [355, 440], [355, 345]]],
+                ["usa-culisanta", [[605, 40], [930, 35], [930, 540], [580, 540], [600, 420]]],
+                ["panou-lateral", [[930, 35], [1385, 30], [1420, 45], [1450, 300], [1450, 425], [1305, 425], [1250, 470], [1190, 500], [1130, 540], [930, 540]]],
+                ["bara-spate", [[1305, 425], [1460, 425], [1465, 535], [1320, 540], [1300, 470]]],
+                ["oglinda", [[365, 265], [385, 262], [395, 330], [370, 340], [360, 300]]],
+            ],
+            belt: [[0, 340], [600, 335], [1600, 335]],
         },
-        top: { length: 962, strips: [["bara-fata", 60, 100], ["capota", 100, 190], ["parbriz", 190, 300], ["plafon", 300, 900], ["portbagaj", 900, 948], ["bara-spate", 948, 962]] },
+        top: { panels: [["bara-fata", 91, 140], ["capota", 140, 240], ["plafon", 419, 1500]] },
     },
 ]
 
@@ -145,8 +151,8 @@ export const bodyType = (id: BodyId) => bodyTypes.find(b => b.id === id)!
 // every panel id of a body type, both sides
 export function panelsOf(id: BodyId) {
     const b = bodyType(id)
-    const shared = ["bara-fata", "bara-spate", ...b.top.strips.map(s => s[0]).filter(k => k === "capota" || k === "plafon" || k === "portbagaj")]
-    const sides = [...b.side.strips.map(s => s[0]).filter(k => k !== "bara-fata" && k !== "bara-spate"), "oglinda"]
+    const shared = ["bara-fata", "bara-spate", ...b.top.panels.map(p => p[0]).filter(k => k === "capota" || k === "plafon" || k === "portbagaj")]
+    const sides = b.side.panels.map(p => p[0]).filter(k => k !== "bara-fata" && k !== "bara-spate")
     return [...new Set(shared), ...sides.flatMap(k => [`${k}-st`, `${k}-dr`])]
 }
 export const sidePanels = (id: BodyId) => panelsOf(id).filter(p => /-(st|dr)$/.test(p))
