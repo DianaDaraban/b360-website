@@ -20,7 +20,9 @@ export type Serviciu = {
     extra?: { title: string; question: string; text: string }
     faq: { q: string; a: string }[]
     portfolio: { label: string; category: string }
-    showcase?: boolean       // a screen with the service's projects from the gallery
+    // a screen with the service's projects from the gallery: those of its portfolio category, or the
+    // projects named here (a single project shows its photos one by one)
+    showcase?: { kicker: string; projects?: string[] }
     metaDescription: string
 }
 
@@ -144,7 +146,7 @@ export const servicii: Serviciu[] = [
             { q: "Se poate curăța tapetul?", a: "Da, cu o lavetă ușor umedă, fără detergenți agresivi." },
         ],
         portfolio: { label: "Vezi toate lucrările cu tapet", category: "tapet" },
-        showcase: true,
+        showcase: { kicker: "Din atelier, pe pereți" },
         metaDescription: "Tapet printat personalizat cu orice imagine, la dimensiunea peretelui, cu montaj inclus. Pentru case, birouri, restaurante și magazine. Print în atelierul B360.",
     },
     {
@@ -175,6 +177,7 @@ export const servicii: Serviciu[] = [
             { q: "Cum se întreține mașina după montaj?", a: "Se spală normal, ca orice mașină. Recomandăm doar să eviți spălătoriile cu perii în primele zile după montaj." },
         ],
         portfolio: { label: "Vezi portofoliu colantări auto", category: "autoturisme" },
+        showcase: { kicker: "Folie PPF mată", projects: ["land-rover-defender"] },
         metaDescription: "Folie PPF transparentă pentru protecția vopselei: integral sau pe zonele expuse (bară, capotă, aripi, oglinzi). Montaj profesionist B360.",
     },
 ]

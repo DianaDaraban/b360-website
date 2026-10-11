@@ -60,7 +60,11 @@ export default async function ServiciuPage({ params }: Props) {
         },
     ]
     const gallery = `/portofoliu?categorie=${s.portfolio.category}`
-    const showcase = s.showcase ? proiecte.filter(p => p.cat === s.portfolio.category) : []
+    const showcase = !s.showcase ? [] : s.showcase.projects ? proiecte.filter(p => s.showcase!.projects!.includes(p.slug)) : proiecte.filter(p => p.cat === s.portfolio.category)
+    // one card per project; a single project shows its photos (up to five) instead
+    const cards = showcase.length === 1
+        ? showcase[0].photos.slice(0, 5).map((f, k) => ({ key: f.src, photo: f, title: k ? null : showcase[0].title, count: k ? 0 : showcase[0].photos.length }))
+        : showcase.map(p => ({ key: p.slug, photo: p.photos[0], title: p.title, count: p.photos.length }))
 
     return (
         <div className="snap-page">
@@ -111,17 +115,19 @@ export default async function ServiciuPage({ params }: Props) {
             {showcase.length > 0 && (
                 <section className={`section snap-slide ${styles.showcase}`} data-label="Lucrări">
                     <div className="container">
-                        <p className={`eyebrow ${styles.showcaseKicker}`}>Din atelier, pe pereți</p>
+                        <p className={`eyebrow ${styles.showcaseKicker}`}>{s.showcase?.kicker}</p>
                         <h2 className={styles.center}>Lucrări realizate</h2>
                         <ul className={styles.showcaseGrid}>
-                            {showcase.map((p, i) => (
-                                <li key={p.slug} className={i === 0 ? styles.showcaseFirst : undefined}>
+                            {cards.map((c, i) => (
+                                <li key={c.key} className={i === 0 ? styles.showcaseFirst : undefined}>
                                     <Link href={gallery} className={styles.showcaseCard}>
-                                        <Image src={p.photos[0].src} alt={p.photos[0].alt} width={p.photos[0].w} height={p.photos[0].h} sizes={i === 0 ? "(min-width: 1024px) 600px, 100vw" : "(min-width: 1024px) 300px, 50vw"} />
-                                        <span className={styles.showcaseCaption}>
-                                            <strong>{p.title}</strong>
-                                            <small>{p.photos.length} {p.photos.length === 1 ? "fotografie" : "fotografii"}</small>
-                                        </span>
+                                        <Image src={c.photo.src} alt={c.photo.alt} width={c.photo.w} height={c.photo.h} sizes={i === 0 ? "(min-width: 1024px) 600px, 100vw" : "(min-width: 1024px) 300px, 50vw"} />
+                                        {c.title && (
+                                            <span className={styles.showcaseCaption}>
+                                                <strong>{c.title}</strong>
+                                                <small>{c.count} {c.count === 1 ? "fotografie" : "fotografii"}</small>
+                                            </span>
+                                        )}
                                     </Link>
                                 </li>
                             ))}

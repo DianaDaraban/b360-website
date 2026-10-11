@@ -913,8 +913,8 @@
   "src": "/lucrari/autoutilitare/iulius-meinl.webp",
   "cat": "autoutilitare",
   "client": "Iulius Meinl",
-  "w": 1125,
-  "h": 2000
+  "w": 900,
+  "h": 1600
  },
  {
   "src": "/lucrari/autoutilitare/litera.webp",
@@ -1025,8 +1025,8 @@
   "src": "/lucrari/autoutilitare/sterileco.webp",
   "cat": "autoutilitare",
   "client": "Sterileco",
-  "w": 1600,
-  "h": 2133
+  "w": 1200,
+  "h": 1600
  },
  {
   "src": "/lucrari/autoutilitare/theotop.webp",
@@ -1368,8 +1368,8 @@
   "src": "/lucrari/signalistica/italia-star-2.webp",
   "cat": "signalistica",
   "client": "Italia Star",
-  "w": 1600,
-  "h": 2133
+  "w": 1200,
+  "h": 1600
  },
  {
   "src": "/lucrari/signalistica/ravitex-1.webp",
@@ -1410,15 +1410,15 @@
   "src": "/lucrari/speciale/2.webp",
   "cat": "speciale",
   "client": null,
-  "w": 1530,
-  "h": 2040
+  "w": 1200,
+  "h": 1600
  },
  {
   "src": "/lucrari/speciale/3.webp",
   "cat": "speciale",
   "client": null,
-  "w": 1530,
-  "h": 2040
+  "w": 1200,
+  "h": 1600
  },
  {
   "src": "/lucrari/speciale/4.webp",
@@ -1459,8 +1459,8 @@
   "src": "/lucrari/stickere/1.webp",
   "cat": "stickere",
   "client": null,
-  "w": 1600,
-  "h": 2847
+  "w": 899,
+  "h": 1600
  },
  {
   "src": "/lucrari/stickere/2.webp",
@@ -1473,8 +1473,8 @@
   "src": "/lucrari/stickere/3.webp",
   "cat": "stickere",
   "client": null,
-  "w": 1600,
-  "h": 2133
+  "w": 1200,
+  "h": 1600
  },
  {
   "src": "/lucrari/stickere/4.webp",
@@ -1522,8 +1522,8 @@
   "src": "/lucrari/vitrine/tiriac-auto-2.webp",
   "cat": "vitrine",
   "client": "Tiriac Auto",
-  "w": 923,
-  "h": 2048
+  "w": 721,
+  "h": 1600
  },
  {
   "src": "/lucrari/vitrine/tiriac-auto-3.webp",
@@ -1536,8 +1536,8 @@
   "src": "/lucrari/vitrine/tiriac-auto-4.webp",
   "cat": "vitrine",
   "client": "Tiriac Auto",
-  "w": 1500,
-  "h": 2000
+  "w": 1200,
+  "h": 1600
  },
  {
   "src": "/lucrari/vitrine/transfero.webp",
@@ -1557,7 +1557,7 @@
   "src": "/lucrari/vitrine/wipro-2.webp",
   "cat": "vitrine",
   "client": "Wipro",
-  "w": 1600,
-  "h": 2147
+  "w": 1192,
+  "h": 1600
  }
 ]
