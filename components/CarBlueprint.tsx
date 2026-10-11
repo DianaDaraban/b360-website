@@ -4,10 +4,8 @@ import { useId } from "react"
 import { bodyType, panelLabel, type BodyId, type Mode, type View } from "@/data/calculator"
 import styles from "./CarBlueprint.module.css"
 
-type Pt = [number, number]
 const W = 1600
 const H = 640
-const poly = (points: Pt[]) => "M" + points.map(p => p.join(",")).join(" L") + "Z"
 
 type Props = {
     body: BodyId
@@ -29,9 +27,10 @@ export function CarBlueprint({ body, view, selection, onPick, onHover }: Props) 
     const suffix = view === "dreapta" ? "dr" : "st"
 
     // every clickable panel of this view as [id, outline path]
-    const panels: [string, string][] = top
-        ? b.top.panels.map(([k, x1, x2]) => [k, `M${x1},0 H${x2} V${H} H${x1}Z`])
-        : b.side.panels.map(([k, pts]) => [k === "bara-fata" || k === "bara-spate" ? k : `${k}-${suffix}`, poly(pts)])
+    const panels: [string, string][] = (top ? b.top.panels : b.side.panels).map(([k, d]) => [
+        top || k === "bara-fata" || k === "bara-spate" ? k : `${k}-${suffix}`,
+        d,
+    ])
     const below = top ? null : `M0,${H} L${b.side.belt.map(p => p.join(",")).join(" L")} L${W},${H}Z`
 
     const hover = (id: string | null) => () => onHover(id)

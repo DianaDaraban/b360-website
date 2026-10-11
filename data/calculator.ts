@@ -2,6 +2,8 @@
 // Prices: one price per panel per body type; inscription and logo are separate rates.
 // PROVISIONAL values until B360 sends the real price list (see PRICES_PROVISIONAL).
 
+import { geometry } from "./calculator-geometry"
+
 export type BodyId = "hatchback" | "sedan" | "break" | "suv" | "utilitara"
 export type Mode = "colantare" | "inscriptionare" | "logo"
 export type View = "stanga" | "dreapta" | "sus"
@@ -42,116 +44,33 @@ export const panelLabel = (id: string) => {
 export const panelKind = (id: string) => id.replace(/-(st|dr)$/, "") as PanelKind
 
 // ---------- photo geometry ----------
-// Each body type has two photos (public/calculator/<id>-side.webp and <id>-top.webp), 1600 x 640,
-// car facing left on a transparent background. Panels are outlined on the photo in those pixel
-// coordinates; the colour is laid only over the car itself (the photo's alpha) in multiply mode,
-// so the car's own light and shadow show through like a real film. The right side is the left
-// photo mirrored.
+// Each body type has two photos (public/calculator/<id>-side.webp and <id>-top.webp, 1600 x 640,
+// car facing left, transparent background) and a mask of its paintable body (<id>-<view>-paint.webp).
+// The panel outlines are traced automatically on the photos along the real panel gaps
+// (data/calculator-geometry.ts, generated); the right side is the left photo mirrored.
 type Pt = [number, number]
 export type SideGeometry = {
-    panels: [PanelKind, Pt[]][]   // each panel's outline on the side photo
-    belt: Pt[]                    // window line, front to back: inscription covers what is below it
+    panels: [PanelKind, string][]   // [panel, SVG path of its outline on the side photo]
+    belt: Pt[]                      // window line, front to back: inscription covers what is below it
 }
-export type TopGeometry = {
-    // vertical bands on the top photo: [panel kind, x from, x to]; glass between them is skipped
-    panels: [PanelKind, number, number][]
-}
+export type TopGeometry = { panels: [PanelKind, string][] }
 export type BodyType = { id: BodyId; label: string; side: SideGeometry; top: TopGeometry }
 
-export const bodyTypes: BodyType[] = [
-    {
-        id: "hatchback",
-        label: "Hatchback",
-        side: {
-            panels: [
-                ["bara-fata", [[95, 330], [200, 320], [240, 410], [240, 530], [95, 525]]],
-                ["aripa-fata", [[130, 290], [440, 262], [505, 275], [500, 330], [512, 505], [480, 530], [240, 530], [240, 410], [200, 320]]],
-                ["usa-fata", [[505, 275], [555, 240], [700, 125], [895, 115], [885, 500], [512, 505], [500, 330]]],
-                ["usa-spate", [[895, 115], [1155, 125], [1245, 240], [1230, 330], [1180, 420], [1100, 495], [885, 500]]],
-                ["aripa-spate", [[1155, 125], [1320, 125], [1440, 230], [1475, 270], [1495, 390], [1420, 400], [1300, 370], [1200, 420], [1100, 495], [1180, 420], [1230, 330], [1245, 240]]],
-                ["bara-spate", [[1420, 400], [1495, 390], [1505, 460], [1490, 520], [1400, 525], [1395, 450]]],
-                ["oglinda", [[555, 240], [590, 222], [615, 232], [605, 288], [560, 280]]],
-            ],
-            belt: [[0, 282], [510, 278], [890, 258], [1245, 245], [1600, 240]],
-        },
-        top: { panels: [["bara-fata", 173, 225], ["capota", 225, 464], ["plafon", 712, 1248], ["portbagaj", 1248, 1400], ["bara-spate", 1400, 1430]] },
-    },
-    {
-        id: "sedan",
-        label: "Sedan",
-        side: {
-            panels: [
-                ["bara-fata", [[50, 330], [140, 330], [195, 420], [195, 530], [50, 530]]],
-                ["aripa-fata", [[140, 270], [470, 255], [468, 330], [478, 470], [460, 530], [200, 530], [195, 420], [140, 330]]],
-                ["usa-fata", [[470, 255], [520, 240], [650, 140], [860, 125], [850, 500], [500, 512], [480, 480], [468, 330]]],
-                ["usa-spate", [[860, 125], [1110, 130], [1230, 250], [1220, 330], [1170, 400], [1110, 470], [1060, 500], [850, 500]]],
-                ["aripa-spate", [[1110, 130], [1380, 225], [1515, 240], [1495, 370], [1340, 385], [1130, 505], [1060, 505], [1110, 470], [1170, 400], [1220, 330], [1232, 250]]],
-                ["bara-spate", [[1340, 385], [1495, 370], [1550, 385], [1545, 520], [1360, 525]]],
-                ["oglinda", [[500, 262], [525, 235], [580, 232], [580, 282], [505, 285]]],
-            ],
-            belt: [[0, 272], [500, 272], [860, 262], [1230, 255], [1600, 250]],
-        },
-        top: { panels: [["bara-fata", 124, 175], ["capota", 175, 464], ["plafon", 672, 1104], ["portbagaj", 1320, 1448], ["bara-spate", 1448, 1480]] },
-    },
-    {
-        id: "break",
-        label: "Break",
-        side: {
-            panels: [
-                ["bara-fata", [[55, 350], [170, 345], [205, 430], [205, 540], [55, 525]]],
-                ["aripa-fata", [[100, 330], [420, 285], [490, 290], [488, 350], [500, 520], [470, 545], [205, 540], [205, 430], [170, 345]]],
-                ["usa-fata", [[490, 290], [540, 250], [690, 150], [870, 145], [850, 515], [500, 520], [488, 350]]],
-                ["usa-spate", [[870, 145], [1155, 150], [1220, 255], [1210, 340], [1150, 420], [1105, 510], [850, 515]]],
-                ["aripa-spate", [[1155, 150], [1345, 150], [1440, 225], [1500, 260], [1520, 330], [1525, 400], [1400, 410], [1300, 380], [1180, 450], [1105, 510], [1150, 420], [1210, 340], [1220, 255]]],
-                ["bara-spate", [[1400, 410], [1525, 400], [1550, 430], [1545, 520], [1380, 530], [1370, 460]]],
-                ["oglinda", [[540, 262], [560, 245], [595, 248], [590, 290], [545, 288]]],
-            ],
-            belt: [[0, 295], [495, 290], [865, 275], [1220, 265], [1600, 260]],
-        },
-        top: { panels: [["bara-fata", 133, 185], ["capota", 185, 416], ["plafon", 648, 1304], ["portbagaj", 1304, 1440], ["bara-spate", 1440, 1470]] },
-    },
-    {
-        id: "suv",
-        label: "SUV",
-        side: {
-            panels: [
-                ["bara-fata", [[60, 330], [160, 310], [220, 370], [225, 500], [60, 500]]],
-                ["aripa-fata", [[95, 285], [420, 215], [510, 220], [505, 300], [512, 450], [480, 480], [225, 480], [220, 370], [160, 310]]],
-                ["usa-fata", [[510, 220], [560, 175], [700, 75], [905, 65], [895, 440], [512, 450], [505, 300]]],
-                ["usa-spate", [[905, 65], [1185, 75], [1245, 180], [1250, 300], [1210, 330], [1140, 420], [890, 440]]],
-                ["aripa-spate", [[1185, 75], [1300, 70], [1390, 90], [1460, 180], [1500, 240], [1520, 380], [1420, 390], [1320, 330], [1250, 300], [1245, 180]]],
-                ["bara-spate", [[1420, 390], [1520, 380], [1540, 440], [1520, 500], [1400, 505]]],
-                ["oglinda", [[560, 190], [600, 165], [630, 180], [625, 225], [565, 220]]],
-            ],
-            belt: [[0, 225], [510, 222], [900, 210], [1245, 200], [1600, 195]],
-        },
-        top: { panels: [["bara-fata", 171, 225], ["capota", 225, 464], ["plafon", 688, 1240], ["portbagaj", 1240, 1405], ["bara-spate", 1405, 1430]] },
-    },
-    {
-        id: "utilitara",
-        label: "Utilitară",
-        side: {
-            panels: [
-                ["bara-fata", [[135, 400], [250, 395], [255, 470], [250, 545], [135, 540]]],
-                ["aripa-fata", [[150, 370], [190, 330], [300, 300], [355, 345], [355, 440], [420, 500], [430, 545], [255, 545], [255, 470], [250, 395], [135, 400]]],
-                ["usa-fata", [[300, 300], [460, 180], [600, 162], [595, 420], [575, 530], [430, 545], [420, 500], [355, 440], [355, 345]]],
-                ["usa-culisanta", [[605, 40], [930, 35], [930, 540], [580, 540], [600, 420]]],
-                ["panou-lateral", [[930, 35], [1385, 30], [1420, 45], [1450, 300], [1450, 425], [1305, 425], [1250, 470], [1190, 500], [1130, 540], [930, 540]]],
-                ["bara-spate", [[1305, 425], [1460, 425], [1465, 535], [1320, 540], [1300, 470]]],
-                ["oglinda", [[365, 265], [385, 262], [395, 330], [370, 340], [360, 300]]],
-            ],
-            belt: [[0, 340], [600, 335], [1600, 335]],
-        },
-        top: { panels: [["bara-fata", 91, 140], ["capota", 140, 240], ["plafon", 419, 1500]] },
-    },
-]
+const labels: Record<BodyId, string> = { hatchback: "Hatchback", sedan: "Sedan", break: "Break", suv: "SUV", utilitara: "Utilitară" }
+export const bodyTypes: BodyType[] = (Object.keys(labels) as BodyId[]).map(id => ({
+    id,
+    label: labels[id],
+    side: geometry[id].side as unknown as SideGeometry,
+    top: geometry[id].top as unknown as TopGeometry,
+}))
 
 export const bodyType = (id: BodyId) => bodyTypes.find(b => b.id === id)!
 
 // every panel id of a body type, both sides
 export function panelsOf(id: BodyId) {
     const b = bodyType(id)
-    const shared = ["bara-fata", "bara-spate", ...b.top.panels.map(p => p[0]).filter(k => k === "capota" || k === "plafon" || k === "portbagaj")]
+    // the tailgate is barely visible from above on some bodies, but every car has one
+    const shared = ["bara-fata", "bara-spate", "capota", "plafon", ...(id === "utilitara" ? [] : ["portbagaj"])]
     const sides = b.side.panels.map(p => p[0]).filter(k => k !== "bara-fata" && k !== "bara-spate")
     return [...new Set(shared), ...sides.flatMap(k => [`${k}-st`, `${k}-dr`])]
 }
