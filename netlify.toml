@@ -1,0 +1,8 @@
+# Netlify: build with the Next.js runtime (server pages, API routes, image optimisation, on-demand
+# revalidation after admin changes); content edited in /admin lives in Netlify Blobs.
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
