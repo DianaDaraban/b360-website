@@ -98,7 +98,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
     return (
         <SmartForm kind="calculator" className={styles.calc} aria-label="Calculator cost colantare">
             {/* ---------- 1: the car ---------- */}
-            <Step n={1} title="Ce mașină ai?" hint="Alege tipul de caroserie sau caută modelul.">
+            <Step n={1} compact title="Ce mașină ai?" hint="Alege tipul de caroserie sau caută modelul. Nu e în listă? Alege doar tipul: calculul e același pentru mașini similare.">
                 <div className={styles.carRow}>
                 <div className={styles.bodyCards} role="radiogroup" aria-label="Tip caroserie">
                     {bodyTypes.map(b => (
@@ -115,7 +115,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                         <input
                             id="calc-model"
                             value={query}
-                            placeholder="ex. Dacia Duster"
+                            placeholder="Caută modelul, ex. Dacia Duster"
                             autoComplete="off"
                             onChange={e => { setQuery(e.target.value); setModel(""); setSuggest(true) }}
                             onFocus={() => setSuggest(true)}
@@ -134,13 +134,12 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                             </ul>
                         )}
                     </div>
-                    <p className={styles.note}>Nu e în listă? Alege doar tipul de caroserie: calculul e același pentru mașini similare.</p>
                 </div>
                 </div>
             </Step>
 
             {/* ---------- 2: the pieces ---------- */}
-            <Step n={2} title="Ce piese colantăm?" hint={show3d ? "Rotește mașina trăgând de ea (sau cu degetul) și apasă pe piesele pe care vrei să le colantăm." : "Apasă pe piese, direct pe mașină. Întoarce mașina cu săgețile ca să vezi și plafonul sau cealaltă parte."}>
+            <Step n={2} compact title="Ce piese colantăm?" hint={show3d ? "Rotește mașina trăgând de ea (sau cu degetul) și apasă pe piesele pe care vrei să le colantăm." : "Apasă pe piese, direct pe mașină. Întoarce mașina cu săgețile ca să vezi și plafonul sau cealaltă parte."}>
                 {show3d ? (
                     <div className={styles.canvas3d}>
                         <Car3D body={body} selected={selected} view={view3d} onPick={pick} onHover={setHovered} />
@@ -345,9 +344,10 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
 }
 
 // one step of the calculator: a big number, the question as the title, then its content
-function Step({ n, title, hint, id, children }: { n: number; title: string; hint?: string; id?: string; children: React.ReactNode }) {
+// compact: steps 1 and 2, which share one screen (on phones their hints are hidden)
+function Step({ n, title, hint, id, compact, children }: { n: number; title: string; hint?: string; id?: string; compact?: boolean; children: React.ReactNode }) {
     return (
-        <section className={styles.step} id={id} aria-labelledby={`calc-step-${n}`}>
+        <section className={`${styles.step} ${compact ? styles.compact : ""}`} id={id} aria-labelledby={`calc-step-${n}`}>
             <header className={styles.stepHead}>
                 <span className={styles.stepNo} aria-hidden="true">{n}</span>
                 <div>

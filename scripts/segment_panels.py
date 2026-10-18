@@ -13,6 +13,7 @@ from PIL import Image
 from skimage.segmentation import watershed
 from skimage.filters import sobel
 from skimage.morphology import black_tophat, disk
+from smooth_outlines import smooth
 
 SRC, OUT, DATA, REVIEW = sys.argv[1:5]
 W, H = 1600, 640
@@ -144,7 +145,7 @@ def segment(name, view, rgba):
         for c in cs:
             ap = cv2.approxPolyDP(c, 1.2, True).reshape(-1, 2)
             d += "M" + " L".join(f"{p[0]},{p[1]}" for p in ap) + "Z"
-        out.append([k, d])
+        out.append([k, smooth(d)])
     return out, lab, labels, paint, lum, alpha
 
 PALETTE = [(238, 51, 56), (46, 156, 202), (246, 166, 35), (123, 177, 82), (155, 89, 182), (52, 73, 94), (230, 126, 34), (26, 188, 156), (120, 120, 120)]

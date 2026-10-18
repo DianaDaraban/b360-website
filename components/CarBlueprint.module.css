@@ -3,13 +3,13 @@
 
 /* paint: multiplied onto the white car, so its shading shows through like real film */
 .paint { mix-blend-mode: multiply; }
-.wrapFill { fill: #f7a823; }
+.wrapFill { fill: #ee3338; }      /* B360 red */
 .insFill { fill: #2f9fd0; }
 .logo { mix-blend-mode: normal; }
 
-/* thick contours around the chosen pieces */
-.wrapEdge { fill: none; stroke: #ffd400; stroke-width: 14; stroke-linejoin: round; }
-.insEdge { fill: none; stroke: #0f6d96; stroke-width: 12; stroke-linejoin: round; }
+/* contours around the chosen pieces (drawn inside them: the outline clips the stroke) */
+.wrapEdge { fill: none; stroke: #8f0f15; stroke-width: 6; stroke-linejoin: round; }
+.insEdge { fill: none; stroke: #0f6d96; stroke-width: 6; stroke-linejoin: round; }
 
 /* click areas: invisible, a light red tint over the car on hover */
 .hit { fill: transparent; cursor: pointer; transition: fill 0.2s; }

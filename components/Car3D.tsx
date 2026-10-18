@@ -5,6 +5,7 @@ import * as THREE from "three"
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js"
+import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js"
 import styles from "./Car3D.module.css"
 
 // The calculator's car in 3D (models from Freepik image-to-3D, split into the calculator's panels by
@@ -25,7 +26,7 @@ const GROUPS: Record<string, { color: number; roughness: number; metalness?: num
     body: { color: 0xeeebe7, roughness: 0.45 },
     interior: { color: 0x4d4845, roughness: 0.8 },
 }
-const PAINT = 0xf3f1ee, PICKED = 0xf7a823, HOVER = 0xf6c6c7
+const PAINT = 0xe4e0db, PICKED = 0xee3338, HOVER = 0xf3b5b7     // picked: the B360 red
 
 type Props = {
     body: string
@@ -51,12 +52,18 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
         renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
         renderer.outputColorSpace = THREE.SRGBColorSpace
+        renderer.toneMapping = THREE.NeutralToneMapping
         el.appendChild(renderer.domElement)
 
+        // soft studio light (a room reflected all round, one gentle key from above): hard side lights
+        // made the generated bodies look dented
         const scene = new THREE.Scene()
-        scene.add(new THREE.HemisphereLight(0xffffff, 0x9a948f, 2.4))
-        const key = new THREE.DirectionalLight(0xffffff, 1.8); key.position.set(2, 3, 2.5); scene.add(key)
-        const fill = new THREE.DirectionalLight(0xffffff, 0.7); fill.position.set(-2.5, 1.5, -2); scene.add(fill)
+        const pmrem = new THREE.PMREMGenerator(renderer)
+        const env = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
+        scene.environment = env
+        scene.environmentIntensity = 0.75
+        scene.add(new THREE.HemisphereLight(0xffffff, 0xa79e96, 0.8))
+        const key = new THREE.DirectionalLight(0xffffff, 1.1); key.position.set(1.5, 4, 2.5); scene.add(key)
         const camera = new THREE.PerspectiveCamera(32, 1, 0.01, 50)
         const controls = new OrbitControls(camera, renderer.domElement)
         controls.enableDamping = true
@@ -68,7 +75,7 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
 
         const panels = new Map<string, THREE.Mesh>()
         let hovered: string | null = null
-        let radius = 1
+        let radius = 1, baseRadius = 1
         const center = new THREE.Vector3()
         const paint = () => {
             for (const [name, mesh] of panels) {
@@ -99,16 +106,15 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
                 const g = GROUPS[mesh.name]
                 mesh.material = g
                     ? new THREE.MeshStandardMaterial({ color: g.color, roughness: g.roughness, metalness: g.metalness ?? 0, transparent: g.opacity !== undefined, opacity: g.opacity ?? 1 })
-                    : new THREE.MeshStandardMaterial({ color: PAINT, roughness: 0.32, metalness: 0.05 })
+                    : new THREE.MeshStandardMaterial({ color: PAINT, roughness: 0.5, metalness: 0.05 })
                 if (!g) panels.set(mesh.name, mesh)
             })
             scene.add(root)
             const box = new THREE.Box3().setFromObject(root)
             box.getCenter(center)
-            radius = box.getSize(new THREE.Vector3()).length() * 1.35
+            baseRadius = box.getSize(new THREE.Vector3()).length() * 1.35
             controls.target.copy(center)
-            controls.minDistance = radius * 0.55
-            controls.maxDistance = radius * 1.6
+            fit()
             camera.position.copy(place(START))
             // a soft shadow under the car
             const shadow = new THREE.Mesh(new THREE.CircleGeometry(1, 48), new THREE.MeshBasicMaterial({ color: 0x3c1414, transparent: true, opacity: 0.12, depthWrite: false }))
@@ -156,11 +162,20 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
         renderer.domElement.addEventListener("pointerleave", onLeave)
         renderer.domElement.style.cursor = "grab"
 
+        // narrow boards (phones) step the camera back, so the whole car still fits across
+        const fit = () => {
+            const was = radius
+            radius = baseRadius * Math.min(2.2, Math.max(1, 1.5 / camera.aspect))
+            controls.minDistance = radius * 0.55
+            controls.maxDistance = radius * 1.6
+            camera.position.sub(center).multiplyScalar(radius / was).add(center)
+        }
         const resize = () => {
             const w = el.clientWidth, h = el.clientHeight
             renderer.setSize(w, h, false)
             camera.aspect = w / h
             camera.updateProjectionMatrix()
+            fit()
         }
         const ro = new ResizeObserver(resize)
         ro.observe(el)
@@ -193,6 +208,8 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
                 const mat = m.material as THREE.Material | undefined
                 mat?.dispose()
             })
+            env.dispose()
+            pmrem.dispose()
             renderer.dispose()
             renderer.domElement.remove()
             api.current = null

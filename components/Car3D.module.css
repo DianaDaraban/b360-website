@@ -1,6 +1,5 @@
 .wrap { position: relative; }
-/* not the whole screen on phones, so the page can still be scrolled beside / below the car */
-.host { width: 100%; height: clamp(260px, 46vw, 470px); }
+/* the height comes from the calculator (what is left of the screen beside steps 1 and 2) */
+.host { width: 100%; height: var(--car3d-h, clamp(260px, 46vw, 470px)); }
 .host canvas { display: block; width: 100% !important; height: 100% !important; touch-action: none; }
 .state { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; font-weight: 700; color: var(--muted); pointer-events: none; }
-@media (max-width: 639px) { .host { height: 300px; } }
