@@ -49,3 +49,6 @@ next-env.d.ts
 
 # content saved from /admin when running locally
 /.data
+
+# Local Netlify folder
+.netlify
