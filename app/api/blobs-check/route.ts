@@ -16,6 +16,9 @@ export async function GET() {
         `env NETLIFY=${process.env.NETLIFY} ctx=${Boolean(process.env.NETLIFY_BLOBS_CONTEXT)} global=${Boolean((globalThis as { netlifyBlobsContext?: unknown }).netlifyBlobsContext)}`,
         await timed("eventual get", () => getStore("content").get("projects", { type: "json" })),
         await timed("strong get", () => getStore({ name: "content", consistency: "strong" }).get("projects", { type: "json" })),
+        await timed("plain fetch", () => fetch("https://api.netlify.com/api/v1/").then(r => r.status)),
+        await timed("no-store fetch get", () => getStore({ name: "content", fetch: (u: RequestInfo | URL, i?: RequestInit) => fetch(u, { ...i, cache: "no-store" }) } as never).get("projects", { type: "json" })),
+        `ctx: ${Object.keys(JSON.parse(Buffer.from(process.env.NETLIFY_BLOBS_CONTEXT ?? "e30=", "base64").toString())).join(",")}`,
     ]
     return new Response(out.join("\n"))
 }
