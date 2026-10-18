@@ -130,13 +130,30 @@
 .hoverName em { font-style: normal; font-weight: 500; color: var(--muted); }
 
 .viewBar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
-.views { display: inline-flex; padding: 4px; border-radius: 999px; background: rgb(60 20 20 / 0.07); }
-.views button { padding: 7px 14px; border: 0; border-radius: 999px; background: none; color: var(--ink-strong); font: 700 0.9rem/1 var(--font-head); cursor: pointer; }
-.views button[aria-selected="true"] { background: var(--ink-strong); color: var(--white); }
+/* the angle switch: white with a border, the chosen angle red */
+.views { display: inline-flex; gap: 2px; padding: 3px; border: 1.5px solid rgb(60 20 20 / 0.2); border-radius: 999px; background: var(--white); }
+.views button { padding: 8px 18px; border: 0; border-radius: 999px; background: none; color: var(--ink-strong); font: 700 0.92rem/1 var(--font-head); cursor: pointer; transition: background 0.2s, color 0.2s; }
+.views button:hover { color: var(--red-dark); }
+.views button[aria-selected="true"] { background: var(--red); color: var(--white); box-shadow: 0 3px 8px rgb(238 51 56 / 0.3); }
+/* quick picks: white outlined buttons with an icon; clearing everything in red */
 .quick { display: flex; flex-wrap: wrap; gap: 8px; }
-.quick button { padding: 7px 13px; border: 1.5px solid rgb(60 20 20 / 0.25); border-radius: 999px; background: var(--white); color: var(--ink-strong); font: 700 0.88rem/1 var(--font-head); cursor: pointer; transition: border-color 0.2s, color 0.2s; }
-.quick button:hover:not(:disabled) { border-color: var(--red); color: var(--red-dark); }
-.quick button:disabled { opacity: 0.4; cursor: default; }
+.quick button {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 15px;
+    border: 1.5px solid rgb(60 20 20 / 0.35);
+    border-radius: 999px;
+    background: var(--white);
+    color: var(--ink-strong);
+    font: 700 0.92rem/1 var(--font-head);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+.quick svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.quick button:hover:not(:disabled) { border-color: var(--red); background: var(--red); color: var(--white); }
+.quick .clear { border-color: rgb(238 51 56 / 0.6); color: var(--red-dark); }
+.quick button:disabled { border-color: rgb(60 20 20 / 0.15); background: rgb(255 255 255 / 0.5); color: rgb(60 20 20 / 0.35); cursor: default; }
 
 /* ---------- 3-5: answers as big cards ---------- */
 .choices { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }

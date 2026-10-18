@@ -17,8 +17,8 @@ const lei = (n: number) => `${n.toLocaleString("ro-RO")} lei`
 const mp = (n: number) => `${n.toLocaleString("ro-RO", { maximumFractionDigits: 1 })} mp`
 
 const GRAPHICS: { id: Graphics; label: string; hint?: string }[] = [
-    { id: "am", label: "Am grafica gata (fișiere vectoriale)" },
-    { id: "noi", label: "Vreau să o facem noi" },
+    { id: "am", label: "Am grafica gata (fișiere vectoriale)", hint: "Ne trimiți fișierele, noi le pregătim de print." },
+    { id: "noi", label: "Nu am grafica, vreau să o faceți voi", hint: "Vă spun ce îmi doresc, iar voi creați grafica de la zero." },
     { id: "ai", label: "Am o simulare făcută cu AI (ChatGPT etc.) și vreau s-o reproduceți", hint: "Simulările generate cu AI nu sunt fișiere de print: le redesenăm de la zero, vectorial, ca să arate la fel pe mașină." },
 ]
 
@@ -148,9 +148,18 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                         ))}
                     </div>
                     <div className={styles.quick}>
-                        <button type="button" onClick={() => setSelected(all)}>Toată mașina</button>
-                        <button type="button" onClick={() => setSelected(sidePanels(body))}>Doar laterale</button>
-                        <button type="button" onClick={() => setSelected([])} disabled={!selected.length}>Șterge tot</button>
+                        <button type="button" onClick={() => setSelected(all)}>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4" /><path d="M7.5 12.5l3 3 6-6.5" /></svg>
+                            Toată mașina
+                        </button>
+                        <button type="button" onClick={() => setSelected(sidePanels(body))}>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4" /></svg>
+                            Doar laterale
+                        </button>
+                        <button type="button" className={styles.clear} onClick={() => setSelected([])} disabled={!selected.length}>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+                            Șterge tot
+                        </button>
                     </div>
                 </div>
             </Step>
