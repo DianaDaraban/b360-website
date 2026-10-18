@@ -27,6 +27,7 @@ CONFIG = {
     "hatchback-fabia": {"rot_y": 90, "paint": ["Blue_Car_Paint"], "tyre": ["Car_rubber_wheel"]},
     "utilitara-ducato": {"rot_y": 90, "paint": ["varnish"], "tyre": ["wheel_rubber"], "van": True, "no_doors": True,
                          "cuts": {"x_door_f": 0.21, "x_door_m": 0.05, "x_door_r": -0.21, "x_cowl": 0.30, "y_shoulder": 0.25, "y_roof": 0.41}},
+    "suv-evoque": {"rot_y": 90, "paint": ["Vehicle_-_Body_-_Paint"], "tyre": ["Tyre"], "drop": ["Logo", "RangeRover", "Range_Rover"]},
     "sedan-generic": {"rot_y": 90, "paint": ["Car_Paint_-_All_Colors"], "tyre": ["tire-low"]},
 }
 cfg = CONFIG[body]

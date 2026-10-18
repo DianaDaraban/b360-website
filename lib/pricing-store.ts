@@ -56,7 +56,12 @@ export async function getPricing(): Promise<PricingConfig> {
     try {
         const status = await getStatus()
         if (!status || Date.now() - Date.parse(status.checkedAt) > EVERY) await syncFromDrive()
-        return (await stored()) ?? defaultPricing
+        const cfg = await stored()
+        if (!cfg) return defaultPricing
+        // bodies added after the workbook was read (coach, truck) take the default lengths
+        const pieces = { ...defaultPricing.pieces, ...cfg.pieces }
+        for (const [b, list] of Object.entries(defaultPricing.pieces)) pieces[b] = { ...list, ...cfg.pieces[b] }
+        return { ...cfg, pieces }
     } catch {
         return defaultPricing
     }

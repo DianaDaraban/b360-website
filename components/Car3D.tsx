@@ -117,7 +117,9 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
             scene.add(root)
             const box = new THREE.Box3().setFromObject(root)
             box.getCenter(center)
-            baseRadius = box.getSize(new THREE.Vector3()).length() * 1.35
+            const sz = box.getSize(new THREE.Vector3())
+            // long vehicles (coach, truck) are mostly length: frame them by it, not by the diagonal
+            baseRadius = sz.length() * (sz.x > sz.y * 3.2 ? 1.05 : 1.35)
             controls.target.copy(center)
             fit()
             camera.position.copy(place(START))

@@ -27,11 +27,11 @@ export function CarBlueprint({ body, view, selection, onPick, onHover }: Props) 
     const suffix = view === "dreapta" ? "dr" : "st"
 
     // every clickable panel of this view as [id, outline path]
-    const panels: [string, string][] = (top ? b.top.panels : b.side.panels).map(([k, d]) => [
+    const panels: [string, string][] = (top ? b.top!.panels : b.side!.panels).map(([k, d]) => [
         top || k === "bara-fata" || k === "bara-spate" ? k : `${k}-${suffix}`,
         d,
     ])
-    const below = top ? null : `M0,${H} L${b.side.belt.map(p => p.join(",")).join(" L")} L${W},${H}Z`
+    const below = top ? null : `M0,${H} L${b.side!.belt.map(p => p.join(",")).join(" L")} L${W},${H}Z`
 
     const hover = (id: string | null) => () => onHover(id)
 

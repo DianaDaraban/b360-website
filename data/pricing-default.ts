@@ -22,6 +22,12 @@ export const defaultPricing: PricingConfig = {
     ],
     pieces: {
         hatchback: ml(car, 1), sedan: ml(car, 1.05), break: ml(car, 1.1), suv: ml(car, 1.15), utilitara: ml(van, 1.35),
+        // the big vehicles: film 1.52 m wide, so metres of roll = area / 1.52 (12.2 m coach, 13.6 m trailer)
+        autocar: { fata: 6, spate: 6, plafon: 20, "lateral-fata": 9.5, "lateral-mijloc": 9.5, "lateral-spate": 9.5 },
+        camion: {
+            "cabina-fata": 3.5, "cabina-usa": 1.3, "cabina-lateral": 1.5, "cabina-plafon": 2.5,
+            "remorca-fata": 4.5, "remorca-spate": 4.5, "remorca-lateral": 24, "remorca-plafon": 22,
+        },
     },
     graphics: [
         { from: 1, to: 2, eur: 75 },

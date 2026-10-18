@@ -2,12 +2,15 @@ import "server-only"
 import readXlsxFile from "read-excel-file/node"
 import { panelNames, type BodyId } from "@/data/calculator"
 import type { Material, PricingConfig } from "./pricing"
+import { defaultPricing } from "@/data/pricing-default"
 
 // Reads the price workbook (uploaded, or fetched from Google Drive / Sheets) into the calculator's
 // price model. Columns are found by their heading, so their order does not matter; every value is
 // checked and each problem reported with its sheet and row, in words the client understands.
 
-const BODIES: BodyId[] = ["hatchback", "sedan", "break", "suv", "utilitara"]
+const BODIES: BodyId[] = ["hatchback", "sedan", "break", "suv", "utilitara", "autocar", "camion"]
+// added later: a workbook without them keeps the default lengths for them
+const OPTIONAL: BodyId[] = ["autocar", "camion"]
 const PIECES = Object.keys(panelNames)
 const TYPES: Record<string, Material["type"]> = {
     decupata: "decupată", print: "print", integrala: "integrală", speciala: "specială", ppf: "PPF", laminare: "laminare",
@@ -94,7 +97,11 @@ export async function parseWorkbook(input: Buffer): Promise<{ config: PricingCon
         if (ml === null || ml < 0) { errors.push(`${where}: metrii liniari lipsesc sau nu sunt un număr.`); continue }
         ;(pieces[body] ??= {})[piece] = ml
     }
-    for (const b of BODIES) if (!pieces[b]) errors.push(`Foaia „Piese” nu are piese pentru ${b}.`)
+    for (const b of BODIES) {
+        if (pieces[b]) continue
+        if (OPTIONAL.includes(b)) pieces[b] = { ...defaultPricing.pieces[b] }
+        else errors.push(`Foaia „Piese” nu are piese pentru ${b}.`)
+    }
 
     // ---------- Grafică ----------
     const graphics: PricingConfig["graphics"] = []

@@ -4,7 +4,7 @@
 
 import { geometry } from "./calculator-geometry"
 
-export type BodyId = "hatchback" | "sedan" | "break" | "suv" | "utilitara"
+export type BodyId = "hatchback" | "sedan" | "break" | "suv" | "utilitara" | "autocar" | "camion"
 export type Mode = "colantare" | "inscriptionare" | "logo"
 export type View = "stanga" | "dreapta" | "sus"
 
@@ -21,6 +21,11 @@ export type PanelKind =
     | "bara-fata" | "bara-spate" | "capota" | "plafon" | "portbagaj"
     | "aripa-fata" | "usa-fata" | "usa-spate" | "aripa-spate" | "oglinda"
     | "usa-culisanta" | "panou-lateral"
+    // coach
+    | "fata" | "spate" | "lateral-fata" | "lateral-mijloc" | "lateral-spate"
+    // tractor unit with semi-trailer
+    | "cabina-fata" | "cabina-usa" | "cabina-lateral" | "cabina-plafon"
+    | "remorca-fata" | "remorca-spate" | "remorca-lateral" | "remorca-plafon"
 
 export const panelNames: Record<PanelKind, string> = {
     "bara-fata": "Bară față",
@@ -35,6 +40,19 @@ export const panelNames: Record<PanelKind, string> = {
     oglinda: "Oglindă",
     "usa-culisanta": "Ușă culisantă",
     "panou-lateral": "Panou lateral",
+    fata: "Față",
+    spate: "Spate",
+    "lateral-fata": "Lateral față",
+    "lateral-mijloc": "Lateral mijloc",
+    "lateral-spate": "Lateral spate",
+    "cabina-fata": "Cabină față",
+    "cabina-usa": "Ușă cabină",
+    "cabina-lateral": "Lateral cabină",
+    "cabina-plafon": "Plafon cabină și deflector",
+    "remorca-fata": "Semiremorcă față",
+    "remorca-spate": "Semiremorcă spate",
+    "remorca-lateral": "Lateral semiremorcă",
+    "remorca-plafon": "Plafon semiremorcă",
 }
 
 export const panelLabel = (id: string) => {
@@ -54,24 +72,41 @@ export type SideGeometry = {
     belt: Pt[]                      // window line, front to back: inscription covers what is below it
 }
 export type TopGeometry = { panels: [PanelKind, string][] }
-export type BodyType = { id: BodyId; label: string; side: SideGeometry; top: TopGeometry }
+// the big vehicles have no photos: only the 3D model (side and top are null)
+export type BodyType = { id: BodyId; label: string; side: SideGeometry | null; top: TopGeometry | null }
 
-const labels: Record<BodyId, string> = { hatchback: "Hatchback", sedan: "Sedan", break: "Break", suv: "SUV", utilitara: "Utilitară" }
+const labels: Record<BodyId, string> = {
+    hatchback: "Hatchback", sedan: "Sedan", break: "Break", suv: "SUV", utilitara: "Utilitară",
+    autocar: "Autocar", camion: "Cap tractor + semiremorcă",
+}
+const drawn = geometry as Partial<Record<BodyId, { side: unknown; top: unknown }>>
 export const bodyTypes: BodyType[] = (Object.keys(labels) as BodyId[]).map(id => ({
     id,
     label: labels[id],
-    side: geometry[id].side as unknown as SideGeometry,
-    top: geometry[id].top as unknown as TopGeometry,
+    side: (drawn[id]?.side ?? null) as SideGeometry | null,
+    top: (drawn[id]?.top ?? null) as TopGeometry | null,
 }))
+export const hasDrawing = (id: BodyId) => bodyType(id).side !== null
+
+// panels of the vehicles drawn only in 3D ("-st"/"-dr" added for the side ones)
+const PANELS_3D: Partial<Record<BodyId, { shared: PanelKind[]; sides: PanelKind[] }>> = {
+    autocar: { shared: ["fata", "spate", "plafon"], sides: ["lateral-fata", "lateral-mijloc", "lateral-spate"] },
+    camion: {
+        shared: ["cabina-fata", "cabina-plafon", "remorca-fata", "remorca-spate", "remorca-plafon"],
+        sides: ["cabina-usa", "cabina-lateral", "remorca-lateral"],
+    },
+}
 
 export const bodyType = (id: BodyId) => bodyTypes.find(b => b.id === id)!
 
 // every panel id of a body type, both sides
-export function panelsOf(id: BodyId) {
+export function panelsOf(id: BodyId): string[] {
+    const only3d = PANELS_3D[id]
+    if (only3d) return [...only3d.shared, ...only3d.sides.flatMap(k => [`${k}-st`, `${k}-dr`])]
     const b = bodyType(id)
     // the tailgate is barely visible from above on some bodies, but every car has one
     const shared = ["bara-fata", "bara-spate", "capota", "plafon", ...(id === "utilitara" ? [] : ["portbagaj"])]
-    const sides = b.side.panels.map(p => p[0]).filter(k => k !== "bara-fata" && k !== "bara-spate")
+    const sides = b.side!.panels.map(p => p[0]).filter(k => k !== "bara-fata" && k !== "bara-spate")
     // every car has mirrors, also where the side photo hides them (the 3D model shows them)
     if (id !== "utilitara" && !sides.includes("oglinda")) sides.push("oglinda")
     return [...new Set(shared), ...sides.flatMap(k => [`${k}-st`, `${k}-dr`])]
@@ -80,17 +115,17 @@ export const sidePanels = (id: BodyId) => panelsOf(id).filter(p => /-(st|dr)$/.t
 
 // ---------- prices (lei, PROVISIONAL) ----------
 // colantare per panel and body type; inscription and logo as shares / add-ons of it
-const base: Record<PanelKind, number> = {
+const base: Partial<Record<PanelKind, number>> = {
     "bara-fata": 350, "bara-spate": 350, capota: 450, plafon: 550, portbagaj: 400,
     "aripa-fata": 250, "usa-fata": 380, "usa-spate": 360, "aripa-spate": 300, oglinda: 90,
     "usa-culisanta": 520, "panou-lateral": 780,
 }
-const bodyFactor: Record<BodyId, number> = { hatchback: 1, sedan: 1.1, break: 1.15, suv: 1.25, utilitara: 1.45 }
+const bodyFactor: Partial<Record<BodyId, number>> = { hatchback: 1, sedan: 1.1, break: 1.15, suv: 1.25, utilitara: 1.45 }
 export const INSCRIPTION_SHARE = 0.55 // lower part only
 export const LOGO_ADDON = 120          // per panel, on top of the full wrap
 
 export function panelPrice(body: BodyId, panelId: string, mode: Mode) {
-    const wrap = Math.round((base[panelKind(panelId)] * bodyFactor[body]) / 10) * 10
+    const wrap = Math.round(((base[panelKind(panelId)] ?? 0) * (bodyFactor[body] ?? 1)) / 10) * 10
     if (mode === "inscriptionare") return Math.round((wrap * INSCRIPTION_SHARE) / 10) * 10
     if (mode === "logo") return wrap + LOGO_ADDON
     return wrap
@@ -123,4 +158,8 @@ export const models: { name: string; body: BodyId }[] = [
     { name: "Mercedes-Benz Sprinter", body: "utilitara" }, { name: "BMW Seria 3", body: "sedan" }, { name: "BMW X5", body: "suv" },
     { name: "Audi A4", body: "sedan" }, { name: "Audi Q5", body: "suv" }, { name: "Fiat Ducato", body: "utilitara" },
     { name: "Tesla Model 3", body: "sedan" }, { name: "Tesla Model Y", body: "suv" },
+    { name: "Mercedes-Benz Tourismo", body: "autocar" }, { name: "Setra ComfortClass", body: "autocar" }, { name: "MAN Lion's Coach", body: "autocar" },
+    { name: "Iveco Evadys", body: "autocar" }, { name: "Mercedes-Benz Actros", body: "camion" }, { name: "MAN TGX", body: "camion" },
+    { name: "Volvo FH", body: "camion" }, { name: "Scania R / S", body: "camion" }, { name: "DAF XF", body: "camion" },
+    { name: "Renault Trucks T", body: "camion" }, { name: "Iveco S-Way", body: "camion" },
 ]

@@ -274,7 +274,7 @@
 @media (min-width: 900px) {
     .four { grid-template-columns: repeat(4, 1fr); }
     .three { grid-template-columns: repeat(3, 1fr); }
-    .bodyCards { grid-template-columns: repeat(5, 1fr); }
+    .bodyCards { grid-template-columns: repeat(7, 1fr); }
 }
 @media (min-width: 1000px) {
     /* the estimate and the request side by side */

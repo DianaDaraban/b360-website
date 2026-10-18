@@ -5,7 +5,7 @@ import dynamic from "next/dynamic"
 import type { View3D } from "./Car3D"
 import { CarBlueprint } from "./CarBlueprint"
 import { Consent, SmartForm } from "./SmartForm"
-import { bodyTypes, models, panelLabel, panelsOf, sidePanels, type BodyId, type Mode, type View } from "@/data/calculator"
+import { bodyTypes, hasDrawing, models, panelLabel, panelsOf, sidePanels, type BodyId, type Mode, type View } from "@/data/calculator"
 import { DURATIONS, estimate, JOB_TYPES, jobAvailable, subtypesOf, type Graphics, type JobType, type PricingConfig } from "@/lib/pricing"
 import form from "@/app/form.module.css"
 import styles from "./Calculator.module.css"
@@ -18,13 +18,20 @@ const views: { id: View; label: string }[] = [
 // the 3D viewer (three.js) loads only in the browser and only when a body with a 3D model is shown
 const Car3D = dynamic(() => import("./Car3D"), { ssr: false, loading: () => <p className={styles.loading3d}>Se încarcă mașina 3D…</p> })
 const CC_BY: [string, string] = ["CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/"]
-const MODELS_3D = new Set<string>(["hatchback", "sedan", "break", "suv", "utilitara"])
+const MODELS_3D = new Set<string>(["hatchback", "sedan", "break", "suv", "utilitara", "autocar", "camion"])
 // hand-modelled cars from Sketchfab: CC BY 4.0 asks for the author, a link and a note of the changes
-const CREDITS_3D: Record<string, { title: string; author: string; url: string; license: [string, string] }> = {
-    sedan: { title: "2014 Toyota Corolla E180 EU", author: "Armored Wave", url: "https://sketchfab.com/3d-models/2014-toyota-corolla-e180-eu-with-interior-36f95efb0585464cae43a25a3b3392e8", license: CC_BY },
-    hatchback: { title: "Skoda Fabia Mk.2", author: "barking_dogo", url: "https://sketchfab.com/3d-models/skoda-fabia-mk2-e2e0be2c52994e3bb6cae225f3e7482d", license: CC_BY },
-    break: { title: "Volvo V60 Polestar (2013)", author: "Myedsu", url: "https://sketchfab.com/3d-models/volvo-v60-polestar-2013-504ce39150fe49c7979f702d5f0f8580", license: CC_BY },
-    utilitara: { title: "2014 Fiat Ducato", author: "razor24", url: "https://sketchfab.com/3d-models/2014-fiat-ducato-8a651ad182414bb0a8b6c6d8d5bd7c01", license: CC_BY },
+type Credit = { title: string; author: string; url: string; license: [string, string] }
+const CREDITS_3D: Record<string, Credit[]> = {
+    sedan: [{ title: "2014 Toyota Corolla E180 EU", author: "Armored Wave", url: "https://sketchfab.com/3d-models/2014-toyota-corolla-e180-eu-with-interior-36f95efb0585464cae43a25a3b3392e8", license: CC_BY }],
+    hatchback: [{ title: "Skoda Fabia Mk.2", author: "barking_dogo", url: "https://sketchfab.com/3d-models/skoda-fabia-mk2-e2e0be2c52994e3bb6cae225f3e7482d", license: CC_BY }],
+    break: [{ title: "Volvo V60 Polestar (2013)", author: "Myedsu", url: "https://sketchfab.com/3d-models/volvo-v60-polestar-2013-504ce39150fe49c7979f702d5f0f8580", license: CC_BY }],
+    suv: [{ title: "2011 Range Rover Evoque", author: "Free Vehicle Archive", url: "https://sketchfab.com/3d-models/2011-range-rover-evoque-free-vehicle-archive-f7632f55ed4c49e29f44c409260416f1", license: CC_BY }],
+    utilitara: [{ title: "2014 Fiat Ducato", author: "razor24", url: "https://sketchfab.com/3d-models/2014-fiat-ducato-8a651ad182414bb0a8b6c6d8d5bd7c01", license: CC_BY }],
+    autocar: [{ title: "Indonesian bus Ecoline", author: "agungkuncoro13021986", url: "https://sketchfab.com/3d-models/indonesian-bus-ecoline-fda12812ab1147b79c1a6c7aa3adc5f8", license: CC_BY }],
+    camion: [
+        { title: "MAN TGX 2010 V8", author: "DevPoly3D", url: "https://sketchfab.com/3d-models/man-tgx-2010-v8-high-detail-semi-truck-34ce748d9a4b4de7b035cfe5cb97f5d1", license: CC_BY },
+        { title: "Semi Trailer", author: "NoblecatSoft", url: "https://sketchfab.com/3d-models/semi-trailer-f507a422e9344e76934c5fbf06eb81d7", license: CC_BY },
+    ],
 }
 const VIEWS_3D: { id: View3D; label: string }[] = [
     { id: "fata", label: "Față" },
@@ -62,7 +69,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
     const [view3d, setView3d] = useState<{ name: View3D; n: number } | null>(null)
 
     const all = panelsOf(body)
-    const show3d = MODELS_3D.has(body) && !prefer2d
+    const show3d = MODELS_3D.has(body) && (!prefer2d || !hasDrawing(body))   // the big vehicles exist only in 3D
     const selection = useMemo(() => Object.fromEntries(selected.map(id => [id, "colantare" as Mode])), [selected])
     const partial = job === "integrală" && selected.length > 0 && selected.length < all.length
 
@@ -156,8 +163,15 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                         </p>
                         {CREDITS_3D[body] && (
                             <p className={styles.credit}>
-                                Model 3D: <a href={CREDITS_3D[body].url} target="_blank" rel="noopener noreferrer">{CREDITS_3D[body].title}</a> de {CREDITS_3D[body].author},{" "}
-                                <a href={CREDITS_3D[body].license[1]} target="_blank" rel="noopener noreferrer">{CREDITS_3D[body].license[0]}</a>; modificat (împărțit pe piese, recolorat, comprimat)
+                                {"Model 3D: "}
+                                {CREDITS_3D[body].map((c, i) => (
+                                    <span key={c.url}>
+                                        {i > 0 && " și "}
+                                        <a href={c.url} target="_blank" rel="noopener noreferrer">{c.title}</a> de {c.author}
+                                    </span>
+                                ))}
+                                {", "}
+                                <a href={CREDITS_3D[body][0].license[1]} target="_blank" rel="noopener noreferrer">{CREDITS_3D[body][0].license[0]}</a>; modificat (împărțit pe piese, recolorat, comprimat{body === "camion" ? ", asamblat" : ""})
                             </p>
                         )}
                     </div>
@@ -179,7 +193,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                 )}
                 <div className={styles.viewBar}>
                     <div className={styles.viewGroup}>
-                        {MODELS_3D.has(body) && (
+                        {MODELS_3D.has(body) && hasDrawing(body) && (
                             <div className={styles.views} role="radiogroup" aria-label="Vedere">
                                 <button type="button" role="radio" aria-checked={show3d} onClick={() => setPrefer2d(false)}>3D</button>
                                 <button type="button" role="radio" aria-checked={!show3d} onClick={() => setPrefer2d(true)}>2D</button>
