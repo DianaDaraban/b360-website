@@ -20,10 +20,17 @@ CONFIG = {
     "sedan": {"rot_y": 90, "paint": ["body_main_paint"], "tyre": ["tyre_side"]},
     "hatchback": {"rot_y": -90, "paint": ["1500011Mtl"], "tyre": ["10560011Mtl"]},
     "suv": {"rot_y": 90, "paint": ["Silver_Sky_Metallic"], "tyre": ["Tires"]},
-    "utilitara": {"rot_y": 90, "paint": ["Car_Paint"], "tyre": ["Rubber_Tire"]},
+    "utilitara": {"rot_y": 90, "paint": ["Car_Paint"], "tyre": ["Rubber_Tire"], "van": True},
+    # the models in use (Sketchfab, by authors who model their own cars)
+    "break-v60": {"rot_y": -90, "paint": ["body_paint"], "tyre": ["wheel_tire"], "no_doors": True,
+                  "cuts": {"x_door_f": 0.18, "x_door_m": -0.045, "x_door_r": -0.215, "x_cowl": 0.20, "y_shoulder": 0.20, "y_roof": 0.27}},
+    "hatchback-fabia": {"rot_y": 90, "paint": ["Blue_Car_Paint"], "tyre": ["Car_rubber_wheel"]},
+    "utilitara-ducato": {"rot_y": 90, "paint": ["varnish"], "tyre": ["wheel_rubber"], "van": True, "no_doors": True,
+                         "cuts": {"x_door_f": 0.21, "x_door_m": 0.05, "x_door_r": -0.21, "x_cowl": 0.30, "y_shoulder": 0.25, "y_roof": 0.41}},
+    "sedan-generic": {"rot_y": 90, "paint": ["Car_Paint_-_All_Colors"], "tyre": ["tire-low"]},
 }
 cfg = CONFIG[body]
-van = body == "utilitara"
+van = cfg.get("van", False)
 
 sc = trimesh.load(src, force="scene", process=False)   # keep the author's normals untouched
 meshes = []                                             # (node name, material name, mesh in world space)
@@ -70,6 +77,8 @@ side_pieces = [p for p in pieces[1:] if big(p) and np.abs(p.vertices[:, 2]).min(
                and p.vertices[:, 0].max() < wheel_f and p.vertices[:, 0].min() > wheel_r - 0.03]
 front_x = max((p.vertices[:, 0].mean() for p in side_pieces), default=0)
 fdoors = [p for p in side_pieces if abs(p.vertices[:, 0].mean() - front_x) < 0.06]
+if cfg.get("no_doors"):                                  # the doors are not pieces of their own: cut at the seams given
+    side_pieces, fdoors = [], []
 rdoors = [p for p in side_pieces if all(p is not d for d in fdoors)]
 others = [p for p in pieces[1:] if all(p is not d for d in side_pieces) and big(p)]
 hood = max((p for p in others if p.vertices[:, 0].mean() > 0.15 and p.face_normals[:, 1].mean() > 0.3), key=lambda p: p.area, default=None)

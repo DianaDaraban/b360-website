@@ -20,10 +20,11 @@ const Car3D = dynamic(() => import("./Car3D"), { ssr: false, loading: () => <p c
 const CC_BY: [string, string] = ["CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/"]
 const MODELS_3D = new Set<string>(["hatchback", "sedan", "break", "suv", "utilitara"])
 // hand-modelled cars from Sketchfab: CC BY 4.0 asks for the author, a link and a note of the changes
-// (the Transit is under Sketchfab's Free Standard licence, which asks for none; it is credited all the same)
 const CREDITS_3D: Record<string, { title: string; author: string; url: string; license: [string, string] }> = {
     sedan: { title: "2014 Toyota Corolla E180 EU", author: "Armored Wave", url: "https://sketchfab.com/3d-models/2014-toyota-corolla-e180-eu-with-interior-36f95efb0585464cae43a25a3b3392e8", license: CC_BY },
-    utilitara: { title: "Ford Transit L2H2", author: "geyges", url: "https://sketchfab.com/3d-models/ford-transit-l2h2-7ba3c31431f34104902c5efcc112d4af", license: ["Sketchfab Free Standard", "https://sketchfab.com/licenses"] },
+    hatchback: { title: "Skoda Fabia Mk.2", author: "barking_dogo", url: "https://sketchfab.com/3d-models/skoda-fabia-mk2-e2e0be2c52994e3bb6cae225f3e7482d", license: CC_BY },
+    break: { title: "Volvo V60 Polestar (2013)", author: "Myedsu", url: "https://sketchfab.com/3d-models/volvo-v60-polestar-2013-504ce39150fe49c7979f702d5f0f8580", license: CC_BY },
+    utilitara: { title: "2014 Fiat Ducato", author: "razor24", url: "https://sketchfab.com/3d-models/2014-fiat-ducato-8a651ad182414bb0a8b6c6d8d5bd7c01", license: CC_BY },
 }
 const VIEWS_3D: { id: View3D; label: string }[] = [
     { id: "fata", label: "Față" },
