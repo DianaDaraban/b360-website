@@ -80,8 +80,8 @@ test("portfolio filter shows one category and keeps it in the URL", async ({ pag
 test("portfolio lightbox opens a project, steps through its photos and closes", async ({ page }) => {
     await open(page, "/portofoliu")
     const lightbox = page.getByRole("dialog", { name: "Proiect mărit" })
-    await until(() => page.getByRole("button", { name: /^Deschide/ }).first().click(), () => expect(lightbox).toBeVisible({ timeout: 3000 }))
-    // a project with several photos: the arrow moves to its second photo
+    await until(() => page.getByRole("button", { name: /^Deschide: .*fotografii$/ }).first().click(), () => expect(lightbox).toBeVisible({ timeout: 3000 }))
+    // a project with several photos (the gallery is shuffled, so pick one by its label): the arrow moves to its second photo
     await expect(lightbox.getByText(/^1 \/ \d+$/)).toBeVisible()
     await lightbox.getByRole("button", { name: "Fotografia următoare" }).click()
     await expect(lightbox.getByText(/^2 \/ \d+$/)).toBeVisible()
