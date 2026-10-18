@@ -73,3 +73,16 @@
     .row { grid-template-columns: 96px 1fr auto; }
     .rowActions { grid-column: auto; }
 }
+
+/* prices tab */
+.statusOk, .statusBad { display: grid; gap: 6px; padding: 12px 14px; border-radius: 12px; border-left: 4px solid; }
+.statusOk { background: #e9f6ec; border-color: #2e8b4a; }
+.statusBad { background: #fdecec; border-color: var(--red); }
+.statusOk small, .statusBad small { color: var(--muted); }
+.statusOk ul, .statusBad ul { margin: 4px 0 0; padding-left: 18px; display: grid; gap: 3px; font-size: 0.92rem; }
+.more summary { cursor: pointer; font-weight: 700; }
+.more[open] summary { margin-bottom: 10px; }
+.table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+.table th, .table td { padding: 6px 8px; border-bottom: 1px solid rgb(60 20 20 / 0.1); text-align: left; }
+.table th { font-weight: 700; color: var(--muted); }
+@media (max-width: 640px) { .table { display: block; overflow-x: auto; white-space: nowrap; } }

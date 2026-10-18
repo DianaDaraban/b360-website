@@ -3,10 +3,8 @@
 import { useMemo, useState } from "react"
 import { CarBlueprint } from "./CarBlueprint"
 import { Consent, SmartForm } from "./SmartForm"
-import {
-    bodyTypes, DESIGN_PRICE, films, models, modes, panelLabel, panelPrice, panelsOf, PRICES_PROVISIONAL,
-    REMOVAL_PER_PANEL, sidePanels, type BodyId, type Mode, type View,
-} from "@/data/calculator"
+import { bodyTypes, models, panelLabel, panelsOf, sidePanels, type BodyId, type Mode, type View } from "@/data/calculator"
+import { DURATIONS, estimate, JOB_TYPES, jobAvailable, subtypesOf, type Graphics, type JobType, type PricingConfig } from "@/lib/pricing"
 import form from "@/app/form.module.css"
 import styles from "./Calculator.module.css"
 
@@ -16,28 +14,41 @@ const views: { id: View; label: string }[] = [
     { id: "dreapta", label: "Dreapta" },
 ]
 const lei = (n: number) => `${n.toLocaleString("ro-RO")} lei`
+const mp = (n: number) => `${n.toLocaleString("ro-RO", { maximumFractionDigits: 1 })} mp`
 
-// Wrap cost calculator: body type and model on the left, the car blueprint in the middle (three
-// views, panels picked with the current tool), film and extras on the right, the itemised estimate
-// underneath and the request form under it. The whole configuration is sent with the request.
-export function Calculator() {
+const GRAPHICS: { id: Graphics; label: string; hint?: string }[] = [
+    { id: "am", label: "Am grafica gata (fișiere vectoriale)" },
+    { id: "noi", label: "Vreau să o facem noi" },
+    { id: "ai", label: "Am o simulare făcută cu AI (ChatGPT etc.) și vreau s-o reproduceți", hint: "Simulările generate cu AI nu sunt fișiere de print: le redesenăm de la zero, vectorial, ca să arate la fel pe mașină." },
+]
+
+// Wrap cost calculator: the car on the left, the blueprint in the middle (three views, pieces picked
+// on the photo; their area gives the square metres), the questions on the right. Behind the questions
+// the material is chosen from the price workbook (lib/pricing.ts); the estimate is shown as a range.
+export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: number }) {
     const [body, setBody] = useState<BodyId>("sedan")
     const [model, setModel] = useState("")
     const [query, setQuery] = useState("")
     const [suggest, setSuggest] = useState(false)
     const [view, setView] = useState<View>("stanga")
-    const [tool, setTool] = useState<Mode>("colantare")
-    const [selection, setSelection] = useState<Record<string, Mode>>({})
+    const [selected, setSelected] = useState<string[]>([])
     const [hovered, setHovered] = useState<string | null>(null)
-    const [film, setFilm] = useState<(typeof films)[number]["id"]>("standard")
-    const [design, setDesign] = useState(false)
-    const [removal, setRemoval] = useState(false)
+    const [years, setYears] = useState(5)
+    const [job, setJob] = useState<JobType>("print")
+    const [subtype, setSubtype] = useState("")
+    const [graphics, setGraphics] = useState<Graphics>("noi")
+    const [info, setInfo] = useState(false)
+    const [withVat, setWithVat] = useState(true)
+
+    const all = panelsOf(body)
+    const selection = useMemo(() => Object.fromEntries(selected.map(id => [id, "colantare" as Mode])), [selected])
+    const partial = job === "integrală" && selected.length > 0 && selected.length < all.length
 
     const chooseBody = (id: BodyId) => {
         setBody(id)
-        // panels that the new body has keep their work (side doors etc. differ between bodies)
-        const allowed = new Set(panelsOf(id))
-        setSelection(sel => Object.fromEntries(Object.entries(sel).filter(([k]) => allowed.has(k))))
+        // pieces the new body has stay picked (side doors etc. differ between bodies); a full wrap stays full
+        const allowed = panelsOf(id)
+        setSelected(sel => (job === "integrală" && sel.length === all.length ? allowed : sel.filter(k => allowed.includes(k))))
     }
     const chooseModel = (name: string) => {
         const m = models.find(x => x.name === name)
@@ -46,13 +57,13 @@ export function Calculator() {
         setSuggest(false)
         if (m) chooseBody(m.body)
     }
-    const pick = (id: string) => setSelection(sel => {
-        const next = { ...sel }
-        if (next[id] === tool) delete next[id]
-        else next[id] = tool
-        return next
-    })
-    const applyAll = (ids: string[]) => setSelection(sel => ({ ...sel, ...Object.fromEntries(ids.map(id => [id, tool])) }))
+    const chooseJob = (id: JobType) => {
+        setJob(id)
+        setSubtype(subtypesOf(pricing, id)[0] ?? "")
+        // a full wrap starts with every piece picked; taking pieces off makes it a partial wrap
+        if (id === "integrală") setSelected(all)
+    }
+    const pick = (id: string) => setSelected(sel => (sel.includes(id) ? sel.filter(x => x !== id) : [...sel, id]))
     const turn = (dir: 1 | -1) => setView(v => views[(views.findIndex(x => x.id === v) + dir + views.length) % views.length].id)
 
     const suggestions = useMemo(() => {
@@ -60,16 +71,13 @@ export function Calculator() {
         return models.filter(m => (!q || m.name.toLowerCase().includes(q))).slice(0, 8)
     }, [query])
 
-    const filmFactor = films.find(f => f.id === film)!.factor
-    const lines = Object.entries(selection).map(([id, mode]) => ({
-        id, mode,
-        label: panelLabel(id),
-        price: Math.round((panelPrice(body, id, mode) * filmFactor) / 10) * 10,
-    }))
-    const panelsTotal = lines.reduce((n, l) => n + l.price, 0)
-    const extras = (design ? DESIGN_PRICE : 0) + (removal ? REMOVAL_PER_PANEL * lines.length : 0)
-    const total = panelsTotal + extras
-    const modeName = (m: Mode) => modes.find(x => x.id === m)!.label
+    const result = estimate(pricing, body, selected, { years, job, subtype, graphics, withVat }, rate)
+    const jobName = partial ? "Colantare parțială cu folie premium" : JOB_TYPES.find(j => j.id === job)!.label
+    const durationName = DURATIONS.find(d => d.years === years)!.label
+    const graphicsName = GRAPHICS.find(g => g.id === graphics)!.label
+    const materialName = result ? `${result.material.code} ${result.material.name}${result.laminate ? ` + laminare ${result.laminate.code}` : ""}` : ""
+    const vatName = withVat ? "cu TVA" : "fără TVA"
+    const subtypes = subtypesOf(pricing, job)
 
     return (
         <SmartForm kind="calculator" className={styles.calc} aria-label="Calculator cost colantare">
@@ -114,15 +122,7 @@ export function Calculator() {
 
                 {/* ---------- middle: the blueprint ---------- */}
                 <div className={styles.stage}>
-                    <div className={styles.tools} role="radiogroup" aria-label="Ce lucrare aplici">
-                        {modes.map(m => (
-                            <button type="button" key={m.id} role="radio" aria-checked={tool === m.id} className={styles.tool} data-mode={m.id} onClick={() => setTool(m.id)}>
-                                <span className={styles.swatch} aria-hidden="true" />
-                                <span><strong>{m.label}</strong><small>{m.hint}</small></span>
-                            </button>
-                        ))}
-                    </div>
-
+                    <p className={styles.stageHint}>Apasă pe piesele pe care vrei să le colantăm. Din ele calculăm suprafața.</p>
                     <div className={styles.canvas}>
                         <button type="button" className={`${styles.turn} ${styles.turnLeft}`} onClick={() => turn(-1)} aria-label="Unghiul anterior">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8" /></svg>
@@ -134,7 +134,7 @@ export function Calculator() {
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8" /></svg>
                         </button>
                         <p className={styles.hoverName} aria-live="polite">
-                            {hovered ? <>{panelLabel(hovered)} · <em>click pentru {modeName(tool).toLowerCase()}</em></> : "Apasă pe o piesă ca s-o selectezi"}
+                            {hovered ? <>{panelLabel(hovered)} · <em>{selected.includes(hovered) ? "click ca s-o scoți" : "click ca s-o adaugi"}</em></> : `${selected.length} ${selected.length === 1 ? "piesă aleasă" : "piese alese"}`}
                         </p>
                     </div>
 
@@ -145,39 +145,83 @@ export function Calculator() {
                             ))}
                         </div>
                         <div className={styles.quick}>
-                            <button type="button" onClick={() => applyAll(panelsOf(body))}>Toată mașina</button>
-                            <button type="button" onClick={() => applyAll(sidePanels(body))}>Doar laterale</button>
-                            <button type="button" onClick={() => setSelection({})} disabled={!lines.length}>Șterge tot</button>
+                            <button type="button" onClick={() => setSelected(all)}>Toată mașina</button>
+                            <button type="button" onClick={() => setSelected(sidePanels(body))}>Doar laterale</button>
+                            <button type="button" onClick={() => setSelected([])} disabled={!selected.length}>Șterge tot</button>
                         </div>
                     </div>
                 </div>
 
-                {/* ---------- right: material and extras ---------- */}
-                <aside className={styles.panel} aria-label="Material și extra">
-                    <p className={styles.panelTitle}>2 · Material</p>
-                    <p className={styles.label}>Tip folie</p>
-                    <div className={styles.options}>
-                        {films.map(f => (
-                            <label key={f.id} className={styles.option}>
-                                <input type="radio" checked={film === f.id} onChange={() => setFilm(f.id)} />
-                                <span>{f.label}</span>
+                {/* ---------- right: three simple questions; the material is chosen behind them ---------- */}
+                <aside className={styles.panel} aria-label="Lucrarea">
+                    <p className={styles.panelTitle}>2 · Lucrarea</p>
+
+                    <fieldset className={styles.question}>
+                        <legend className={styles.label}>Cât timp vei ține folia pe mașină?</legend>
+                        <div className={styles.options}>
+                            {DURATIONS.map(d => (
+                                <label key={d.years} className={styles.option}>
+                                    <input type="radio" name="calc-years" checked={years === d.years} onChange={() => setYears(d.years)} />
+                                    <span>{d.label}</span>
+                                </label>
+                            ))}
+                        </div>
+                    </fieldset>
+
+                    <fieldset className={styles.question}>
+                        <legend className={styles.label}>Ce fel de lucrare vrei?</legend>
+                        <div className={styles.options}>
+                            {JOB_TYPES.map(j => {
+                                const available = jobAvailable(pricing, j.id)
+                                return (
+                                    <label key={j.id} className={styles.option} data-disabled={!available || undefined}>
+                                        <input type="radio" name="calc-job" checked={job === j.id} disabled={!available} onChange={() => chooseJob(j.id)} />
+                                        <span>
+                                            {j.id === "integrală" && partial ? "Colantare parțială cu folie premium" : j.label}
+                                            <small>{available ? j.hint : "în curând"}</small>
+                                        </span>
+                                    </label>
+                                )
+                            })}
+                        </div>
+                        {partial && <p className={styles.notice}>Ai scos câteva piese: calculăm o colantare parțială cu folie premium. Selectează toată mașina ca să revii la integrală.</p>}
+                        {subtypes.length > 1 && (
+                            <label className={styles.label}>
+                                Ce folie?
+                                <select className={styles.select} value={subtype} onChange={e => setSubtype(e.target.value)}>
+                                    {subtypes.map(s => <option key={s} value={s}>{s}</option>)}
+                                </select>
                             </label>
-                        ))}
-                    </div>
-                    <p className={styles.label}>Servicii suplimentare</p>
-                    <div className={styles.options}>
-                        <label className={styles.option}>
-                            <input type="checkbox" checked={design} onChange={e => setDesign(e.target.checked)} />
-                            <span>Design grafic personalizat <small>+{lei(DESIGN_PRICE)}</small></span>
-                        </label>
-                        <label className={styles.option}>
-                            <input type="checkbox" checked={removal} onChange={e => setRemoval(e.target.checked)} />
-                            <span>Demontare colant vechi <small>+{lei(REMOVAL_PER_PANEL)} / piesă</small></span>
-                        </label>
-                    </div>
-                    <div className={styles.legend} aria-hidden="true">
-                        {modes.map(m => <span key={m.id} data-mode={m.id}><i />{m.label}</span>)}
-                    </div>
+                        )}
+                    </fieldset>
+
+                    <fieldset className={styles.question}>
+                        <legend className={styles.label}>Ai grafica sau o facem noi?</legend>
+                        <div className={styles.options}>
+                            {GRAPHICS.map(g => (
+                                <div key={g.id} className={styles.optionRow}>
+                                    <label className={styles.option}>
+                                        <input type="radio" name="calc-graphics" checked={graphics === g.id} onChange={() => setGraphics(g.id)} />
+                                        <span>{g.label}{g.hint && graphics === g.id && <small>{g.hint}</small>}</span>
+                                    </label>
+                                    {g.id === "am" && (
+                                        <button type="button" className={styles.infoBtn} aria-expanded={info || graphics === "am"} aria-controls="calc-graphics-info" onClick={() => setInfo(v => !v)} aria-label="Ce înseamnă grafică gata de print">i</button>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                        {(info || graphics === "am") && (
+                            <div id="calc-graphics-info" className={styles.infoBox}>
+                                <strong>Grafica ta e considerată gata de print dacă:</strong>
+                                <ul>
+                                    <li>textele și logo-urile sunt <b>vectoriale</b> (AI, EPS, PDF vectorial sau SVG), cu fonturile transformate în contururi;</li>
+                                    <li>fotografiile și imaginile au <b>150–300 dpi la dimensiunea reală</b> de print: pentru fiecare metru de lățime acoperită, minimum <b>~5.900 px</b> (o poză de telefon de 4.000 px acoperă bine ~70 cm);</li>
+                                    <li>fișierele sunt <b>la dimensiune reală sau la scară</b> (de exemplu 1:10), nu capturi de ecran și nici imagini salvate de pe internet sau din chat.</li>
+                                </ul>
+                                <p>Nu ești sigur? Trimite-ne fișierele și le verificăm gratuit. Dacă nu se pot folosi, îți spunem înainte de orice cost, iar refacerea se taxează ca grafică făcută de noi.</p>
+                            </div>
+                        )}
+                    </fieldset>
                 </aside>
             </div>
 
@@ -185,41 +229,46 @@ export function Calculator() {
             <section className={styles.summary} aria-label="Estimare">
                 <div className={styles.lines}>
                     <p className={styles.panelTitle}>3 · Estimare</p>
-                    {lines.length === 0 ? (
-                        <p className={styles.empty}>Alege piesele pe mașină: fiecare apare aici, cu prețul ei.</p>
+                    {!selected.length || !result ? (
+                        <p className={styles.empty}>{result || !selected.length ? "Alege piesele pe mașină: fiecare apare aici, cu suprafața și prețul ei." : "Pentru lucrarea aleasă nu avem încă prețuri. Trimite-ne cererea și revenim cu o ofertă."}</p>
                     ) : (
                         <ul>
-                            {lines.map(l => (
-                                <li key={l.id} data-mode={l.mode}>
+                            {result.lines.map(l => (
+                                <li key={l.id}>
                                     <i aria-hidden="true" />
-                                    <span>{l.label}<small>{modeName(l.mode)}</small></span>
-                                    <strong>{lei(l.price)}</strong>
-                                    <button type="button" onClick={() => setSelection(sel => { const n = { ...sel }; delete n[l.id]; return n })} aria-label={`Scoate ${l.label}`}>×</button>
+                                    <span>{panelLabel(l.id)}<small>{mp(l.mp)}</small></span>
+                                    <strong>{lei(l.lei)}</strong>
+                                    <button type="button" onClick={() => pick(l.id)} aria-label={`Scoate ${panelLabel(l.id)}`}>×</button>
                                 </li>
                             ))}
-                            {design && <li className={styles.extra}><i aria-hidden="true" /><span>Design grafic personalizat</span><strong>{lei(DESIGN_PRICE)}</strong></li>}
-                            {removal && <li className={styles.extra}><i aria-hidden="true" /><span>Demontare colant vechi ({lines.length} piese)</span><strong>{lei(REMOVAL_PER_PANEL * lines.length)}</strong></li>}
+                            {result.graphicsLei > 0 && <li className={styles.extra}><i aria-hidden="true" /><span>Grafică<small>{graphics === "ai" ? "reproducere după simulare AI" : "realizată de noi"}</small></span><strong>{lei(result.graphicsLei)}</strong></li>}
                         </ul>
                     )}
                 </div>
                 <div className={styles.total}>
                     <span>Estimare orientativă</span>
-                    <strong>{lei(total)}</strong>
-                    <small>{model || bodyTypes.find(b => b.id === body)!.label} · {films.find(f => f.id === film)!.label}</small>
-                    <small className={styles.disclaimer}>
-                        {PRICES_PROVISIONAL ? "Prețuri provizorii, în curs de actualizare. " : ""}Prețul final îl confirmăm după ce vedem mașina și grafica.
-                    </small>
+                    <strong>{result && selected.length ? `${lei(result.low)} – ${lei(result.high)}` : "–"}</strong>
+                    <div className={styles.vat} role="radiogroup" aria-label="TVA">
+                        <label><input type="radio" name="calc-vat" checked={withVat} onChange={() => setWithVat(true)} /> cu TVA</label>
+                        <label><input type="radio" name="calc-vat" checked={!withVat} onChange={() => setWithVat(false)} /> fără TVA</label>
+                    </div>
+                    {result && selected.length > 0 && (
+                        <small>{model || bodyTypes.find(b => b.id === body)!.label} · {mp(result.mp)} · {materialName}</small>
+                    )}
+                    {result?.shortfall && <small className={styles.notice}>Pentru {durationName.toLowerCase()} recomandăm altă lucrare: folia aleasă ține până la {result.shortfall} ani.</small>}
+                    <small className={styles.disclaimer}>Prețul final îl confirmăm după ce vedem mașina și grafica.</small>
                 </div>
             </section>
 
             {/* the configuration travels with the request */}
             <input type="hidden" name="caroserie" value={bodyTypes.find(b => b.id === body)!.label} />
             <input type="hidden" name="model" value={model || query} />
-            <input type="hidden" name="folie" value={films.find(f => f.id === film)!.label} />
-            <input type="hidden" name="piese" value={lines.map(l => `${l.label}: ${modeName(l.mode)} (${lei(l.price)})`).join("\n")} />
-            {design && <input type="hidden" name="extra" value="Design grafic personalizat" />}
-            {removal && <input type="hidden" name="extra" value="Demontare colant vechi" />}
-            <input type="hidden" name="estimare" value={lei(total)} />
+            <input type="hidden" name="durata" value={durationName} />
+            <input type="hidden" name="lucrare" value={jobName + (subtype && subtypes.length > 1 ? ` (${subtype})` : "")} />
+            <input type="hidden" name="material" value={materialName} />
+            <input type="hidden" name="grafica" value={graphicsName} />
+            <input type="hidden" name="piese" value={result ? result.lines.map(l => `${panelLabel(l.id)}: ${mp(l.mp)} (${lei(l.lei)})`).join("\n") : selected.map(panelLabel).join("\n")} />
+            <input type="hidden" name="estimare" value={result && selected.length ? `${lei(result.low)} – ${lei(result.high)} ${vatName}` : ""} />
 
             <section className={styles.request} aria-label="Trimite cererea">
                 <p className={styles.panelTitle}>4 · Trimite configurația</p>

@@ -19,7 +19,7 @@ const KINDS = {
 const LABELS: Record<string, string> = {
     nume: "Nume", companie: "Companie", telefon: "Telefon", email: "Email", subiect: "Subiect",
     serviciu: "Serviciu", tip: "Tip colantare", vehicul: "Tip vehicul", altTip: "Alt tip de vehicul", vehicule: "Număr vehicule",
-    caroserie: "Caroserie", model: "Model", piese: "Piese selectate", estimare: "Estimare afișată",
+    caroserie: "Caroserie", model: "Model", durata: "Cât ține folia", lucrare: "Lucrare", material: "Material ales", grafica: "Grafică", piese: "Piese selectate", estimare: "Estimare afișată",
     folie: "Folie", extra: "Servicii suplimentare", zone: "Zone", suprafata: "Suprafață", design: "Are deja designul",
     mesaj: "Mesaj",
 }

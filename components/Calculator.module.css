@@ -197,3 +197,24 @@
     .summary { grid-template-columns: 1fr 320px; align-items: start; }
     .total { position: sticky; top: calc(var(--header-h) + 20px); }
 }
+
+/* ---------- questions (replace the old film / mode pickers) ---------- */
+.stageHint { margin: 0; font-size: 0.9rem; font-weight: 600; color: var(--cream); text-align: center; }
+.question { margin: 0 0 6px; padding: 0; border: 0; min-width: 0; }
+.question + .question { margin-top: 8px; }
+.option[data-disabled] { opacity: 0.45; cursor: not-allowed; }
+.optionRow { display: flex; align-items: center; gap: 6px; }
+.optionRow .option { flex: 1; }
+/* the round "i" next to "I have the artwork": opens what print-ready means */
+.infoBtn { flex: none; width: 28px; height: 28px; border: 1.5px solid rgb(243 234 225 / 0.6); border-radius: 50%; background: none; color: var(--cream); font: 800 0.85rem/1 Georgia, serif; font-style: italic; cursor: pointer; }
+.infoBtn:hover, .infoBtn[aria-expanded="true"] { border-color: var(--red); background: var(--red); }
+.infoBox { margin-top: 8px; padding: 12px 14px; border-radius: 10px; border-left: 3px solid var(--red); background: rgb(243 234 225 / 0.12); color: var(--cream); font-size: 0.84rem; line-height: 1.5; }
+.infoBox ul { margin: 6px 0 8px; padding-left: 18px; display: grid; gap: 4px; }
+.infoBox p { margin: 0; color: rgb(243 234 225 / 0.8); }
+.notice { display: block; margin: 8px 0 0; padding: 8px 10px; border-radius: 8px; background: rgb(247 168 35 / 0.18); color: var(--cream); font-size: 0.82rem; line-height: 1.45; }
+.select { display: block; width: 100%; margin-top: 6px; min-height: 42px; padding: 0 10px; border: 1.5px solid rgb(243 234 225 / 0.35); border-radius: 10px; background: rgb(30 20 22 / 0.4); color: var(--cream); font: inherit; }
+.lines li > i { width: 12px; height: 12px; border-radius: 3px; background: #f7a823; justify-self: center; }
+.total strong { font-size: clamp(1.5rem, 5vw, 2.2rem); }
+.vat { display: flex; gap: 14px; justify-content: center; font-size: 0.88rem; font-weight: 600; color: var(--cream); }
+.vat label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.vat input { width: 16px; height: 16px; accent-color: var(--red); }

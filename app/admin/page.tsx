@@ -5,6 +5,8 @@ import { categorii, proiecte } from "@/data/lucrari"
 import { clienti } from "@/data/clienti"
 import { AdminPanel, type AdminProject } from "./AdminPanel"
 import { LoginForm } from "./LoginForm"
+import { PricingTab } from "./PricingTab"
+import { getPricing, getSourceLink, getStatus } from "@/lib/pricing-store"
 import styles from "./admin.module.css"
 
 export const metadata: Metadata = { title: "Administrare", robots: { index: false, follow: false } }
@@ -37,12 +39,20 @@ export default async function AdminPage() {
         })),
     ].map(p => ({ ...p, client: p.client ?? "", description: p.description ?? "", hidden: hidden.includes(p.slug) }))
 
+    // prices first: reading them may check the workbook again and update the status
+    const pricing = await getPricing()
+    const [link, status] = await Promise.all([getSourceLink(), getStatus()])
     const clientNames = [...new Set([...clienti.map(c => c.name), ...projects.map(p => p.client).filter(Boolean)])].sort((a, b) => a.localeCompare(b, "ro"))
 
     return (
         <section className={`section ${styles.page}`}>
             <div className="container">
-                <AdminPanel projects={projects} categories={categorii.map(({ slug, label }) => ({ slug, label }))} clients={clientNames} />
+                <AdminPanel
+                    projects={projects}
+                    categories={categorii.map(({ slug, label }) => ({ slug, label }))}
+                    clients={clientNames}
+                    pricingTab={<PricingTab link={link ?? ""} status={status} pricing={pricing} usingDefaults={!pricing.updatedAt} />}
+                />
             </div>
         </section>
     )

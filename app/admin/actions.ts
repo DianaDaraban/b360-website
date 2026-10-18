@@ -6,6 +6,8 @@ import { isAdmin, logIn, logOut } from "@/lib/admin-auth"
 import { readAdminContent, writeAdminContent, type AddedProject, type ProjectEdit } from "@/lib/projects"
 import { deleteFile } from "@/lib/store"
 import { categorii } from "@/data/lucrari"
+import { applyWorkbook, setSourceLink, syncFromDrive, type PricingStatus } from "@/lib/pricing-store"
+import { downloadUrl } from "@/lib/pricing-import"
 
 // every page that shows projects is rebuilt after a change, so it appears on the site at once
 const refresh = () => {
@@ -95,4 +97,30 @@ export async function deleteProject(slug: string) {
     content.hidden = content.hidden.filter(s => s !== slug)
     await writeAdminContent(content)
     refresh()
+}
+
+// ---------- calculator prices ----------
+
+export async function savePricingLink(link: string): Promise<{ ok: boolean; error?: string }> {
+    await guard()
+    const url = link.trim()
+    if (url && !downloadUrl(url)) return { ok: false, error: "Linkul nu pare a fi un fișier din Google Drive / Sheets." }
+    await setSourceLink(url || null)
+    return { ok: true }
+}
+
+export async function syncPricingNow(): Promise<PricingStatus | null> {
+    await guard()
+    const status = await syncFromDrive()
+    revalidatePath("/calculator")
+    return status
+}
+
+export async function uploadPricing(form: FormData): Promise<PricingStatus> {
+    await guard()
+    const file = form.get("file")
+    if (!(file instanceof File) || !file.size) return { checkedAt: new Date().toISOString(), ok: false, errors: ["Alege un fișier .xlsx."], changes: [], via: "upload" }
+    const status = await applyWorkbook(Buffer.from(await file.arrayBuffer()), "upload")
+    revalidatePath("/calculator")
+    return status
 }

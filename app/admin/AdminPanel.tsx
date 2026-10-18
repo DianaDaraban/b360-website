@@ -32,7 +32,7 @@ async function shrink(file: File): Promise<Blob> {
     return new Promise((resolve, reject) => canvas.toBlob(b => (b ? resolve(b) : reject(new Error("canvas"))), "image/jpeg", 0.9))
 }
 
-export function AdminPanel({ projects, categories, clients }: { projects: AdminProject[]; categories: Category[]; clients: string[] }) {
+export function AdminPanel({ projects, categories, clients, pricingTab }: { projects: AdminProject[]; categories: Category[]; clients: string[]; pricingTab: React.ReactNode }) {
     const router = useRouter()
     const [tab, setTab] = useState<"proiecte" | "preturi">("proiecte")
     const [query, setQuery] = useState("")
@@ -64,12 +64,7 @@ export function AdminPanel({ projects, categories, clients }: { projects: AdminP
                 <button role="tab" aria-selected={tab === "preturi"} onClick={() => setTab("preturi")}>Prețuri calculator</button>
             </div>
 
-            {tab === "preturi" && (
-                <div className={styles.card}>
-                    <h2>Prețuri calculator</h2>
-                    <p>Aici vei putea încărca fișierul Excel cu prețurile. Secțiunea se activează după ce primim fișierul, ca importul să urmeze exact structura lui.</p>
-                </div>
-            )}
+            {tab === "preturi" && pricingTab}
 
             {tab === "proiecte" && !editing && (
                 <>
