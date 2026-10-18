@@ -1,6 +1,4 @@
 import type { Metadata } from "next"
-import Image from "next/image"
-import { Blobs } from "@/components/Blobs"
 import { Calculator } from "@/components/Calculator"
 import { eurRate, getPricing } from "@/lib/pricing-store"
 import form from "../form.module.css"
@@ -19,14 +17,12 @@ export default async function CalculatorPage() {
     const pricing = await getPricing()
     const { rate } = await eurRate(pricing)
     return (
-        <section className={`tinted ${form.page} ${styles.page}`}>
-            <Image src="/img/letters.webp" alt="" fill priority sizes="100vw" className="tint-photo" />
-            <Blobs variant="photo" />
+        <section className={`${form.page} ${styles.page}`}>
             <div className={`container ${styles.inner}`}>
                 <header className={styles.head}>
                     <p className="eyebrow">Calculator</p>
                     <h1 className={styles.title}>Cât costă colantarea mașinii tale?</h1>
-                    <p className={styles.lead}>Alege mașina, apasă pe piesele dorite și răspunde la trei întrebări simple. Noi alegem materialul potrivit și îți arătăm estimarea pe loc.</p>
+                    <p className={styles.lead}>Șapte pași simpli: alegi mașina, apeși pe piese și răspunzi la trei întrebări. Noi alegem materialul potrivit și îți arătăm estimarea pe loc.</p>
                 </header>
                 <Calculator pricing={pricing} rate={rate} />
             </div>

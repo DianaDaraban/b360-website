@@ -79,21 +79,23 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
     const vatName = withVat ? "cu TVA" : "fără TVA"
     const subtypes = subtypesOf(pricing, job)
 
+    const totalText = result && selected.length ? `${lei(result.low)} – ${lei(result.high)}` : null
+
     return (
         <SmartForm kind="calculator" className={styles.calc} aria-label="Calculator cost colantare">
-            <div className={styles.workspace}>
-                {/* ---------- left: the car ---------- */}
-                <aside className={styles.panel} aria-label="Mașina">
-                    <p className={styles.panelTitle}>1 · Mașina</p>
-                    <p className={styles.label}>Tip caroserie</p>
-                    <div className={styles.bodies}>
-                        {bodyTypes.map(b => (
-                            <button type="button" key={b.id} className={styles.bodyBtn} aria-pressed={body === b.id} onClick={() => { chooseBody(b.id); setModel(""); setQuery("") }}>
-                                {b.label}
-                            </button>
-                        ))}
-                    </div>
-                    <label className={styles.label} htmlFor="calc-model">Modelul (opțional)</label>
+            {/* ---------- 1: the car ---------- */}
+            <Step n={1} title="Ce mașină ai?" hint="Alege tipul de caroserie sau caută modelul.">
+                <div className={styles.bodyCards} role="radiogroup" aria-label="Tip caroserie">
+                    {bodyTypes.map(b => (
+                        <button type="button" role="radio" key={b.id} className={styles.bodyCard} aria-checked={body === b.id} onClick={() => { chooseBody(b.id); setModel(""); setQuery("") }}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={`/calculator/${b.id}-side.webp`} alt="" width={320} height={128} loading="lazy" />
+                            <span>{b.label}</span>
+                        </button>
+                    ))}
+                </div>
+                <div className={styles.modelRow}>
+                    <label className={styles.label} htmlFor="calc-model">sau caută modelul</label>
                     <div className={styles.combo}>
                         <input
                             id="calc-model"
@@ -118,147 +120,138 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                         )}
                     </div>
                     <p className={styles.note}>Nu e în listă? Alege doar tipul de caroserie: calculul e același pentru mașini similare.</p>
-                </aside>
+                </div>
+            </Step>
 
-                {/* ---------- middle: the blueprint ---------- */}
-                <div className={styles.stage}>
-                    <p className={styles.stageHint}>Apasă pe piesele pe care vrei să le colantăm. Din ele calculăm suprafața.</p>
-                    <div className={styles.canvas}>
-                        <button type="button" className={`${styles.turn} ${styles.turnLeft}`} onClick={() => turn(-1)} aria-label="Unghiul anterior">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8" /></svg>
-                        </button>
-                        <div key={view} className={styles.flip}>
-                            <CarBlueprint body={body} view={view} selection={selection} onPick={pick} onHover={setHovered} />
-                        </div>
-                        <button type="button" className={`${styles.turn} ${styles.turnRight}`} onClick={() => turn(1)} aria-label="Unghiul următor">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8" /></svg>
-                        </button>
-                        <p className={styles.hoverName} aria-live="polite">
-                            {hovered ? <>{panelLabel(hovered)} · <em>{selected.includes(hovered) ? "click ca s-o scoți" : "click ca s-o adaugi"}</em></> : `${selected.length} ${selected.length === 1 ? "piesă aleasă" : "piese alese"}`}
-                        </p>
+            {/* ---------- 2: the pieces ---------- */}
+            <Step n={2} title="Ce piese colantăm?" hint="Apasă pe piese, direct pe mașină. Întoarce mașina cu săgețile ca să vezi și plafonul sau cealaltă parte.">
+                <div className={styles.canvas}>
+                    <button type="button" className={`${styles.turn} ${styles.turnLeft}`} onClick={() => turn(-1)} aria-label="Unghiul anterior">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8" /></svg>
+                    </button>
+                    <div key={view} className={styles.flip}>
+                        <CarBlueprint body={body} view={view} selection={selection} onPick={pick} onHover={setHovered} />
                     </div>
-
-                    <div className={styles.viewBar}>
-                        <div className={styles.views} role="tablist" aria-label="Unghi">
-                            {views.map(v => (
-                                <button type="button" key={v.id} role="tab" aria-selected={view === v.id} onClick={() => setView(v.id)}>{v.label}</button>
-                            ))}
-                        </div>
-                        <div className={styles.quick}>
-                            <button type="button" onClick={() => setSelected(all)}>Toată mașina</button>
-                            <button type="button" onClick={() => setSelected(sidePanels(body))}>Doar laterale</button>
-                            <button type="button" onClick={() => setSelected([])} disabled={!selected.length}>Șterge tot</button>
-                        </div>
+                    <button type="button" className={`${styles.turn} ${styles.turnRight}`} onClick={() => turn(1)} aria-label="Unghiul următor">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8" /></svg>
+                    </button>
+                    <p className={styles.hoverName} aria-live="polite">
+                        {hovered ? <>{panelLabel(hovered)} · <em>{selected.includes(hovered) ? "apasă ca s-o scoți" : "apasă ca s-o adaugi"}</em></> : selected.length ? `${selected.length} ${selected.length === 1 ? "piesă aleasă" : "piese alese"}` : "Apasă pe o piesă ca s-o alegi"}
+                    </p>
+                </div>
+                <div className={styles.viewBar}>
+                    <div className={styles.views} role="tablist" aria-label="Unghi">
+                        {views.map(v => (
+                            <button type="button" key={v.id} role="tab" aria-selected={view === v.id} onClick={() => setView(v.id)}>{v.label}</button>
+                        ))}
+                    </div>
+                    <div className={styles.quick}>
+                        <button type="button" onClick={() => setSelected(all)}>Toată mașina</button>
+                        <button type="button" onClick={() => setSelected(sidePanels(body))}>Doar laterale</button>
+                        <button type="button" onClick={() => setSelected([])} disabled={!selected.length}>Șterge tot</button>
                     </div>
                 </div>
+            </Step>
 
-                {/* ---------- right: three simple questions; the material is chosen behind them ---------- */}
-                <aside className={styles.panel} aria-label="Lucrarea">
-                    <p className={styles.panelTitle}>2 · Lucrarea</p>
+            {/* ---------- 3-5: three questions; the material is chosen behind them ---------- */}
+            <Step n={3} title="Cât timp vei ține folia pe mașină?">
+                <div className={`${styles.choices} ${styles.four}`} role="radiogroup" aria-label="Cât timp ții folia">
+                    {DURATIONS.map(d => (
+                        <Choice key={d.years} name="calc-years" checked={years === d.years} onChange={() => setYears(d.years)} title={d.label} />
+                    ))}
+                </div>
+            </Step>
 
-                    <fieldset className={styles.question}>
-                        <legend className={styles.label}>Cât timp vei ține folia pe mașină?</legend>
-                        <div className={styles.options}>
-                            {DURATIONS.map(d => (
-                                <label key={d.years} className={styles.option}>
-                                    <input type="radio" name="calc-years" checked={years === d.years} onChange={() => setYears(d.years)} />
-                                    <span>{d.label}</span>
-                                </label>
-                            ))}
-                        </div>
-                    </fieldset>
+            <Step n={4} title="Ce fel de lucrare vrei?">
+                <div className={styles.choices} role="radiogroup" aria-label="Ce fel de lucrare">
+                    {JOB_TYPES.map(j => {
+                        const available = jobAvailable(pricing, j.id)
+                        return (
+                            <Choice
+                                key={j.id}
+                                name="calc-job"
+                                checked={job === j.id}
+                                disabled={!available}
+                                onChange={() => chooseJob(j.id)}
+                                title={j.id === "integrală" && partial ? "Colantare parțială cu folie premium" : j.label}
+                                text={available ? j.hint : "în curând"}
+                            />
+                        )
+                    })}
+                </div>
+                {partial && <p className={styles.notice}>Ai scos câteva piese: calculăm o colantare parțială cu folie premium. Apasă „Toată mașina” ca să revii la integrală.</p>}
+                {subtypes.length > 1 && (
+                    <label className={styles.subtype}>
+                        Ce folie?
+                        <select className={styles.select} value={subtype} onChange={e => setSubtype(e.target.value)}>
+                            {subtypes.map(s => <option key={s} value={s}>{s}</option>)}
+                        </select>
+                    </label>
+                )}
+            </Step>
 
-                    <fieldset className={styles.question}>
-                        <legend className={styles.label}>Ce fel de lucrare vrei?</legend>
-                        <div className={styles.options}>
-                            {JOB_TYPES.map(j => {
-                                const available = jobAvailable(pricing, j.id)
-                                return (
-                                    <label key={j.id} className={styles.option} data-disabled={!available || undefined}>
-                                        <input type="radio" name="calc-job" checked={job === j.id} disabled={!available} onChange={() => chooseJob(j.id)} />
-                                        <span>
-                                            {j.id === "integrală" && partial ? "Colantare parțială cu folie premium" : j.label}
-                                            <small>{available ? j.hint : "în curând"}</small>
-                                        </span>
-                                    </label>
-                                )
-                            })}
-                        </div>
-                        {partial && <p className={styles.notice}>Ai scos câteva piese: calculăm o colantare parțială cu folie premium. Selectează toată mașina ca să revii la integrală.</p>}
-                        {subtypes.length > 1 && (
-                            <label className={styles.label}>
-                                Ce folie?
-                                <select className={styles.select} value={subtype} onChange={e => setSubtype(e.target.value)}>
-                                    {subtypes.map(s => <option key={s} value={s}>{s}</option>)}
-                                </select>
-                            </label>
-                        )}
-                    </fieldset>
-
-                    <fieldset className={styles.question}>
-                        <legend className={styles.label}>Ai grafica sau o facem noi?</legend>
-                        <div className={styles.options}>
-                            {GRAPHICS.map(g => (
-                                <div key={g.id} className={styles.optionRow}>
-                                    <label className={styles.option}>
-                                        <input type="radio" name="calc-graphics" checked={graphics === g.id} onChange={() => setGraphics(g.id)} />
-                                        <span>{g.label}{g.hint && graphics === g.id && <small>{g.hint}</small>}</span>
-                                    </label>
-                                    {g.id === "am" && (
-                                        <button type="button" className={styles.infoBtn} aria-expanded={info || graphics === "am"} aria-controls="calc-graphics-info" onClick={() => setInfo(v => !v)} aria-label="Ce înseamnă grafică gata de print">i</button>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                        {(info || graphics === "am") && (
-                            <div id="calc-graphics-info" className={styles.infoBox}>
-                                <strong>Grafica ta e considerată gata de print dacă:</strong>
-                                <ul>
-                                    <li>textele și logo-urile sunt <b>vectoriale</b> (AI, EPS, PDF vectorial sau SVG), cu fonturile transformate în contururi;</li>
-                                    <li>fotografiile și imaginile au <b>150–300 dpi la dimensiunea reală</b> de print: pentru fiecare metru de lățime acoperită, minimum <b>~5.900 px</b> (o poză de telefon de 4.000 px acoperă bine ~70 cm);</li>
-                                    <li>fișierele sunt <b>la dimensiune reală sau la scară</b> (de exemplu 1:10), nu capturi de ecran și nici imagini salvate de pe internet sau din chat.</li>
-                                </ul>
-                                <p>Nu ești sigur? Trimite-ne fișierele și le verificăm gratuit. Dacă nu se pot folosi, îți spunem înainte de orice cost, iar refacerea se taxează ca grafică făcută de noi.</p>
-                            </div>
-                        )}
-                    </fieldset>
-                </aside>
-            </div>
-
-            {/* ---------- the estimate ---------- */}
-            <section className={styles.summary} aria-label="Estimare">
-                <div className={styles.lines}>
-                    <p className={styles.panelTitle}>3 · Estimare</p>
-                    {!selected.length || !result ? (
-                        <p className={styles.empty}>{result || !selected.length ? "Alege piesele pe mașină: fiecare apare aici, cu suprafața și prețul ei." : "Pentru lucrarea aleasă nu avem încă prețuri. Trimite-ne cererea și revenim cu o ofertă."}</p>
-                    ) : (
+            <Step n={5} title="Ai grafica sau o facem noi?">
+                <div className={`${styles.choices} ${styles.three}`} role="radiogroup" aria-label="Grafica">
+                    {GRAPHICS.map(g => (
+                        <Choice
+                            key={g.id}
+                            name="calc-graphics"
+                            checked={graphics === g.id}
+                            onChange={() => setGraphics(g.id)}
+                            title={g.label}
+                            text={g.hint}
+                            extra={g.id === "am" && (
+                                <button type="button" className={styles.infoBtn} aria-expanded={info || graphics === "am"} aria-controls="calc-graphics-info" onClick={e => { e.preventDefault(); setInfo(v => !v) }} aria-label="Ce înseamnă grafică gata de print">i</button>
+                            )}
+                        />
+                    ))}
+                </div>
+                {(info || graphics === "am") && (
+                    <div id="calc-graphics-info" className={styles.infoBox}>
+                        <strong>Grafica ta e considerată gata de print dacă:</strong>
                         <ul>
-                            {result.lines.map(l => (
-                                <li key={l.id}>
-                                    <i aria-hidden="true" />
-                                    <span>{panelLabel(l.id)}<small>{mp(l.mp)}</small></span>
-                                    <strong>{lei(l.lei)}</strong>
-                                    <button type="button" onClick={() => pick(l.id)} aria-label={`Scoate ${panelLabel(l.id)}`}>×</button>
-                                </li>
-                            ))}
-                            {result.graphicsLei > 0 && <li className={styles.extra}><i aria-hidden="true" /><span>Grafică<small>{graphics === "ai" ? "reproducere după simulare AI" : "realizată de noi"}</small></span><strong>{lei(result.graphicsLei)}</strong></li>}
+                            <li>textele și logo-urile sunt <b>vectoriale</b> (AI, EPS, PDF vectorial sau SVG), cu fonturile transformate în contururi;</li>
+                            <li>fotografiile și imaginile au <b>150–300 dpi la dimensiunea reală</b> de print: pentru fiecare metru de lățime acoperită, minimum <b>~5.900 px</b> (o poză de telefon de 4.000 px acoperă bine ~70 cm);</li>
+                            <li>fișierele sunt <b>la dimensiune reală sau la scară</b> (de exemplu 1:10), nu capturi de ecran și nici imagini salvate de pe internet sau din chat.</li>
                         </ul>
-                    )}
-                </div>
-                <div className={styles.total}>
-                    <span>Estimare orientativă</span>
-                    <strong>{result && selected.length ? `${lei(result.low)} – ${lei(result.high)}` : "–"}</strong>
-                    <div className={styles.vat} role="radiogroup" aria-label="TVA">
-                        <label><input type="radio" name="calc-vat" checked={withVat} onChange={() => setWithVat(true)} /> cu TVA</label>
-                        <label><input type="radio" name="calc-vat" checked={!withVat} onChange={() => setWithVat(false)} /> fără TVA</label>
+                        <p>Nu ești sigur? Trimite-ne fișierele și le verificăm gratuit. Dacă nu se pot folosi, îți spunem înainte de orice cost, iar refacerea se taxează ca grafică făcută de noi.</p>
                     </div>
-                    {result && selected.length > 0 && (
-                        <small>{model || bodyTypes.find(b => b.id === body)!.label} · {mp(result.mp)} · {materialName}</small>
-                    )}
-                    {result?.shortfall && <small className={styles.notice}>Pentru {durationName.toLowerCase()} recomandăm altă lucrare: folia aleasă ține până la {result.shortfall} ani.</small>}
-                    <small className={styles.disclaimer}>Prețul final îl confirmăm după ce vedem mașina și grafica.</small>
+                )}
+            </Step>
+
+            {/* ---------- 6: the estimate ---------- */}
+            <Step n={6} title="Estimarea ta" id="calc-estimare">
+                <div className={styles.summary}>
+                    <div className={styles.total}>
+                        <span>Estimare orientativă</span>
+                        <strong>{totalText ?? "Alege piesele"}</strong>
+                        <div className={styles.vat} role="radiogroup" aria-label="TVA">
+                            <label><input type="radio" name="calc-vat" checked={withVat} onChange={() => setWithVat(true)} /> cu TVA</label>
+                            <label><input type="radio" name="calc-vat" checked={!withVat} onChange={() => setWithVat(false)} /> fără TVA</label>
+                        </div>
+                        {result && selected.length > 0 && <small>{model || bodyTypes.find(b => b.id === body)!.label} · {mp(result.mp)} · {materialName}</small>}
+                        {result?.shortfall && <small className={styles.notice}>Pentru {durationName.toLowerCase()} recomandăm altă lucrare: folia aleasă ține până la {result.shortfall} ani.</small>}
+                        <small className={styles.disclaimer}>Prețul final îl confirmăm după ce vedem mașina și grafica.</small>
+                    </div>
+                    <div className={styles.lines}>
+                        {!selected.length || !result ? (
+                            <p className={styles.empty}>{result || !selected.length ? "Alege piesele pe mașină (pasul 2): fiecare apare aici, cu suprafața și prețul ei." : "Pentru lucrarea aleasă nu avem încă prețuri. Trimite-ne cererea și revenim cu o ofertă."}</p>
+                        ) : (
+                            <ul>
+                                {result.lines.map(l => (
+                                    <li key={l.id}>
+                                        <i aria-hidden="true" />
+                                        <span>{panelLabel(l.id)}<small>{mp(l.mp)}</small></span>
+                                        <strong>{lei(l.lei)}</strong>
+                                        <button type="button" onClick={() => pick(l.id)} aria-label={`Scoate ${panelLabel(l.id)}`}>×</button>
+                                    </li>
+                                ))}
+                                {result.graphicsLei > 0 && <li className={styles.extra}><i aria-hidden="true" /><span>Grafică<small>{graphics === "ai" ? "reproducere după simulare AI" : "realizată de noi"}</small></span><strong>{lei(result.graphicsLei)}</strong></li>}
+                            </ul>
+                        )}
+                    </div>
                 </div>
-            </section>
+            </Step>
 
             {/* the configuration travels with the request */}
             <input type="hidden" name="caroserie" value={bodyTypes.find(b => b.id === body)!.label} />
@@ -268,10 +261,10 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
             <input type="hidden" name="material" value={materialName} />
             <input type="hidden" name="grafica" value={graphicsName} />
             <input type="hidden" name="piese" value={result ? result.lines.map(l => `${panelLabel(l.id)}: ${mp(l.mp)} (${lei(l.lei)})`).join("\n") : selected.map(panelLabel).join("\n")} />
-            <input type="hidden" name="estimare" value={result && selected.length ? `${lei(result.low)} – ${lei(result.high)} ${vatName}` : ""} />
+            <input type="hidden" name="estimare" value={totalText ? `${totalText} ${vatName}` : ""} />
 
-            <section className={styles.request} aria-label="Trimite cererea">
-                <p className={styles.panelTitle}>4 · Trimite configurația</p>
+            {/* ---------- 7: send ---------- */}
+            <Step n={7} title="Trimite-ne configurația" hint="Îți trimitem oferta finală după ce vedem detaliile.">
                 <div className={styles.contact}>
                     <label className={form.field}>Nume și prenume *<input name="nume" autoComplete="name" required /></label>
                     <label className={form.field}>
@@ -284,7 +277,43 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                     <Consent />
                     <button type="submit" className="btn">Trimite cererea de ofertă</button>
                 </div>
-            </section>
+            </Step>
+
+            {/* the running total stays in view while the questions are answered */}
+            <a href="#calc-estimare" className={styles.liveTotal} data-empty={!totalText || undefined}>
+                <span>Estimare</span>
+                <strong>{totalText ?? "alege piesele"}</strong>
+                {totalText && <small>{vatName} · vezi detalii</small>}
+            </a>
         </SmartForm>
+    )
+}
+
+// one step of the calculator: a big number, the question as the title, then its content
+function Step({ n, title, hint, id, children }: { n: number; title: string; hint?: string; id?: string; children: React.ReactNode }) {
+    return (
+        <section className={styles.step} id={id} aria-labelledby={`calc-step-${n}`}>
+            <header className={styles.stepHead}>
+                <span className={styles.stepNo} aria-hidden="true">{n}</span>
+                <div>
+                    <h2 id={`calc-step-${n}`}>{title}</h2>
+                    {hint && <p>{hint}</p>}
+                </div>
+            </header>
+            {children}
+        </section>
+    )
+}
+
+// an answer as a big card: the whole card is the radio button; the chosen one gets a red border and a tick
+function Choice({ name, checked, disabled, onChange, title, text, extra }: { name: string; checked: boolean; disabled?: boolean; onChange: () => void; title: string; text?: string; extra?: React.ReactNode }) {
+    return (
+        <label className={styles.choice} data-disabled={disabled || undefined}>
+            <input type="radio" name={name} checked={checked} disabled={disabled} onChange={onChange} />
+            <span className={styles.tick} aria-hidden="true" />
+            <strong>{title}</strong>
+            {text && <small>{text}</small>}
+            {extra}
+        </label>
     )
 }

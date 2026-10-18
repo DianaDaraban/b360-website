@@ -1,5 +1,6 @@
 .page.page { padding-block: 40px 72px; }
-.inner { display: grid; gap: 26px; max-width: 1360px; }
+.inner { display: grid; gap: 26px; max-width: 1180px; }
 .head { text-align: center; }
 .title { margin-top: 6px; font-size: clamp(1.8rem, 6vw, 2.8rem); line-height: 1.1; }
-.lead { max-width: 640px; margin: 12px auto 0; font-size: 1.05rem; color: var(--cream); }
+.lead { max-width: 640px; margin: 12px auto 0; font-size: 1.05rem; color: var(--ink); }
+
