@@ -7,28 +7,24 @@ import { Blobs } from "@/components/Blobs"
 import { Carousel } from "@/components/Carousel"
 import { ScrollCue } from "@/components/ScrollCue"
 import { clienti, tilts } from "@/data/clienti"
+import { getProjects } from "@/lib/projects"
 import styles from "./home.module.css"
 
 
 // Hero slideshow, like the old WordPress header: photos crossfade under a moving colour wash
 const heroPhotos = ["/img/hero-graffiti.webp", "/img/colorful-convertible.webp", "/img/hero-dragon.webp", "/img/storefront-stickers.webp"]
 
-const lucrariRecente = [
-    { src: "/lucrari/autoturisme/castrol.webp", alt: "Colantare autoturism Castrol", cat: "autoturisme", label: "Autoturisme" },
-    { src: "/lucrari/autocare/flixbus.webp", alt: "Inscripționare autocar Flixbus", cat: "autocare", label: "Autocare" },
-    { src: "/lucrari/autoutilitare/ambulanta-1.webp", alt: "Inscripționare ambulanță", cat: "autoutilitare", label: "Autoutilitare" },
-    { src: "/lucrari/autoturisme/masina-de-curse-1.webp", alt: "Colantare mașină de curse", cat: "autoturisme", label: "Autoturisme" },
-    { src: "/lucrari/camioane/ravitex-1.webp", alt: "Inscripționare camion Ravitex", cat: "camioane", label: "Camioane" },
-    { src: "/lucrari/vitrine/godac.webp", alt: "Colantare vitrină Godac", cat: "vitrine", label: "Vitrine" },
-    { src: "/lucrari/camioane/holcim-1.webp", alt: "Inscripționare camion Holcim", cat: "camioane", label: "Camioane" },
-    { src: "/lucrari/vitrine/tiriac-auto-1.webp", alt: "Colantare vitrină Țiriac Auto", cat: "vitrine", label: "Vitrine" },
-]
+// "Cele mai recente lucrări": the newest projects (the ones added from /admin come first)
+const RECENT = 8
+// the page is rebuilt when something is saved in the admin, and at least once an hour
+export const revalidate = 3600
 
 // empty red stickers after the logos, waiting for the clients still to come
 const EMPTY_STICKERS = 4
 
 
-export default function Home() {
+export default async function Home() {
+    const lucrariRecente = (await getProjects()).slice(0, RECENT)
     return (
         <div className="snap-page">
             <section className={`snap-slide hero-sheen ${styles.hero}`} data-label="Început">
@@ -120,12 +116,12 @@ export default function Home() {
                     <h2 id="lucrari" className={`section-title ${styles.recentTitle}`}>Cele mai recente lucrări</h2>
                     <Carousel label="Cele mai recente lucrări" className={styles.workStrip}>
                         {lucrariRecente.map(l => (
-                            <li key={l.src}>
+                            <li key={l.slug}>
                                 <Link href={`/portofoliu?categorie=${l.cat}`} className={styles.work}>
-                                    <Image src={l.src} alt={l.alt} width={640} height={480} sizes="(min-width: 768px) 360px, 78vw" />
+                                    <Image src={l.photos[0].src} alt={l.photos[0].alt} width={640} height={480} sizes="(min-width: 768px) 360px, 78vw" />
                                     <span className={styles.workCaption}>
-                                        <small>{l.label}</small>
-                                        <strong>{l.alt}</strong>
+                                        <small>{l.catLabel}</small>
+                                        <strong>{l.title}</strong>
                                     </span>
                                 </Link>
                             </li>

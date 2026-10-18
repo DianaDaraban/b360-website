@@ -28,10 +28,14 @@ export type Proiect = {
     clientName: string | null
     clientSlug: string | null
     photos: Foto[]
+    description?: string     // optional text shown in the lightbox (projects added from /admin)
 }
 
 const merged: Record<string, string> = { signalistica: "stickere" }
-const findClient = (name: string | null) => (name ? clienti.find(c => c.match?.test(name)) : undefined)
+// the client of a project, matched by name (the client filter in the gallery uses its slug)
+export function findClient(name: string | null) {
+    return name ? clienti.find(c => c.match?.test(name)) : undefined
+}
 const label = (slug: string) => categorii.find(c => c.slug === slug)
 
 // the new projects (Freepik cut-out + one shared look), newest work first
@@ -70,5 +74,7 @@ const roundRobin = (list: Proiect[]) => {
     while (queues.some(q => q.length)) for (const q of queues) if (q.length) out.push(q.shift()!)
     return out
 }
+// the projects that ship with the code; lib/projects.ts adds what was saved from /admin on top
 export const proiecte: Proiect[] = [...roundRobin(noi), ...roundRobin(vechi)]
 export const toateFotografiile = proiecte.flatMap(p => p.photos)
+export const categoryLabel = (slug: string) => categorii.find(c => c.slug === slug)?.label ?? ""

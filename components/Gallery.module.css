@@ -192,6 +192,7 @@
 .preload { position: absolute; width: 1px !important; height: 1px !important; opacity: 0; pointer-events: none; }
 .lightbox figcaption strong { color: var(--white); }
 .lightbox figcaption { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px 14px; padding-inline: 56px; font-weight: 600; color: var(--cream); text-align: center; }
+.lbText { flex-basis: 100%; max-width: 720px; margin-inline: auto; font-weight: 400; font-size: 0.95rem; line-height: 1.5; color: rgb(243 234 225 / 0.85); }
 .lbCount { font: 700 0.85rem/1 var(--font-head); color: rgb(243 234 225 / 0.65); }
 /* the project's photos as a strip of thumbnails under the large photo */
 .strip { list-style: none; margin: 0; padding: 4px; display: flex; gap: 8px; max-width: 100%; overflow-x: auto; scrollbar-width: none; }

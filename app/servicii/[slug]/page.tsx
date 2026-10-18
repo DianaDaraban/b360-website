@@ -9,7 +9,7 @@ import { Icon } from "@/components/Icon"
 import { Rich } from "@/components/Rich"
 import { RevealTitle } from "@/components/RevealTitle"
 import { ScrollCue } from "@/components/ScrollCue"
-import { proiecte } from "@/data/lucrari"
+import { getProjects } from "@/lib/projects"
 import { getServiciu, servicii } from "@/data/servicii"
 import { site } from "@/lib/site"
 import styles from "./service.module.css"
@@ -21,6 +21,9 @@ const benefitsTitle: Record<string, string> = {
     "folie-ppf": "Beneficiile foliei PPF",
     "tapet-printat": "De ce tapet printat",
 }
+
+// rebuilt when something is saved in the admin, and at least once an hour
+export const revalidate = 3600
 
 type Props = { params: Promise<{ slug: string }> }
 
@@ -60,6 +63,7 @@ export default async function ServiciuPage({ params }: Props) {
         },
     ]
     const gallery = `/portofoliu?categorie=${s.portfolio.category}`
+    const proiecte = s.showcase ? await getProjects() : []
     const showcase = !s.showcase ? [] : s.showcase.projects ? proiecte.filter(p => s.showcase!.projects!.includes(p.slug)) : proiecte.filter(p => p.cat === s.portfolio.category)
     // one card per project; a single project shows its photos (up to five) instead
     const cards = showcase.length === 1

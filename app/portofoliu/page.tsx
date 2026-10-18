@@ -4,7 +4,8 @@ import { ContactCta } from "@/components/ContactCta"
 import { Gallery } from "@/components/Gallery"
 import Image from "next/image"
 import gallery from "@/components/Gallery.module.css"
-import { categorii, proiecte, toateFotografiile } from "@/data/lucrari"
+import { categorii, toateFotografiile } from "@/data/lucrari"
+import { getProjects } from "@/lib/projects"
 import { clienti } from "@/data/clienti"
 import styles from "../content.module.css"
 
@@ -14,7 +15,11 @@ export const metadata: Metadata = {
     alternates: { canonical: "/portofoliu" },
 }
 
-export default function PortofoliuPage() {
+// rebuilt when something is saved in the admin, and at least once an hour
+export const revalidate = 3600
+
+export default async function PortofoliuPage() {
+    const proiecte = await getProjects()
     return (
         <>
             <section className={`section ${styles.compact}`}>
@@ -22,7 +27,7 @@ export default function PortofoliuPage() {
                     <h1 className={styles.pageTitle}>Portofoliu</h1>
                     <p className={styles.center}>Proiectele noastre din ultimii ani, de la o singură mașină la flote întregi. Deschide un proiect ca să vezi toate fotografiile, sau alege o categorie ori un client.</p>
                     {/* The filter reads ?categorie= on the client; the static HTML (what Google sees) holds the first photos */}
-                    <Suspense fallback={<StaticGrid />}>
+                    <Suspense fallback={<StaticGrid proiecte={proiecte} />}>
                         <Gallery items={proiecte} categories={categorii} clients={clienti.filter(c => c.match).map(({ slug, name, logo }) => ({ slug, name, logo }))} />
                     </Suspense>
                 </div>
@@ -32,7 +37,7 @@ export default function PortofoliuPage() {
     )
 }
 
-function StaticGrid() {
+function StaticGrid({ proiecte }: { proiecte: Awaited<ReturnType<typeof getProjects>> }) {
     return (
         <ul className={gallery.grid} style={{ marginTop: 28 }}>
             {proiecte.slice(0, 24).map(({ slug, photos: [item] }) => (

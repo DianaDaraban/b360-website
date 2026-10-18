@@ -174,6 +174,7 @@ export function Gallery({ items, categories, clients }: { items: Proiect[]; cate
                         <figcaption>
                             <strong>{project.title}</strong>
                             {project.photos.length > 1 && <span className={styles.lbCount}>{open.f + 1} / {project.photos.length}</span>}
+                            {project.description && <span className={styles.lbText}>{project.description}</span>}
                         </figcaption>
                         {project.photos.length > 1 && (
                             <ul className={styles.strip} aria-label="Fotografiile proiectului">

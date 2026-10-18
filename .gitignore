@@ -46,3 +46,6 @@ next-env.d.ts
 /blob-report/
 
 .vercel
+
+# content saved from /admin when running locally
+/.data
