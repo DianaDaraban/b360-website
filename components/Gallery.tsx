@@ -35,7 +35,19 @@ export function Gallery({ items, categories, clients }: { items: Proiect[]; cate
         strip.scrollTo({ left: chip.offsetLeft - (strip.clientWidth - chip.offsetWidth) / 2, behavior: "smooth" })
     }, [category, client])
 
-    const filtered = client ? items.filter(i => i.clientSlug === client) : category ? items.filter(i => i.cat === category) : items
+    // a fresh order on every visit, so the gallery never opens on the same projects; it is shuffled
+    // after the first render, as the server-rendered HTML must match the first client render
+    const [shuffled, setShuffled] = useState<Proiect[] | null>(null)
+    useEffect(() => {
+        const list = [...items]
+        for (let i = list.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1))
+            ;[list[i], list[j]] = [list[j], list[i]]
+        }
+        setShuffled(list)
+    }, [items])
+    const all = shuffled ?? items
+    const filtered = client ? all.filter(i => i.clientSlug === client) : category ? all.filter(i => i.cat === category) : all
     const visible = filtered.slice(0, shown)
     const project = open ? filtered[open.p] : null
     const photo = project && open ? project.photos[open.f] : null

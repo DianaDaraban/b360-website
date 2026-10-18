@@ -119,6 +119,13 @@
     .servicePills { gap: 26px; }
     .serviceDot { margin-block: -6px; }
     .servicePill :global(.arrow-sticker) { width: 34px; height: 34px; }
+    /* every pill the same height: title and description up to two lines each (the description
+       cut with an ellipsis), all text aligned left: beside the photo on odd pills, beside the arrow on even ones */
+    .servicePill { height: 96px; }
+    .servicePills li:nth-child(even) .serviceText { text-align: left; }
+    .serviceText strong, .serviceText small { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+    .serviceText strong { font-size: 1.05rem; line-height: 1.12; }
+    .serviceText small { font-size: 0.82rem; line-height: 1.3; }
 }
 .servicePill:hover, .servicePill:focus-visible {
     translate: 0 -4px;
