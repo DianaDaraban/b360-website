@@ -85,6 +85,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
         <SmartForm kind="calculator" className={styles.calc} aria-label="Calculator cost colantare">
             {/* ---------- 1: the car ---------- */}
             <Step n={1} title="Ce mașină ai?" hint="Alege tipul de caroserie sau caută modelul.">
+                <div className={styles.carRow}>
                 <div className={styles.bodyCards} role="radiogroup" aria-label="Tip caroserie">
                     {bodyTypes.map(b => (
                         <button type="button" role="radio" key={b.id} className={styles.bodyCard} aria-checked={body === b.id} onClick={() => { chooseBody(b.id); setModel(""); setQuery("") }}>
@@ -120,6 +121,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                         )}
                     </div>
                     <p className={styles.note}>Nu e în listă? Alege doar tipul de caroserie: calculul e același pentru mașini similare.</p>
+                </div>
                 </div>
             </Step>
 
@@ -219,7 +221,8 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                 )}
             </Step>
 
-            {/* ---------- 6: the estimate ---------- */}
+            {/* ---------- 6 and 7 side by side on wide screens: the estimate and the request ---------- */}
+            <div className={styles.finish}>
             <Step n={6} title="Estimarea ta" id="calc-estimare">
                 <div className={styles.summary}>
                     <div className={styles.total}>
@@ -235,19 +238,22 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                     </div>
                     <div className={styles.lines}>
                         {!selected.length || !result ? (
-                            <p className={styles.empty}>{result || !selected.length ? "Alege piesele pe mașină (pasul 2): fiecare apare aici, cu suprafața și prețul ei." : "Pentru lucrarea aleasă nu avem încă prețuri. Trimite-ne cererea și revenim cu o ofertă."}</p>
+                            <p className={styles.empty}>{result || !selected.length ? "Alege piesele pe mașină (pasul 2): apoi vezi aici prețul pe fiecare piesă." : "Pentru lucrarea aleasă nu avem încă prețuri. Trimite-ne cererea și revenim cu o ofertă."}</p>
                         ) : (
-                            <ul>
-                                {result.lines.map(l => (
-                                    <li key={l.id}>
-                                        <i aria-hidden="true" />
-                                        <span>{panelLabel(l.id)}<small>{mp(l.mp)}</small></span>
-                                        <strong>{lei(l.lei)}</strong>
-                                        <button type="button" onClick={() => pick(l.id)} aria-label={`Scoate ${panelLabel(l.id)}`}>×</button>
-                                    </li>
-                                ))}
-                                {result.graphicsLei > 0 && <li className={styles.extra}><i aria-hidden="true" /><span>Grafică<small>{graphics === "ai" ? "reproducere după simulare AI" : "realizată de noi"}</small></span><strong>{lei(result.graphicsLei)}</strong></li>}
-                            </ul>
+                            <details className={styles.details}>
+                                <summary>Vezi prețul pe fiecare piesă ({result.lines.length}{result.graphicsLei > 0 ? " + grafică" : ""})</summary>
+                                <ul>
+                                    {result.lines.map(l => (
+                                        <li key={l.id}>
+                                            <i aria-hidden="true" />
+                                            <span>{panelLabel(l.id)}<small>{mp(l.mp)}</small></span>
+                                            <strong>{lei(l.lei)}</strong>
+                                            <button type="button" onClick={() => pick(l.id)} aria-label={`Scoate ${panelLabel(l.id)}`}>×</button>
+                                        </li>
+                                    ))}
+                                    {result.graphicsLei > 0 && <li className={styles.extra}><i aria-hidden="true" /><span>Grafică<small>{graphics === "ai" ? "reproducere după simulare AI" : "realizată de noi"}</small></span><strong>{lei(result.graphicsLei)}</strong></li>}
+                                </ul>
+                            </details>
                         )}
                     </div>
                 </div>
@@ -278,6 +284,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                     <button type="submit" className="btn">Trimite cererea de ofertă</button>
                 </div>
             </Step>
+            </div>
 
             {/* the running total stays in view while the questions are answered */}
             <a href="#calc-estimare" className={styles.liveTotal} data-empty={!totalText || undefined}>
