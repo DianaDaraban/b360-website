@@ -17,7 +17,7 @@ const views: { id: View; label: string }[] = [
 ]
 // the 3D viewer (three.js) loads only in the browser and only when a body with a 3D model is shown
 const Car3D = dynamic(() => import("./Car3D"), { ssr: false, loading: () => <p className={styles.loading3d}>Se încarcă mașina 3D…</p> })
-const MODELS_3D = new Set<string>(["sedan"])
+const MODELS_3D = new Set<string>(["hatchback", "sedan", "break", "suv", "utilitara"])
 const VIEWS_3D: { id: View3D; label: string }[] = [
     { id: "fata", label: "Față" },
     { id: "lateral", label: "Lateral" },
