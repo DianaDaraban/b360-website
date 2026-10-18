@@ -75,6 +75,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
 
     const chooseBody = (id: BodyId) => {
         setBody(id)
+        setHovered(null)
         // pieces the new body has stay picked (side doors etc. differ between bodies); a full wrap stays full
         const allowed = panelsOf(id)
         setSelected(sel => (job === "integrală" && sel.length === all.length ? allowed : sel.filter(k => allowed.includes(k))))

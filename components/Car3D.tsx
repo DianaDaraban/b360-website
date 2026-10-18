@@ -29,7 +29,7 @@ const GROUPS: Record<string, { color: number; roughness: number; metalness?: num
 // a node's name (three.js names a mesh after its glTF node, or after the node's parent when the
 // node holds several primitives)
 const meshName = (o: THREE.Object3D) => (o.name || o.parent?.name || "").replace(/_\d+$/, "")
-const PAINT = 0xe4e0db, PICKED = 0x16a39a, HOVER = 0xb9e3df     // picked: a petrol teal (the UI is red already)
+const PAINT = 0xe4e0db, PICKED = 0xf28a1e, HOVER = 0xf9cfa3     // picked: a warm orange (the UI is red already)
 
 type Props = {
     body: string

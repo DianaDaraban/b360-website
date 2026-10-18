@@ -3,7 +3,7 @@
 #   autocar: the coach; panels: fata, spate, plafon, lateral-fata/-mijloc/-spate on each side
 #   camion:  a tractor unit with its semi-trailer, put together here; panels: cabina-fata, cabina-usa,
 #            cabina-lateral, cabina-plafon (roof and deflector), remorca-lateral, remorca-fata,
-#            remorca-spate, remorca-plafon
+#            remorca-spate, remorca-plafon, remorca-lateral-fata / -spate
 # Like build_car3d_hm.py: the painted parts become one mesh per panel (named with the panel id, "-st"/
 # "-dr" for the sides), cut with flat planes along the seams (normals interpolated, so the shading
 # stays the author's); every other part keeps its material under a name starting with "keep".
@@ -116,7 +116,8 @@ else:
     trl = np.concatenate([m.vertices for s_, n, t, m in parts if s_.get("part") == "remorca" and is_paint(s_, n, t)])
     T_FRONT, T_REAR, T_TOP = trl[:, 0].max(), trl[:, 0].min(), trl[:, 1].max()
     C_FRONT, C_ROOF, C_DOOR_B, C_DOOR_F, C_BACK = cab_front - 0.2, 3.06, 4.55, 5.60, cab_back
-    PLANES = [(0, C_FRONT), (1, C_ROOF), (0, C_DOOR_B), (0, C_DOOR_F), (0, T_FRONT - 0.06), (0, T_REAR + 0.06), (1, T_TOP - 0.06), (2, 0.0)]
+    T_MID = (T_FRONT + T_REAR) / 2                          # sides in two halves: many trailers are lettered only at the back
+    PLANES = [(0, C_FRONT), (1, C_ROOF), (0, C_DOOR_B), (0, C_DOOR_F), (0, T_FRONT - 0.06), (0, T_REAR + 0.06), (0, T_MID), (1, T_TOP - 0.06), (2, 0.0)]
     def panel_at(x, y, z, part, ny=0):
         s = side(z)
         if part == "cabina":
@@ -128,7 +129,7 @@ else:
         if y > T_TOP - 0.06 or (y > T_TOP - 0.4 and ny > 0.7): return "remorca-plafon"   # the roof sags a little
         if x > T_FRONT - 0.06: return "remorca-fata"
         if x < T_REAR + 0.06: return "remorca-spate"
-        return f"remorca-lateral-{s}"
+        return f"remorca-lateral-{'fata' if x > T_MID else 'spate'}-{s}"
 
 def cut(ms, axis, value):
     nrm = np.zeros(3); nrm[axis] = 1

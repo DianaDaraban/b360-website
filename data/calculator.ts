@@ -25,7 +25,7 @@ export type PanelKind =
     | "fata" | "spate" | "lateral-fata" | "lateral-mijloc" | "lateral-spate"
     // tractor unit with semi-trailer
     | "cabina-fata" | "cabina-usa" | "cabina-lateral" | "cabina-plafon"
-    | "remorca-fata" | "remorca-spate" | "remorca-lateral" | "remorca-plafon"
+    | "remorca-fata" | "remorca-spate" | "remorca-lateral-fata" | "remorca-lateral-spate" | "remorca-plafon"
 
 export const panelNames: Record<PanelKind, string> = {
     "bara-fata": "Bară față",
@@ -51,7 +51,8 @@ export const panelNames: Record<PanelKind, string> = {
     "cabina-plafon": "Plafon cabină și deflector",
     "remorca-fata": "Semiremorcă față",
     "remorca-spate": "Semiremorcă spate",
-    "remorca-lateral": "Lateral semiremorcă",
+    "remorca-lateral-fata": "Lateral semiremorcă, jumătatea din față",
+    "remorca-lateral-spate": "Lateral semiremorcă, jumătatea din spate",
     "remorca-plafon": "Plafon semiremorcă",
 }
 
@@ -93,7 +94,7 @@ const PANELS_3D: Partial<Record<BodyId, { shared: PanelKind[]; sides: PanelKind[
     autocar: { shared: ["fata", "spate", "plafon"], sides: ["lateral-fata", "lateral-mijloc", "lateral-spate"] },
     camion: {
         shared: ["cabina-fata", "cabina-plafon", "remorca-fata", "remorca-spate", "remorca-plafon"],
-        sides: ["cabina-usa", "cabina-lateral", "remorca-lateral"],
+        sides: ["cabina-usa", "cabina-lateral", "remorca-lateral-fata", "remorca-lateral-spate"],
     },
 }
 

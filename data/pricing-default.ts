@@ -26,7 +26,7 @@ export const defaultPricing: PricingConfig = {
         autocar: { fata: 6, spate: 6, plafon: 20, "lateral-fata": 9.5, "lateral-mijloc": 9.5, "lateral-spate": 9.5 },
         camion: {
             "cabina-fata": 3.5, "cabina-usa": 1.3, "cabina-lateral": 1.5, "cabina-plafon": 2.5,
-            "remorca-fata": 4.5, "remorca-spate": 4.5, "remorca-lateral": 24, "remorca-plafon": 22,
+            "remorca-fata": 4.5, "remorca-spate": 4.5, "remorca-lateral-fata": 12, "remorca-lateral-spate": 12, "remorca-plafon": 22,
         },
     },
     graphics: [

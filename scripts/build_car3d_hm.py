@@ -22,10 +22,10 @@ CONFIG = {
     "suv": {"rot_y": 90, "paint": ["Silver_Sky_Metallic"], "tyre": ["Tires"]},
     "utilitara": {"rot_y": 90, "paint": ["Car_Paint"], "tyre": ["Rubber_Tire"], "van": True},
     # the models in use (Sketchfab, by authors who model their own cars)
-    "break-v60": {"rot_y": -90, "paint": ["body_paint"], "tyre": ["wheel_tire"], "no_doors": True,
+    "break-v60": {"rot_y": -90, "paint": ["body_paint"], "tyre": ["wheel_tire"], "no_doors": True, "hood_by_normal": True,
                   "cuts": {"x_door_f": 0.18, "x_door_m": -0.045, "x_door_r": -0.215, "x_cowl": 0.20, "y_shoulder": 0.20, "y_roof": 0.27}},
     "hatchback-fabia": {"rot_y": 90, "paint": ["Blue_Car_Paint"], "tyre": ["Car_rubber_wheel"]},
-    "utilitara-ducato": {"rot_y": 90, "paint": ["varnish"], "tyre": ["wheel_rubber"], "van": True, "no_doors": True,
+    "utilitara-ducato": {"rot_y": 90, "paint": ["varnish"], "tyre": ["wheel_rubber"], "van": True, "no_doors": True, "hood_by_normal": True,
                          "cuts": {"x_door_f": 0.21, "x_door_m": 0.05, "x_door_r": -0.21, "x_cowl": 0.30, "y_shoulder": 0.25, "y_roof": 0.41}},
     "suv-evoque": {"rot_y": 90, "paint": ["Vehicle_-_Body_-_Paint"], "tyre": ["Tyre"], "drop": ["Logo", "RangeRover", "Range_Rover"]},
     "sedan-generic": {"rot_y": 90, "paint": ["Car_Paint_-_All_Colors"], "tyre": ["tire-low"]},
@@ -114,13 +114,17 @@ C.setdefault("tail_x", C["xr_bumper"])
 print({k: round(float(v), 3) for k, v in C.items()})
 rear_door = "usa-culisanta" if van else "usa-spate"
 
-def panel_at(x, y, z):
+def panel_at(x, y, z, ny=None):
     s = side(z)
     if y > C["y_roof"]:
         return "plafon"
     if x > C["x_door_f"]:
         if x > C["xf_bumper"] and y < C["y_fb"]:
             return "bara-fata"
+        if cfg.get("hood_by_normal") and ny is not None and x > C["x_cowl"]:
+            # no separate hood piece: the hood is the part of the nose that faces up, the fenders the
+            # part that faces the sides (a height line lets the fenders' top edge spill onto the hood)
+            return "capota" if ny > 0.55 and y > C["y_fb"] else f"aripa-fata-{s}"
         if y > C["y_shoulder"]:
             return "capota" if x > C["x_cowl"] else "plafon"
         return f"aripa-fata-{s}"
@@ -186,7 +190,19 @@ for v, f, nr in parts:
     m.vertex_normals = nr / np.maximum(np.linalg.norm(nr, axis=1, keepdims=True), 1e-9)
     cut_meshes.append(m)
 sm = trimesh.util.concatenate(cut_meshes)
-labels = np.array([panel_at(*c) for c in sm.triangles_center], dtype=object)
+labels = np.array([panel_at(*c, nf[1]) for c, nf in zip(sm.triangles_center, sm.face_normals)], dtype=object)
+if cfg.get("hood_by_normal"):
+    # the up/side split leaves specks along the hood edge: each nose face takes what most of its
+    # neighbours are (area weighted), a few rounds
+    from scipy.spatial import cKDTree
+    cen, area = sm.triangles_center, sm.area_faces
+    nose = np.where([str(l) == "capota" or str(l).startswith("aripa-fata") for l in labels])[0]
+    hood = np.array([labels[i] == "capota" for i in nose], float)
+    nb = cKDTree(cen[nose]).query(cen[nose], k=min(40, len(nose)))[1]
+    for _ in range(6):
+        hood = ((hood[nb] * area[nose][nb]).sum(1) / area[nose][nb].sum(1) > 0.5).astype(float)
+    for i, h in zip(nose, hood):
+        labels[i] = "capota" if h else f"aripa-fata-{side(cen[i][2])}"
 for name in sorted(set(labels)):
     add(str(name), sm.submesh([np.where(labels == name)[0]], append=True))
 
