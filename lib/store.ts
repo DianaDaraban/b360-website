@@ -1,6 +1,7 @@
 import "server-only"
 import fs from "node:fs/promises"
 import path from "node:path"
+// pinned to v10: v11 hangs inside the Netlify Next.js runtime (5.16)
 import { getStore } from "@netlify/blobs"
 
 // Content edited from /admin (projects, photos, prices). On Netlify it lives in Netlify Blobs; elsewhere
