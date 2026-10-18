@@ -1,6 +1,8 @@
 "use client"
 
 import { useMemo, useState } from "react"
+import dynamic from "next/dynamic"
+import type { View3D } from "./Car3D"
 import { CarBlueprint } from "./CarBlueprint"
 import { Consent, SmartForm } from "./SmartForm"
 import { bodyTypes, models, panelLabel, panelsOf, sidePanels, type BodyId, type Mode, type View } from "@/data/calculator"
@@ -12,6 +14,15 @@ const views: { id: View; label: string }[] = [
     { id: "stanga", label: "Stânga" },
     { id: "sus", label: "Sus" },
     { id: "dreapta", label: "Dreapta" },
+]
+// the 3D viewer (three.js) loads only in the browser and only when a body with a 3D model is shown
+const Car3D = dynamic(() => import("./Car3D"), { ssr: false, loading: () => <p className={styles.loading3d}>Se încarcă mașina 3D…</p> })
+const MODELS_3D = new Set<string>(["sedan"])
+const VIEWS_3D: { id: View3D; label: string }[] = [
+    { id: "fata", label: "Față" },
+    { id: "lateral", label: "Lateral" },
+    { id: "spate", label: "Spate" },
+    { id: "sus", label: "Sus" },
 ]
 const lei = (n: number) => `${n.toLocaleString("ro-RO")} lei`
 const mp = (n: number) => `${n.toLocaleString("ro-RO", { maximumFractionDigits: 1 })} mp`
@@ -39,8 +50,11 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
     const [graphics, setGraphics] = useState<Graphics>("noi")
     const [info, setInfo] = useState(false)
     const [withVat, setWithVat] = useState(true)
+    const [prefer2d, setPrefer2d] = useState(false)
+    const [view3d, setView3d] = useState<{ name: View3D; n: number } | null>(null)
 
     const all = panelsOf(body)
+    const show3d = MODELS_3D.has(body) && !prefer2d
     const selection = useMemo(() => Object.fromEntries(selected.map(id => [id, "colantare" as Mode])), [selected])
     const partial = job === "integrală" && selected.length > 0 && selected.length < all.length
 
@@ -126,26 +140,51 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
             </Step>
 
             {/* ---------- 2: the pieces ---------- */}
-            <Step n={2} title="Ce piese colantăm?" hint="Apasă pe piese, direct pe mașină. Întoarce mașina cu săgețile ca să vezi și plafonul sau cealaltă parte.">
-                <div className={styles.canvas}>
-                    <button type="button" className={`${styles.turn} ${styles.turnLeft}`} onClick={() => turn(-1)} aria-label="Unghiul anterior">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8" /></svg>
-                    </button>
-                    <div key={view} className={styles.flip}>
-                        <CarBlueprint body={body} view={view} selection={selection} onPick={pick} onHover={setHovered} />
+            <Step n={2} title="Ce piese colantăm?" hint={show3d ? "Rotește mașina trăgând de ea (sau cu degetul) și apasă pe piesele pe care vrei să le colantăm." : "Apasă pe piese, direct pe mașină. Întoarce mașina cu săgețile ca să vezi și plafonul sau cealaltă parte."}>
+                {show3d ? (
+                    <div className={styles.canvas3d}>
+                        <Car3D body={body} selected={selected} view={view3d} onPick={pick} onHover={setHovered} />
+                        <p className={styles.hoverName} aria-live="polite">
+                            {hovered ? <>{panelLabel(hovered)} · <em>{selected.includes(hovered) ? "apasă ca s-o scoți" : "apasă ca s-o adaugi"}</em></> : selected.length ? `${selected.length} ${selected.length === 1 ? "piesă aleasă" : "piese alese"}` : "Trage ca s-o rotești · apasă pe o piesă ca s-o alegi"}
+                        </p>
                     </div>
-                    <button type="button" className={`${styles.turn} ${styles.turnRight}`} onClick={() => turn(1)} aria-label="Unghiul următor">
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8" /></svg>
-                    </button>
-                    <p className={styles.hoverName} aria-live="polite">
-                        {hovered ? <>{panelLabel(hovered)} · <em>{selected.includes(hovered) ? "apasă ca s-o scoți" : "apasă ca s-o adaugi"}</em></> : selected.length ? `${selected.length} ${selected.length === 1 ? "piesă aleasă" : "piese alese"}` : "Apasă pe o piesă ca s-o alegi"}
-                    </p>
-                </div>
+                ) : (
+                    <div className={styles.canvas}>
+                        <button type="button" className={`${styles.turn} ${styles.turnLeft}`} onClick={() => turn(-1)} aria-label="Unghiul anterior">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8" /></svg>
+                        </button>
+                        <div key={view} className={styles.flip}>
+                            <CarBlueprint body={body} view={view} selection={selection} onPick={pick} onHover={setHovered} />
+                        </div>
+                        <button type="button" className={`${styles.turn} ${styles.turnRight}`} onClick={() => turn(1)} aria-label="Unghiul următor">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8" /></svg>
+                        </button>
+                        <p className={styles.hoverName} aria-live="polite">
+                            {hovered ? <>{panelLabel(hovered)} · <em>{selected.includes(hovered) ? "apasă ca s-o scoți" : "apasă ca s-o adaugi"}</em></> : selected.length ? `${selected.length} ${selected.length === 1 ? "piesă aleasă" : "piese alese"}` : "Apasă pe o piesă ca s-o alegi"}
+                        </p>
+                    </div>
+                )}
                 <div className={styles.viewBar}>
-                    <div className={styles.views} role="tablist" aria-label="Unghi">
-                        {views.map(v => (
-                            <button type="button" key={v.id} role="tab" aria-selected={view === v.id} onClick={() => setView(v.id)}>{v.label}</button>
-                        ))}
+                    <div className={styles.viewGroup}>
+                        {MODELS_3D.has(body) && (
+                            <div className={styles.views} role="radiogroup" aria-label="Vedere">
+                                <button type="button" role="radio" aria-checked={show3d} onClick={() => setPrefer2d(false)}>3D</button>
+                                <button type="button" role="radio" aria-checked={!show3d} onClick={() => setPrefer2d(true)}>2D</button>
+                            </div>
+                        )}
+                        {show3d ? (
+                            <div className={styles.views} aria-label="Unghi">
+                                {VIEWS_3D.map(v => (
+                                    <button type="button" key={v.id} aria-pressed={view3d?.name === v.id} onClick={() => setView3d({ name: v.id, n: Date.now() })}>{v.label}</button>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className={styles.views} role="tablist" aria-label="Unghi">
+                                {views.map(v => (
+                                    <button type="button" key={v.id} role="tab" aria-selected={view === v.id} onClick={() => setView(v.id)}>{v.label}</button>
+                                ))}
+                            </div>
+                        )}
                     </div>
                     <div className={styles.quick}>
                         <button type="button" onClick={() => setSelected(all)}>
