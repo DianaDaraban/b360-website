@@ -11,7 +11,7 @@
     "import-images": "node scripts/import-wp-images.mjs"
   },
   "dependencies": {
-    "@netlify/blobs": "^11.1.4",
+    "@netlify/blobs": "^10.7.13",
     "next": "^16.4.0",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
