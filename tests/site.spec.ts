@@ -5,9 +5,9 @@ const pages = [
     { path: "/despre-noi", h1: /transformăm ideile/ },
     { path: "/servicii", h1: /Servicii/ },
     { path: "/portofoliu", h1: /Portofoliu/ },
-    { path: "/oferta", h1: /Cerere ofertă/ },
-    { path: "/calculator", h1: /Calculează/ },
-    { path: "/contact", h1: /Contact/ },
+    { path: "/oferta", h1: /Spune-ne ce vrei să colantăm/ },
+    { path: "/calculator", h1: /Cât costă colantarea/ },
+    { path: "/contact", h1: /Hai să vorbim/ },
 ]
 
 for (const { path, h1 } of pages) {
@@ -21,6 +21,15 @@ for (const { path, h1 } of pages) {
         expect(overflow).toBeLessThanOrEqual(0)
     })
 }
+
+// open a page; the clicks below are retried until React has taken over the page (hydration)
+const open = (page: import("@playwright/test").Page, path: string) => page.goto(path, { waitUntil: "domcontentloaded" })
+const until = (action: () => Promise<unknown>, check: () => Promise<unknown>) =>
+    expect(async () => { await action(); await check() }).toPass({ timeout: 20_000, intervals: [500, 1000] })
+
+// alt texts of the gallery tiles (not the client stickers above them); collage side photos are decorative
+const tileAlts = (page: import("@playwright/test").Page) =>
+    page.locator("main li button[aria-label^='Deschide'] img").evaluateAll(imgs => imgs.map(i => i.getAttribute("alt")).filter(Boolean))
 
 test("every image has alt text", async ({ page }) => {
     for (const { path } of pages) {
@@ -41,12 +50,13 @@ test.describe("mobile", () => {
     test.skip(({ isMobile }) => !isMobile, "mobile layout only")
 
     test("menu opens and navigates to Servicii", async ({ page }) => {
-        await page.goto("/", { waitUntil: "domcontentloaded" })
-        await page.getByRole("button", { name: "Meniu" }).click()
+        // without animations, so the menu items are not still sliding in when they are clicked
+        await page.emulateMedia({ reducedMotion: "reduce" })
+        await open(page, "/")
         const menu = page.getByRole("dialog", { name: "Meniu" })
-        await expect(menu).toBeVisible()
+        await until(() => page.getByRole("button", { name: "Meniu" }).click(), () => expect(menu).toBeVisible({ timeout: 3000 }))
         await menu.getByRole("link", { name: "Servicii" }).click()
-        await expect(page).toHaveURL(/\/servicii$/)
+        await expect(page).toHaveURL(/\/servicii$/, { timeout: 15_000 })
         await expect(menu).toBeHidden()
     })
 
@@ -60,25 +70,27 @@ test.describe("mobile", () => {
 })
 
 test("portfolio filter shows one category and keeps it in the URL", async ({ page }) => {
-    await page.goto("/portofoliu", { waitUntil: "domcontentloaded" })
-    await page.getByRole("button", { name: "Vitrine" }).click()
-    await expect(page).toHaveURL(/categorie=vitrine/)
-    const alts = await page.locator("main ul li img").evaluateAll(imgs => imgs.map(i => i.getAttribute("alt")))
+    await open(page, "/portofoliu")
+    await until(() => page.getByRole("button", { name: "Vitrine" }).click(), () => expect(page).toHaveURL(/categorie=vitrine/, { timeout: 3000 }))
+    const alts = await tileAlts(page)
     expect(alts.length).toBeGreaterThan(0)
     for (const alt of alts) expect(alt).toMatch(/vitrină/)
 })
 
-test("portfolio lightbox opens and closes", async ({ page }) => {
-    await page.goto("/portofoliu", { waitUntil: "domcontentloaded" })
-    await page.getByRole("button", { name: /Mărește/ }).first().click()
-    const lightbox = page.getByRole("dialog", { name: "Lucrare mărită" })
-    await expect(lightbox).toBeVisible()
+test("portfolio lightbox opens a project, steps through its photos and closes", async ({ page }) => {
+    await open(page, "/portofoliu")
+    const lightbox = page.getByRole("dialog", { name: "Proiect mărit" })
+    await until(() => page.getByRole("button", { name: /^Deschide/ }).first().click(), () => expect(lightbox).toBeVisible({ timeout: 3000 }))
+    // a project with several photos: the arrow moves to its second photo
+    await expect(lightbox.getByText(/^1 \/ \d+$/)).toBeVisible()
+    await lightbox.getByRole("button", { name: "Fotografia următoare" }).click()
+    await expect(lightbox.getByText(/^2 \/ \d+$/)).toBeVisible()
     await lightbox.getByRole("button", { name: "Închide" }).click()
     await expect(lightbox).toBeHidden()
 })
 
 test("each service page has its heading, FAQ and FAQ structured data", async ({ page }) => {
-    for (const slug of ["colantare-auto", "autocolante-inscriptionari", "colantare-vitrine", "folie-ppf"]) {
+    for (const slug of ["colantare-auto", "autocolante-inscriptionari", "colantare-vitrine", "tapet-printat", "folie-ppf"]) {
         const response = await page.goto(`/servicii/${slug}`, { waitUntil: "domcontentloaded" })
         expect(response?.status(), slug).toBe(200)
         await expect(page.locator("h1")).toHaveCount(1)
@@ -89,10 +101,9 @@ test("each service page has its heading, FAQ and FAQ structured data", async ({ 
 })
 
 test("client sticker filters the gallery to that client", async ({ page }) => {
-    await page.goto("/portofoliu", { waitUntil: "domcontentloaded" })
-    await page.getByRole("button", { name: "City Grill" }).click()
-    await expect(page).toHaveURL(/client=city-grill/)
-    const alts = await page.locator("main ul li img").evaluateAll(imgs => imgs.map(i => i.getAttribute("alt")))
+    await open(page, "/portofoliu")
+    await until(() => page.getByRole("button", { name: "City Grill", exact: true }).click(), () => expect(page).toHaveURL(/client=city-grill/, { timeout: 3000 }))
+    const alts = await tileAlts(page)
     expect(alts.length).toBeGreaterThan(0)
     for (const alt of alts) expect(alt).toMatch(/City Grill/)
 })
