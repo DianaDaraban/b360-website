@@ -1,6 +1,7 @@
 "use server"
 
 import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 import { isAdmin, logIn, logOut } from "@/lib/admin-auth"
 import { readAdminContent, writeAdminContent, type AddedProject, type ProjectEdit } from "@/lib/projects"
 import { deleteFile } from "@/lib/store"
@@ -19,13 +20,13 @@ const clean = (s: unknown, max: number) => String(s ?? "").trim().slice(0, max)
 export async function loginAction(_prev: string | null, form: FormData): Promise<string | null> {
     const ok = await logIn(String(form.get("password") ?? ""))
     if (!ok) return process.env.ADMIN_PASSWORD ? "Parolă greșită." : "Parola de admin nu e setată pe server (ADMIN_PASSWORD)."
-    revalidatePath("/admin")
-    return null
+    // a fresh request for the page, now with the login cookie
+    redirect("/admin")
 }
 
 export async function logoutAction() {
     await logOut()
-    revalidatePath("/admin")
+    redirect("/admin")
 }
 
 export type ProjectInput = {
