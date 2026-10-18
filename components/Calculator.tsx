@@ -17,10 +17,13 @@ const views: { id: View; label: string }[] = [
 ]
 // the 3D viewer (three.js) loads only in the browser and only when a body with a 3D model is shown
 const Car3D = dynamic(() => import("./Car3D"), { ssr: false, loading: () => <p className={styles.loading3d}>Se încarcă mașina 3D…</p> })
+const CC_BY: [string, string] = ["CC BY 4.0", "https://creativecommons.org/licenses/by/4.0/"]
 const MODELS_3D = new Set<string>(["hatchback", "sedan", "break", "suv", "utilitara"])
-// hand-modelled cars under CC BY 4.0: the licence asks for the author, a link and a note of the changes
-const CREDITS_3D: Record<string, { title: string; author: string; url: string }> = {
-    sedan: { title: "2014 Toyota Corolla E180 EU", author: "Armored Wave", url: "https://sketchfab.com/3d-models/2014-toyota-corolla-e180-eu-with-interior-36f95efb0585464cae43a25a3b3392e8" },
+// hand-modelled cars from Sketchfab: CC BY 4.0 asks for the author, a link and a note of the changes
+// (the Transit is under Sketchfab's Free Standard licence, which asks for none; it is credited all the same)
+const CREDITS_3D: Record<string, { title: string; author: string; url: string; license: [string, string] }> = {
+    sedan: { title: "2014 Toyota Corolla E180 EU", author: "Armored Wave", url: "https://sketchfab.com/3d-models/2014-toyota-corolla-e180-eu-with-interior-36f95efb0585464cae43a25a3b3392e8", license: CC_BY },
+    utilitara: { title: "Ford Transit L2H2", author: "geyges", url: "https://sketchfab.com/3d-models/ford-transit-l2h2-7ba3c31431f34104902c5efcc112d4af", license: ["Sketchfab Free Standard", "https://sketchfab.com/licenses"] },
 }
 const VIEWS_3D: { id: View3D; label: string }[] = [
     { id: "fata", label: "Față" },
@@ -153,7 +156,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                         {CREDITS_3D[body] && (
                             <p className={styles.credit}>
                                 Model 3D: <a href={CREDITS_3D[body].url} target="_blank" rel="noopener noreferrer">{CREDITS_3D[body].title}</a> de {CREDITS_3D[body].author},{" "}
-                                <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>; modificat (împărțit pe piese, recolorat, comprimat)
+                                <a href={CREDITS_3D[body].license[1]} target="_blank" rel="noopener noreferrer">{CREDITS_3D[body].license[0]}</a>; modificat (împărțit pe piese, recolorat, comprimat)
                             </p>
                         )}
                     </div>

@@ -111,7 +111,7 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
                 const g = GROUPS[meshName(mesh)]
                 mesh.material = g
                     ? new THREE.MeshStandardMaterial({ color: g.color, roughness: g.roughness, metalness: g.metalness ?? 0, transparent: g.opacity !== undefined, opacity: g.opacity ?? 1 })
-                    : new THREE.MeshStandardMaterial({ color: PAINT, roughness: 0.5, metalness: 0.05 })
+                    : new THREE.MeshPhysicalMaterial({ color: PAINT, roughness: 0.38, metalness: 0.05, clearcoat: 1, clearcoatRoughness: 0.08 })   // glossy paint under clear coat
                 if (!g) panels.set(meshName(mesh), mesh)
             })
             scene.add(root)

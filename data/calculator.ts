@@ -72,6 +72,8 @@ export function panelsOf(id: BodyId) {
     // the tailgate is barely visible from above on some bodies, but every car has one
     const shared = ["bara-fata", "bara-spate", "capota", "plafon", ...(id === "utilitara" ? [] : ["portbagaj"])]
     const sides = b.side.panels.map(p => p[0]).filter(k => k !== "bara-fata" && k !== "bara-spate")
+    // every car has mirrors, also where the side photo hides them (the 3D model shows them)
+    if (id !== "utilitara" && !sides.includes("oglinda")) sides.push("oglinda")
     return [...new Set(shared), ...sides.flatMap(k => [`${k}-st`, `${k}-dr`])]
 }
 export const sidePanels = (id: BodyId) => panelsOf(id).filter(p => /-(st|dr)$/.test(p))
