@@ -26,7 +26,10 @@ const GROUPS: Record<string, { color: number; roughness: number; metalness?: num
     body: { color: 0xeeebe7, roughness: 0.45 },
     interior: { color: 0x4d4845, roughness: 0.8 },
 }
-const PAINT = 0xe4e0db, PICKED = 0xee3338, HOVER = 0xf3b5b7     // picked: the B360 red
+// a node's name (three.js names a mesh after its glTF node, or after the node's parent when the
+// node holds several primitives)
+const meshName = (o: THREE.Object3D) => (o.name || o.parent?.name || "").replace(/_\d+$/, "")
+const PAINT = 0xe4e0db, PICKED = 0x16a39a, HOVER = 0xb9e3df     // picked: a petrol teal (the UI is red already)
 
 type Props = {
     body: string
@@ -103,11 +106,13 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
             root.traverse(o => {
                 if (!(o as THREE.Mesh).isMesh) return
                 const mesh = o as THREE.Mesh
-                const g = GROUPS[mesh.name]
+                // parts of hand-modelled cars (glass, lights, wheels, interior) keep their own materials
+                if (meshName(mesh).startsWith("keep")) return
+                const g = GROUPS[meshName(mesh)]
                 mesh.material = g
                     ? new THREE.MeshStandardMaterial({ color: g.color, roughness: g.roughness, metalness: g.metalness ?? 0, transparent: g.opacity !== undefined, opacity: g.opacity ?? 1 })
                     : new THREE.MeshStandardMaterial({ color: PAINT, roughness: 0.5, metalness: 0.05 })
-                if (!g) panels.set(mesh.name, mesh)
+                if (!g) panels.set(meshName(mesh), mesh)
             })
             scene.add(root)
             const box = new THREE.Box3().setFromObject(root)
@@ -134,7 +139,7 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
             ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1)
             ray.setFromCamera(ndc, camera)
             const hit = ray.intersectObjects(scene.children, true)[0]
-            const name = hit?.object.name
+            const name = hit && meshName(hit.object)
             return name && panels.has(name) ? name : null
         }
         let down: { x: number; y: number } | null = null

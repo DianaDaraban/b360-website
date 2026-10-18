@@ -18,6 +18,10 @@ const views: { id: View; label: string }[] = [
 // the 3D viewer (three.js) loads only in the browser and only when a body with a 3D model is shown
 const Car3D = dynamic(() => import("./Car3D"), { ssr: false, loading: () => <p className={styles.loading3d}>Se încarcă mașina 3D…</p> })
 const MODELS_3D = new Set<string>(["hatchback", "sedan", "break", "suv", "utilitara"])
+// hand-modelled cars under CC BY 4.0: the licence asks for the author, a link and a note of the changes
+const CREDITS_3D: Record<string, { title: string; author: string; url: string }> = {
+    sedan: { title: "2014 Toyota Corolla E180 EU", author: "Armored Wave", url: "https://sketchfab.com/3d-models/2014-toyota-corolla-e180-eu-with-interior-36f95efb0585464cae43a25a3b3392e8" },
+}
 const VIEWS_3D: { id: View3D; label: string }[] = [
     { id: "fata", label: "Față" },
     { id: "lateral", label: "Lateral" },
@@ -146,6 +150,12 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                         <p className={styles.hoverName} aria-live="polite">
                             {hovered ? <>{panelLabel(hovered)} · <em>{selected.includes(hovered) ? "apasă ca s-o scoți" : "apasă ca s-o adaugi"}</em></> : selected.length ? `${selected.length} ${selected.length === 1 ? "piesă aleasă" : "piese alese"}` : "Trage ca s-o rotești · apasă pe o piesă ca s-o alegi"}
                         </p>
+                        {CREDITS_3D[body] && (
+                            <p className={styles.credit}>
+                                Model 3D: <a href={CREDITS_3D[body].url} target="_blank" rel="noopener noreferrer">{CREDITS_3D[body].title}</a> de {CREDITS_3D[body].author},{" "}
+                                <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>; modificat (împărțit pe piese, recolorat, comprimat)
+                            </p>
+                        )}
                     </div>
                 ) : (
                     <div className={styles.canvas}>
