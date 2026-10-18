@@ -4,6 +4,11 @@
 .loginBox { display: grid; gap: 20px; max-width: 420px; }
 .login { display: grid; gap: 10px; }
 .login input { min-height: 48px; padding: 0 14px; border: 1.5px solid rgb(60 20 20 / 0.25); border-radius: 12px; background: var(--white); font: inherit; }
+/* the password with an eye button inside the field, to show what is typed */
+.passwordField { position: relative; }
+.passwordField input { width: 100%; padding-right: 52px; }
+.eye { position: absolute; top: 0; right: 0; width: 48px; height: 100%; display: grid; place-items: center; padding: 0; border: 0; background: none; color: var(--muted); cursor: pointer; border-radius: 0 12px 12px 0; }
+.eye:hover, .eye[aria-pressed="true"] { color: var(--red-dark); }
 .login :global(.btn) { justify-self: start; margin-top: 6px; }
 .error { color: var(--red-dark); font-weight: 600; }
 .note { color: var(--muted); font-size: 0.92rem; }
