@@ -8,7 +8,7 @@
 .logo { mix-blend-mode: normal; }
 
 /* contours around the chosen pieces (drawn inside them: the outline clips the stroke) */
-.wrapEdge { fill: none; stroke: #0b5d57; stroke-width: 10; stroke-linejoin: round; }
+.wrapEdge { fill: none; stroke: #0b5d57; stroke-width: 4; stroke-linejoin: round; }
 .insEdge { fill: none; stroke: #0f6d96; stroke-width: 6; stroke-linejoin: round; }
 
 /* click areas: invisible, a light red tint over the car on hover */

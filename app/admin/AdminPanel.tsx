@@ -4,6 +4,8 @@ import { useMemo, useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { deleteProject, logoutAction, saveProject, setHidden } from "./actions"
 import styles from "./admin.module.css"
+import { PrivacyReview } from "./PrivacyReview"
+import type { Box } from "./privacy-detect"
 
 type Photo = { src: string; w: number; h: number }
 export type AdminProject = {
@@ -131,29 +133,51 @@ function Editor({ project, categories, clients, onClose, onSaved }: {
     const [photos, setPhotos] = useState<Photo[]>(project.photos)
     const [plain, setPlain] = useState(PLAIN.has(project.cat))
     const [uploading, setUploading] = useState(0)
+    // photos waiting for the plate / face check before they go up, the first one shown
+    const [queue, setQueue] = useState<{ name: string; blob: Blob; url: string; boxes: Box[] | null }[]>([])
     const [error, setError] = useState<string | null>(null)
     const [saving, start] = useTransition()
     const set = (k: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => setForm(f => ({ ...f, [k]: e.target.value }))
 
-    const upload = async (files: FileList | null) => {
-        if (!files?.length) return
+    // chosen photos are shrunk, then checked for plates and faces one by one (the check runs in the
+    // browser); each goes up once its boxes are confirmed, and is blurred on the server
+    const choose = async (list: FileList | null) => {
+        // copied first: the input is cleared right after, and that empties its FileList
+        const files = Array.from(list ?? [])
+        if (!files.length) return
         setError(null)
-        setUploading(n => n + files.length)
-        // one at a time, in the order chosen; each photo appears as soon as it is ready
-        for (const file of Array.from(files)) {
+        const { detect } = await import("./privacy-detect")
+        for (const file of files) {
             try {
-                const body = new FormData()
-                body.append("photo", await shrink(file), "photo.jpg")
-                body.append("plain", plain ? "1" : "0")
-                const res = await fetch("/api/admin/upload", { method: "POST", body })
-                const json = await res.json()
-                if (!res.ok) throw new Error(json.error)
-                setPhotos(p => [...p, json as Photo])
-            } catch (e) {
-                setError(`„${file.name}” nu a putut fi încărcată${e instanceof Error && e.message ? `: ${e.message}` : "."}`)
-            } finally {
-                setUploading(n => n - 1)
+                const blob = await shrink(file)
+                const item = { name: file.name, blob, url: URL.createObjectURL(blob), boxes: null as Box[] | null }
+                setQueue(q => [...q, item])
+                const boxes = await detect(await createImageBitmap(blob)).catch(() => [] as Box[])
+                setQueue(q => q.map(x => (x.url === item.url ? { ...x, boxes } : x)))
+            } catch {
+                setError(`„${file.name}” nu a putut fi citită.`)
             }
+        }
+    }
+    const next = () => setQueue(q => { if (q[0]) URL.revokeObjectURL(q[0].url); return q.slice(1) })
+    const upload = async () => {
+        const item = queue[0]
+        if (!item) return
+        next()
+        setUploading(n => n + 1)
+        try {
+            const body = new FormData()
+            body.append("photo", item.blob, "photo.jpg")
+            body.append("plain", plain ? "1" : "0")
+            body.append("blur", JSON.stringify((item.boxes ?? []).filter(b => b.on).map(({ x, y, w, h }) => ({ x, y, w, h }))))
+            const res = await fetch("/api/admin/upload", { method: "POST", body })
+            const json = await res.json()
+            if (!res.ok) throw new Error(json.error)
+            setPhotos(p => [...p, json as Photo])
+        } catch (e) {
+            setError(`„${item.name}” nu a putut fi încărcată${e instanceof Error && e.message ? `: ${e.message}` : "."}`)
+        } finally {
+            setUploading(n => n - 1)
         }
     }
     const move = (i: number, d: number) => setPhotos(p => {
@@ -208,19 +232,33 @@ function Editor({ project, categories, clients, onClose, onSaved }: {
                     </ul>
                     <label className={styles.upload}>
                         + Adaugă fotografii
-                        <input type="file" accept="image/*" multiple onChange={e => { upload(e.target.files); e.target.value = "" }} />
+                        <input type="file" accept="image/*" multiple onChange={e => { choose(e.target.files); e.target.value = "" }} />
                     </label>
+                    {queue[0] && (
+                        <div className={styles.review}>
+                            <h3>Numere și fețe <small>({queue.length === 1 ? "o poză" : `${queue.length} poze`} de verificat)</small></h3>
+                            {queue[0].boxes === null ? (
+                                <p className={styles.note}>Caut numere de înmatriculare și fețe…</p>
+                            ) : (
+                                <PrivacyReview url={queue[0].url} boxes={queue[0].boxes} onChange={boxes => setQueue(q => [{ ...q[0], boxes }, ...q.slice(1)])} />
+                            )}
+                            <div className={styles.actions}>
+                                <button type="button" className="btn" onClick={upload} disabled={queue[0].boxes === null}>Încarcă poza</button>
+                                <button type="button" className="btn-ghost on-light" onClick={next}>Renunță la ea</button>
+                            </div>
+                        </div>
+                    )}
                     <label className={styles.check}>
                         <input type="checkbox" checked={plain} onChange={e => setPlain(e.target.checked)} />
                         Fără blur pe margini (pentru tapet, vitrine, stickere: acolo decorul e lucrarea)
                     </label>
-                    <p className={styles.note}>Pozele primesc automat editarea galeriei: lumină și culori corectate, blur ușor spre margini și gradient închis. Bifa se aplică pozelor încărcate de acum înainte.</p>
+                    <p className={styles.note}>Pozele primesc automat editarea galeriei: lumină și culori corectate, blur ușor spre margini și gradient închis. Înainte de încărcare, numerele de înmatriculare și fețele găsite se blurează (le poți verifica). Bifa se aplică pozelor încărcate de acum înainte.</p>
                 </div>
             )}
 
             {error && <p className={styles.error} role="alert">{error}</p>}
             <div className={styles.actions}>
-                <button className="btn" onClick={save} disabled={saving || uploading > 0}>{saving ? "Se salvează…" : "Salvează"}</button>
+                <button className="btn" onClick={save} disabled={saving || uploading > 0 || queue.length > 0}>{saving ? "Se salvează…" : "Salvează"}</button>
                 <button className="btn-ghost on-light" onClick={onClose} disabled={saving}>Renunță</button>
             </div>
         </div>

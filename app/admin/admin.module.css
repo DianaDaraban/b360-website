@@ -86,3 +86,14 @@
 .table th, .table td { padding: 6px 8px; border-bottom: 1px solid rgb(60 20 20 / 0.1); text-align: left; }
 .table th { font-weight: 700; color: var(--muted); }
 @media (max-width: 640px) { .table { display: block; overflow-x: auto; white-space: nowrap; } }
+
+/* the plate / face check before a photo goes up */
+.review { display: grid; gap: 10px; margin-top: 14px; padding: 14px; border-radius: 14px; background: #f6f1ec; }
+.review h3 { margin: 0; }
+.privacy { display: grid; gap: 8px; }
+.privacyPhoto { position: relative; touch-action: none; user-select: none; cursor: crosshair; line-height: 0; }
+.privacyPhoto img { width: 100%; height: auto; border-radius: 10px; }
+.privacyBox { position: absolute; padding: 0; border: 2px dashed #fff; border-radius: 4px; background: rgb(0 0 0 / 0.15); box-shadow: 0 0 0 1px rgb(0 0 0 / 0.5); cursor: pointer; }
+.privacyBox[data-on] { border-style: solid; border-color: #17a398; background: rgb(23 163 152 / 0.45); backdrop-filter: blur(6px); }
+.privacyBox span { position: absolute; left: 0; bottom: 100%; margin-bottom: 2px; padding: 1px 5px; border-radius: 4px; background: #222; color: #fff; font-size: 0.7rem; line-height: 1.4; white-space: nowrap; }
+.privacyDraft { position: absolute; border: 2px solid #17a398; background: rgb(23 163 152 / 0.25); pointer-events: none; }
