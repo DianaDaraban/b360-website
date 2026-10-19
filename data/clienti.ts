@@ -37,6 +37,17 @@ export const clienti: Client[] = [
     { slug: "swoboda", name: "Swoboda", logo: "swoboda" },
 ]
 
+import type React from "react"
+// a logo's box on its round sticker: as large as fits inside a circle a little smaller than the disc
+// (corners included, so wide logos never touch the edge), centred; sized from its aspect ratio
+import aspects from "./clienti-logos.json"
+export function logoBox(logo: string): React.CSSProperties {
+    const a = (aspects as Record<string, number>)[logo] ?? 2
+    const w = Math.min(72, 70 / Math.sqrt(1 + 1 / (a * a)))
+    const h = Math.min(54, w / a)
+    return { width: `${(h * a).toFixed(1)}%`, height: `${h.toFixed(1)}%` }
+}
+
 export const clientCuLucrari = (c: Client) => Boolean(c.match)
 
 // Each client sticker is turned by its own angle, so the peeled corners point every which way (Figma)

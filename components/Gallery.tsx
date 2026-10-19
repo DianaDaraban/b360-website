@@ -4,7 +4,7 @@ import Image from "next/image"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { Carousel } from "./Carousel"
-import { tilts } from "@/data/clienti"
+import { logoBox, tilts } from "@/data/clienti"
 import type { Proiect } from "@/data/lucrari"
 import styles from "./Gallery.module.css"
 
@@ -95,7 +95,7 @@ export function Gallery({ items, categories, clients }: { items: Proiect[]; cate
                             onClick={() => go(client === c.slug ? "" : `client=${c.slug}`)}
                             title={c.name}
                         >
-                            <img src={`/clienti/${c.logo}.webp`} alt={c.name} width={300} height={139} />
+                            <img src={`/clienti/${c.logo}.webp`} alt={c.name} width={300} height={139} style={logoBox(c.logo)} />
                         </button>
                     </li>
                 ))}

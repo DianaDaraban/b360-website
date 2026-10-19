@@ -21,6 +21,12 @@ export const metadata: Metadata = {
     description:
         "Colantări auto integrale și parțiale, branding de flote, inscripționări vitrine și stickere personalizate. Din 2012, în Corbeanca, Ilfov, pentru clienți din toată țara.",
     openGraph: { type: "website", locale: "ro_RO", siteName: "B360" },
+    twitter: { card: "summary_large_image" },
+    // search console / bing ownership tags go here once the domain is verified (env, not code)
+    verification: {
+        google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
+        other: process.env.NEXT_PUBLIC_BING_VERIFICATION ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_VERIFICATION } : undefined,
+    },
     alternates: { canonical: "/" },
 }
 

@@ -6,7 +6,7 @@ import { Icon } from "@/components/Icon"
 import { Blobs } from "@/components/Blobs"
 import { Carousel } from "@/components/Carousel"
 import { ScrollCue } from "@/components/ScrollCue"
-import { clienti, tilts } from "@/data/clienti"
+import { clienti, logoBox, tilts } from "@/data/clienti"
 import { getProjects } from "@/lib/projects"
 import styles from "./home.module.css"
 
@@ -91,7 +91,7 @@ export default async function Home() {
                     <Carousel label="Clienți" className={styles.clientStrip}>
                         {clienti.map((c, i) => {
                             const style = { "--tilt": `${tilts[i % tilts.length]}deg` } as React.CSSProperties
-                            const logo = <img src={`/clienti/${c.logo}.webp`} alt={c.name} width={300} height={139} loading="lazy" />
+                            const logo = <img src={`/clienti/${c.logo}.webp`} alt={c.name} width={300} height={139} loading="lazy" style={logoBox(c.logo)} />
                             return (
                                 <li key={c.slug}>
                                     {c.match
