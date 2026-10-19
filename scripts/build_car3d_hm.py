@@ -192,17 +192,46 @@ for v, f, nr in parts:
 sm = trimesh.util.concatenate(cut_meshes)
 labels = np.array([panel_at(*c, nf[1]) for c, nf in zip(sm.triangles_center, sm.face_normals)], dtype=object)
 if cfg.get("hood_by_normal"):
-    # the up/side split leaves specks along the hood edge: each nose face takes what most of its
-    # neighbours are (area weighted), a few rounds
+    # the hood | fender seam as one smooth line: along the nose, where the body turns from facing up
+    # to facing the side (the half width at which the surface normal is 45 degrees), measured in
+    # slices front to back and fitted with a gentle curve; every nose face inside it is the hood
+    cen, nrm = sm.triangles_center, sm.face_normals
+    nose = np.array([str(l) == "capota" or str(l).startswith("aripa-fata") for l in labels])
+    xs, zs = [], []
+    lo_x, hi_x = C["x_cowl"], cen[nose][:, 0].max()
+    for x0 in np.linspace(lo_x, hi_x, 24)[:-1]:
+        band = nose & (cen[:, 0] >= x0) & (cen[:, 0] < x0 + (hi_x - lo_x) / 23) & (cen[:, 1] > C["y_fb"])
+        turn = band & (np.abs(nrm[:, 1] - 0.62) < 0.12)
+        if turn.sum() >= 6:
+            xs.append(x0 + (hi_x - lo_x) / 46)
+            zs.append(np.median(np.abs(cen[turn][:, 2])))
+    seam = np.poly1d(np.polyfit(xs, zs, 2))
+    print("hood seam", [round(float(seam(x)), 3) for x in np.linspace(lo_x, hi_x, 5)])
+    # the nose is split into small triangles first (big ones would step along the curve); the new
+    # vertices take normals interpolated from the author's
+    nm = sm.submesh([np.where(nose)[0]], append=True)
+    vn = nm.vertex_normals.copy()
+    v, f = trimesh.remesh.subdivide_to_size(nm.vertices, nm.faces, max_edge=0.004)
+    # each new vertex lies on one original face: among the nearest faces, the one it is inside
     from scipy.spatial import cKDTree
-    cen, area = sm.triangles_center, sm.area_faces
-    nose = np.where([str(l) == "capota" or str(l).startswith("aripa-fata") for l in labels])[0]
-    hood = np.array([labels[i] == "capota" for i in nose], float)
-    nb = cKDTree(cen[nose]).query(cen[nose], k=min(40, len(nose)))[1]
-    for _ in range(6):
-        hood = ((hood[nb] * area[nose][nb]).sum(1) / area[nose][nb].sum(1) > 0.5).astype(float)
-    for i, h in zip(nose, hood):
-        labels[i] = "capota" if h else f"aripa-fata-{side(cen[i][2])}"
+    cand = cKDTree(nm.triangles_center).query(v, k=min(12, len(nm.faces)))[1]
+    best = np.full(len(v), -np.inf); tri = np.zeros(len(v), int); bary = np.zeros((len(v), 3))
+    for j in range(cand.shape[1]):
+        b = trimesh.triangles.points_to_barycentric(nm.triangles[cand[:, j]], v)
+        score = b.min(1)
+        better = score > best
+        best[better], tri[better], bary[better] = score[better], cand[better, j], b[better]
+    bary = np.clip(bary, 0, None); bary /= bary.sum(1, keepdims=True)
+    nv = np.einsum("vk,vkc->vc", bary, vn[nm.faces[tri]])
+    fine = trimesh.Trimesh(v, f, process=False)
+    fine.vertex_normals = nv / np.maximum(np.linalg.norm(nv, axis=1, keepdims=True), 1e-9)
+    fc = fine.triangles_center
+    lab = np.array([("capota" if (x > C["x_cowl"] and y > C["y_fb"] and abs(z) < seam(x)) else f"aripa-fata-{side(z)}") for x, y, z in fc], dtype=object)
+    for name in set(lab):
+        add(str(name), fine.submesh([np.where(lab == name)[0]], append=True))
+    keep_rest = np.where(~nose)[0]
+    sm = sm.submesh([keep_rest], append=True)
+    labels = labels[keep_rest]
 for name in sorted(set(labels)):
     add(str(name), sm.submesh([np.where(labels == name)[0]], append=True))
 

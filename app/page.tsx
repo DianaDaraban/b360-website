@@ -20,7 +20,7 @@ const RECENT = 8
 export const revalidate = 3600
 
 // empty red stickers after the logos, waiting for the clients still to come
-const EMPTY_STICKERS = 4
+const EMPTY_STICKERS = 2
 
 
 export default async function Home() {
