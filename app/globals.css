@@ -346,6 +346,7 @@ a:hover > .arrow-sticker svg, a:focus-visible > .arrow-sticker svg { translate: 
     --c: calc(var(--d) * 0.42);
     --lift: 136deg;
     width: var(--d);
+    height: var(--d);          /* fixed: a tall logo must not stretch the disc */
     aspect-ratio: 1;
     display: grid;
     place-items: center;
@@ -359,7 +360,7 @@ a:hover > .arrow-sticker svg, a:focus-visible > .arrow-sticker svg { translate: 
 }
 .client-sticker:hover, .client-sticker:focus-visible { --c: calc(var(--d) * 0.6); --lift: 108deg; }
 /* logos as large as the disc allows; the flap may cover a bit of them, as on a real sticker */
-.client-sticker img { width: 78%; height: 66%; object-fit: contain; rotate: calc(var(--tilt, 0deg) * -1); filter: brightness(0) invert(93%) sepia(10%); pointer-events: none; }
+.client-sticker img { width: 78%; height: 66%; min-width: 0; min-height: 0; object-fit: contain; rotate: calc(var(--tilt, 0deg) * -1); filter: brightness(0) invert(93%) sepia(10%); pointer-events: none; }
 @media (min-width: 768px) { .client-sticker { --d: 150px; } }
 
 /* ---------- phones and tablets: the bottom bar carries phone, quote and calculator, so the

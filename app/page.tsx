@@ -19,8 +19,6 @@ const RECENT = 8
 // the page is rebuilt when something is saved in the admin, and at least once an hour
 export const revalidate = 3600
 
-// empty red stickers after the logos, waiting for the clients still to come
-const EMPTY_STICKERS = 2
 
 
 export default async function Home() {
@@ -102,11 +100,6 @@ export default async function Home() {
                                 </li>
                             )
                         })}
-                        {Array.from({ length: EMPTY_STICKERS }, (_, i) => (
-                            <li key={`gol-${i}`} aria-hidden="true">
-                                <span className="client-sticker peel" style={{ "--tilt": `${tilts[(clienti.length + i) % tilts.length]}deg` } as React.CSSProperties} />
-                            </li>
-                        ))}
                     </Carousel>
                 </div>
             </section>

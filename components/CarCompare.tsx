@@ -15,7 +15,7 @@ export function CarCompare({
     return (
         <figure className={styles.compare} style={{ "--split": `${split}%` } as React.CSSProperties}>
             <div className={styles.stage}>
-                <img src={partial} alt="Mașină albă cu colantare parțială, grafică albastră pe laterale" className={styles.car} width={2000} height={726} loading="lazy" />
+                <img src={partial} alt="Mașină albă cu colantare parțială: valuri în nuanțe de albastru și turcoaz și numele firmei pe uși" className={styles.car} width={2000} height={726} loading="lazy" />
                 <img src={integral} alt="Aceeași mașină cu colantare integrală, în albastru petrol satinat" className={`${styles.car} ${styles.integral}`} width={2000} height={726} loading="lazy" />
                 <span className={styles.divider} aria-hidden="true" />
                 <span className={styles.knob} aria-hidden="true">
