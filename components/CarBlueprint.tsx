@@ -27,8 +27,9 @@ export function CarBlueprint({ body, view, selection, onPick, onHover }: Props) 
     const suffix = view === "dreapta" ? "dr" : "st"
 
     // every clickable panel of this view as [id, outline path]
+    // the side outlines are the left side's; the right side is the same photo mirrored
     const panels: [string, string][] = (top ? b.top!.panels : b.side!.panels).map(([k, d]) => [
-        top || k === "bara-fata" || k === "bara-spate" ? k : `${k}-${suffix}`,
+        top ? k : k.replace(/-st$/, `-${suffix}`),
         d,
     ])
     const below = top ? null : `M0,${H} L${b.side!.belt.map(p => p.join(",")).join(" L")} L${W},${H}Z`

@@ -5,7 +5,7 @@ import dynamic from "next/dynamic"
 import type { View3D } from "./Car3D"
 import { CarBlueprint } from "./CarBlueprint"
 import { Consent, SmartForm } from "./SmartForm"
-import { bodyTypes, hasDrawing, models, panelLabel, panelsOf, sidePanels, type BodyId, type Mode, type View } from "@/data/calculator"
+import { autoPanels, bodyTypes, hasDrawing, models, panelLabel, panelsOf, sidePanels, type BodyId, type Mode, type View } from "@/data/calculator"
 import { DURATIONS, estimate, JOB_TYPES, jobAvailable, subtypesOf, type Graphics, type JobType, type PricingConfig } from "@/lib/pricing"
 import form from "@/app/form.module.css"
 import styles from "./Calculator.module.css"
@@ -70,7 +70,9 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
 
     const all = panelsOf(body)
     const show3d = MODELS_3D.has(body) && (!prefer2d || !hasDrawing(body))   // the big vehicles exist only in 3D
-    const selection = useMemo(() => Object.fromEntries(selected.map(id => [id, "colantare" as Mode])), [selected])
+    // a full wrap also covers the pillars and the sills: painted and priced on their own
+    const pieces = useMemo(() => (job === "integrală" && selected.length ? [...selected, ...autoPanels(body)] : selected), [job, selected, body])
+    const selection = useMemo(() => Object.fromEntries(pieces.map(id => [id, "colantare" as Mode])), [pieces])
     const partial = job === "integrală" && selected.length > 0 && selected.length < all.length
 
     const chooseBody = (id: BodyId) => {
@@ -101,7 +103,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
         return models.filter(m => (!q || m.name.toLowerCase().includes(q))).slice(0, 8)
     }, [query])
 
-    const result = estimate(pricing, body, selected, { years, job, subtype, graphics, withVat }, rate)
+    const result = estimate(pricing, body, pieces, { years, job, subtype, graphics, withVat }, rate)
     const jobName = partial ? "Colantare parțială cu folie premium" : JOB_TYPES.find(j => j.id === job)!.label
     const durationName = DURATIONS.find(d => d.years === years)!.label
     const graphicsName = GRAPHICS.find(g => g.id === graphics)!.label

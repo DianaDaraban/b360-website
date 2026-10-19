@@ -6,6 +6,9 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js"
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js"
+import { LineSegments2 } from "three/examples/jsm/lines/LineSegments2.js"
+import { LineSegmentsGeometry } from "three/examples/jsm/lines/LineSegmentsGeometry.js"
+import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js"
 import styles from "./Car3D.module.css"
 
 // The calculator's car in 3D (models from Freepik image-to-3D, split into the calculator's panels by
@@ -29,7 +32,32 @@ const GROUPS: Record<string, { color: number; roughness: number; metalness?: num
 // a node's name (three.js names a mesh after its glTF node, or after the node's parent when the
 // node holds several primitives)
 const meshName = (o: THREE.Object3D) => (o.name || o.parent?.name || "").replace(/_\d+$/, "")
-const PAINT = 0xe4e0db, PICKED = 0xf28a1e, HOVER = 0xf9cfa3     // picked: a warm orange (the UI is red already)
+const PAINT = 0xe4e0db, PICKED = 0x17a398, HOVER = 0xb7e2dc, EDGE = 0x0b5d57   // picked: teal, with a dark teal outline
+
+// the open edges of a panel (edges used by one triangle only): its outline along the seams
+function outlineOf(geo: THREE.BufferGeometry) {
+    const pos = geo.getAttribute("position")
+    const key = (i: number) => `${pos.getX(i).toFixed(4)},${pos.getY(i).toFixed(4)},${pos.getZ(i).toFixed(4)}`
+    const ids = new Map<string, number>()
+    const vid = (i: number) => { const k = key(i); let v = ids.get(k); if (v === undefined) { v = i; ids.set(k, i) } return v }
+    const index = geo.getIndex()
+    const n = index ? index.count : pos.count
+    const at = (i: number) => (index ? index.getX(i) : i)
+    const edges = new Map<string, [number, number, number]>()
+    for (let t = 0; t < n; t += 3) {
+        const tri = [at(t), at(t + 1), at(t + 2)]
+        for (let e = 0; e < 3; e++) {
+            const a = tri[e], b = tri[(e + 1) % 3], va = vid(a), vb = vid(b)
+            const k = va < vb ? `${va}_${vb}` : `${vb}_${va}`
+            const hit = edges.get(k)
+            if (hit) hit[2]++
+            else edges.set(k, [a, b, 1])
+        }
+    }
+    const pts: number[] = []
+    for (const [a, b, c] of edges.values()) if (c === 1) pts.push(pos.getX(a), pos.getY(a), pos.getZ(a), pos.getX(b), pos.getY(b), pos.getZ(b))
+    return new LineSegmentsGeometry().setPositions(pts)
+}
 
 type Props = {
     body: string
@@ -77,13 +105,18 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
         controls.addEventListener("start", () => { controls.autoRotate = false })
 
         const panels = new Map<string, THREE.Mesh>()
+        // one wide-line material for every outline (plain WebGL lines are 1 px)
+        const edgeMat = new LineMaterial({ color: EDGE, linewidth: 3 })
         let hovered: string | null = null
         let radius = 1, baseRadius = 1
         const center = new THREE.Vector3()
         const paint = () => {
             for (const [name, mesh] of panels) {
                 const m = mesh.material as THREE.MeshStandardMaterial
-                m.color.setHex(selectedRef.current.includes(name) ? PICKED : name === hovered ? HOVER : PAINT)
+                const on = selectedRef.current.includes(name)
+                m.color.setHex(on ? PICKED : name === hovered ? HOVER : PAINT)
+                const edge = mesh.getObjectByName("outline")
+                if (edge) edge.visible = on
             }
         }
         const place = ([az, el]: [number, number]) => {
@@ -103,6 +136,7 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
         loader.load(`/calculator/3d/${body}.glb`, gltf => {
             if (disposed) return
             const root = gltf.scene
+            const outlines: [THREE.Mesh, LineSegments2][] = []
             root.traverse(o => {
                 if (!(o as THREE.Mesh).isMesh) return
                 const mesh = o as THREE.Mesh
@@ -112,8 +146,20 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
                 mesh.material = g
                     ? new THREE.MeshStandardMaterial({ color: g.color, roughness: g.roughness, metalness: g.metalness ?? 0, transparent: g.opacity !== undefined, opacity: g.opacity ?? 1 })
                     : new THREE.MeshPhysicalMaterial({ color: PAINT, roughness: 0.38, metalness: 0.05, clearcoat: 1, clearcoatRoughness: 0.08 })   // glossy paint under clear coat
-                if (!g) panels.set(meshName(mesh), mesh)
+                if (!g) {
+                    panels.set(meshName(mesh), mesh)
+                    // the outline sits a hair in front of the panel, so the paint does not hide it
+                    const mat = mesh.material as THREE.Material
+                    mat.polygonOffset = true; mat.polygonOffsetFactor = 2; mat.polygonOffsetUnits = 6
+                    const edge = new LineSegments2(outlineOf(mesh.geometry), edgeMat)
+                    edge.name = "outline"
+                    edge.visible = false
+                    edge.raycast = () => {}
+                    outlines.push([mesh, edge])
+                }
             })
+            // added after the walk: an outline is a mesh too and must not be taken for a panel
+            for (const [mesh, edge] of outlines) mesh.add(edge)
             scene.add(root)
             const box = new THREE.Box3().setFromObject(root)
             box.getCenter(center)
@@ -132,7 +178,7 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
             scene.add(shadow)
             paint()
             setLoading(false)
-        }, undefined, () => { if (!disposed) { setFailed(true); setLoading(false) } })
+        }, undefined, err => { console.error("Car3D", err); if (!disposed) { setFailed(true); setLoading(false) } })
 
         // pointer: a press that does not move picks the panel under it
         const ray = new THREE.Raycaster(), ndc = new THREE.Vector2()
@@ -180,6 +226,7 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
         const resize = () => {
             const w = el.clientWidth, h = el.clientHeight
             renderer.setSize(w, h, false)
+            edgeMat.resolution.set(w, h)
             camera.aspect = w / h
             camera.updateProjectionMatrix()
             fit()

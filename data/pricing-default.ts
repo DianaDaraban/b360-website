@@ -6,9 +6,11 @@ const ml = (base: Record<string, number>, factor: number) => Object.fromEntries(
 const base = {
     "bara-fata": 1.0, "bara-spate": 1.0, capota: 1.5, plafon: 2.0, portbagaj: 1.2, "aripa-fata": 0.9, "usa-fata": 1.2,
     "usa-spate": 1.1, "aripa-spate": 1.1, oglinda: 0.3, "usa-culisanta": 1.6, "panou-lateral": 2.4,
+    // full wrap only: pillars 2 m of roll a side (curved, cut from a wide sheet); sills 2 m² a side (2 / 1.52 m)
+    stalp: 2, prag: 1.32, "usi-spate": 1.8, "panou-frontal": 1.2,
 }
-const { portbagaj: _p, "usa-spate": _u, "aripa-spate": _a, oglinda: _o, ...van } = base
-const { "usa-culisanta": _c, "panou-lateral": _l, ...car } = base
+const { portbagaj: _p, "usa-spate": _u, "aripa-spate": _a, oglinda: _o, stalp: _s, ...van } = base
+const { "usa-culisanta": _c, "panou-lateral": _l, "usi-spate": _r, "panou-frontal": _f, ...car } = base
 
 export const defaultPricing: PricingConfig = {
     materials: [

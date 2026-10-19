@@ -20,7 +20,9 @@ export const modes: { id: Mode; label: string; hint: string }[] = [
 export type PanelKind =
     | "bara-fata" | "bara-spate" | "capota" | "plafon" | "portbagaj"
     | "aripa-fata" | "usa-fata" | "usa-spate" | "aripa-spate" | "oglinda"
-    | "usa-culisanta" | "panou-lateral"
+    | "usa-culisanta" | "panou-lateral" | "usi-spate" | "panou-frontal"
+    // only with a full wrap: added on their own (see AUTO_FULL)
+    | "stalp" | "prag"
     // coach
     | "fata" | "spate" | "lateral-fata" | "lateral-mijloc" | "lateral-spate"
     // tractor unit with semi-trailer
@@ -40,6 +42,10 @@ export const panelNames: Record<PanelKind, string> = {
     oglinda: "Oglindă",
     "usa-culisanta": "Ușă culisantă",
     "panou-lateral": "Panou lateral",
+    "usi-spate": "Uși spate",
+    "panou-frontal": "Panou frontal",
+    stalp: "Stâlpi",
+    prag: "Prag",
     fata: "Față",
     spate: "Spate",
     "lateral-fata": "Lateral față",
@@ -65,14 +71,21 @@ export const panelKind = (id: string) => id.replace(/-(st|dr)$/, "") as PanelKin
 // ---------- photo geometry ----------
 // Each body type has two photos (public/calculator/<id>-side.webp and <id>-top.webp, 1600 x 640,
 // car facing left, transparent background) and a mask of its paintable body (<id>-<view>-paint.webp).
-// The panel outlines are traced automatically on the photos along the real panel gaps
-// (data/calculator-geometry.ts, generated); the right side is the left photo mirrored.
+// The panel outlines are drawn in Illustrator over the photos (public/calculator/<id>-<view>.svg,
+// read into data/calculator-geometry.ts by scripts/import_outlines.py); the right side is the left
+// photo mirrored. Outlines carry full panel ids ("usa-fata-st"; the top view has both sides).
 type Pt = [number, number]
 export type SideGeometry = {
-    panels: [PanelKind, string][]   // [panel, SVG path of its outline on the side photo]
+    panels: [string, string][]      // [panel id, SVG path of its outline on the left side photo]
     belt: Pt[]                      // window line, front to back: inscription covers what is below it
 }
-export type TopGeometry = { panels: [PanelKind, string][] }
+export type TopGeometry = { panels: [string, string][] }
+
+// pieces wrapped only with a full wrap, and then always: the pillars between the windows and the
+// sills under the doors. They are not picked; a full wrap adds them (painted and priced).
+export const AUTO_FULL: PanelKind[] = ["stalp", "prag"]
+export const isAuto = (id: string) => (AUTO_FULL as string[]).includes(panelKind(id))
+export const autoPanels = (id: BodyId) => drawnPanels(id).filter(isAuto)
 // the big vehicles have no photos: only the 3D model (side and top are null)
 export type BodyType = { id: BodyId; label: string; side: SideGeometry | null; top: TopGeometry | null }
 
@@ -104,13 +117,14 @@ export const bodyType = (id: BodyId) => bodyTypes.find(b => b.id === id)!
 export function panelsOf(id: BodyId): string[] {
     const only3d = PANELS_3D[id]
     if (only3d) return [...only3d.shared, ...only3d.sides.flatMap(k => [`${k}-st`, `${k}-dr`])]
+    return drawnPanels(id).filter(p => !isAuto(p))
+}
+// every panel drawn on the photos: the left side (and its mirror for the right) and the top view
+function drawnPanels(id: BodyId): string[] {
     const b = bodyType(id)
-    // the tailgate is barely visible from above on some bodies, but every car has one
-    const shared = ["bara-fata", "bara-spate", "capota", "plafon", ...(id === "utilitara" ? [] : ["portbagaj"])]
-    const sides = b.side!.panels.map(p => p[0]).filter(k => k !== "bara-fata" && k !== "bara-spate")
-    // every car has mirrors, also where the side photo hides them (the 3D model shows them)
-    if (id !== "utilitara" && !sides.includes("oglinda")) sides.push("oglinda")
-    return [...new Set(shared), ...sides.flatMap(k => [`${k}-st`, `${k}-dr`])]
+    const ids = [...b.side!.panels.map(p => p[0]), ...b.top!.panels.map(p => p[0])]
+    const both = ids.flatMap(p => p.endsWith("-st") ? [p, p.replace(/-st$/, "-dr")] : [p])
+    return [...new Set(both)]
 }
 export const sidePanels = (id: BodyId) => panelsOf(id).filter(p => /-(st|dr)$/.test(p))
 
