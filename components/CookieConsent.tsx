@@ -57,14 +57,21 @@ export function CookieConsent() {
 
     if (!open) return null
     return (
-        <div className={styles.banner} role="dialog" aria-label="Cookie-uri">
-            <p>
-                Folosim Google Analytics ca să vedem ce pagini sunt utile. Pornește doar dacă ești de acord.{" "}
-                <Link href="/politica-de-confidentialitate#cookie">Detalii</Link>
-            </p>
+        <div className={styles.banner} role="dialog" aria-labelledby="cookie-title">
+            <svg className={styles.icon} viewBox="0 0 48 48" aria-hidden="true">
+                <path d="M24 4a20 20 0 1 0 20 20 7 7 0 0 1-8-7 7 7 0 0 1-7-8 5 5 0 0 1-5-5z" />
+                <circle cx="16" cy="18" r="2.6" /><circle cx="27" cy="28" r="3" /><circle cx="15" cy="31" r="2.2" /><circle cx="34" cy="36" r="1.8" />
+            </svg>
+            <div className={styles.text}>
+                <h2 id="cookie-title">Cookie-uri doar cu acordul tău</h2>
+                <p>
+                    Folosim Google Analytics ca să vedem ce pagini sunt utile. Fără reclame, fără urmărire pe alte site-uri.{" "}
+                    <Link href="/politica-de-confidentialitate#cookie">Detalii</Link>
+                </p>
+            </div>
             <div className={styles.actions}>
-                <button type="button" className={styles.no} onClick={() => answer("nu")}>Refuz</button>
-                <button type="button" className={styles.yes} onClick={() => answer("da")}>Accept</button>
+                <button type="button" className={`btn-ghost on-light ${styles.no}`} onClick={() => answer("nu")}>Refuz</button>
+                <button type="button" className={`btn ${styles.yes}`} onClick={() => answer("da")}>Accept</button>
             </div>
         </div>
     )

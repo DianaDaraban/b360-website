@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { Calculator } from "@/components/Calculator"
-import { eurRate, getPricing } from "@/lib/pricing-store"
+import { getPricing } from "@/lib/pricing-store"
 import form from "../form.module.css"
 import styles from "./calculator.module.css"
 
@@ -15,7 +15,6 @@ export const revalidate = 3600
 
 export default async function CalculatorPage() {
     const pricing = await getPricing()
-    const { rate } = await eurRate(pricing)
     return (
         <section className={`${form.page} ${styles.page}`}>
             <div className={`container ${styles.inner}`}>
@@ -24,7 +23,7 @@ export default async function CalculatorPage() {
                     <h1 className={styles.title}>Cât costă colantarea mașinii tale?</h1>
                     <p className={styles.lead}>Șapte pași simpli: alegi mașina, apeși pe piese și răspunzi la trei întrebări. Noi alegem materialul potrivit și îți arătăm estimarea pe loc.</p>
                 </header>
-                <Calculator pricing={pricing} rate={rate} />
+                <Calculator pricing={pricing} />
             </div>
         </section>
     )

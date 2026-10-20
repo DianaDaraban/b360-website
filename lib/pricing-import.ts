@@ -60,7 +60,8 @@ export async function parseWorkbook(input: Buffer): Promise<{ config: PricingCon
     for (const r of table("Materiale", {
         code: ["cod"], name: ["denumire"], type: ["tip"], subtype: ["subtip"], years: ["durata"],
         width: ["latime"], eur: ["euro"], laminate: ["laminare"], printed: ["printeaza"], transfer: ["transfer"], description: ["descriere"],
-    }, ["transfer", "description"])) {
+        labour: ["marja", "coeficient"],
+    }, ["transfer", "description", "labour"])) {
         const where = `Materiale, rândul ${r.row}`
         const code = String(r.get("code") ?? "").trim()
         const rawType = plain(r.get("type")), rawSub = plain(r.get("subtype"))
@@ -73,6 +74,9 @@ export async function parseWorkbook(input: Buffer): Promise<{ config: PricingCon
         if (years !== null && years < 0) errors.push(`${where}: durata (ani) nu e un număr pozitiv.`)
         if (!width || width <= 0 || width > 5) errors.push(`${where}: lățimea rolei (m) lipsește sau nu e un număr între 0 și 5.`)
         if (eur === null || eur < 0) errors.push(`${where}: euro/mp lipsește sau nu e un număr.`)
+        // a coefficient of its own (empty: the general one from Setări)
+        const labour = num(r.get("labour"))
+        if (labour !== null && labour <= 0) errors.push(`${where}: marja (coeficientul) trebuie să fie un număr mai mare ca 0, sau goală.`)
         const laminate = String(r.get("laminate") ?? "").trim()
         const transfer = String(r.get("transfer") ?? "").trim()
         materials.push({
@@ -84,6 +88,7 @@ export async function parseWorkbook(input: Buffer): Promise<{ config: PricingCon
             laminate: laminate && plain(laminate) !== "null" ? laminate : null,
             transfer: transfer && plain(transfer) !== "null" ? transfer : null,
             printed: plain(r.get("printed")) === "da",
+            labour: labour && labour > 0 ? labour : null,
         })
     }
     if (!materials.some(m => m.type !== "laminare" && m.type !== "transfer")) errors.push("Foaia „Materiale” nu are niciun material.")

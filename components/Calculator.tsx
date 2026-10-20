@@ -40,7 +40,7 @@ const VIEWS_3D: { id: View3D; label: string }[] = [
     { id: "spate", label: "Spate" },
     { id: "sus", label: "Sus" },
 ]
-const lei = (n: number) => `${n.toLocaleString("ro-RO")} lei`
+const eur = (n: number) => `${n.toLocaleString("ro-RO")} €`
 const mp = (n: number) => `${n.toLocaleString("ro-RO", { maximumFractionDigits: 1 })} mp`
 
 const GRAPHICS: { id: Graphics; label: string; hint?: string }[] = [
@@ -52,7 +52,7 @@ const GRAPHICS: { id: Graphics; label: string; hint?: string }[] = [
 // Wrap cost calculator: the car on the left, the blueprint in the middle (three views, pieces picked
 // on the photo; their area gives the square metres), the questions on the right. Behind the questions
 // the material is chosen from the price workbook (lib/pricing.ts); the estimate is shown as a range.
-export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: number }) {
+export function Calculator({ pricing }: { pricing: PricingConfig }) {
     const [body, setBody] = useState<BodyId>("sedan")
     const [view, setView] = useState<View>("stanga")
     const [selected, setSelected] = useState<string[]>([])
@@ -100,7 +100,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
     const pick = (id: string) => setSelected(sel => (sel.includes(id) ? sel.filter(x => x !== id) : [...sel, id]))
     const turn = (dir: 1 | -1) => setView(v => views[(views.findIndex(x => x.id === v) + dir + views.length) % views.length].id)
 
-    const result = estimate(pricing, body, pieces, { years, job, subtype, graphics, withVat }, rate)
+    const result = estimate(pricing, body, pieces, { years, job, subtype, graphics, withVat })
     // the duration tick follows the film actually chosen: when the cheapest film that lasts long enough
     // lasts longer than the duration ticked (e.g. the only full-wrap film lasts 7 years), the tick moves
     // to the longest duration that film covers
@@ -124,7 +124,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
     const vatName = withVat ? "cu TVA" : "fără TVA"
     const subtypes = subtypesOf(pricing, job)
 
-    const totalText = result && selected.length ? `${lei(result.low)} – ${lei(result.high)}` : null
+    const totalText = result && selected.length ? `${eur(result.low)} – ${eur(result.high)}` : null
 
     return (
         <SmartForm kind="calculator" className={styles.calc} aria-label="Calculator cost colantare">
@@ -306,17 +306,17 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                             <p className={styles.empty}>{result || !selected.length ? "Alege piesele pe mașină (pasul 2): apoi vezi aici prețul pe fiecare piesă." : "Pentru lucrarea aleasă nu avem încă prețuri. Trimite-ne cererea și revenim cu o ofertă."}</p>
                         ) : (
                             <details className={styles.details}>
-                                <summary>Vezi prețul pe fiecare piesă ({result.lines.length}{result.graphicsLei > 0 ? " + grafică" : ""})</summary>
+                                <summary>Vezi prețul pe fiecare piesă ({result.lines.length}{result.graphicsTotal > 0 ? " + grafică" : ""})</summary>
                                 <ul>
                                     {result.lines.map(l => (
                                         <li key={l.id}>
                                             <i aria-hidden="true" />
                                             <span>{panelLabel(l.id)}<small>{mp(l.mp)}</small></span>
-                                            <strong>{lei(l.lei)}</strong>
+                                            <strong>{eur(l.total)}</strong>
                                             <button type="button" onClick={() => pick(l.id)} aria-label={`Scoate ${panelLabel(l.id)}`}>×</button>
                                         </li>
                                     ))}
-                                    {result.graphicsLei > 0 && <li className={styles.extra}><i aria-hidden="true" /><span>Grafică<small>{graphics === "ai" ? "reproducere după simulare AI" : "realizată de noi"}</small></span><strong>{lei(result.graphicsLei)}</strong></li>}
+                                    {result.graphicsTotal > 0 && <li className={styles.extra}><i aria-hidden="true" /><span>Grafică<small>{graphics === "ai" ? "reproducere după simulare AI" : "realizată de noi"}</small></span><strong>{eur(result.graphicsTotal)}</strong></li>}
                                 </ul>
                             </details>
                         )}
@@ -330,7 +330,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
             <input type="hidden" name="lucrare" value={jobName + (subtype && subtypes.length > 1 ? ` (${subtype})` : "")} />
             <input type="hidden" name="material" value={materialCodes} />
             <input type="hidden" name="grafica" value={graphicsName} />
-            <input type="hidden" name="piese" value={result ? result.lines.map(l => `${panelLabel(l.id)}: ${mp(l.mp)} (${lei(l.lei)})`).join("\n") : selected.map(panelLabel).join("\n")} />
+            <input type="hidden" name="piese" value={result ? result.lines.map(l => `${panelLabel(l.id)}: ${mp(l.mp)} (${eur(l.total)})`).join("\n") : selected.map(panelLabel).join("\n")} />
             <input type="hidden" name="estimare" value={totalText ? `${totalText} ${vatName}` : ""} />
 
             {/* ---------- 7: send ---------- */}

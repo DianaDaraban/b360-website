@@ -37,7 +37,7 @@ const oferim = [
 ] as const
 
 const deCe = [
-    { title: "Aproape 15 ani", text: "de experiență în domeniu" },
+    { title: "De 15 ani", text: "de experiență în domeniu" },
     { title: "Clienți fideli", text: "branduri locale și naționale, de ani buni" },
     { title: "Personalizat", text: "o soluție gândită pentru fiecare client" },
     { title: "Durabil", text: "montaj profesionist, rezultate care rezistă" },
@@ -68,7 +68,7 @@ export default function DesprePage() {
                 <div className={`container ${styles.story}`}>
                     <div className={styles.storyText}>
                         <p className="eyebrow">Povestea pe scurt</p>
-                        <h2 className={styles.h2}>Aproape <span className="red">15 ani</span> alături de clienți care ne-au rămas fideli</h2>
+                        <h2 className={styles.h2}>De <span className="red">15 ani</span> alături de clienți care ne-au rămas fideli</h2>
                         <p>Am pornit în 2012 cu colantări auto și am crescut odată cu clienții noștri. Faptul că revin an de an e cea mai bună dovadă de seriozitate.</p>
                         <p>Echipa noastră acoperă <strong>design grafic, producție și montaj</strong>, așa că tot proiectul rămâne într-o singură mână.</p>
                     </div>

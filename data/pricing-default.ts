@@ -14,14 +14,14 @@ const { "usa-culisanta": _c, "panou-lateral": _l, "usi-spate": _r, "panou-fronta
 
 export const defaultPricing: PricingConfig = {
     materials: [
-        { code: "3651", name: "print standard", description: "", type: "print", subtype: "", years: 5, width: 1.52, eur: 16, laminate: "210", printed: true, transfer: null },
-        { code: "3551", name: "print premium", description: "", type: "print", subtype: "", years: 5, width: 1.52, eur: 23, laminate: "215", printed: true, transfer: null },
-        { code: "3751", name: "print premium cast (integrală)", description: "", type: "integrală", subtype: "", years: 7, width: 1.52, eur: 27, laminate: "215", printed: true, transfer: null },
-        { code: "651", name: "folie decupată", description: "", type: "decupată", subtype: "", years: 3, width: 1.26, eur: 12, laminate: null, printed: false, transfer: "95" },
-        { code: "751", name: "folie decupată", description: "", type: "decupată", subtype: "", years: 5, width: 1.26, eur: 16, laminate: null, printed: false, transfer: "95" },
-        { code: "95", name: "folie transfer", description: "", type: "transfer", subtype: "", years: 7, width: 1.22, eur: 3, laminate: null, printed: false, transfer: null },
-        { code: "210", name: "laminare standard", description: "", type: "laminare", subtype: "", years: 5, width: 1.52, eur: 6, laminate: null, printed: false, transfer: null },
-        { code: "215", name: "laminare premium", description: "", type: "laminare", subtype: "", years: 7, width: 1.52, eur: 8, laminate: null, printed: false, transfer: null },
+        { code: "3651", name: "print standard", description: "", type: "print", subtype: "", years: 5, width: 1.52, eur: 16, laminate: "210", printed: true, transfer: null, labour: null },
+        { code: "3551", name: "print premium", description: "", type: "print", subtype: "", years: 5, width: 1.52, eur: 23, laminate: "215", printed: true, transfer: null, labour: null },
+        { code: "3751", name: "print premium cast (integrală)", description: "", type: "integrală", subtype: "", years: 7, width: 1.52, eur: 27, laminate: "215", printed: true, transfer: null, labour: 2 },
+        { code: "651", name: "folie decupată", description: "", type: "decupată", subtype: "", years: 3, width: 1.26, eur: 12, laminate: null, printed: false, transfer: "95", labour: null },
+        { code: "751", name: "folie decupată", description: "", type: "decupată", subtype: "", years: 5, width: 1.26, eur: 16, laminate: null, printed: false, transfer: "95", labour: null },
+        { code: "95", name: "folie transfer", description: "", type: "transfer", subtype: "", years: 7, width: 1.22, eur: 3, laminate: null, printed: false, transfer: null, labour: null },
+        { code: "210", name: "laminare standard", description: "", type: "laminare", subtype: "", years: 5, width: 1.52, eur: 6, laminate: null, printed: false, transfer: null, labour: null },
+        { code: "215", name: "laminare premium", description: "", type: "laminare", subtype: "", years: 7, width: 1.52, eur: 8, laminate: null, printed: false, transfer: null, labour: null },
     ],
     pieces: {
         hatchback: ml(car, 1), sedan: ml(car, 1.05), break: ml(car, 1.1), suv: ml(car, 1.15), utilitara: ml(van, 1.35),

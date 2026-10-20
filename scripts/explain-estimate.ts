@@ -25,12 +25,12 @@ parseWorkbook(readFileSync(file)).then(({ config: cfg, errors }) => {
         mp += ml * m.width
         console.log(`     ${panelLabel(id).padEnd(24)} ${ml} ml × ${m.width} = ${(ml * m.width).toFixed(2)} mp`)
     }
-    const labour = labourFor(cfg, mp)
+    const labour = m.labour ?? labourFor(cfg, mp)
     const eur = mp * perMp * labour
     const vat = 1 + cfg.settings.vat / 100
     const r = estimate(cfg, body, pieces, { years, job: job as JobType, subtype: "", graphics: "am", withVat: true }, 5)!
     console.log(`   total ${mp.toFixed(2)} mp`)
-    console.log(`4. Coeficient manoperă: ${labour.toFixed(2)}`)
+    console.log(`4. Coeficient manoperă: ${labour.toFixed(2)}${m.labour ? " (din coloana Marja a materialului)" : ""}`)
     console.log(`5. ${mp.toFixed(2)} mp × ${perMp.toFixed(2)} €/mp × ${labour.toFixed(2)} = ${eur.toFixed(2)} € (fără grafică)`)
     console.log(`6. × curs 5 lei × TVA ${vat} = ${(eur * 5 * vat).toFixed(0)} lei → afișat ${r.low}–${r.high} lei (±${cfg.settings.margin}%)`)
 })

@@ -30,6 +30,7 @@ export type Material = {
     laminate: string | null    // code of the laminate that goes over it, if any
     transfer: string | null    // code of the transfer film used to apply it (thrown away after; priced, never shown)
     printed: boolean           // ink is added for printed films
+    labour?: number | null     // its own labour coefficient (a full wrap: 2); empty → the general one from Setări
 }
 export type PricingConfig = {
     materials: Material[]
@@ -80,30 +81,31 @@ export function graphicsPrice(cfg: PricingConfig, pieces: number, graphics: Grap
 }
 
 // pieceIds look like "capota" or "usa-fata-st"; the area comes from the piece kind (both sides alike)
-export function estimate(cfg: PricingConfig, body: string, pieceIds: string[], choice: Choice, rate: number) {
+// prices are in euro; `rate` turns them into another currency (lei, for the scripts)
+export function estimate(cfg: PricingConfig, body: string, pieceIds: string[], choice: Choice, rate = 1) {
     const picked = pickMaterial(cfg, choice.job, choice.years, choice.subtype)
     if (!picked) return null
     const { material, laminate, transfer } = picked
     const perMp = material.eur + (laminate?.eur ?? 0) + (transfer?.eur ?? 0) + (material.printed ? cfg.settings.ink : 0)
     const areas = pieceIds.map(id => ({ id, mp: (cfg.pieces[body]?.[id.replace(/-(st|dr)$/, "")] ?? 0) * material.width }))
     const mp = areas.reduce((n, l) => n + l.mp, 0)
-    const labour = labourFor(cfg, mp)
+    const labour = material.labour ?? labourFor(cfg, mp)
     const lines = areas.map(l => ({ ...l, eur: l.mp * perMp * labour }))
     const graphicsEur = graphicsPrice(cfg, pieceIds.length, choice.graphics)
     const eur = lines.reduce((n, l) => n + l.eur, 0) + graphicsEur
     const vat = choice.withVat ? 1 + cfg.settings.vat / 100 : 1
-    const lei = eur * rate * vat
-    const round = (n: number) => Math.round(n / 10) * 10
+    const total = eur * rate * vat
+    const round = (n: number) => Math.round(n / 5) * 5
     const m = cfg.settings.margin / 100
     return {
         ...picked,
         perMp,
         labour,
         mp,
-        graphicsLei: round(graphicsEur * rate * vat),
-        lines: lines.map(l => ({ ...l, lei: round(l.eur * rate * vat) })),
-        lei: round(lei),
-        low: round(lei * (1 - m)),
-        high: round(lei * (1 + m)),
+        graphicsTotal: round(graphicsEur * rate * vat),
+        lines: lines.map(l => ({ ...l, total: round(l.eur * rate * vat) })),
+        total: round(total),
+        low: round(total * (1 - m)),
+        high: round(total * (1 + m)),
     }
 }
