@@ -290,8 +290,10 @@ a:hover > .peel, a:focus-visible > .peel, button:hover > .peel {
     padding: 0 26px;
     border: 2px solid currentColor;
     border-radius: 999px;
+    background: transparent;      /* a <button> would otherwise get the browser's light fill */
     color: inherit;
     font: 700 var(--btn-font)/1.2 var(--font-head);
+    cursor: pointer;
     text-decoration: none;
     transition: background 0.3s, color 0.3s, border-color 0.3s;
 }
