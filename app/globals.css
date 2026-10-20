@@ -152,7 +152,8 @@ html:has(dialog[open]) { overflow: hidden; }
     border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
     background: radial-gradient(circle at 35% 35%, var(--col) 0, color-mix(in srgb, var(--col) 50%, transparent) 40%, transparent 70%);
     filter: blur(50px);
-    animation: blobFloat var(--d1) ease-in-out infinite, blobMorph var(--d2) ease-in-out infinite alternate;
+    /* only transform is animated: it runs on the GPU; changing the shape would repaint the blur every frame */
+    animation: blobFloat var(--d1) ease-in-out infinite;
     will-change: transform;
 }
 .blobs-page span { opacity: 0.32; }

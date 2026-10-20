@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import dynamic from "next/dynamic"
 import type { View3D } from "./Car3D"
 import { CarBlueprint } from "./CarBlueprint"
@@ -66,6 +66,16 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
     const [info, setInfo] = useState(false)
     const [withVat, setWithVat] = useState(true)
     const [prefer2d, setPrefer2d] = useState(false)
+    // the 3D viewer (three.js and the model) starts once the page has loaded and the browser is idle,
+    // so it never holds up the first paint
+    const [start3d, setStart3d] = useState(false)
+    useEffect(() => {
+        const go = () => setStart3d(true)
+        const idle = () => (typeof window.requestIdleCallback === "function" ? window.requestIdleCallback(go, { timeout: 2500 }) : setTimeout(go, 800))
+        if (document.readyState === "complete") idle()
+        else window.addEventListener("load", idle, { once: true })
+        return () => window.removeEventListener("load", idle)
+    }, [])
     const [view3d, setView3d] = useState<{ name: View3D; n: number } | null>(null)
 
     const all = panelsOf(body)
@@ -160,7 +170,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
             <Step n={2} compact title="Ce piese colantăm?" hint={show3d ? "Rotește mașina trăgând de ea (sau cu degetul) și apasă pe piesele pe care vrei să le colantăm." : "Apasă pe piese, direct pe mașină. Întoarce mașina cu săgețile ca să vezi și plafonul sau cealaltă parte."}>
                 {show3d ? (
                     <div className={styles.canvas3d}>
-                        <Car3D body={body} selected={selected} view={view3d} onPick={pick} onHover={setHovered} />
+                        {start3d ? <Car3D body={body} selected={selected} view={view3d} onPick={pick} onHover={setHovered} /> : <p className={styles.loading3d}>Se încarcă mașina 3D…</p>}
                         <p className={styles.hoverName} aria-live="polite">
                             {hovered ? <>{panelLabel(hovered)} · <em>{selected.includes(hovered) ? "apasă ca s-o scoți" : "apasă ca s-o adaugi"}</em></> : selected.length ? `${selected.length} ${selected.length === 1 ? "piesă aleasă" : "piese alese"}` : "Trage ca s-o rotești · apasă pe o piesă ca s-o alegi"}
                         </p>

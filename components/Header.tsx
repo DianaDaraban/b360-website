@@ -1,5 +1,6 @@
 "use client"
 
+import Image from "next/image"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useRef, useState } from "react"
@@ -61,7 +62,7 @@ export function Header() {
                                 {servicii.map(s => (
                                     <li key={s.slug}>
                                         <Link href={`/servicii/${s.slug}`} onClick={closeDrop} className={styles.dropItem}>
-                                            <span className={`${styles.dropPhoto} peel`}><img src={s.image} alt="" width={56} height={56} /></span>
+                                            <span className={`${styles.dropPhoto} peel`}><Image src={s.image} alt="" width={56} height={56} sizes="56px" /></span>
                                             <span>
                                                 <strong>{s.short}</strong>
                                                 <small>{s.teaser}</small>
@@ -124,7 +125,7 @@ export function Header() {
                                         {servicii.map(s => (
                                             <li key={s.slug}>
                                                 <Link href={`/servicii/${s.slug}`} onClick={closeMenu} className={styles.subItem}>
-                                                    <span className={`${styles.subPhoto} peel`}><img src={s.image} alt="" width={44} height={44} /></span>
+                                                    <span className={`${styles.subPhoto} peel`}><Image src={s.image} alt="" width={44} height={44} sizes="44px" /></span>
                                                     <span>{s.short}</span>
                                                 </Link>
                                             </li>
