@@ -230,7 +230,7 @@
 
 /* ---------- 7: send ---------- */
 .contact { display: grid; gap: 12px; }
-.sendRow { display: grid; gap: 14px; justify-items: end; }
+.sendRow { display: grid; gap: 14px; justify-items: center; }
 .sendRow :global(.consent) { justify-self: start; }
 
 /* the running total, stuck to the bottom of the screen while scrolling through the steps */
@@ -273,7 +273,7 @@
 }
 @media (min-width: 640px) {
     .contact { grid-template-columns: repeat(3, 1fr); }
-    .sendRow { grid-template-columns: 1fr auto; align-items: center; }
+    /* the send button stays centred under the consent line */
 }
 @media (min-width: 900px) {
     .four { grid-template-columns: repeat(4, 1fr); }
@@ -284,7 +284,7 @@
     /* the estimate and the request side by side */
     .finish { grid-template-columns: 1fr 1fr; align-items: start; }
     .finish .contact { grid-template-columns: 1fr; }
-    .finish .sendRow { grid-template-columns: 1fr; justify-items: start; }
+    .finish .sendRow { grid-template-columns: 1fr; justify-items: center; }
 }
 @media (min-width: 1100px) {
     /* body type cards and the model search on one row */

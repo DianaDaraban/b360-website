@@ -442,3 +442,6 @@ a:hover > .arrow-sticker svg, a:focus-visible > .arrow-sticker svg { translate: 
     .reveal-word > span { opacity: 1; animation: none; }
     .reveal-word::after, .hero-sheen::after { animation: none; display: none; }
 }
+
+/* placeholders: a light weight, so they read as hints, not as filled-in text */
+::placeholder { font-weight: 300; }
