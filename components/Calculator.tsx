@@ -5,7 +5,7 @@ import dynamic from "next/dynamic"
 import type { View3D } from "./Car3D"
 import { CarBlueprint } from "./CarBlueprint"
 import { Consent, SmartForm } from "./SmartForm"
-import { autoPanels, bodyTypes, hasDrawing, models, panelLabel, panelsOf, sidePanels, type BodyId, type Mode, type View } from "@/data/calculator"
+import { autoPanels, bodyTypes, hasDrawing, panelLabel, panelsOf, sidePanels, type BodyId, type Mode, type View } from "@/data/calculator"
 import { DURATIONS, estimate, JOB_TYPES, jobAvailable, subtypesOf, type Graphics, type JobType, type PricingConfig } from "@/lib/pricing"
 import form from "@/app/form.module.css"
 import styles from "./Calculator.module.css"
@@ -53,9 +53,6 @@ const GRAPHICS: { id: Graphics; label: string; hint?: string }[] = [
 // the material is chosen from the price workbook (lib/pricing.ts); the estimate is shown as a range.
 export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: number }) {
     const [body, setBody] = useState<BodyId>("sedan")
-    const [model, setModel] = useState("")
-    const [query, setQuery] = useState("")
-    const [suggest, setSuggest] = useState(false)
     const [view, setView] = useState<View>("stanga")
     const [selected, setSelected] = useState<string[]>([])
     const [hovered, setHovered] = useState<string | null>(null)
@@ -65,7 +62,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
     const [graphics, setGraphics] = useState<Graphics>("noi")
     const [info, setInfo] = useState(false)
     const [withVat, setWithVat] = useState(true)
-    const [prefer2d, setPrefer2d] = useState(false)
+    const [prefer2d, setPrefer2d] = useState(true)      // the drawing first; the 3D car is one tap away
     // the 3D viewer (three.js and the model) starts once the page has loaded and the browser is idle,
     // so it never holds up the first paint
     const [start3d, setStart3d] = useState(false)
@@ -92,13 +89,6 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
         const allowed = panelsOf(id)
         setSelected(sel => (job === "integrală" && sel.length === all.length ? allowed : sel.filter(k => allowed.includes(k))))
     }
-    const chooseModel = (name: string) => {
-        const m = models.find(x => x.name === name)
-        setModel(name)
-        setQuery(name)
-        setSuggest(false)
-        if (m) chooseBody(m.body)
-    }
     const chooseJob = (id: JobType) => {
         setJob(id)
         setSubtype(subtypesOf(pricing, id)[0] ?? "")
@@ -108,16 +98,15 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
     const pick = (id: string) => setSelected(sel => (sel.includes(id) ? sel.filter(x => x !== id) : [...sel, id]))
     const turn = (dir: 1 | -1) => setView(v => views[(views.findIndex(x => x.id === v) + dir + views.length) % views.length].id)
 
-    const suggestions = useMemo(() => {
-        const q = query.trim().toLowerCase()
-        return models.filter(m => (!q || m.name.toLowerCase().includes(q))).slice(0, 8)
-    }, [query])
-
     const result = estimate(pricing, body, pieces, { years, job, subtype, graphics, withVat }, rate)
     const jobName = partial ? "Colantare parțială cu folie premium" : JOB_TYPES.find(j => j.id === job)!.label
     const durationName = DURATIONS.find(d => d.years === years)!.label
     const graphicsName = GRAPHICS.find(g => g.id === graphics)!.label
-    const materialName = result ? `${result.material.code} ${result.material.name}${result.laminate ? ` + laminare ${result.laminate.code}` : ""}` : ""
+    // what the client reads: the material's description (brand and range), never the codes; the codes
+    // go to B360 in the request
+    const say = (m: { name: string; description?: string }) => m.description || m.name
+    const materialName = result ? `${say(result.material)}${result.laminate ? ` + ${say(result.laminate)}` : ""}` : ""
+    const materialCodes = result ? `${result.material.code} ${result.material.name}${result.laminate ? ` + laminare ${result.laminate.code}` : ""}${result.transfer ? ` + transfer ${result.transfer.code}` : ""}` : ""
     const vatName = withVat ? "cu TVA" : "fără TVA"
     const subtypes = subtypesOf(pricing, job)
 
@@ -126,42 +115,16 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
     return (
         <SmartForm kind="calculator" className={styles.calc} aria-label="Calculator cost colantare">
             {/* ---------- 1: the car ---------- */}
-            <Step n={1} compact title="Ce mașină ai?" hint="Alege tipul de caroserie sau caută modelul. Nu e în listă? Alege doar tipul: calculul e același pentru mașini similare.">
+            <Step n={1} compact title="Ce mașină ai?" hint="Alege tipul de caroserie care seamănă cel mai bine cu mașina ta: calculul e același pentru mașini similare.">
                 <div className={styles.carRow}>
                 <div className={styles.bodyCards} role="radiogroup" aria-label="Tip caroserie">
                     {bodyTypes.map(b => (
-                        <button type="button" role="radio" key={b.id} className={styles.bodyCard} aria-checked={body === b.id} onClick={() => { chooseBody(b.id); setModel(""); setQuery("") }}>
+                        <button type="button" role="radio" key={b.id} className={styles.bodyCard} aria-checked={body === b.id} onClick={() => chooseBody(b.id)}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src={`/calculator/${b.id}-side.webp`} alt="" width={320} height={128} loading="lazy" />
                             <span>{b.label}</span>
                         </button>
                     ))}
-                </div>
-                <div className={styles.modelRow}>
-                    <label className={styles.label} htmlFor="calc-model">sau caută modelul</label>
-                    <div className={styles.combo}>
-                        <input
-                            id="calc-model"
-                            value={query}
-                            placeholder="Caută modelul, ex. Dacia Duster"
-                            autoComplete="off"
-                            onChange={e => { setQuery(e.target.value); setModel(""); setSuggest(true) }}
-                            onFocus={() => setSuggest(true)}
-                            onBlur={() => setTimeout(() => setSuggest(false), 150)}
-                            role="combobox"
-                            aria-expanded={suggest && suggestions.length > 0}
-                            aria-controls="calc-models"
-                        />
-                        {suggest && suggestions.length > 0 && (
-                            <ul id="calc-models" role="listbox" className={styles.suggest}>
-                                {suggestions.map(m => (
-                                    <li key={m.name} role="option" aria-selected={m.name === model} onMouseDown={e => { e.preventDefault(); chooseModel(m.name) }}>
-                                        {m.name}<small>{bodyTypes.find(b => b.id === m.body)!.label}</small>
-                                    </li>
-                                ))}
-                            </ul>
-                        )}
-                    </div>
                 </div>
                 </div>
             </Step>
@@ -320,7 +283,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                             <label><input type="radio" name="calc-vat" checked={withVat} onChange={() => setWithVat(true)} /> cu TVA</label>
                             <label><input type="radio" name="calc-vat" checked={!withVat} onChange={() => setWithVat(false)} /> fără TVA</label>
                         </div>
-                        {result && selected.length > 0 && <small>{model || bodyTypes.find(b => b.id === body)!.label} · {mp(result.mp)} · {materialName}</small>}
+                        {result && selected.length > 0 && <small>{bodyTypes.find(b => b.id === body)!.label} · {mp(result.mp)} · {materialName}</small>}
                         {result?.shortfall && <small className={styles.notice}>Pentru {durationName.toLowerCase()} recomandăm altă lucrare: folia aleasă ține până la {result.shortfall} ani.</small>}
                         <small className={styles.disclaimer}>Prețul final îl confirmăm după ce vedem mașina și grafica.</small>
                     </div>
@@ -349,10 +312,9 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
 
             {/* the configuration travels with the request */}
             <input type="hidden" name="caroserie" value={bodyTypes.find(b => b.id === body)!.label} />
-            <input type="hidden" name="model" value={model || query} />
             <input type="hidden" name="durata" value={durationName} />
             <input type="hidden" name="lucrare" value={jobName + (subtype && subtypes.length > 1 ? ` (${subtype})` : "")} />
-            <input type="hidden" name="material" value={materialName} />
+            <input type="hidden" name="material" value={materialCodes} />
             <input type="hidden" name="grafica" value={graphicsName} />
             <input type="hidden" name="piese" value={result ? result.lines.map(l => `${panelLabel(l.id)}: ${mp(l.mp)} (${lei(l.lei)})`).join("\n") : selected.map(panelLabel).join("\n")} />
             <input type="hidden" name="estimare" value={totalText ? `${totalText} ${vatName}` : ""} />
@@ -366,6 +328,10 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                         <span className={form.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" pattern="[0-9 ]{9,12}" required /></span>
                     </label>
                     <label className={form.field}>Email *<input name="email" type="email" autoComplete="email" required /></label>
+                    <label className={`${form.field} ${styles.details}`}>
+                        Detalii suplimentare <small>(opțional)</small>
+                        <textarea name="mesaj" rows={3} maxLength={2000} placeholder="ex. modelul exact al mașinii, câte mașini sunt, termenul dorit, ce vrei să apară pe grafică" />
+                    </label>
                 </div>
                 <div className={styles.sendRow}>
                     <Consent />

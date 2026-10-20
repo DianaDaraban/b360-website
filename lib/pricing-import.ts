@@ -13,7 +13,7 @@ const BODIES: BodyId[] = ["hatchback", "sedan", "break", "suv", "utilitara", "au
 const OPTIONAL: BodyId[] = ["autocar", "camion"]
 const PIECES = Object.keys(panelNames)
 const TYPES: Record<string, Material["type"]> = {
-    decupata: "decupată", print: "print", integrala: "integrală", speciala: "specială", ppf: "PPF", laminare: "laminare",
+    decupata: "decupată", print: "print", integrala: "integrală", speciala: "specială", ppf: "PPF", laminare: "laminare", transfer: "transfer",
 }
 
 const plain = (v: unknown) => String(v ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim()
@@ -39,14 +39,15 @@ export async function parseWorkbook(input: Buffer): Promise<{ config: PricingCon
     }
     const find = (name: string) => sheets.find(s => plain(s.sheet) === plain(name))
     // the rows of a sheet as objects keyed by the column that matches each wanted heading
-    const table = (name: string, columns: Record<string, string[]>) => {
+    // columns named in `optional` may be missing (added to the template later)
+    const table = (name: string, columns: Record<string, string[]>, optional: string[] = []) => {
         const s = find(name)
         if (!s) { errors.push(`Lipsește foaia „${name}”.`); return [] }
         const head = (s.data[0] ?? []).map(plain)
         const at: Record<string, number> = {}
         for (const [key, words] of Object.entries(columns)) {
             const i = head.findIndex(h => words.some(w => h.includes(w)))
-            if (i < 0) errors.push(`Foaia „${name}”: lipsește coloana „${words[0]}”.`)
+            if (i < 0 && !optional.includes(key)) errors.push(`Foaia „${name}”: lipsește coloana „${words[0]}”.`)
             at[key] = i
         }
         return s.data.slice(1)
@@ -58,31 +59,39 @@ export async function parseWorkbook(input: Buffer): Promise<{ config: PricingCon
     const materials: Material[] = []
     for (const r of table("Materiale", {
         code: ["cod"], name: ["denumire"], type: ["tip"], subtype: ["subtip"], years: ["durata"],
-        width: ["latime"], eur: ["euro"], laminate: ["laminare"], printed: ["printeaza"],
-    })) {
+        width: ["latime"], eur: ["euro"], laminate: ["laminare"], printed: ["printeaza"], transfer: ["transfer"], description: ["descriere"],
+    }, ["transfer", "description"])) {
         const where = `Materiale, rândul ${r.row}`
         const code = String(r.get("code") ?? "").trim()
-        const type = TYPES[plain(r.get("type"))]
+        const rawType = plain(r.get("type")), rawSub = plain(r.get("subtype"))
+        // spelling slips ("folie tranfer") and PPF filed under integrală are read the way they are meant
+        let type = TYPES[rawType] ?? (/tran?s?fer/.test(rawType) ? "transfer" : undefined)
+        if (rawSub === "ppf") type = "PPF"
         const years = num(r.get("years")), width = num(r.get("width")), eur = num(r.get("eur"))
         if (!code) { errors.push(`${where}: lipsește codul produsului.`); continue }
-        if (!type) { errors.push(`${where}: „tip lucrare” trebuie să fie decupată, print, integrală, specială, PPF sau laminare.`); continue }
-        if (!years || years <= 0) errors.push(`${where}: durata (ani) lipsește sau nu e un număr.`)
+        if (!type) { errors.push(`${where}: „tip lucrare” trebuie să fie decupată, print, integrală, specială, PPF, laminare sau transfer.`); continue }
+        if (years !== null && years < 0) errors.push(`${where}: durata (ani) nu e un număr pozitiv.`)
         if (!width || width <= 0 || width > 5) errors.push(`${where}: lățimea rolei (m) lipsește sau nu e un număr între 0 și 5.`)
         if (eur === null || eur < 0) errors.push(`${where}: euro/mp lipsește sau nu e un număr.`)
         const laminate = String(r.get("laminate") ?? "").trim()
+        const transfer = String(r.get("transfer") ?? "").trim()
         materials.push({
             code, type,
             name: String(r.get("name") ?? "").trim() || code,
-            subtype: String(r.get("subtype") ?? "").trim(),
+            subtype: rawSub === "ppf" ? "" : String(r.get("subtype") ?? "").trim(),
+            description: String(r.get("description") ?? "").trim(),
             years: years ?? 0, width: width ?? 0, eur: eur ?? 0,
             laminate: laminate && plain(laminate) !== "null" ? laminate : null,
+            transfer: transfer && plain(transfer) !== "null" ? transfer : null,
             printed: plain(r.get("printed")) === "da",
         })
     }
-    if (!materials.some(m => m.type !== "laminare")) errors.push("Foaia „Materiale” nu are niciun material.")
+    if (!materials.some(m => m.type !== "laminare" && m.type !== "transfer")) errors.push("Foaia „Materiale” nu are niciun material.")
     for (const m of materials) {
         if (m.laminate && !materials.some(l => l.code === m.laminate && l.type === "laminare"))
             errors.push(`Materiale: ${m.code} se laminează cu ${m.laminate}, dar ${m.laminate} nu există ca „laminare”.`)
+        if (m.transfer && !materials.some(l => l.code === m.transfer && l.type === "transfer"))
+            errors.push(`Materiale: ${m.code} se montează cu folia de transfer ${m.transfer}, dar ${m.transfer} nu există ca „transfer”.`)
     }
     const dup = materials.map(m => m.code).filter((c, i, a) => a.indexOf(c) !== i)
     if (dup.length) errors.push(`Materiale: codul ${[...new Set(dup)].join(", ")} apare de mai multe ori.`)
@@ -114,7 +123,9 @@ export async function parseWorkbook(input: Buffer): Promise<{ config: PricingCon
 
     // ---------- Setări ----------
     const settings: Partial<PricingConfig["settings"]> = {}
-    const keys: [keyof PricingConfig["settings"], string][] = [["labour", "manoper"], ["ink", "cerneal"], ["eurRate", "curs"], ["vat", "tva"], ["margin", "marj"], ["aiSurcharge", "reproducere"]]
+    // the order matters: the more specific labels first ("manopera lucrare mare" before "manopera")
+    const keys: [keyof PricingConfig["settings"], string][] = [["labourLarge", "manopera lucrare mare"], ["smallMp", "mp lucrare mica"], ["largeMp", "mp lucrare mare"], ["labour", "manoper"], ["ink", "cerneal"], ["eurRate", "curs"], ["vat", "tva"], ["margin", "marj"], ["aiSurcharge", "reproducere"]]
+    const optional = new Set(["labourLarge", "smallMp", "largeMp"])
     for (const r of table("Setări", { key: ["setare"], value: ["valoare"] })) {
         const label = plain(r.get("key"))
         const key = keys.find(([, w]) => label.includes(w))?.[0]
@@ -124,7 +135,9 @@ export async function parseWorkbook(input: Buffer): Promise<{ config: PricingCon
         if (v === null || v < 0) errors.push(`Setări, rândul ${r.row}: valoarea pentru „${r.get("key")}” nu e un număr.`)
         else settings[key] = v as never
     }
-    for (const [key, w] of keys) if (settings[key] === undefined) errors.push(`Foaia „Setări”: lipsește setarea „${w}…”.`)
+    // the sliding labour coefficient: without its own rows, a large job (a coach) is billed at 3
+    if (settings.labourLarge === undefined) settings.labourLarge = defaultPricing.settings.labourLarge
+    for (const [key, w] of keys) if (settings[key] === undefined && !optional.has(key)) errors.push(`Foaia „Setări”: lipsește setarea „${w}…”.`)
 
     if (errors.length) return { config: null, errors }
     return { config: { materials, pieces, graphics, settings: settings as PricingConfig["settings"] }, errors }
@@ -147,7 +160,7 @@ export function diffPricing(before: PricingConfig, after: PricingConfig): string
     for (const [body, list] of Object.entries(after.pieces)) for (const [k, ml] of Object.entries(list)) if (before.pieces[body]?.[k] !== ml) pieceChanges++
     if (pieceChanges) out.push(`Piese: ${pieceChanges} ${pieceChanges === 1 ? "valoare de metri liniari schimbată" : "valori de metri liniari schimbate"}`)
     if (JSON.stringify(before.graphics) !== JSON.stringify(after.graphics)) out.push(`Grafică: ${after.graphics.map(g => `${g.from}–${g.to} piese ${g.eur} €`).join(", ")}`)
-    const names: Record<string, string> = { labour: "coeficient manoperă", ink: "cerneală", eurRate: "curs EUR", vat: "TVA", margin: "marjă interval", aiSurcharge: "majorare grafică AI" }
+    const names: Record<string, string> = { labourLarge: "coeficient manoperă lucrare mare", smallMp: "mp lucrare mică", largeMp: "mp lucrare mare", labour: "coeficient manoperă", ink: "cerneală", eurRate: "curs EUR", vat: "TVA", margin: "marjă interval", aiSurcharge: "majorare grafică AI" }
     for (const [k, label] of Object.entries(names)) {
         const a = before.settings[k as keyof PricingConfig["settings"]], b = after.settings[k as keyof PricingConfig["settings"]]
         if (a !== b) out.push(`Setări: ${label} ${a} → ${b}`)

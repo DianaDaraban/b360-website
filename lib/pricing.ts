@@ -11,7 +11,7 @@ export const JOB_TYPES: { id: JobType; label: string; hint: string }[] = [
     { id: "PPF", label: "Protecție cu folie PPF", hint: "folie transparentă care protejează vopseaua" },
 ]
 export const DURATIONS = [
-    { years: 1, label: "Câteva luni – 1 an" },
+    { years: 2, label: "1–2 ani" },
     { years: 3, label: "Până la 3 ani" },
     { years: 5, label: "Până la 5 ani" },
     { years: 7, label: "Până la 7 ani" },
@@ -21,19 +21,23 @@ export type Graphics = "am" | "noi" | "ai"
 export type Material = {
     code: string
     name: string
-    type: JobType | "laminare"
+    description: string        // what the client reads (brand, range, what it is); falls back to the name
+    type: JobType | "laminare" | "transfer"
     subtype: string            // the kind of special film / PPF (carbon, cameleon, mat…), shown as a choice
     years: number              // how long it lasts on a car
     width: number              // roll width in metres: piece area = linear metres × width
     eur: number                // euro per square metre
     laminate: string | null    // code of the laminate that goes over it, if any
+    transfer: string | null    // code of the transfer film used to apply it (thrown away after; priced, never shown)
     printed: boolean           // ink is added for printed films
 }
 export type PricingConfig = {
     materials: Material[]
     pieces: Record<string, Record<string, number>>   // body type → piece kind → linear metres (one side)
     graphics: { from: number; to: number; eur: number }[]
-    settings: { labour: number; ink: number; eurRate: number | "BNR"; vat: number; margin: number; aiSurcharge: number }
+    // labour: the coefficient for a small job (up to 4 doors and the boot); it slides down to labourLarge
+    // as the job grows toward a whole coach (by square metres, between smallMp and largeMp)
+    settings: { labour: number; labourLarge?: number; smallMp?: number; largeMp?: number; ink: number; eurRate: number | "BNR"; vat: number; margin: number; aiSurcharge: number }
     updatedAt?: string
 }
 
@@ -42,16 +46,28 @@ export type Choice = { years: number; job: JobType; subtype: string; graphics: G
 // the material for a job: the cheapest of that type (and kind) lasting at least as long as asked;
 // when nothing lasts that long, the longest-lasting one, with a note
 export function pickMaterial(cfg: PricingConfig, job: JobType, years: number, subtype = "") {
-    const pool = cfg.materials.filter(m => m.type === job && (!subtype || m.subtype === subtype))
+    // a material with no lifetime filled in (wallpaper, a helper film) is not offered for a vehicle
+    const pool = cfg.materials.filter(m => m.type === job && m.years > 0 && (!subtype || m.subtype === subtype))
     if (!pool.length) return null
     const fit = pool.filter(m => m.years >= years).sort((a, b) => a.eur - b.eur)
     const material = fit[0] ?? [...pool].sort((a, b) => b.years - a.years || a.eur - b.eur)[0]
     const laminate = material.laminate ? cfg.materials.find(m => m.code === material.laminate && m.type === "laminare") ?? null : null
-    return { material, laminate, shortfall: fit.length ? null : material.years }
+    const transfer = material.transfer ? cfg.materials.find(m => m.code === material.transfer && m.type === "transfer") ?? null : null
+    return { material, laminate, transfer, shortfall: fit.length ? null : material.years }
 }
 
 export const subtypesOf = (cfg: PricingConfig, job: JobType) => [...new Set(cfg.materials.filter(m => m.type === job && m.subtype).map(m => m.subtype))]
 export const jobAvailable = (cfg: PricingConfig, job: JobType) => cfg.materials.some(m => m.type === job)
+
+// the labour coefficient for a job of `mp` square metres: the small-job coefficient up to smallMp
+// (about 4 doors and a boot), then down in a straight line to the large-job one at largeMp (a coach)
+export function labourFor(cfg: PricingConfig, mp: number) {
+    const s = cfg.settings, small = s.labour, large = s.labourLarge ?? small
+    const a = s.smallMp ?? 10, b = s.largeMp ?? 135
+    if (mp <= a || b <= a) return small
+    if (mp >= b) return large
+    return small + ((large - small) * (mp - a)) / (b - a)
+}
 
 export function graphicsPrice(cfg: PricingConfig, pieces: number, graphics: Graphics) {
     if (graphics === "am" || !pieces) return 0
@@ -64,14 +80,12 @@ export function graphicsPrice(cfg: PricingConfig, pieces: number, graphics: Grap
 export function estimate(cfg: PricingConfig, body: string, pieceIds: string[], choice: Choice, rate: number) {
     const picked = pickMaterial(cfg, choice.job, choice.years, choice.subtype)
     if (!picked) return null
-    const { material, laminate } = picked
-    const perMp = material.eur + (laminate?.eur ?? 0) + (material.printed ? cfg.settings.ink : 0)
-    const lines = pieceIds.map(id => {
-        const ml = cfg.pieces[body]?.[id.replace(/-(st|dr)$/, "")] ?? 0
-        const mp = ml * material.width
-        return { id, mp, eur: mp * perMp * cfg.settings.labour }
-    })
-    const mp = lines.reduce((n, l) => n + l.mp, 0)
+    const { material, laminate, transfer } = picked
+    const perMp = material.eur + (laminate?.eur ?? 0) + (transfer?.eur ?? 0) + (material.printed ? cfg.settings.ink : 0)
+    const areas = pieceIds.map(id => ({ id, mp: (cfg.pieces[body]?.[id.replace(/-(st|dr)$/, "")] ?? 0) * material.width }))
+    const mp = areas.reduce((n, l) => n + l.mp, 0)
+    const labour = labourFor(cfg, mp)
+    const lines = areas.map(l => ({ ...l, eur: l.mp * perMp * labour }))
     const graphicsEur = graphicsPrice(cfg, pieceIds.length, choice.graphics)
     const eur = lines.reduce((n, l) => n + l.eur, 0) + graphicsEur
     const vat = choice.withVat ? 1 + cfg.settings.vat / 100 : 1
@@ -81,6 +95,7 @@ export function estimate(cfg: PricingConfig, body: string, pieceIds: string[], c
     return {
         ...picked,
         perMp,
+        labour,
         mp,
         graphicsLei: round(graphicsEur * rate * vat),
         lines: lines.map(l => ({ ...l, lei: round(l.eur * rate * vat) })),
