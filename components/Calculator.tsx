@@ -6,7 +6,7 @@ import type { View3D } from "./Car3D"
 import { CarBlueprint } from "./CarBlueprint"
 import { Consent, SmartForm } from "./SmartForm"
 import { autoPanels, bodyTypes, hasDrawing, panelLabel, panelsOf, sidePanels, type BodyId, type Mode, type View } from "@/data/calculator"
-import { DURATIONS, estimate, JOB_TYPES, jobAvailable, subtypesOf, type Graphics, type JobType, type PricingConfig } from "@/lib/pricing"
+import { DURATIONS, estimate, JOB_TYPES, jobAvailable, pickMaterial, subtypesOf, type Graphics, type JobType, type PricingConfig } from "@/lib/pricing"
 import form from "@/app/form.module.css"
 import styles from "./Calculator.module.css"
 
@@ -59,7 +59,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
     const [years, setYears] = useState(5)
     const [job, setJob] = useState<JobType>("print")
     const [subtype, setSubtype] = useState("")
-    const [graphics, setGraphics] = useState<Graphics>("noi")
+    const [graphics, setGraphics] = useState<Graphics>("am")   // "I have the graphics": nothing added until they ask us to design it
     const [info, setInfo] = useState(false)
     const [withVat, setWithVat] = useState(true)
     const [prefer2d, setPrefer2d] = useState(true)      // the drawing first; the 3D car is one tap away
@@ -99,7 +99,10 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
     const turn = (dir: 1 | -1) => setView(v => views[(views.findIndex(x => x.id === v) + dir + views.length) % views.length].id)
 
     const result = estimate(pricing, body, pieces, { years, job, subtype, graphics, withVat }, rate)
-    const jobName = partial ? "Colantare parțială cu folie premium" : JOB_TYPES.find(j => j.id === job)!.label
+    // the printed-film job is named after what the chosen duration gets: laminated or not
+    const printLaminated = Boolean(pickMaterial(pricing, "print", years)?.laminate)
+    const jobLabel = (id: JobType) => (id === "print" ? (printLaminated ? "Branding cu folie printată și laminată" : "Branding cu folie printată") : JOB_TYPES.find(j => j.id === id)!.label)
+    const jobName = partial ? "Colantare parțială cu folie premium" : jobLabel(job)
     const durationName = DURATIONS.find(d => d.years === years)!.label
     const graphicsName = GRAPHICS.find(g => g.id === graphics)!.label
     // what the client reads: the material's description (brand and range), never the codes; the codes
@@ -226,7 +229,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
                                 checked={job === j.id}
                                 disabled={!available}
                                 onChange={() => chooseJob(j.id)}
-                                title={j.id === "integrală" && partial ? "Colantare parțială cu folie premium" : j.label}
+                                title={j.id === "integrală" && partial ? "Colantare parțială cu folie premium" : jobLabel(j.id)}
                                 text={available ? j.hint : "în curând"}
                             />
                         )

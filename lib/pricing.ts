@@ -49,10 +49,13 @@ export function pickMaterial(cfg: PricingConfig, job: JobType, years: number, su
     // a material with no lifetime filled in (wallpaper, a helper film) is not offered for a vehicle
     const pool = cfg.materials.filter(m => m.type === job && m.years > 0 && (!subtype || m.subtype === subtype))
     if (!pool.length) return null
-    const fit = pool.filter(m => m.years >= years).sort((a, b) => a.eur - b.eur)
-    const material = fit[0] ?? [...pool].sort((a, b) => b.years - a.years || a.eur - b.eur)[0]
-    const laminate = material.laminate ? cfg.materials.find(m => m.code === material.laminate && m.type === "laminare") ?? null : null
-    const transfer = material.transfer ? cfg.materials.find(m => m.code === material.transfer && m.type === "transfer") ?? null : null
+    const lam = (m: Material) => (m.laminate ? cfg.materials.find(l => l.code === m.laminate && l.type === "laminare") ?? null : null)
+    const tr = (m: Material) => (m.transfer ? cfg.materials.find(t => t.code === m.transfer && t.type === "transfer") ?? null : null)
+    // compared on what a square metre really costs: the film with its laminate and transfer film
+    const cost = (m: Material) => m.eur + (lam(m)?.eur ?? 0) + (tr(m)?.eur ?? 0)
+    const fit = pool.filter(m => m.years >= years).sort((a, b) => cost(a) - cost(b))
+    const material = fit[0] ?? [...pool].sort((a, b) => b.years - a.years || cost(a) - cost(b))[0]
+    const laminate = lam(material), transfer = tr(material)
     return { material, laminate, transfer, shortfall: fit.length ? null : material.years }
 }
 
