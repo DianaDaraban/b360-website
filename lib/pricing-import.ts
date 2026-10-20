@@ -93,8 +93,11 @@ export async function parseWorkbook(input: Buffer): Promise<{ config: PricingCon
         if (m.transfer && !materials.some(l => l.code === m.transfer && l.type === "transfer"))
             errors.push(`Materiale: ${m.code} se montează cu folia de transfer ${m.transfer}, dar ${m.transfer} nu există ca „transfer”.`)
     }
-    const dup = materials.map(m => m.code).filter((c, i, a) => a.indexOf(c) !== i)
-    if (dup.length) errors.push(`Materiale: codul ${[...new Set(dup)].join(", ")} apare de mai multe ori.`)
+    // the same film may come twice, laminated and not (it lasts longer laminated): a row is a code with
+    // its laminate, and only that pair must be unique
+    const variant = (m: Material) => `${m.code}|${m.laminate ?? ""}`
+    const dup = materials.filter((m, i, a) => a.findIndex(o => variant(o) === variant(m)) !== i)
+    if (dup.length) errors.push(`Materiale: ${[...new Set(dup.map(m => `codul ${m.code}${m.laminate ? ` cu laminarea ${m.laminate}` : " fără laminare"}`))].join(", ")} apare de mai multe ori.`)
 
     // ---------- Piese ----------
     const pieces: PricingConfig["pieces"] = {}
@@ -146,16 +149,17 @@ export async function parseWorkbook(input: Buffer): Promise<{ config: PricingCon
 // what changed between two price sets, as short lines for the admin to check before saving
 export function diffPricing(before: PricingConfig, after: PricingConfig): string[] {
     const out: string[] = []
-    const fmt = (m: Material) => `${m.code} ${m.name}`
+    const fmt = (m: Material) => `${m.code} ${m.name}${m.laminate ? ` + laminare ${m.laminate}` : ""}`
+    const same = (a: Material, b: Material) => a.code === b.code && (a.laminate ?? "") === (b.laminate ?? "")
     for (const m of after.materials) {
-        const old = before.materials.find(o => o.code === m.code)
+        const old = before.materials.find(o => same(o, m))
         if (!old) { out.push(`Material nou: ${fmt(m)} (${m.type}, ${m.years} ani, ${m.eur} €/mp)`); continue }
         const changes = ([["eur", "€/mp"], ["years", "ani"], ["width", "lățime rolă"], ["type", "tip"], ["subtype", "subtip"], ["laminate", "laminare"], ["printed", "se printează"], ["name", "denumire"]] as const)
             .filter(([k]) => String(old[k] ?? "") !== String(m[k] ?? ""))
             .map(([k, label]) => `${label} ${old[k] ?? "–"} → ${m[k] ?? "–"}`)
         if (changes.length) out.push(`${fmt(m)}: ${changes.join(", ")}`)
     }
-    for (const m of before.materials) if (!after.materials.some(n => n.code === m.code)) out.push(`Material scos: ${fmt(m)}`)
+    for (const m of before.materials) if (!after.materials.some(n => same(n, m))) out.push(`Material scos: ${fmt(m)}`)
     let pieceChanges = 0
     for (const [body, list] of Object.entries(after.pieces)) for (const [k, ml] of Object.entries(list)) if (before.pieces[body]?.[k] !== ml) pieceChanges++
     if (pieceChanges) out.push(`Piese: ${pieceChanges} ${pieceChanges === 1 ? "valoare de metri liniari schimbată" : "valori de metri liniari schimbate"}`)

@@ -64,7 +64,7 @@ export function PricingTab({ link, status, pricing, usingDefaults }: { link: str
                     <thead><tr><th>Cod</th><th>Denumire</th><th>Tip</th><th>Ani</th><th>Lățime</th><th>€/mp</th><th>Laminare</th></tr></thead>
                     <tbody>
                         {pricing.materials.map(m => (
-                            <tr key={m.code}><td>{m.code}</td><td>{m.name}{m.subtype && ` (${m.subtype})`}</td><td>{m.type}</td><td>{m.years}</td><td>{m.width} m</td><td>{m.eur}</td><td>{m.laminate ?? "–"}</td></tr>
+                            <tr key={`${m.code}-${m.laminate ?? ""}`}><td>{m.code}</td><td>{m.name}{m.subtype && ` (${m.subtype})`}</td><td>{m.type}</td><td>{m.years}</td><td>{m.width} m</td><td>{m.eur}</td><td>{m.laminate ?? "–"}</td></tr>
                         ))}
                     </tbody>
                 </table>
