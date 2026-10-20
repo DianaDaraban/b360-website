@@ -38,5 +38,5 @@ export const defaultPricing: PricingConfig = {
         { from: 5, to: 8, eur: 220 },
         { from: 9, to: 99, eur: 300 },
     ],
-    settings: { labour: 4.5, labourLarge: 3, smallMp: 10, largeMp: 135, ink: 2.5, eurRate: 5, vat: 21, margin: 10, aiSurcharge: 50 },
+    settings: { labour: 3, labourLarge: 3, smallMp: 10, largeMp: 135, ink: 2.5, eurRate: 5, vat: 21, margin: 10, aiSurcharge: 50 },
 }
