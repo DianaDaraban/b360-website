@@ -1,0 +1,32 @@
+/* sits above the phone action bar; bottom-left on desktop */
+.banner {
+    position: fixed;
+    z-index: 60;
+    left: 16px;
+    right: 16px;
+    bottom: calc(var(--bar-h) + env(safe-area-inset-bottom) + 12px);
+    max-width: 520px;
+    margin-inline: auto;
+    padding: 14px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    background: #2e3436;
+    color: var(--cream);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    font: 500 0.95rem/1.4 var(--font);
+}
+.banner p { margin: 0; flex: 1 1 260px; }
+.banner a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.actions { display: flex; gap: 8px; margin-left: auto; }
+.actions button { padding: 9px 18px; border-radius: 999px; font: 700 0.95rem var(--font); cursor: pointer; }
+.no { background: transparent; color: var(--cream); border: 1.5px solid rgb(243 234 225 / 0.45); }
+.no:hover, .no:focus-visible { border-color: var(--cream); }
+.yes { background: #17a398; color: #fff; border: 1.5px solid #17a398; }
+.yes:hover, .yes:focus-visible { background: #0e7d75; border-color: #0e7d75; }
+
+@media (min-width: 1024px) {
+    .banner { bottom: 20px; left: 20px; right: auto; margin: 0; }
+}

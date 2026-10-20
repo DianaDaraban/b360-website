@@ -49,3 +49,6 @@
     :global(body:has(.contact-page)) .legal :global(.legal-badge img) { width: 112px; }
     :global(body:has(.contact-page)) .copy { font-size: 0.78rem; }
 }
+
+/* "Setări cookie-uri" is a button that reads like the links next to it */
+.cookies { background: none; border: 0; padding: 0; color: inherit; font: inherit; cursor: pointer; }

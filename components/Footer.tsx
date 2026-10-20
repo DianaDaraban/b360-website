@@ -2,6 +2,7 @@ import Link from "next/link"
 import { nav, site } from "@/lib/site"
 import { Icon } from "./Icon"
 import { LegalInfo } from "./LegalInfo"
+import { CookieSettings } from "./CookieConsent"
 import styles from "./Footer.module.css"
 
 // Three compact rows: brand + contact, the page links, copyright with the legal details
@@ -24,6 +25,7 @@ export function Footer() {
                     {nav.map(item => <li key={item.href}><Link href={item.href} className="ulink">{item.label}</Link></li>)}
                     <li><Link href="/calculator" className="ulink">Calculator</Link></li>
                     <li><Link href="/oferta" className="ulink">Cerere ofertă</Link></li>
+                    <li><CookieSettings className={`ulink ${styles.cookies}`} /></li>
                 </ul>
             </nav>
             <div className={`container ${styles.bottom}`}>

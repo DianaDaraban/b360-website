@@ -11,8 +11,7 @@ export const metadata: Metadata = {
 
 const UPDATED = "9 octombrie 2026"
 
-// GDPR notice for the contact, quote and calculator forms. The site sets no cookies and has no
-// analytics; if that changes, the cookie section and a consent banner have to follow.
+// GDPR notice for the contact, quote and calculator forms, and for Google Analytics (only after consent)
 export default function PrivacyPage() {
     const c = site.company
     return (
@@ -99,10 +98,15 @@ export default function PrivacyPage() {
                     <a href="https://www.dataprotection.ro" target="_blank" rel="noopener">www.dataprotection.ro</a>.
                 </p>
 
-                <h2>7. Cookie-uri</h2>
+                <h2 id="cookie">7. Cookie-uri și statistici</h2>
                 <p>
-                    Site-ul nu folosește cookie-uri de marketing sau de analiză și nu urmărește vizitatorii. Dacă vom adăuga astfel de instrumente,
-                    îți vom cere acordul înainte și vom actualiza această pagină.
+                    Folosim Google Analytics (Google Ireland Ltd.) ca să aflăm câți vizitatori avem, ce pagini citesc și dacă folosesc
+                    calculatorul sau formularele. Datele sunt agregate și nu le folosim pentru reclame. Analytics pornește și pune
+                    cookie-urile _ga numai după ce apeși „Accept” în bannerul de cookie-uri; dacă refuzi, nu se încarcă deloc.
+                </p>
+                <p>
+                    Alegerea ta rămâne salvată în browser și o poți schimba oricând din linkul „Setări cookie-uri” din subsolul site-ului.
+                    Cookie-urile Google Analytics expiră după cel mult 14 luni.
                 </p>
 
                 <h2>8. Securitate</h2>

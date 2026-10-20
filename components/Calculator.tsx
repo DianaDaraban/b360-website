@@ -6,6 +6,7 @@ import type { View3D } from "./Car3D"
 import { CarBlueprint } from "./CarBlueprint"
 import { Consent, SmartForm } from "./SmartForm"
 import { autoPanels, bodyTypes, hasDrawing, panelLabel, panelsOf, sidePanels, type BodyId, type Mode, type View } from "@/data/calculator"
+import { track } from "@/lib/analytics"
 import { DURATIONS, estimate, JOB_TYPES, jobAvailable, pickMaterial, subtypesOf, type Graphics, type JobType, type PricingConfig } from "@/lib/pricing"
 import form from "@/app/form.module.css"
 import styles from "./Calculator.module.css"
@@ -83,6 +84,7 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
     const partial = job === "integrală" && selected.length > 0 && selected.length < all.length
 
     const chooseBody = (id: BodyId) => {
+        track("calculator_caroserie", { caroserie: id })
         setBody(id)
         setHovered(null)
         // pieces the new body has stay picked (side doors etc. differ between bodies); a full wrap stays full

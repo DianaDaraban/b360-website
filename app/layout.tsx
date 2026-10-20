@@ -5,6 +5,7 @@ import { BottomBar } from "@/components/BottomBar"
 import { Footer } from "@/components/Footer"
 import { Blobs } from "@/components/Blobs"
 import { Reveal } from "@/components/Reveal"
+import { CookieConsent } from "@/components/CookieConsent"
 import { site } from "@/lib/site"
 import "./globals.css"
 
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 <Footer />
                 <BottomBar />
                 <Reveal />
+                <CookieConsent />
                 <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }} />
             </body>
         </html>
