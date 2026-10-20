@@ -13,6 +13,9 @@ const nextConfig: NextConfig = {
     async redirects() {
         const to = (destination: string, ...sources: string[]) => sources.map(source => ({ source, destination, permanent: true }))
         return [
+            // the hosting panels, reached as b360.ro/cpanel and b360.ro/webmail while the site was on that server
+            { source: "/cpanel", destination: "https://cpanel.b360.ro", permanent: false },
+            { source: "/webmail", destination: "https://webmail.b360.ro", permanent: false },
             ...to("/servicii/colantare-auto", "/colantari-auto", "/colantari-integrale", "/colantari-moto", "/colantare-utilitare",
                 "/colantare-tir-uri", "/colantare-autocare", "/colantari-autocare", "/colantare-avioane", "/colantare-barci"),
             ...to("/servicii/colantare-vitrine", "/folii-sablare-geam", "/folii-geam-window-graphics", "/2019/05/30/folie-electrostatica-pentru-suprafete-vitrate"),
