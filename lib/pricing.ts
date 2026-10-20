@@ -11,7 +11,7 @@ export const JOB_TYPES: { id: JobType; label: string; hint: string }[] = [
     { id: "PPF", label: "Protecție cu folie PPF", hint: "folie transparentă care protejează vopseaua" },
 ]
 export const DURATIONS = [
-    { years: 2, label: "1–2 ani" },
+    { years: 1, label: "1–2 ani" },        // the short-life films (1 year in the workbook) qualify
     { years: 3, label: "Până la 3 ani" },
     { years: 5, label: "Până la 5 ani" },
     { years: 7, label: "Până la 7 ani" },
