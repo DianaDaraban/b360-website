@@ -61,10 +61,10 @@ export function PricingTab({ link, status, pricing, usingDefaults }: { link: str
             <details className={styles.more}>
                 <summary>Ce prețuri folosește acum calculatorul {usingDefaults ? "(valorile inițiale, încă nu s-a citit niciun tabel)" : `(din ${when(pricing.updatedAt)})`}</summary>
                 <table className={styles.table}>
-                    <thead><tr><th>Cod</th><th>Denumire</th><th>Tip</th><th>Ani</th><th>Lățime</th><th>€/mp</th><th>Laminare</th></tr></thead>
+                    <thead><tr><th>Cod</th><th>Denumire</th><th>Tip</th><th>Ani</th><th>Lățime</th><th>€/mp</th><th>Laminare</th><th>Marja</th></tr></thead>
                     <tbody>
                         {pricing.materials.map(m => (
-                            <tr key={`${m.code}-${m.laminate ?? ""}`}><td>{m.code}</td><td>{m.name}{m.subtype && ` (${m.subtype})`}</td><td>{m.type}</td><td>{m.years}</td><td>{m.width} m</td><td>{m.eur}</td><td>{m.laminate ?? "–"}</td></tr>
+                            <tr key={`${m.code}-${m.laminate ?? ""}`}><td>{m.code}</td><td>{m.name}{m.subtype && ` (${m.subtype})`}</td><td>{m.type}</td><td>{m.years}</td><td>{m.width} m</td><td>{m.eur}</td><td>{m.laminate ?? "–"}</td><td>{m.labour ?? `${s.labour} (generală)`}</td></tr>
                         ))}
                     </tbody>
                 </table>

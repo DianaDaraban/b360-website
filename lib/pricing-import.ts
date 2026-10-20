@@ -159,7 +159,7 @@ export function diffPricing(before: PricingConfig, after: PricingConfig): string
     for (const m of after.materials) {
         const old = before.materials.find(o => same(o, m))
         if (!old) { out.push(`Material nou: ${fmt(m)} (${m.type}, ${m.years} ani, ${m.eur} €/mp)`); continue }
-        const changes = ([["eur", "€/mp"], ["years", "ani"], ["width", "lățime rolă"], ["type", "tip"], ["subtype", "subtip"], ["laminate", "laminare"], ["printed", "se printează"], ["name", "denumire"]] as const)
+        const changes = ([["eur", "€/mp"], ["years", "ani"], ["width", "lățime rolă"], ["type", "tip"], ["subtype", "subtip"], ["laminate", "laminare"], ["printed", "se printează"], ["name", "denumire"], ["labour", "marja"]] as const)
             .filter(([k]) => String(old[k] ?? "") !== String(m[k] ?? ""))
             .map(([k, label]) => `${label} ${old[k] ?? "–"} → ${m[k] ?? "–"}`)
         if (changes.length) out.push(`${fmt(m)}: ${changes.join(", ")}`)
