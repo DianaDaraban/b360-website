@@ -99,6 +99,15 @@ export function Calculator({ pricing, rate }: { pricing: PricingConfig; rate: nu
     const turn = (dir: 1 | -1) => setView(v => views[(views.findIndex(x => x.id === v) + dir + views.length) % views.length].id)
 
     const result = estimate(pricing, body, pieces, { years, job, subtype, graphics, withVat }, rate)
+    // the duration tick follows the film actually chosen: when the cheapest film that lasts long enough
+    // lasts longer than the duration ticked (e.g. the only full-wrap film lasts 7 years), the tick moves
+    // to the longest duration that film covers
+    useEffect(() => {
+        const m = pickMaterial(pricing, job, years, subtype)?.material
+        if (!m) return
+        const match = [...DURATIONS].reverse().find(d => d.years <= m.years)?.years
+        if (match && match > years) setYears(match)
+    }, [pricing, job, years, subtype])
     // the printed-film job is named after what the chosen duration gets: laminated or not
     const printLaminated = Boolean(pickMaterial(pricing, "print", years)?.laminate)
     const jobLabel = (id: JobType) => (id === "print" ? (printLaminated ? "Branding cu folie printată și laminată" : "Branding cu folie printată") : JOB_TYPES.find(j => j.id === id)!.label)
