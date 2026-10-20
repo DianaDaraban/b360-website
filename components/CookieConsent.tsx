@@ -65,7 +65,7 @@ export function CookieConsent() {
             <div className={styles.text}>
                 <h2 id="cookie-title">Cookie-uri doar cu acordul tău</h2>
                 <p>
-                    Folosim Google Analytics ca să vedem ce pagini sunt utile. Fără reclame, fără urmărire pe alte site-uri.{" "}
+                    Folosim Google Analytics ca să vedem ce pagini sunt utile. Fără reclame, fără urmărire pe alte site‑uri.{" "}
                     <Link href="/politica-de-confidentialitate#cookie">Detalii</Link>
                 </p>
             </div>
