@@ -16,13 +16,14 @@
     scroll-snap-type: x mandatory;
     scroll-padding-inline: 6px;
     scrollbar-width: none;
-    /* long, eased fade at an end only while there is more to scroll that way */
-    --fade-l: linear-gradient(90deg, transparent 0, rgb(0 0 0 / 0.08) 14%, rgb(0 0 0 / 0.3) 36%, rgb(0 0 0 / 0.65) 57%, rgb(0 0 0 / 0.9) 79%, #000);
-    --fade-r: linear-gradient(270deg, transparent 0, rgb(0 0 0 / 0.08) 14%, rgb(0 0 0 / 0.3) 36%, rgb(0 0 0 / 0.65) 57%, rgb(0 0 0 / 0.9) 79%, #000);
-    mask: var(--fade-l) left / 14% 100% no-repeat, linear-gradient(#000, #000) center / 72% 100% no-repeat, var(--fade-r) right / 14% 100% no-repeat;
+    /* long, eased fade at an end only while there is more to scroll that way; one gradient across the
+       whole strip (separate mask tiles left a hairline seam where they met on some phones) */
+    --l: transparent 0, rgb(0 0 0 / 0.08) 1.96%, rgb(0 0 0 / 0.3) 5.04%, rgb(0 0 0 / 0.65) 7.98%, rgb(0 0 0 / 0.9) 11.06%, #000 14%;
+    --r: #000 86%, rgb(0 0 0 / 0.9) 88.94%, rgb(0 0 0 / 0.65) 92.02%, rgb(0 0 0 / 0.3) 94.96%, rgb(0 0 0 / 0.08) 98.04%, transparent 100%;
+    mask: linear-gradient(90deg, var(--l), var(--r));
 }
-.track[data-start] { mask: linear-gradient(#000, #000) left / 86% 100% no-repeat, var(--fade-r) right / 14% 100% no-repeat; }
-.track[data-end] { mask: var(--fade-l) left / 14% 100% no-repeat, linear-gradient(#000, #000) right / 86% 100% no-repeat; }
+.track[data-start] { mask: linear-gradient(90deg, #000 0, var(--r)); }
+.track[data-end] { mask: linear-gradient(90deg, var(--l), #000 100%); }
 .track[data-start][data-end] { mask: none; }
 .track::-webkit-scrollbar { display: none; }
 .track > li { scroll-snap-align: start; }
