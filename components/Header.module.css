@@ -209,9 +209,12 @@
     overflow: hidden;
     transition: max-height 0.45s var(--ease-out), padding 0.4s var(--ease-out);
 }
-.subList[data-open] { max-height: 560px; padding-top: 14px; }
-/* the specialised pages: one line of small links under the service cards */
-.subSpecial { grid-column: 1 / -1; padding-top: 6px; }
+.subList[data-open] { max-height: 640px; padding-top: 14px; }
+/* the specialised pages: a small heading, then cards a size smaller than the services */
+.subHeading { grid-column: 1 / -1; padding: 8px 2px 0; }
+.subHeading a { font: 700 0.74rem/1 var(--font-head); letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); text-decoration: none; }
+.subSmall { gap: 8px; padding: 6px 8px 6px 6px; font-size: 0.84rem; }
+.subSmall .subPhoto { --c: 10px; width: 36px; height: 36px; }
 .subItem {
     height: 100%;
     display: flex;

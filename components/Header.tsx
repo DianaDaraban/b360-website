@@ -7,7 +7,7 @@ import { useRef, useState } from "react"
 import { Icon } from "./Icon"
 import { LegalInfo } from "./LegalInfo"
 import { nav } from "@/lib/site"
-import { servicii } from "@/data/servicii"
+import { servicii, vehicule } from "@/data/servicii"
 import { SpecialChips } from "./Specializate"
 import styles from "./Header.module.css"
 
@@ -132,7 +132,16 @@ export function Header() {
                                                 </Link>
                                             </li>
                                         ))}
-                                        <li className={styles.subSpecial}><SpecialChips onNavigate={closeMenu} /></li>
+                                        {/* the specialised pages: the same cards, a size smaller, under their own heading */}
+                                        <li className={styles.subHeading}><Link href="/servicii#specializate" onClick={closeMenu}>Colantări specializate</Link></li>
+                                        {vehicule.map(v => (
+                                            <li key={v.slug}>
+                                                <Link href={`/servicii/${v.slug}`} onClick={closeMenu} className={`${styles.subItem} ${styles.subSmall}`}>
+                                                    <span className={`${styles.subPhoto} peel`}><Image src={v.image} alt="" width={36} height={36} sizes="36px" /></span>
+                                                    <span>{v.short.replace(/^Colantare m/, "M").replace(" și microbuze", "")}</span>
+                                                </Link>
+                                            </li>
+                                        ))}
                                     </ul>
                                 )}
                             </li>
