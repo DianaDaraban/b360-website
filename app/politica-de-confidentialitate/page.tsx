@@ -101,7 +101,8 @@ export default function PrivacyPage() {
                 <h2 id="cookie">7. Cookie-uri și statistici</h2>
                 <p>
                     Folosim Google Analytics (Google Ireland Ltd.) ca să aflăm câți vizitatori avem, ce pagini citesc și dacă folosesc
-                    calculatorul sau formularele. Datele sunt agregate și nu le folosim pentru reclame. Analytics pornește și pune
+                    calculatorul sau formularele, și dacă vizita a venit dintr-o reclamă B360 din Google (Google Ads), ca să știm care reclame
+                    aduc cereri. Datele sunt agregate; nu le folosim pentru remarketing sau reclame personalizate. Analytics pornește și pune
                     cookie-urile _ga numai după ce apeși „Accept” în bannerul de cookie-uri; dacă refuzi, nu se încarcă deloc.
                 </p>
                 <p>

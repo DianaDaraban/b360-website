@@ -10,6 +10,9 @@ function loadAnalytics() {
     window.dataLayer = window.dataLayer ?? []
     // gtag.js reads the arguments object itself, so this has to stay a plain function
     window.gtag = function () { window.dataLayer!.push(arguments) }
+    // Consent Mode: the visitor accepted statistics and measuring our Google Ads (which ad brought a
+    // request); no remarketing or personalised ads
+    window.gtag("consent", "default", { analytics_storage: "granted", ad_storage: "granted", ad_user_data: "granted", ad_personalization: "denied" })
     window.gtag("js", new Date())
     window.gtag("config", GA_ID)
     const s = document.createElement("script")
@@ -65,7 +68,7 @@ export function CookieConsent() {
             <div className={styles.text}>
                 <h2 id="cookie-title">Cookie-uri doar cu acordul tău</h2>
                 <p>
-                    Folosim Google Analytics ca să vedem ce pagini sunt utile. Fără reclame, fără urmărire pe alte site‑uri.{" "}
+                    Folosim Google Analytics ca să vedem ce pagini sunt utile și dacă reclamele noastre din Google aduc cereri. Fără remarketing.{" "}
                     <Link href="/politica-de-confidentialitate#cookie">Detalii</Link>
                 </p>
             </div>
