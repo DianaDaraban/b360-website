@@ -100,7 +100,9 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
     const pick = (id: string) => setSelected(sel => (sel.includes(id) ? sel.filter(x => x !== id) : [...sel, id]))
     const turn = (dir: 1 | -1) => setView(v => views[(views.findIndex(x => x.id === v) + dir + views.length) % views.length].id)
 
-    const result = estimate(pricing, body, pieces, { years, job, subtype, graphics, withVat })
+    // PPF is clear film: there is no graphics to design, so step 5 is switched off and costs nothing
+    const noGraphics = job === "PPF"
+    const result = estimate(pricing, body, pieces, { years, job, subtype, graphics: noGraphics ? "am" : graphics, withVat })
     // the duration tick follows the film actually chosen: when the cheapest film that lasts long enough
     // lasts longer than the duration ticked (e.g. the only full-wrap film lasts 7 years), the tick moves
     // to the longest duration that film covers
@@ -115,7 +117,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
     const jobLabel = (id: JobType) => (id === "print" ? (printLaminated ? "Branding cu folie printată și laminată" : "Branding cu folie printată") : JOB_TYPES.find(j => j.id === id)!.label)
     const jobName = partial ? "Colantare parțială cu folie premium" : jobLabel(job)
     const durationName = DURATIONS.find(d => d.years === years)!.label
-    const graphicsName = GRAPHICS.find(g => g.id === graphics)!.label
+    const graphicsName = noGraphics ? "Fără grafică (folie PPF transparentă)" : GRAPHICS.find(g => g.id === graphics)!.label
     // what the client reads: the material's description (brand and range), never the codes; the codes
     // go to B360 in the request
     const say = (m: { name: string; description?: string }) => m.description || m.name
@@ -257,23 +259,24 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                 )}
             </Step>
 
-            <Step n={5} title="Ai grafica sau o facem noi?">
+            <Step n={5} title="Ai grafica sau o facem noi?" hint={noGraphics ? "Folia PPF e transparentă: nu are grafică, deci pasul ăsta nu se aplică." : undefined}>
                 <div className={`${styles.choices} ${styles.three}`} role="radiogroup" aria-label="Grafica">
                     {GRAPHICS.map(g => (
                         <Choice
                             key={g.id}
                             name="calc-graphics"
-                            checked={graphics === g.id}
+                            checked={!noGraphics && graphics === g.id}
+                            disabled={noGraphics}
                             onChange={() => setGraphics(g.id)}
                             title={g.label}
                             text={g.hint}
-                            extra={g.id === "am" && (
+                            extra={g.id === "am" && !noGraphics && (
                                 <button type="button" className={styles.infoBtn} aria-expanded={info || graphics === "am"} aria-controls="calc-graphics-info" onClick={e => { e.preventDefault(); setInfo(v => !v) }} aria-label="Ce înseamnă grafică gata de print">i</button>
                             )}
                         />
                     ))}
                 </div>
-                {(info || graphics === "am") && (
+                {!noGraphics && (info || graphics === "am") && (
                     <div id="calc-graphics-info" className={styles.infoBox}>
                         <strong>Grafica ta e considerată gata de print dacă:</strong>
                         <ul>
