@@ -286,7 +286,7 @@ export const vehicule: Serviciu[] = [
         title: "Colantare Autoutilitare și Branding Flote Auto",
         short: "Autoutilitare și flote",
         teaser: "Dube, autoutilitare și flote de firmă",
-        image: "/lucrari/proiecte/nasha/1.webp",
+        image: "/lucrari/proiecte/ford-transit-custom/1.webp",
         hero: "/lucrari/proiecte/the-home/1.webp",
         intro: "Facem din dubele și autoutilitarele firmei tale reclamă care circulă zilnic prin oraș, de la un vehicul la flote întregi.",
         lead: {
@@ -301,7 +301,7 @@ export const vehicule: Serviciu[] = [
             { title: "Colantare integrală", items: ["Toată caroseria cu grafica firmei", "Vizibilitate maximă în trafic", "Protejează vopseaua pentru revânzare"] },
         ],
         benefits: ["Reclamă fără chirie – plătești o singură dată, iar duba face reclamă ani la rând", "Încredere – un vehicul inscripționat arată o firmă serioasă când ajunge la client", "Flotă recognoscibilă – toate mașinile firmei arată la fel", "Păstrează valoarea – folia protejează vopseaua și se scoate la vânzarea vehiculului"],
-        benefitsPhoto: "/lucrari/proiecte/nasha/1.webp",
+        benefitsPhoto: "/lucrari/proiecte/holcim/1.webp",
         extra: { title: "Află prețul pe loc", question: "Vrei o estimare rapidă?", text: "În **calculatorul nostru** alegi autoutilitara, piesele pe care le colantăm și tipul de folie, iar prețul estimativ apare imediat.", link: { href: "/calculator", label: "Deschide calculatorul" } },
         faq: [
             { q: "Cât costă inscripționarea unei autoutilitare?", a: "Depinde de cât acoperim și de folie. Pentru o estimare rapidă, folosește calculatorul de pe site; pentru flote îți facem o ofertă pe vehicul." },
