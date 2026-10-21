@@ -17,6 +17,8 @@ const nextConfig: NextConfig = {
             { source: "/cpanel", destination: "https://cpanel.b360.ro", permanent: false },
             { source: "/webmail", destination: "https://webmail.b360.ro", permanent: false },
             ...to("/servicii/colantare-auto", "/colantari-auto", "/colantari-integrale"),
+            // the path shown in the Google Ads ads (b360.ro/inscripționări/colantări-auto), with and without diacritics
+            ...to("/servicii/colantare-auto", "/inscriptionari/:path*", "/inscripționări/:path*", "/inscrip%C8%9Bion%C4%83ri/:path*"),
             // the vehicle pages that ranked on their own keep a page of their own
             ...to("/servicii/colantare-moto", "/colantari-moto"),
             ...to("/servicii/colantare-camioane", "/colantare-tir-uri"),
