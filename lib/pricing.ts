@@ -6,7 +6,7 @@ export type JobType = "decupată" | "print" | "integrală" | "specială" | "PPF"
 export const JOB_TYPES: { id: JobType; label: string; hint: string }[] = [
     { id: "decupată", label: "Branding cu folie decupată", hint: "litere, logo-uri și forme tăiate din folie colorată" },
     { id: "print", label: "Branding cu folie printată și laminată", hint: "grafică color, fotografii, degradeuri" },
-    { id: "integrală", label: "Colantare integrală cu folie premium", hint: "toată mașina, schimbare de culoare sau grafică pe tot" },
+    { id: "integrală", label: "Colantare integrală cu folie premium", hint: "toată mașina, schimbare de culoare sau grafică pe toată caroseria" },
     { id: "specială", label: "Folie specială", hint: "carbon, cameleon, mat, satin și altele" },
     { id: "PPF", label: "Protecție cu folie PPF", hint: "folie transparentă care protejează vopseaua" },
 ]
