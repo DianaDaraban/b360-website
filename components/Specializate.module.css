@@ -25,3 +25,21 @@
 
 @media (min-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+/* compact line: a small heading, then the pages as small pills that wrap */
+.chips { display: grid; gap: 8px; }
+.chipsLabel { font: 700 0.74rem/1 var(--font-head); letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); text-decoration: none; }
+.chipsLabel:hover { color: var(--red-dark); }
+.chips ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.chips a:not(.chipsLabel) {
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid rgb(238 51 56 / 0.3);
+    border-radius: 999px;
+    background: rgb(243 234 225 / 0.7);
+    font: 700 0.84rem/1.1 var(--font-head);
+    color: var(--ink-strong);
+    text-decoration: none;
+    transition: border-color 0.25s, background 0.25s, color 0.25s;
+}
+.chips a:not(.chipsLabel):hover { border-color: var(--red); background: var(--cream); color: var(--red-dark); }

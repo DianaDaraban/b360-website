@@ -8,6 +8,7 @@ import { Icon } from "./Icon"
 import { LegalInfo } from "./LegalInfo"
 import { nav } from "@/lib/site"
 import { servicii } from "@/data/servicii"
+import { SpecialChips } from "./Specializate"
 import styles from "./Header.module.css"
 
 export function Header() {
@@ -71,6 +72,7 @@ export function Header() {
                                     </li>
                                 ))}
                             </ul>
+                            <SpecialChips className={styles.dropSpecial} onNavigate={closeDrop} />
                             <Link href="/servicii" onClick={closeDrop} className={`${styles.dropAll} ulink`}>Toate serviciile →</Link>
                         </div>
                     </div>
@@ -130,6 +132,7 @@ export function Header() {
                                                 </Link>
                                             </li>
                                         ))}
+                                        <li className={styles.subSpecial}><SpecialChips onNavigate={closeMenu} /></li>
                                     </ul>
                                 )}
                             </li>

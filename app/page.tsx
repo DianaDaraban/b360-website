@@ -1,6 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { servicii } from "@/data/servicii"
+import { SpecialChips } from "@/components/Specializate"
 import { ContactCta } from "@/components/ContactCta"
 import { Icon } from "@/components/Icon"
 import { Blobs } from "@/components/Blobs"
@@ -79,6 +80,9 @@ export default async function Home() {
                         </li>
                     ))}
                 </ul>
+                <div className="container">
+                    <SpecialChips className={styles.specialChips} />
+                </div>
             </section>
 
             {/* clients and recent work share one screen */}

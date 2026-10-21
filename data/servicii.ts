@@ -254,7 +254,7 @@ export const vehicule: Serviciu[] = [
         title: "Colantare Autocare și Microbuze",
         short: "Autocare și microbuze",
         teaser: "Pentru operatori de transport, cluburi sportive și școli",
-        image: "/lucrari/proiecte/hello-holidays/1.webp",
+        image: "/lucrari/proiecte/hello-holidays/9.webp",
         hero: "/lucrari/proiecte/flixbus/1.webp",
         intro: "Colantăm autocare și microbuze pentru operatori de transport, agenții de turism, cluburi sportive și școli: integral sau doar cu identitatea firmei.",
         lead: {

@@ -234,3 +234,7 @@
     .servicePill { --dot: 96px; width: 88%; }
     .servicePills li:nth-child(even) .servicePill { margin-left: auto; }
 }
+
+/* the specialised pages under the service pills, centred */
+.specialChips { max-width: 860px; margin: 26px auto 0; justify-items: center; text-align: center; }
+.specialChips ul { justify-content: center; }
