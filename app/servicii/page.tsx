@@ -4,6 +4,7 @@ import Link from "next/link"
 import { ContactCta } from "@/components/ContactCta"
 import { ScrollCue } from "@/components/ScrollCue"
 import { servicii } from "@/data/servicii"
+import { Specializate } from "@/components/Specializate"
 import styles from "./servicii.module.css"
 
 export const metadata: Metadata = {
@@ -46,6 +47,11 @@ export default function ServiciiPage() {
                         </li>
                     ))}
                 </ul>
+            </section>
+            <section className={`section ${styles.special}`}>
+                <div className="container">
+                    <Specializate />
+                </div>
             </section>
             <div className="snap-slide snap-last snap-cta" data-label="Contact">
                 <ContactCta />

@@ -301,3 +301,6 @@
     .showcaseFirst { grid-column: 1; grid-row: span 2; }
     .showcaseFirst img { aspect-ratio: auto; }
 }
+
+/* the specialised pages, grouped: a short strip, not a screen of its own */
+.special { padding-block: 48px; background: rgb(243 234 225 / 0.72); }

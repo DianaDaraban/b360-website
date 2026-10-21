@@ -16,8 +16,13 @@ const nextConfig: NextConfig = {
             // the hosting panels, reached as b360.ro/cpanel and b360.ro/webmail while the site was on that server
             { source: "/cpanel", destination: "https://cpanel.b360.ro", permanent: false },
             { source: "/webmail", destination: "https://webmail.b360.ro", permanent: false },
-            ...to("/servicii/colantare-auto", "/colantari-auto", "/colantari-integrale", "/colantari-moto", "/colantare-utilitare",
-                "/colantare-tir-uri", "/colantare-autocare", "/colantari-autocare", "/colantare-avioane", "/colantare-barci"),
+            ...to("/servicii/colantare-auto", "/colantari-auto", "/colantari-integrale"),
+            // the vehicle pages that ranked on their own keep a page of their own
+            ...to("/servicii/colantare-moto", "/colantari-moto"),
+            ...to("/servicii/colantare-camioane", "/colantare-tir-uri"),
+            ...to("/servicii/colantare-autocare", "/colantare-autocare", "/colantari-autocare"),
+            ...to("/servicii/colantare-autoutilitare", "/colantare-utilitare"),
+            ...to("/servicii/colantare-barci-avioane", "/colantare-barci", "/colantare-avioane"),
             ...to("/servicii/colantare-vitrine", "/folii-sablare-geam", "/folii-geam-window-graphics", "/2019/05/30/folie-electrostatica-pentru-suprafete-vitrate"),
             ...to("/servicii/autocolante-inscriptionari", "/stickere-asfalt-podea"),
             ...to("/servicii/tapet-printat", "/folia-autoadeziva-pentru-caramizi"),

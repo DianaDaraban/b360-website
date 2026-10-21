@@ -69,3 +69,6 @@
     .more { padding-top: 2px; font-size: clamp(0.82rem, 1.9vh, 0.95rem); }
     .more :global(.arrow-sticker) { width: clamp(28px, 4.4vh, 40px); height: clamp(28px, 4.4vh, 40px); }
 }
+
+/* the specialised pages (moto, trucks, coaches, vans, boats), grouped under one heading */
+.special { padding-block: 48px; background: rgb(243 234 225 / 0.72); }

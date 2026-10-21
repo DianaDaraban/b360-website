@@ -9,8 +9,9 @@ import { Icon } from "@/components/Icon"
 import { Rich } from "@/components/Rich"
 import { RevealTitle } from "@/components/RevealTitle"
 import { ScrollCue } from "@/components/ScrollCue"
+import { Specializate } from "@/components/Specializate"
 import { getProjects } from "@/lib/projects"
-import { getServiciu, servicii } from "@/data/servicii"
+import { getServiciu, toateServiciile, vehicule } from "@/data/servicii"
 import { site } from "@/lib/site"
 import styles from "./service.module.css"
 
@@ -20,6 +21,11 @@ const benefitsTitle: Record<string, string> = {
     "colantare-vitrine": "Beneficiile colantării vitrinelor",
     "folie-ppf": "Beneficiile foliei PPF",
     "tapet-printat": "De ce tapet printat",
+    "colantare-moto": "De ce colantare moto",
+    "colantare-camioane": "De ce să colantezi camioanele",
+    "colantare-autocare": "De ce să colantezi autocarele",
+    "colantare-autoutilitare": "De ce să inscripționezi flota",
+    "colantare-barci-avioane": "De ce folii, nu vopsea",
 }
 
 // rebuilt when something is saved in the admin, and at least once an hour
@@ -28,7 +34,7 @@ export const revalidate = 3600
 type Props = { params: Promise<{ slug: string }> }
 
 export function generateStaticParams() {
-    return servicii.map(s => ({ slug: s.slug }))
+    return toateServiciile.map(s => ({ slug: s.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -66,9 +72,12 @@ export default async function ServiciuPage({ params }: Props) {
     const proiecte = s.showcase ? await getProjects() : []
     const showcase = !s.showcase ? [] : s.showcase.projects ? proiecte.filter(p => s.showcase!.projects!.includes(p.slug)) : proiecte.filter(p => p.cat === s.portfolio.category)
     // one card per project; a single project shows its photos (up to five) instead
-    const cards = showcase.length === 1
+    const specializat = vehicule.some(v => v.slug === s.slug)
+    // a grid of at most seven cards; the rest is one click away in the gallery
+    const cards = (showcase.length === 1
         ? showcase[0].photos.slice(0, 5).map((f, k) => ({ key: f.src, photo: f, title: k ? null : showcase[0].title, count: k ? 0 : showcase[0].photos.length }))
-        : showcase.map(p => ({ key: p.slug, photo: p.photos[0], title: p.title, count: p.photos.length }))
+        // a loose photo with no client is named after the page ("Colantare moto"), not "Inscripționare"
+        : showcase.map(p => ({ key: p.slug, photo: p.photos[0], title: p.slug.startsWith("/") ? s.short : p.title, count: p.photos.length }))).slice(0, 7)
 
     return (
         <div className="snap-page">
@@ -77,7 +86,7 @@ export default async function ServiciuPage({ params }: Props) {
                 <Blobs variant="photo" />
                 <div className="container" style={{ "--n": s.title.split(" ").length } as React.CSSProperties}>
                     <Link href="/servicii" className={styles.back}><span aria-hidden="true">←</span> Toate serviciile</Link>
-                    <p className={`eyebrow ${styles.heroKicker}`}>Servicii B360</p>
+                    <p className={`eyebrow ${styles.heroKicker}`}>{specializat ? "Colantări specializate B360" : "Servicii B360"}</p>
                     <RevealTitle text={s.title} delay={0.2} />
                     <p className={styles.heroTeaser}>{s.teaser}</p>
                     <Link href="/oferta" className={`btn ${styles.heroCta}`}>Cere o ofertă personalizată</Link>
@@ -189,11 +198,21 @@ export default async function ServiciuPage({ params }: Props) {
                                 <h2>{s.extra.title}</h2>
                                 <p><Rich text={s.extra.text} /></p>
                             </div>
-                            <Link href={gallery} className="btn-ghost">{s.portfolio.label}</Link>
+                            <Link href={s.extra.link?.href ?? gallery} className="btn-ghost">{s.extra.link?.label ?? s.portfolio.label}</Link>
                         </div>
                     )}
                 </div>
             </section>
+
+            {/* the specialised pages, grouped: on the car wrap page and on each of them */}
+            {(specializat || s.slug === "colantare-auto") && (
+                // not a full screen of its own: a short strip before the contact screen
+                <section className={`section ${styles.special}`}>
+                    <div className="container">
+                        <Specializate current={s.slug} title={specializat ? "Mai colantăm" : "Colantări specializate"} />
+                    </div>
+                </section>
+            )}
 
             <div className="snap-slide snap-last snap-cta" data-label="Contact">
                 <ContactCta />

@@ -17,7 +17,7 @@ export type Serviciu = {
     comparison?: boolean     // the integral / partial car slider
     benefits: string[]
     benefitsPhoto: string
-    extra?: { title: string; question: string; text: string }
+    extra?: { title: string; question: string; text: string; link?: { href: string; label: string } }   // link: the banner button (else the gallery)
     faq: { q: string; a: string }[]
     portfolio: { label: string; category: string }
     // a screen with the service's projects from the gallery: those of its portfolio category, or the
@@ -48,7 +48,7 @@ export const servicii: Serviciu[] = [
         comparison: true,
         benefits: ["Promovare mobilă 24/7 – brandul tău e vizibil oriunde circulă mașina", "Protecție suplimentară pentru caroserie", "Design unic, personalizat pentru afacerea ta", "Soluție mai ieftină decât vopsirea clasică"],
         benefitsPhoto: "/img/wrap-green.webp",
-        extra: { title: "Colantări flotă auto pentru companii", question: "Ai mai multe mașini în companie?", text: "Realizăm **branding unitar pentru flote auto** – de la autoturisme la autoutilitare și camioane." },
+        extra: { title: "Colantări flotă auto pentru companii", question: "Ai mai multe mașini în companie?", text: "Realizăm **branding unitar pentru flote auto** – de la autoturisme la autoutilitare și camioane.", link: { href: "/servicii/colantare-autoutilitare", label: "Branding flote auto" } },
         faq: [
             { q: "Cât durează o colantare auto integrală?", a: "În medie, între 2 și 4 zile, în funcție de complexitatea proiectului." },
             { q: "Colantarea afectează vopseaua originală?", a: "Nu. Folia se aplică peste vopsea și o protejează; la o demontare făcută corect, vopseaua originală rămâne neatinsă." },
@@ -182,4 +182,167 @@ export const servicii: Serviciu[] = [
     },
 ]
 
-export const getServiciu = (slug: string) => servicii.find(s => s.slug === slug)
+// Pages for one kind of vehicle: the old site had one each and they brought most of the unpaid
+// visits from Google (moto, trucks, coaches, vans, boats). They are not in the menu or on the home
+// page; /servicii, the car wrap page and each other links to them, and they are in the sitemap.
+export const vehicule: Serviciu[] = [
+    {
+        slug: "colantare-moto",
+        title: "Colantare Moto și Stickere pentru Motociclete",
+        short: "Colantare moto",
+        teaser: "Carenaje, rezervor, jante, căști și kituri grafice",
+        image: "/lucrari/speciale/1.webp",
+        hero: "/lucrari/speciale/4.webp",
+        intro: "Colantăm motociclete întregi sau doar carenajele, rezervorul și jantele, refacem grafica originală și facem kituri personalizate.",
+        lead: {
+            title: "Motocicleta ta, cu grafica pe care o vrei",
+            text: "La **B360** colantăm **motociclete** de toate tipurile: sport, naked, enduro sau scutere. Schimbăm culoarea carenajelor, refacem **grafica originală** după model sau desenăm un **kit grafic** nou, de la idee până la montaj.",
+        },
+        typesTitle: "Ce colantăm pe motociclete",
+        typesText: "Fiecare motocicletă are zeci de piese mici și curbe strânse, așa că fiecare lucrare e făcută la comandă.",
+        types: [
+            { title: "Colantare carenaje", items: ["Schimbarea culorii pe toată motocicleta sau doar pe carenaje", "Finisaje lucioase, mate, satinate sau carbon", "Protejează vopseaua originală"] },
+            { title: "Kituri grafice și replici", items: ["Grafica originală refăcută după model", "Kituri personalizate, numere de concurs", "Dungi pe rezervor și pe jante"] },
+            { title: "Căști și accesorii", items: ["Colantare căști", "Stickere pentru cutii, genți și accesorii", "Logo-uri de echipă sau de sponsor"] },
+        ],
+        benefits: ["Aspect nou fără vopsire – carenajele se schimbă complet, iar vopseaua rămâne protejată dedesubt", "Replici fidele – refacem grafica originală deteriorată sau decolorată", "Design unic – kitul tău nu-l mai are nimeni", "Reversibil – folia se poate scoate când vrei să revii la original"],
+        benefitsPhoto: "/lucrari/speciale/1.webp",
+        faq: [
+            { q: "Cât costă colantarea unei motociclete?", a: "Depinde de model și de cât acoperim: un kit de dungi costă mult mai puțin decât schimbarea culorii pe toată motocicleta. Trimite-ne câteva poze cu motocicleta și ce ai vrea să facem, iar noi îți spunem prețul." },
+            { q: "Puteți reface stickerele originale ale motocicletei?", a: "Da. Refacem grafica originală după model sau după piesele vechi, cu folii rezistente la soare și la benzină." },
+            { q: "Colantați și căști?", a: "Da, colantăm căști și accesorii, cu grafica aleasă de tine sau potrivită cu motocicleta." },
+            { q: "Se poate colanta o motocicletă cu carenaje zgâriate?", a: "Zgârieturile fine se acoperă. Fisurile sau vopseaua care se cojește se văd prin folie, așa că le evaluăm înainte de montaj." },
+        ],
+        portfolio: { label: "Vezi lucrări moto, bărci și avioane", category: "speciale" },
+        showcase: { kicker: "Din atelier", projects: ["/lucrari/speciale/1.webp", "/lucrari/speciale/4.webp", "/lucrari/speciale/2.webp", "/lucrari/speciale/3.webp"] },
+        metaDescription: "Colantare moto: schimbarea culorii carenajelor, kituri grafice, replici ale stickerelor originale, dungi pe jante și colantare căști. Atelier B360, Corbeanca, Ilfov.",
+    },
+    {
+        slug: "colantare-camioane",
+        title: "Colantare Camioane, TIR-uri și Semiremorci",
+        short: "Camioane și TIR-uri",
+        teaser: "Cabine, semiremorci, prelate și cisterne",
+        image: "/lucrari/camioane/rkm-logistics-1.webp",
+        hero: "/lucrari/camioane/polach-1.webp",
+        intro: "Transformăm camioanele și semiremorcile în panouri publicitare care circulă prin toată țara și prin Europa.",
+        lead: {
+            title: "Cel mai mare panou publicitar al firmei tale are roți",
+            text: "La **B360** inscripționăm și colantăm **camioane**, **cabine de TIR**, **semiremorci** și **cisterne** pentru firme de transport, logistică și construcții. O semiremorcă are zeci de metri pătrați de reclamă care se văd pe autostradă în fiecare zi.",
+        },
+        typesTitle: "Ce colantăm",
+        typesText: "De la logo-ul de pe ușa cabinei până la grafica pe toată lungimea semiremorcii.",
+        types: [
+            { title: "Cabine de camion", items: ["Logo, date de contact și număr de flotă", "Colantare parțială sau integrală a cabinei", "Folii pentru suprafețe cu nituri și ondulații"] },
+            { title: "Semiremorci și prelate", items: ["Grafică pe laterale și pe spate", "Litere decupate sau print pe toată suprafața", "Pentru flote întregi, cu aceeași grafică pe fiecare vehicul"] },
+            { title: "Cisterne și autospeciale", items: ["Inscripționări obligatorii și branding", "Benzi reflectorizante", "Ambulanțe, utilaje și vehicule de intervenție"] },
+        ],
+        benefits: ["Reclamă pe autostradă – mii de oameni văd vehiculul în fiecare zi, fără cost lunar", "Flotă unitară – aceeași grafică, la aceleași dimensiuni, pe fiecare camion", "Folii pentru drum lung – rezistă la spălări dese, soare și intemperii", "Se schimbă ușor – când vinzi vehiculul sau schimbi identitatea, folia se îndepărtează"],
+        benefitsPhoto: "/lucrari/camioane/rkm-logistics-1.webp",
+        extra: { title: "Branding pentru flote de transport", question: "Ai mai multe camioane?", text: "Pregătim o singură grafică și o adaptăm pe fiecare tip de vehicul din flotă, ca toată flota să arate la fel." },
+        faq: [
+            { q: "Cât stă camionul în atelier?", a: "Depinde de cât acoperim. Programăm montajul ca vehiculul să stea cât mai puțin, iar la flotele mari lucrăm pe etape, câte un vehicul pe rând." },
+            { q: "Se poate colanta o prelată?", a: "Da. Pentru prelate folosim materiale potrivite pentru suprafețe flexibile, care nu se desprind la mișcarea prelatei." },
+            { q: "Realizați și grafica?", a: "Da. Pornim de la logo-ul și culorile firmei și pregătim grafica pe dimensiunile exacte ale fiecărui vehicul." },
+            { q: "Lucrați pentru firme din alte orașe?", a: "Da. Lucrăm cu firme de transport din toată țara. Spune-ne câte vehicule sunt și unde se află, ca să stabilim împreună montajul." },
+        ],
+        portfolio: { label: "Vezi portofoliu camioane și cisterne", category: "camioane" },
+        showcase: { kicker: "Flote pe care le-am colantat" },
+        metaDescription: "Colantare camioane, cabine de TIR, semiremorci, prelate și cisterne. Branding pentru flote de transport, logistică și construcții, din 2012. Atelier B360, Ilfov.",
+    },
+    {
+        slug: "colantare-autocare",
+        title: "Colantare Autocare și Microbuze",
+        short: "Autocare și microbuze",
+        teaser: "Pentru operatori de transport, cluburi sportive și școli",
+        image: "/lucrari/proiecte/hello-holidays/1.webp",
+        hero: "/lucrari/proiecte/flixbus/1.webp",
+        intro: "Colantăm autocare și microbuze pentru operatori de transport, agenții de turism, cluburi sportive și școli: integral sau doar cu identitatea firmei.",
+        lead: {
+            title: "Autocare care se recunosc de departe",
+            text: "La **B360** am colantat **autocare** pentru **FlixBus**, **Hello Holidays**, cluburi sportive precum **Rapid**, **Astra** sau **Handbal Club Buzău**, și flote de transport școlar. Un autocar are suprafețe mari și curbe lungi, iar grafica trebuie să se potrivească perfect pe fiecare panou.",
+        },
+        typesTitle: "Ce realizăm",
+        typesText: "De la culoarea firmei pe tot autocarul la o simplă inscripționare cu traseul și datele de contact.",
+        types: [
+            { title: "Colantare integrală", items: ["Toată caroseria în culorile firmei sau ale echipei", "Grafică printată pe toată lungimea autocarului", "Schimbarea culorii fără vopsire"] },
+            { title: "Inscripționări parțiale", items: ["Logo, trasee, date de contact", "Numere de flotă și inscripții obligatorii", "Pentru operatori cu multe vehicule"] },
+            { title: "Cluburi sportive și școli", items: ["Autocarul echipei, cu sigla și culorile clubului", "Microbuze școlare", "Branding pentru evenimente și turnee"] },
+        ],
+        benefits: ["Identitate pe drum – autocarul arată firma sau echipa în fiecare oraș prin care trece", "Flotă unitară – aceeași grafică pe autocare de modele diferite", "Protecție pentru vopsea – folia preia zgârieturile fine și razele UV", "Reversibil – la revânzare, autocarul revine la culoarea inițială"],
+        benefitsPhoto: "/lucrari/proiecte/hello-holidays/2.webp",
+        extra: { title: "Colantări pentru flote de autocare", question: "Ai o flotă de autocare?", text: "Am lucrat pentru operatori cu zeci de vehicule. Pregătim grafica o singură dată și o adaptăm pe fiecare model din flotă." },
+        faq: [
+            { q: "Cât durează colantarea unui autocar?", a: "O colantare integrală durează de obicei câteva zile, iar o inscripționare parțială mult mai puțin. Îți spunem termenul exact odată cu oferta." },
+            { q: "Ce folii folosiți pentru autocare?", a: "Folii cast premium, care urmăresc curbele caroseriei și rezistă la spălările dese din transportul de persoane." },
+            { q: "Puteți colanta și geamurile?", a: "Da. Pentru geamuri folosim folie microperforată: din afară se vede grafica, iar pasagerii văd normal afară." },
+            { q: "Lucrați și pentru cluburi sportive?", a: "Da, am colantat autocarele mai multor echipe. Pornim de la sigla și culorile clubului." },
+        ],
+        portfolio: { label: "Vezi portofoliu autocare", category: "autocare" },
+        showcase: { kicker: "Autocare colantate de noi" },
+        metaDescription: "Colantare autocare și microbuze: integral, parțial sau cu identitatea firmei. Am lucrat pentru FlixBus, Hello Holidays, cluburi sportive și școli. Atelier B360, Ilfov.",
+    },
+    {
+        slug: "colantare-autoutilitare",
+        title: "Colantare Autoutilitare și Branding Flote Auto",
+        short: "Autoutilitare și flote",
+        teaser: "Dube, autoutilitare și flote de firmă",
+        image: "/lucrari/proiecte/nasha/1.webp",
+        hero: "/lucrari/proiecte/the-home/1.webp",
+        intro: "Facem din dubele și autoutilitarele firmei tale reclamă care circulă zilnic prin oraș, de la un vehicul la flote întregi.",
+        lead: {
+            title: "Fiecare dubă a firmei tale poate fi o reclamă",
+            text: "La **B360** colantăm **autoutilitare**, **dube** și **flote auto** pentru firme de curierat, catering, construcții, service-uri și evenimente. Am lucrat, printre altele, pentru **Țiriac Auto**, **Holcim**, **DHL**, **Sameday** și **The Home**.",
+        },
+        typesTitle: "Ce realizăm",
+        typesText: "Alegem împreună cât acoperim: de la logo și telefon până la toată caroseria.",
+        types: [
+            { title: "Branding flote", items: ["Aceeași grafică pe toate vehiculele firmei", "Adaptată pe fiecare model, de la autoturism la dubă", "Montaj pe etape, ca flota să nu stea"] },
+            { title: "Inscripționări parțiale", items: ["Logo, servicii, telefon și site", "Litere decupate sau print", "Soluția cea mai accesibilă ca buget"] },
+            { title: "Colantare integrală", items: ["Toată caroseria cu grafica firmei", "Vizibilitate maximă în trafic", "Protejează vopseaua pentru revânzare"] },
+        ],
+        benefits: ["Reclamă fără chirie – plătești o singură dată, iar duba face reclamă ani la rând", "Încredere – un vehicul inscripționat arată o firmă serioasă când ajunge la client", "Flotă recognoscibilă – toate mașinile firmei arată la fel", "Păstrează valoarea – folia protejează vopseaua și se scoate la vânzarea vehiculului"],
+        benefitsPhoto: "/lucrari/proiecte/nasha/1.webp",
+        extra: { title: "Află prețul pe loc", question: "Vrei o estimare rapidă?", text: "În **calculatorul nostru** alegi autoutilitara, piesele pe care le colantăm și tipul de folie, iar prețul estimativ apare imediat.", link: { href: "/calculator", label: "Deschide calculatorul" } },
+        faq: [
+            { q: "Cât costă inscripționarea unei autoutilitare?", a: "Depinde de cât acoperim și de folie. Pentru o estimare rapidă, folosește calculatorul de pe site; pentru flote îți facem o ofertă pe vehicul." },
+            { q: "Cât durează?", a: "O inscripționare parțială se face de obicei într-o zi, iar o colantare integrală în câteva zile." },
+            { q: "Colantați flote mari?", a: "Da. Pregătim grafica o dată, o adaptăm pe fiecare model și montăm pe etape, ca firma să aibă mereu vehicule pe drum." },
+            { q: "Folia afectează vopseaua?", a: "Nu. O protejează, iar la îndepărtarea făcută corect vopseaua rămâne neatinsă." },
+        ],
+        portfolio: { label: "Vezi portofoliu autoutilitare", category: "autoutilitare" },
+        showcase: { kicker: "Flote colantate de noi" },
+        metaDescription: "Colantare autoutilitare și dube, branding pentru flote auto de firmă: inscripționări parțiale sau colantare integrală. Lucrări pentru Țiriac Auto, Holcim, DHL, Sameday.",
+    },
+    {
+        slug: "colantare-barci-avioane",
+        title: "Colantare Bărci, Iahturi și Avioane",
+        short: "Bărci și avioane",
+        teaser: "Nume, înmatriculări și branding de sponsori",
+        image: "/lucrari/speciale/drapper-1.webp",
+        hero: "/lucrari/speciale/drapper-1.webp",
+        intro: "Inscripționăm și colantăm bărci, iahturi și avioane ușoare: nume, înmatriculări, grafică și sigle de sponsori.",
+        lead: {
+            title: "Grafică pentru apă și aer",
+            text: "La **B360** am realizat inscripționări pentru **iahtul Allegro**, avioane de acrobație cu siglele sponsorilor **Draper** și **Evelor**, și bărci de agrement. Pentru apă și aer folosim folii făcute să reziste la soare, apă sărată și viteză.",
+        },
+        typesTitle: "Ce realizăm",
+        typesText: "De la numele bărcii până la branding complet pentru o echipă sau un sponsor.",
+        types: [
+            { title: "Bărci și iahturi", items: ["Numele ambarcațiunii și numărul de înmatriculare", "Dungi și grafică pe corp", "Siglele sponsorilor pentru regate"] },
+            { title: "Avioane ușoare", items: ["Înmatriculări și inscripții", "Branding de sponsori pentru show-uri aeriene", "Grafică pe fuzelaj și aripi"] },
+        ],
+        benefits: ["Folii pentru condiții grele – rezistă la soare, apă și vânt", "Fără vopsire – grafica se schimbă de la un sezon la altul", "Sponsori vizibili – siglele se văd de la distanță, la regate și la show-uri", "Grafică la comandă – pregătim fișierul pe dimensiunile exacte"],
+        benefitsPhoto: "/lucrari/speciale/allegro.webp",
+        faq: [
+            { q: "Rezistă folia pe o barcă?", a: "Da. Folosim folii pentru exterior, rezistente la apă, la soare și la apa sărată, montate pe suprafețe curate și uscate." },
+            { q: "Faceți numele și înmatricularea bărcii?", a: "Da, cu litere decupate din folie, la dimensiunile cerute." },
+            { q: "Lucrați în afara atelierului?", a: "Pentru bărci și avioane stabilim împreună locul montajului, în funcție de unde se află ambarcațiunea sau aeronava." },
+        ],
+        portfolio: { label: "Vezi lucrări moto, bărci și avioane", category: "speciale" },
+        showcase: { kicker: "Pe apă și în aer", projects: ["speciale-Draper Tools", "speciale-Allegro"] },
+        metaDescription: "Colantare și inscripționare bărci, iahturi și avioane ușoare: nume, înmatriculări, grafică și sigle de sponsori. Folii rezistente la apă și soare. B360, Ilfov.",
+    },
+]
+
+export const toateServiciile = [...servicii, ...vehicule]
+export const getServiciu = (slug: string) => toateServiciile.find(s => s.slug === slug)
