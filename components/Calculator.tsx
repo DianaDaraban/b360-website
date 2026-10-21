@@ -300,7 +300,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                             <label><input type="radio" name="calc-vat" checked={withVat} onChange={() => setWithVat(true)} /> cu TVA</label>
                             <label><input type="radio" name="calc-vat" checked={!withVat} onChange={() => setWithVat(false)} /> fără TVA</label>
                         </div>
-                        {result && selected.length > 0 && <small>{bodyTypes.find(b => b.id === body)!.label} · {mp(result.mp)} · {materialName}</small>}
+                        {result && selected.length > 0 && <small>{bodyTypes.find(b => b.id === body)!.label} · {materialName}</small>}
                         {result?.shortfall && <small className={styles.notice}>Pentru {durationName.toLowerCase()} recomandăm altă lucrare: folia aleasă ține până la {result.shortfall} ani.</small>}
                         <small className={styles.disclaimer}>Prețul final îl confirmăm după ce vedem mașina și grafica.</small>
                     </div>
@@ -314,7 +314,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                                     {result.lines.map(l => (
                                         <li key={l.id}>
                                             <i aria-hidden="true" />
-                                            <span>{panelLabel(l.id)}<small>{mp(l.mp)}</small></span>
+                                            <span>{panelLabel(l.id)}</span>
                                             <strong>{eur(l.total)}</strong>
                                             <button type="button" onClick={() => pick(l.id)} aria-label={`Scoate ${panelLabel(l.id)}`}>×</button>
                                         </li>
