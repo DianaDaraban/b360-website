@@ -79,7 +79,10 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
     const all = panelsOf(body)
     const show3d = MODELS_3D.has(body) && (!prefer2d || !hasDrawing(body))   // the big vehicles exist only in 3D
     // a full wrap also covers the pillars and the sills: painted and priced on their own
-    const pieces = useMemo(() => (job === "integrală" && selected.length ? [...selected, ...autoPanels(body)] : selected), [job, selected, body])
+    // pillars and sills are not drawn as pieces to pick: they are added for a full wrap, and for any
+    // film (print, cut, PPF...) once the whole car is selected
+    const wholeCar = all.length > 0 && all.every(id => selected.includes(id))
+    const pieces = useMemo(() => ((job === "integrală" || wholeCar) && selected.length ? [...selected, ...autoPanels(body)] : selected), [job, selected, body, wholeCar])
     const selection = useMemo(() => Object.fromEntries(pieces.map(id => [id, "colantare" as Mode])), [pieces])
     const partial = job === "integrală" && selected.length > 0 && selected.length < all.length
 
