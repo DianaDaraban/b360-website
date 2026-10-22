@@ -48,8 +48,9 @@
 .storyText p:not(:global(.eyebrow)) { font-size: 1.08rem; }
 .storyPhoto { position: relative; margin: 0; }
 .storyPhoto img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; border-radius: 24px; box-shadow: 0 18px 40px rgb(60 20 20 / 0.18); }
-/* corner already lifted (on a circle the fold shows past ~0.29 of the diameter), more on hover */
-.badge {
+/* corner already lifted (on a circle the fold shows past ~0.29 of the diameter), more on hover;
+   .storyPhoto in front so the shared .peel sticker style (position: relative) cannot win over it */
+.storyPhoto .badge {
     --c: 46px;
     --lift: 136deg;
     position: absolute;
