@@ -57,6 +57,8 @@ const localBusiness = {
         addressCountry: site.address.country,
     },
     areaServed: "RO",
+    // the business's own profiles, so Google ties them to the site
+    sameAs: [site.instagram],
     openingHoursSpecification: [{ "@type": "OpeningHoursSpecification", dayOfWeek: site.hours.days, opens: site.hours.opens, closes: site.hours.closes }],
     parentOrganization: { "@type": "Organization", name: site.company.name, taxID: site.company.cui },
 }

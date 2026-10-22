@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 const canale = [
     { icon: "phone", label: "Telefon", value: site.phone, href: site.phoneHref, note: "cel mai rapid răspuns" },
     { icon: "at", label: "Email", value: site.email, href: `mailto:${site.email}`, note: "pentru detalii și fișiere" },
+    { icon: "instagram", label: "Instagram", value: "@b360.ro", href: site.instagram, note: "cele mai noi lucrări" },
     { icon: "home", label: "Atelier", value: `${site.address.street}, ${site.address.locality}`, href: site.wazeUrl, note: "deschide în Waze" },
 ] as const
 
@@ -35,7 +36,7 @@ export default function ContactPage() {
                     <ul className={styles.channels}>
                         {canale.map(c => (
                             <li key={c.label}>
-                                <a href={c.href} className={styles.channel} {...(c.icon === "home" ? { target: "_blank", rel: "noopener" } : {})}>
+                                <a href={c.href} className={styles.channel} {...(c.icon === "home" || c.icon === "instagram" ? { target: "_blank", rel: "noopener" } : {})}>
                                     <span className={`${styles.channelIcon} peel`}><Icon name={c.icon} size={26} /></span>
                                     <span className={styles.channelText}>
                                         <small>{c.label}</small>

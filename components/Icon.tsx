@@ -50,6 +50,15 @@ const icons: Record<IconName, { box: string; node: React.ReactNode }> = {
         box: "0 0 120 120",
         node: <path transform="translate(15 15) scale(2.5)" fill="currentColor" d="M32.4073 24.5L27.3273 23.92C26.1073 23.78 24.9073 24.2 24.0473 25.06L20.3673 28.74C14.7073 25.86 10.0673 21.24 7.18735 15.56L10.8873 11.86C11.7473 11 12.1673 9.8 12.0273 8.58L11.4473 3.54C11.2073 1.52 9.50735 0 7.46735 0H4.00735C1.74735 0 -0.132653 1.88 0.00734696 4.14C1.06735 21.22 14.7273 34.86 31.7873 35.92C34.0473 36.06 35.9273 34.18 35.9273 31.92V28.46C35.9473 26.44 34.4273 24.74 32.4073 24.5Z" />,
     },
+    // camera outline in the icon colour, the lens dot in red, like the other two-tone icons
+    instagram: {
+        box: "0 0 28 28",
+        node: <>
+            <rect x="2" y="2" width="24" height="24" rx="7" fill="none" stroke="currentColor" strokeWidth="2.8" />
+            <circle cx="14" cy="14" r="5.4" fill="none" stroke="currentColor" strokeWidth="2.8" />
+            <circle cx="20.6" cy="7.4" r="1.9" fill="var(--red)" />
+        </>,
+    },
     // the bottom-bar mail "@" (typographic, one colour)
     mail: {
         box: "4 0 31 32",
