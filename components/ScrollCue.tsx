@@ -49,7 +49,7 @@ export function ScrollCue() {
                     </li>
                 ))}
             </ol>
-            <button type="button" className={styles.hint} data-hidden={last || undefined} onClick={() => go(active + 1)} aria-label="Secțiunea următoare">
+            <button type="button" className={styles.hint} data-hidden={last || undefined} onClick={() => go(active + 1)} aria-label="Scroll la secțiunea următoare">
                 <span className={styles.line} />
                 <span className={styles.word}>scroll</span>
             </button>

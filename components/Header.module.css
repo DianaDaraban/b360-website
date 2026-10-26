@@ -276,7 +276,7 @@
     .navLink:hover::after, .navLink[aria-current="page"]::after { scale: 1 1; }
     .navLink[aria-current="page"] { color: var(--red); }
     /* Calculator stands out: an outlined red pill whose icon "types" every few seconds */
-    .calcLink { padding: 7px 16px 7px 12px; border: 1.5px solid rgb(238 51 56 / 0.6); border-radius: 999px; color: var(--red); background: rgb(238 51 56 / 0.06); transition: color 0.25s, background 0.3s, border-color 0.3s; }
+    .calcLink { padding: 7px 16px 7px 12px; border: 1.5px solid rgb(238 51 56 / 0.6); border-radius: 999px; color: var(--red-dark); background: rgb(238 51 56 / 0.06); transition: color 0.25s, background 0.3s, border-color 0.3s; }
     .calcLink::after { display: none; }
     .calcLink:hover, .calcLink[aria-current="page"] { color: var(--cream); background: var(--red); border-color: var(--red); }
     .calcLink svg { animation: calcTap 4s ease-in-out infinite; }

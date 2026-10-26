@@ -29,7 +29,8 @@ export default async function Home() {
             <section className={`snap-slide hero-sheen ${styles.hero}`} data-label="Început">
                 <div className={styles.slides} aria-hidden="true">
                     {heroPhotos.map((src, i) => (
-                        <Image key={src} src={src} alt="" fill priority={i === 0} sizes="100vw" className={styles.slide} />
+                        // the first photo is the LCP: fetched first; the others only fade in after 5 s, so they wait their turn
+                        <Image key={src} src={src} alt="" fill preload={i === 0} fetchPriority={i === 0 ? "high" : "low"} sizes="100vw" className={styles.slide} />
                     ))}
                 </div>
                 <Blobs variant="photo" />
