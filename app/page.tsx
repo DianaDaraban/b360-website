@@ -96,7 +96,7 @@ export default async function Home() {
                     <Carousel label="Clienți" className={styles.clientStrip}>
                         {clienti.map((c, i) => {
                             const style = { "--tilt": `${tilts[i % tilts.length]}deg` } as React.CSSProperties
-                            const logo = <img src={`/clienti/${c.logo}.webp`} alt={c.name} width={300} height={139} loading="lazy" style={logoBox(c.logo, 94)} />
+                            const logo = <img src={`/clienti/${c.logo}.webp`} alt={c.name} width={300} height={139} loading="lazy" style={logoBox(c.logo)} />
                             return (
                                 <li key={c.slug}>
                                     {c.match

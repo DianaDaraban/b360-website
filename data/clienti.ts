@@ -1,5 +1,5 @@
-// Client logos in their own colours (scripts/import-client-logos.mjs; the gallery turns them light
-// with a filter, the home carousel shows them as they are). `match` picks the client's photos in the
+// Client logos in their own colours (scripts/import-client-logos.mjs), shown on beige stickers in
+// the home and portfolio carousels. `match` picks the client's photos in the
 // gallery by the name taken from the photo file names; logos without a match are shown but
 // do not filter.
 export type Client = { slug: string; name: string; logo: string; match?: RegExp }
@@ -39,11 +39,11 @@ export const clienti: Client[] = [
 ]
 
 import type React from "react"
-// a logo's box on its round sticker: as large as fits inside a circle a little smaller than the disc
+// a logo's box on its round sticker: as large as fits inside a circle just inside the disc
 // (corners included, so wide logos never touch the edge), centred; sized from its aspect ratio.
-// room: that circle's diameter in % of the disc (the home carousel fills the disc, the flap may cover a bit)
+// room: that circle's diameter in % of the disc (the flap may cover a bit of the logo)
 import aspects from "./clienti-logos.json"
-export function logoBox(logo: string, room = 70): React.CSSProperties {
+export function logoBox(logo: string, room = 94): React.CSSProperties {
     const a = (aspects as Record<string, number>)[logo] ?? 2
     const w = Math.min(room + 2, room / Math.sqrt(1 + 1 / (a * a)))
     const h = Math.min(room * 0.77, w / a)
