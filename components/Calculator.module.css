@@ -215,9 +215,9 @@
 .total .notice { background: rgb(247 168 35 / 0.22); color: var(--cream); }
 .total .disclaimer { margin-top: 6px; font-size: 0.78rem; color: rgb(243 234 225 / 0.65); }
 /* call / WhatsApp under the estimate, on the dark card */
-.quick { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 12px; margin-top: 12px; }
-.quick :global(.btn-ghost) { border-color: rgb(243 234 225 / 0.85); color: var(--cream); }
-.quick :global(.btn-ghost):hover, .quick :global(.btn-ghost):focus-visible { background: var(--cream); border-color: var(--cream); color: var(--ink-strong); }
+.reach { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 12px; margin-top: 12px; }
+.reach :global(.btn-ghost) { border-color: rgb(243 234 225 / 0.85); color: var(--cream); }
+.reach :global(.btn-ghost):hover, .reach :global(.btn-ghost):focus-visible { background: var(--cream); border-color: var(--cream); color: var(--ink-strong); }
 .vat { display: flex; gap: 16px; justify-content: center; font-size: 0.92rem; font-weight: 600; color: var(--cream); }
 .vat label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
 .vat input { width: 18px; height: 18px; accent-color: #17a398; }
@@ -266,8 +266,8 @@
 .liveTotal[data-empty] { background: var(--ink-strong); box-shadow: 0 10px 26px rgb(0 0 0 / 0.25); }
 /* round WhatsApp sticker, in the teal of the total */
 .floatIcon {
-    --c: 16px;
-    --lift: 140deg;
+    --c: 24px;
+    --lift: 128deg;
     flex: none;
     display: grid;
     place-items: center;
@@ -278,7 +278,7 @@
     color: var(--white);
     box-shadow: 0 10px 26px rgb(8 60 56 / 0.35);
 }
-.float .floatIcon:hover, .float .floatIcon:focus-visible { --c: 22px; --lift: 124deg; }
+.float .floatIcon:hover, .float .floatIcon:focus-visible { --c: 30px; --lift: 112deg; }
 
 /* phones: the car uses the full width; the turn arrows sit at the bottom beside the panel name */
 @media (max-width: 639px) {

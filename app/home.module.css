@@ -159,7 +159,9 @@
 .clients h2, .services h2 { text-align: center; }
 .clientStrip { --carousel-gap: 30px; }
 .clientStrip li { display: grid; place-items: center; padding: 4px; }
-.clientStrip :global(.client-sticker) { --d: 92px; }
+.clientStrip :global(.client-sticker) { --d: 92px; background: radial-gradient(circle at 40% 35%, #f3eae1 55%, #ece8e6); }
+/* on the beige disc each logo keeps its own colours, so the brands are recognisable at a glance */
+.clientStrip :global(.client-sticker) img { filter: none; }
 .recent { padding-block: 34px 40px; }
 /* clients + recent work: one snap slide, stacked from the top */
 .pair { justify-content: flex-start; }

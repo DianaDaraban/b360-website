@@ -312,9 +312,9 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                         <small className={styles.disclaimer}>Prețul final îl confirmăm după ce vedem mașina și grafica.</small>
                         {/* the moment the price is known: one tap to talk to us, before the form below */}
                         {whatsappHref && (
-                            <div className={styles.quick}>
-                                <a href={site.phoneHref} className="btn"><Icon name="phone" size={22} uncut />Sună acum</a>
-                                <a href={whatsappHref} target="_blank" rel="noopener" className="btn-ghost"><Icon name="whatsapp" size={22} uncut />Trimite pe WhatsApp</a>
+                            <div className={styles.reach}>
+                                <a href={site.phoneHref} className="btn"><Icon name="phone" size={30} uncut />Sună acum</a>
+                                <a href={whatsappHref} target="_blank" rel="noopener" className="btn-ghost"><Icon name="whatsapp" size={30} uncut />Trimite pe WhatsApp</a>
                             </div>
                         )}
                     </div>
@@ -379,7 +379,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                     <strong>{totalText ?? "alege piesele"}</strong>
                     {totalText && <small>{vatName} · vezi detalii</small>}
                 </a>
-                {whatsappHref && <a href={whatsappHref} target="_blank" rel="noopener" className={`${styles.floatIcon} peel`} aria-label="Trimite estimarea pe WhatsApp"><Icon name="whatsapp" size={24} uncut /></a>}
+                {whatsappHref && <a href={whatsappHref} target="_blank" rel="noopener" className={`${styles.floatIcon} peel`} aria-label="Trimite estimarea pe WhatsApp"><Icon name="whatsapp" size={34} uncut /></a>}
             </div>
         </SmartForm>
     )
