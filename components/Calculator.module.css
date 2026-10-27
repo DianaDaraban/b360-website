@@ -279,6 +279,8 @@
     box-shadow: 0 10px 26px rgb(8 60 56 / 0.35);
 }
 .float .floatIcon:hover, .float .floatIcon:focus-visible { --c: 30px; --lift: 112deg; }
+/* the speech bubble's tail weighs the glyph down and to the left: nudged so the bubble sits in the middle */
+.floatIcon svg { translate: 2px -1.5px; }
 
 /* phones: the car uses the full width; the turn arrows sit at the bottom beside the panel name */
 @media (max-width: 639px) {

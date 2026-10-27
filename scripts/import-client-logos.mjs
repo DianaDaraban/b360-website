@@ -1,4 +1,4 @@
-// Client logos in their own colours, from the vector files in ../logo-uri: each SVG becomes
+// Client logos in their own colours, from the files in ../logo-uri (SVG, or a transparent PNG): each becomes
 // public/clienti/<logo>.webp (trimmed, transparent, at most 600×300) and its aspect ratio goes to
 // data/clienti-logos.json, which sizes it on the round sticker.
 // usage: node scripts/import-client-logos.mjs [svgDir] [outDir]
@@ -10,7 +10,7 @@ const ROOT = path.resolve(import.meta.dirname, "..")
 const SRC = process.argv[2] ?? path.resolve(ROOT, "../logo-uri")
 const OUT = process.argv[3] ?? path.join(ROOT, "public/clienti")
 
-// vector file → logo name in data/clienti.ts
+// logo file → logo name in data/clienti.ts
 const FILES = {
     "Crucea Rosie Romania Logo Vector-01.svg": "crucea-rosie",
     "HANDBAL_CLUB_BUZAU-01.svg": "handbal-club-buzau",
@@ -20,7 +20,7 @@ const FILES = {
     "Mercedes-Benz-01.svg": "mercedes-benz",
     "OPTIMAL_SOLUTIONS-01.svg": "optimal-solutions",
     "STB-01.svg": "stb",
-    "TIRIAC_AUTO-01.svg": "tiriac-auto",
+    "TiriacAuto.png": "tiriac-auto",
     "TRANSFERO-01.svg": "transfero",
     "TheHome-01.svg": "the-home",
     "castrol-seeklogo-01.svg": "castrol",
@@ -50,7 +50,7 @@ async function render(file, density = 300) {
     const png = await sharp(path.join(SRC, file), { density }).trim().png().toBuffer()
     const { width, height } = await sharp(png).metadata()
     const short = Math.min(600 / width, 300 / height)
-    return short > 1.05 && density < 2400 ? render(file, Math.min(2400, Math.ceil(density * short))) : png
+    return short > 1.05 && density < 2400 && file.endsWith(".svg") ? render(file, Math.min(2400, Math.ceil(density * short))) : png
 }
 
 async function knockOutWhite(png) {
