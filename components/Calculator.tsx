@@ -133,7 +133,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
 
     const totalText = result && selected.length ? `${eur(result.low)} – ${eur(result.high)}` : null
     // the WhatsApp message arrives already written, with the configuration and the estimate
-    const whatsappText = totalText && `Bună ziua! Am folosit calculatorul de pe b360.ro: ${bodyTypes.find(b => b.id === body)!.label}, ${jobName.toLowerCase()}, ${result!.lines.length} ${result!.lines.length === 1 ? "piesă" : "piese"}, estimare ${totalText} ${vatName}. Aș dori o ofertă.`
+    const whatsappHref = totalText && `${site.whatsapp}?text=${encodeURIComponent(`Bună ziua! Am folosit calculatorul de pe b360.ro: ${bodyTypes.find(b => b.id === body)!.label}, ${jobName.toLowerCase()}, ${result!.lines.length} ${result!.lines.length === 1 ? "piesă" : "piese"}, estimare ${totalText} ${vatName}. Aș dori o ofertă.`)}`
 
     return (
         <SmartForm kind="calculator" className={styles.calc} aria-label="Calculator cost colantare">
@@ -311,10 +311,10 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                         {result?.shortfall && <small className={styles.notice}>Pentru {durationName.toLowerCase()} recomandăm altă lucrare: folia aleasă ține până la {result.shortfall} ani.</small>}
                         <small className={styles.disclaimer}>Prețul final îl confirmăm după ce vedem mașina și grafica.</small>
                         {/* the moment the price is known: one tap to talk to us, before the form below */}
-                        {whatsappText && (
+                        {whatsappHref && (
                             <div className={styles.quick}>
                                 <a href={site.phoneHref} className="btn"><Icon name="phone" size={22} uncut />Sună acum</a>
-                                <a href={`${site.whatsapp}?text=${encodeURIComponent(whatsappText)}`} target="_blank" rel="noopener" className="btn-ghost"><Icon name="whatsapp" size={22} uncut />Trimite pe WhatsApp</a>
+                                <a href={whatsappHref} target="_blank" rel="noopener" className="btn-ghost"><Icon name="whatsapp" size={22} uncut />Trimite pe WhatsApp</a>
                             </div>
                         )}
                     </div>
@@ -371,12 +371,16 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
             </Step>
             </div>
 
-            {/* the running total stays in view while the questions are answered */}
-            <a href="#calc-estimare" className={styles.liveTotal} data-empty={!totalText || undefined}>
-                <span>Estimare</span>
-                <strong>{totalText ?? "alege piesele"}</strong>
-                {totalText && <small>{vatName} · vezi detalii</small>}
-            </a>
+            {/* the running total stays in view while the questions are answered; once there is a price,
+                WhatsApp rides beside it as a round sticker */}
+            <div className={styles.float}>
+                <a href="#calc-estimare" className={styles.liveTotal} data-empty={!totalText || undefined}>
+                    <span>Estimare</span>
+                    <strong>{totalText ?? "alege piesele"}</strong>
+                    {totalText && <small>{vatName} · vezi detalii</small>}
+                </a>
+                {whatsappHref && <a href={whatsappHref} target="_blank" rel="noopener" className={`${styles.floatIcon} peel`} aria-label="Trimite estimarea pe WhatsApp"><Icon name="whatsapp" size={24} uncut /></a>}
+            </div>
         </SmartForm>
     )
 }

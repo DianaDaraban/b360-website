@@ -217,6 +217,7 @@
 /* call / WhatsApp under the estimate, on the dark card */
 .quick { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 12px; margin-top: 12px; }
 .quick :global(.btn-ghost) { border-color: rgb(243 234 225 / 0.85); color: var(--cream); }
+.quick :global(.btn-ghost):hover, .quick :global(.btn-ghost):focus-visible { background: var(--cream); border-color: var(--cream); color: var(--ink-strong); }
 .vat { display: flex; gap: 16px; justify-content: center; font-size: 0.92rem; font-weight: 600; color: var(--cream); }
 .vat label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
 .vat input { width: 18px; height: 18px; accent-color: #17a398; }
@@ -236,12 +237,18 @@
 .sendRow { display: grid; gap: 14px; justify-items: center; }
 .sendRow :global(.consent) { justify-self: start; }
 
-/* the running total, stuck to the bottom of the screen while scrolling through the steps */
-.liveTotal {
+/* the running total, stuck to the bottom of the screen while scrolling through the steps,
+   with the WhatsApp sticker beside it once there is a price */
+.float {
     position: sticky;
     bottom: calc(var(--bar-h) + env(safe-area-inset-bottom) + 10px);
     z-index: 30;
     justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.liveTotal {
     display: grid;
     grid-template-columns: auto auto;
     align-items: center;
@@ -257,6 +264,21 @@
 .liveTotal strong { font: 800 1.05rem/1.2 var(--font-head); color: var(--white); }
 .liveTotal small { grid-column: 1 / -1; justify-self: end; font-size: 0.75rem; opacity: 0.85; }
 .liveTotal[data-empty] { background: var(--ink-strong); box-shadow: 0 10px 26px rgb(0 0 0 / 0.25); }
+/* round WhatsApp sticker, in the teal of the total */
+.floatIcon {
+    --c: 16px;
+    --lift: 140deg;
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: linear-gradient(40deg, #0b4f4a, #13877e);
+    color: var(--white);
+    box-shadow: 0 10px 26px rgb(8 60 56 / 0.35);
+}
+.float .floatIcon:hover, .float .floatIcon:focus-visible { --c: 22px; --lift: 124deg; }
 
 /* phones: the car uses the full width; the turn arrows sit at the bottom beside the panel name */
 @media (max-width: 639px) {
@@ -271,7 +293,11 @@
     .tick { top: 11px; left: 12px; }
     .four { grid-template-columns: repeat(2, 1fr); }
     /* above the bar and clear of the phone sticker that rises out of it */
-    .liveTotal { justify-self: stretch; grid-template-columns: auto 1fr; bottom: calc(var(--bar-h) + env(safe-area-inset-bottom) + 46px); }
+    .float { justify-self: stretch; gap: 8px; bottom: calc(var(--bar-h) + env(safe-area-inset-bottom) + 46px); }
+    .liveTotal { flex: 1; min-width: 0; grid-template-columns: auto 1fr; column-gap: 8px; padding-inline: 14px; }
+    .liveTotal span { font-size: 0.66rem; letter-spacing: 0.08em; }
+    .liveTotal strong { font-size: 0.98rem; white-space: nowrap; }
+    .floatIcon { width: 46px; height: 46px; }
     .liveTotal strong { text-align: right; }
 }
 @media (min-width: 640px) {
@@ -294,7 +320,7 @@
     .carRow { grid-template-columns: 1fr 300px; align-items: start; }
 }
 @media (min-width: 1024px) {
-    .liveTotal { bottom: 18px; }
+    .float { bottom: 18px; }
 }
 
 /* the shared form fields are made for the photo pages (cream labels): dark labels on this light page */
