@@ -214,6 +214,9 @@
 .total small { font-size: 0.85rem; color: rgb(243 234 225 / 0.82); }
 .total .notice { background: rgb(247 168 35 / 0.22); color: var(--cream); }
 .total .disclaimer { margin-top: 6px; font-size: 0.78rem; color: rgb(243 234 225 / 0.65); }
+/* call / WhatsApp under the estimate, on the dark card */
+.quick { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 12px; margin-top: 12px; }
+.quick :global(.btn-ghost) { border-color: rgb(243 234 225 / 0.85); color: var(--cream); }
 .vat { display: flex; gap: 16px; justify-content: center; font-size: 0.92rem; font-weight: 600; color: var(--cream); }
 .vat label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
 .vat input { width: 18px; height: 18px; accent-color: #17a398; }

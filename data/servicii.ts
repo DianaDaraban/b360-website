@@ -15,6 +15,7 @@ export type Serviciu = {
     typesText: string
     types: { title: string; items: string[] }[]
     comparison?: boolean     // the integral / partial car slider
+    calculator?: boolean     // the calculator prices it: "Află prețul pe loc" in the hero
     benefits: string[]
     benefitsPhoto: string
     extra?: { title: string; question: string; text: string; link?: { href: string; label: string } }   // link: the banner button (else the gallery)
@@ -29,6 +30,7 @@ export type Serviciu = {
 export const servicii: Serviciu[] = [
     {
         slug: "colantare-auto",
+        calculator: true,
         title: "Colantări Auto Integrale și Parțiale",
         short: "Colantări auto",
         teaser: "Integrale sau parțiale, pentru branding sau schimbare de culoare",
@@ -151,6 +153,7 @@ export const servicii: Serviciu[] = [
     },
     {
         slug: "folie-ppf",
+        calculator: true,
         title: "Folie PPF – Protecție Transparentă pentru Vopsea",
         short: "Folie PPF",
         teaser: "Peliculă transparentă împotriva pietricelelor și zgârieturilor",
@@ -219,6 +222,7 @@ export const vehicule: Serviciu[] = [
     },
     {
         slug: "colantare-camioane",
+        calculator: true,
         title: "Colantare Camioane, TIR-uri și Semiremorci",
         short: "Camioane și TIR-uri",
         teaser: "Cabine, semiremorci, prelate și cisterne",
@@ -251,6 +255,7 @@ export const vehicule: Serviciu[] = [
     },
     {
         slug: "colantare-autocare",
+        calculator: true,
         title: "Colantare Autocare și Microbuze",
         short: "Autocare și microbuze",
         teaser: "Pentru operatori de transport, cluburi sportive și școli",
@@ -283,6 +288,7 @@ export const vehicule: Serviciu[] = [
     },
     {
         slug: "colantare-autoutilitare",
+        calculator: true,
         title: "Colantare Autoutilitare și Branding Flote Auto",
         short: "Autoutilitare și flote",
         teaser: "Dube, autoutilitare și flote de firmă",

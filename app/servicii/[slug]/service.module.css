@@ -12,7 +12,10 @@
 .hero h1 { margin: 0 0 6px; max-width: 1000px; font-size: clamp(2.2rem, 8.4vw, 4.8rem); line-height: 1.08; }
 /* the title is revealed word by word by red blocks (RevealTitle, styles in globals) */
 .heroTeaser { max-width: 560px; font-size: clamp(1.05rem, 3.8vw, 1.25rem); color: var(--cream); animation: fadeUp 0.8s var(--ease-out) both; animation-delay: calc(0.6s + var(--n) * 0.12s); }
-.heroCta { animation: pop 0.7s cubic-bezier(0.34, 1.5, 0.5, 1) both; animation-delay: calc(0.8s + var(--n) * 0.12s); }
+.heroCta { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 18px; animation: pop 0.7s cubic-bezier(0.34, 1.5, 0.5, 1) both; animation-delay: calc(0.8s + var(--n) * 0.12s); }
+/* the outlined pill over the photo, with the light veil of the home hero */
+.heroCta :global(.btn-ghost) { background: rgb(20 14 16 / 0.28); border-color: rgb(243 234 225 / 0.85); color: var(--cream); }
+.heroCta :global(.btn-ghost):hover { background: var(--cream); color: var(--ink-strong); }
 @keyframes fadeUp { from { opacity: 0; translate: 0 16px; } }
 @keyframes pop { from { opacity: 0; scale: 0.8; } }
 .back {

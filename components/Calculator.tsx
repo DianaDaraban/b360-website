@@ -8,6 +8,8 @@ import { Consent, SmartForm } from "./SmartForm"
 import { autoPanels, bodyTypes, hasDrawing, panelLabel, panelsOf, sidePanels, type BodyId, type Mode, type View } from "@/data/calculator"
 import { track } from "@/lib/analytics"
 import { DURATIONS, estimate, JOB_TYPES, jobAvailable, pickMaterial, subtypesOf, type Graphics, type JobType, type PricingConfig } from "@/lib/pricing"
+import { site } from "@/lib/site"
+import { Icon } from "./Icon"
 import form from "@/app/form.module.css"
 import styles from "./Calculator.module.css"
 
@@ -130,6 +132,8 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
     const subtypes = subtypesOf(pricing, job)
 
     const totalText = result && selected.length ? `${eur(result.low)} – ${eur(result.high)}` : null
+    // the WhatsApp message arrives already written, with the configuration and the estimate
+    const whatsappText = totalText && `Bună ziua! Am folosit calculatorul de pe b360.ro: ${bodyTypes.find(b => b.id === body)!.label}, ${jobName.toLowerCase()}, ${result!.lines.length} ${result!.lines.length === 1 ? "piesă" : "piese"}, estimare ${totalText} ${vatName}. Aș dori o ofertă.`
 
     return (
         <SmartForm kind="calculator" className={styles.calc} aria-label="Calculator cost colantare">
@@ -306,6 +310,13 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                         {result && selected.length > 0 && <small>{bodyTypes.find(b => b.id === body)!.label} · {materialName}</small>}
                         {result?.shortfall && <small className={styles.notice}>Pentru {durationName.toLowerCase()} recomandăm altă lucrare: folia aleasă ține până la {result.shortfall} ani.</small>}
                         <small className={styles.disclaimer}>Prețul final îl confirmăm după ce vedem mașina și grafica.</small>
+                        {/* the moment the price is known: one tap to talk to us, before the form below */}
+                        {whatsappText && (
+                            <div className={styles.quick}>
+                                <a href={site.phoneHref} className="btn"><Icon name="phone" size={22} uncut />Sună acum</a>
+                                <a href={`${site.whatsapp}?text=${encodeURIComponent(whatsappText)}`} target="_blank" rel="noopener" className="btn-ghost"><Icon name="whatsapp" size={22} uncut />Trimite pe WhatsApp</a>
+                            </div>
+                        )}
                     </div>
                     <div className={styles.lines}>
                         {!selected.length || !result ? (

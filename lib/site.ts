@@ -6,6 +6,7 @@ export const site = {
     phoneHref: "tel:+40745094195",
     email: "office@b360.ro",
     instagram: "https://www.instagram.com/b360.ro",
+    whatsapp: "https://wa.me/40745094195",
     address: { street: "Strada Ogorului 2", locality: "Corbeanca", region: "Ilfov", country: "RO" },
     founded: 2012,
     hours: { label: "Luni – Vineri, 9:00 – 18:00", days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "18:00" },
@@ -30,4 +31,4 @@ export const nav = [
     { href: "/contact", label: "Contact", icon: "at" },
 ] as const
 
-export type IconName = (typeof nav)[number]["icon"] | "phone" | "calculator" | "check" | "arrow" | "store" | "printer" | "mail" | "instagram"
+export type IconName = (typeof nav)[number]["icon"] | "phone" | "calculator" | "check" | "arrow" | "store" | "printer" | "mail" | "instagram" | "whatsapp"

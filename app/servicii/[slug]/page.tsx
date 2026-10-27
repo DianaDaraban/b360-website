@@ -89,7 +89,10 @@ export default async function ServiciuPage({ params }: Props) {
                     <p className={`eyebrow ${styles.heroKicker}`}>{specializat ? "Colantări specializate B360" : "Servicii B360"}</p>
                     <RevealTitle text={s.title} delay={0.2} />
                     <p className={styles.heroTeaser}>{s.teaser}</p>
-                    <Link href="/oferta" className={`btn ${styles.heroCta}`}>Cere o ofertă personalizată</Link>
+                    <div className={styles.heroCta}>
+                        <Link href="/oferta" className="btn">Cere o ofertă personalizată</Link>
+                        {s.calculator && <Link href="/calculator" className="btn-ghost">Află prețul pe loc</Link>}
+                    </div>
                 </div>
             </section>
 
