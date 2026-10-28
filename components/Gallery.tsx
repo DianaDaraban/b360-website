@@ -4,6 +4,8 @@ import Image from "next/image"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { Carousel } from "./Carousel"
+import { Icon } from "./Icon"
+import { site } from "@/lib/site"
 import { logoBox, tilts } from "@/data/clienti"
 import type { Proiect } from "@/data/lucrari"
 import styles from "./Gallery.module.css"
@@ -187,6 +189,15 @@ export function Gallery({ items, categories, clients }: { items: Proiect[]; cate
                                 ))}
                             </ul>
                         )}
+                        {/* the moment someone likes a job: one tap to ask for the same, the message naming it */}
+                        <a
+                            href={`${site.whatsapp}?text=${encodeURIComponent(`Bună ziua! Am văzut pe site lucrarea „${project.title}” și aș vrea ceva similar.`)}`}
+                            target="_blank"
+                            rel="noopener"
+                            className={`btn ${styles.lbAsk}`}
+                        >
+                            <Icon name="whatsapp" size={26} uncut />Vreau o lucrare similară
+                        </a>
                     </figure>
                 )}
                 {/* the neighbours load in the background, so the arrows feel instant */}
