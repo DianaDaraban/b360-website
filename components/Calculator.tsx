@@ -313,8 +313,8 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                         {/* the moment the price is known: one tap to talk to us, before the form below */}
                         {whatsappHref && (
                             <div className={styles.reach}>
-                                <a href={site.phoneHref} className="btn"><Icon name="phone" size={30} uncut />Sună acum</a>
-                                <a href={whatsappHref} target="_blank" rel="noopener" className="btn-ghost"><Icon name="whatsapp" size={30} uncut />Trimite pe WhatsApp</a>
+                                <a href={site.phoneHref} className="btn"><Icon name="phone" size={30} uncut />Sună</a>
+                                <a href={whatsappHref} target="_blank" rel="noopener" className="btn-ghost" aria-label="Trimite estimarea pe WhatsApp"><Icon name="whatsapp" size={30} uncut />WhatsApp</a>
                             </div>
                         )}
                     </div>
