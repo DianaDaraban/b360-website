@@ -215,11 +215,11 @@
 .total .notice { background: rgb(247 168 35 / 0.22); color: var(--cream); }
 .total .disclaimer { margin-top: 6px; font-size: 0.78rem; color: rgb(243 234 225 / 0.65); }
 /* call / WhatsApp under the estimate, on the dark card */
-.reach { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; width: min(100%, 360px); margin: 12px auto 0; }
-/* the two buttons the same width: the call pill keeps room on the right for its peeled corner */
-.reach > a { min-width: 0; padding-inline: 18px; }
+.reach { display: flex; justify-content: space-between; gap: 12px; margin-top: 12px; }
+/* the two buttons the same width, pushed out to the card's text edges; the call pill keeps room on the right for its peeled corner */
+.reach > a { flex: 0 1 46%; min-width: 0; padding-inline: 18px; }
 /* too narrow for two side by side: one under the other, still the same width */
-@media (max-width: 480px) { .reach { grid-template-columns: 1fr; width: min(100%, 260px); } }
+@media (max-width: 480px) { .reach { flex-direction: column; } .reach > a { flex: none; } }
 .reach > :global(.btn) { padding-right: 40px; }
 .reach :global(.btn-ghost) { border-color: rgb(243 234 225 / 0.85); color: var(--cream); }
 .reach :global(.btn-ghost):hover, .reach :global(.btn-ghost):focus-visible { background: var(--cream); border-color: var(--cream); color: var(--ink-strong); }

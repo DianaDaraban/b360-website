@@ -189,16 +189,19 @@ export function Gallery({ items, categories, clients }: { items: Proiect[]; cate
                                 ))}
                             </ul>
                         )}
-                        {/* the moment someone likes a job: one tap to ask for the same, the message naming it */}
-                        <a
-                            href={`${site.whatsapp}?text=${encodeURIComponent(`Bună ziua! Am văzut pe site lucrarea „${project.title}” și aș vrea ceva similar.`)}`}
-                            target="_blank"
-                            rel="noopener"
-                            className={`btn ${styles.lbAsk}`}
-                        >
-                            <Icon name="whatsapp" size={26} uncut />Vreau o lucrare similară
-                        </a>
                     </figure>
+                )}
+                {/* the moment someone likes a job: one tap to ask for the same, the message naming it;
+                    pinned to the bottom like the arrows, so it stays put whatever the photo's height */}
+                {project && (
+                    <a
+                        href={`${site.whatsapp}?text=${encodeURIComponent(`Bună ziua! Am văzut pe site lucrarea „${project.title}” și aș vrea ceva similar.`)}`}
+                        target="_blank"
+                        rel="noopener"
+                        className={`btn-ghost ${styles.lbAsk}`}
+                    >
+                        <Icon name="whatsapp" size={22} uncut />Vreau o lucrare similară
+                    </a>
                 )}
                 {/* the neighbours load in the background, so the arrows feel instant */}
                 {neighbours.map(item => (
