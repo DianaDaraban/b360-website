@@ -65,7 +65,8 @@ export default function PrivacyPage() {
                 <ul>
                     <li>furnizorul de găzduire a site-ului;</li>
                     <li>serviciul de email prin care ne sunt livrate mesajele din formulare;</li>
-                    <li>furnizorul căsuței noastre de email.</li>
+                    <li>furnizorul căsuței noastre de email;</li>
+                    <li>Google, doar emailul și telefonul, criptate, și doar dacă ai acceptat cookie-urile (vezi secțiunea 7).</li>
                 </ul>
                 <p>
                     Unii dintre acești furnizori pot prelucra date în afara Spațiului Economic European (de exemplu în SUA). În aceste cazuri,
@@ -104,6 +105,12 @@ export default function PrivacyPage() {
                     calculatorul sau formularele, și dacă vizita a venit dintr-o reclamă B360 din Google (Google Ads), ca să știm care reclame
                     aduc cereri. Datele sunt agregate; nu le folosim pentru remarketing sau reclame personalizate. Analytics pornește și pune
                     cookie-urile _ga numai după ce apeși „Accept” în bannerul de cookie-uri; dacă refuzi, nu se încarcă deloc.
+                </p>
+                <p>
+                    Dacă ai acceptat cookie-urile și trimiți un formular, adresa de email și numărul de telefon din formular sunt transmise
+                    către Google în formă criptată (hash SHA-256, calculat chiar în browserul tău), ca Google Ads să poată număra cererea
+                    venită dintr-o reclamă B360 („conversii îmbunătățite”). Google nu primește datele în clar, iar noi nu le folosim pentru
+                    reclame personalizate. Dacă refuzi cookie-urile, nu se transmite nimic.
                 </p>
                 <p>
                     Alegerea ta rămâne salvată în browser și o poți schimba oricând din linkul „Setări cookie-uri” din subsolul site-ului.

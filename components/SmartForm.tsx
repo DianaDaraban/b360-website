@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { site } from "@/lib/site"
-import { track } from "@/lib/analytics"
+import { setLeadData, track } from "@/lib/analytics"
 
 type Kind = "oferta" | "contact" | "calculator"
 type Status = "idle" | "sending" | "sent" | "error"
@@ -43,6 +43,7 @@ export function SmartForm({ kind, className, children, ...rest }: { kind: Kind; 
             const res = await fetch("/api/form", { method: "POST", body: data })
             const body = await res.json().catch(() => ({}))
             if (res.ok) {
+                setLeadData(String(data.get("email") ?? ""), String(data.get("telefon") ?? ""))
                 track("generate_lead", { formular: kind })
                 setStatus("sent")
                 return
