@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import { Suspense } from "react"
 import { ContactCta } from "@/components/ContactCta"
 import { Gallery } from "@/components/Gallery"
+import { firstRow } from "@/lib/first-row"
 import Image from "next/image"
 import gallery from "@/components/Gallery.module.css"
 import { categorii, toateFotografiile } from "@/data/lucrari"
@@ -19,7 +20,10 @@ export const metadata: Metadata = {
 export const revalidate = 3600
 
 export default async function PortofoliuPage() {
-    const proiecte = await getProjects()
+    // a fresh order each time the page is rebuilt (at least hourly), so the gallery does not always open
+    // on the same projects; shuffled here rather than in the browser, so the photos in the HTML are the
+    // ones the gallery shows: they download once and the first one appears early
+    const proiecte = shuffle(await getProjects())
     return (
         <>
             <section className={`section ${styles.compact}`}>
@@ -40,11 +44,20 @@ export default async function PortofoliuPage() {
 function StaticGrid({ proiecte }: { proiecte: Awaited<ReturnType<typeof getProjects>> }) {
     return (
         <ul className={gallery.grid} style={{ marginTop: 28 }}>
-            {proiecte.slice(0, 24).map(({ slug, photos: [item] }) => (
+            {proiecte.slice(0, 24).map(({ slug, photos: [item] }, i) => (
                 <li key={slug}>
-                    <Image src={item.src} alt={item.alt} width={400} height={400} sizes="(min-width: 1024px) 290px, (min-width: 640px) 31vw, 47vw" />
+                    <Image src={item.src} alt={item.alt} width={400} height={400} sizes="(min-width: 1024px) 290px, (min-width: 640px) 31vw, 47vw" {...firstRow(i)} />
                 </li>
             ))}
         </ul>
     )
+}
+
+function shuffle<T>(items: T[]): T[] {
+    const list = [...items]
+    for (let i = list.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[list[i], list[j]] = [list[j], list[i]]
+    }
+    return list
 }

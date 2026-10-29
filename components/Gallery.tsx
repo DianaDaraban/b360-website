@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 import { Carousel } from "./Carousel"
 import { Icon } from "./Icon"
+import { firstRow } from "@/lib/first-row"
 import { site } from "@/lib/site"
 import { logoBox, tilts } from "@/data/clienti"
 import type { Proiect } from "@/data/lucrari"
@@ -37,18 +38,8 @@ export function Gallery({ items, categories, clients }: { items: Proiect[]; cate
         strip.scrollTo({ left: chip.offsetLeft - (strip.clientWidth - chip.offsetWidth) / 2, behavior: "smooth" })
     }, [category, client])
 
-    // a fresh order on every visit, so the gallery never opens on the same projects; it is shuffled
-    // after the first render, as the server-rendered HTML must match the first client render
-    const [shuffled, setShuffled] = useState<Proiect[] | null>(null)
-    useEffect(() => {
-        const list = [...items]
-        for (let i = list.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1))
-            ;[list[i], list[j]] = [list[j], list[i]]
-        }
-        setShuffled(list)
-    }, [items])
-    const all = shuffled ?? items
+    // the order comes shuffled from the server (app/portofoliu), so the photos in the HTML are the ones shown
+    const all = items
     const filtered = client ? all.filter(i => i.clientSlug === client) : category ? all.filter(i => i.cat === category) : all
     const visible = filtered.slice(0, shown)
     const project = open ? filtered[open.p] : null
@@ -118,11 +109,11 @@ export function Gallery({ items, categories, clients }: { items: Proiect[]; cate
                                     // the same story in one tile: the cover large, two more photos beside it
                                     <span className={styles.collage}>
                                         {item.photos.slice(0, 3).map((f, k) => (
-                                            <span key={f.src} className={styles.photo}><Image src={f.src} alt={k ? "" : f.alt} width={k ? 400 : 800} height={k ? 300 : 600} sizes={k ? THUMB : WIDE} /></span>
+                                            <span key={f.src} className={styles.photo}><Image src={f.src} alt={k ? "" : f.alt} width={k ? 400 : 800} height={k ? 300 : 600} sizes={k ? THUMB : WIDE} {...firstRow(i)} /></span>
                                         ))}
                                     </span>
                                 ) : (
-                                    <span className={styles.photo}><Image src={item.photos[0].src} alt={item.photos[0].alt} width={480} height={480} sizes={THUMB} /></span>
+                                    <span className={styles.photo}><Image src={item.photos[0].src} alt={item.photos[0].alt} width={480} height={480} sizes={THUMB} {...firstRow(i)} /></span>
                                 )}
                                 {item.photos.length > 1 && (
                                     <span className={styles.count} aria-hidden="true">
