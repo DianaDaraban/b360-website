@@ -202,6 +202,11 @@
     transition: background 0.3s, border-color 0.3s;
 }
 .faqItem[open] { background: rgb(110 40 40 / 0.7); border-color: rgb(238 51 56 / 0.7); }
+/* phones: a denser box instead of blurring the photo behind it, which the phone redid on every scroll */
+@media (max-width: 1023px) {
+    .faqItem { backdrop-filter: none; background: rgb(84 38 36 / 0.78); }
+    .faqItem[open] { background: rgb(104 38 38 / 0.86); }
+}
 .faqItem summary {
     position: relative;
     list-style: none;

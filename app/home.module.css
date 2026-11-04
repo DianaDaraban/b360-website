@@ -27,19 +27,21 @@
     100% { opacity: 0; scale: 1.14; }
 }
 
-/* The theme's animated overlay: rust → green → navy at 38 %, drifting sideways */
+/* The theme's animated overlay: rust → green → navy at 38 %, drifting sideways. The layer is three
+   heroes wide and slides with translate, which the GPU does on its own; moving background-position
+   instead repainted the whole hero every frame and slowed taps on phones. */
 .hero::before {
     content: "";
     position: absolute;
-    inset: 0;
+    inset: 0 auto 0 0;
+    width: 300%;
     z-index: -3;
     background: linear-gradient(90deg, rgb(103 38 32) 10%, rgb(123 177 82) 42%, rgb(9 25 48) 89%, rgb(103 38 32) 100%);
-    background-size: 300% 100%;
     opacity: 0.5;
     mix-blend-mode: hard-light;
     animation: wash 14s ease-in-out infinite alternate;
 }
-@keyframes wash { to { background-position: 100% 0; } }
+@keyframes wash { to { translate: -66.667% 0; } }
 
 /* Darken the lower part so the text always reads */
 .hero::after {
@@ -48,6 +50,10 @@
     inset: 0;
     z-index: -2;
     background: linear-gradient(180deg, rgb(18 14 16 / 0) 25%, rgb(18 14 16 / 0.78) 80%);
+    /* this pseudo-element takes the place of the .hero-sheen gloss: keep none of its sliding */
+    width: auto;
+    translate: none;
+    animation: none;
 }
 
 /* centred hero: kicker, title, lead and the two red sticker buttons on one axis */

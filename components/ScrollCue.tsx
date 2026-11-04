@@ -16,21 +16,34 @@ export function ScrollCue() {
 
     useEffect(() => {
         setLabels(slides().map((s, i) => s.dataset.label ?? `Secțiunea ${i + 1}`))
-        const update = () => {
+        // the rail shows only on wide screens (ScrollCue.module.css): phones skip the scroll work, and
+        // the slides are measured at most once a frame
+        const wide = matchMedia("(min-width: 1024px)")
+        let frame = 0
+        const measure = () => {
+            frame = 0
             const mid = window.innerHeight * 0.4
-            const list = slides()
             // the last slide whose top has passed 40 % of the screen
-            const current = list.reduce((found, s, i) => (s.getBoundingClientRect().top <= mid ? i : found), 0)
-            setActive(current)
+            setActive(slides().reduce((found, s, i) => (s.getBoundingClientRect().top <= mid ? i : found), 0))
+        }
+        const update = () => {
+            if (!frame) frame = requestAnimationFrame(measure)
             setMoving(true)
             window.clearTimeout(idle.current)
             idle.current = window.setTimeout(() => setMoving(false), 700)
         }
-        update()
-        setMoving(false)
-        window.addEventListener("scroll", update, { passive: true })
+        const toggle = () => {
+            window.removeEventListener("scroll", update)
+            if (!wide.matches) return
+            measure()
+            window.addEventListener("scroll", update, { passive: true })
+        }
+        toggle()
+        wide.addEventListener("change", toggle)
         return () => {
             window.removeEventListener("scroll", update)
+            wide.removeEventListener("change", toggle)
+            cancelAnimationFrame(frame)
             window.clearTimeout(idle.current)
         }
     }, [])

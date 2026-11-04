@@ -30,6 +30,8 @@
     100% { translate: -8vw -4vh; scale: 0.95; }
 }
 @keyframes morph { to { border-radius: 70% 30% 40% 60% / 50% 70% 30% 50%; } }
+/* phones keep only the drift: changing the shape repaints the blur every frame, and taps wait for it */
+@media (max-width: 1023px) { .blobs span { animation-name: drift; } }
 
 .inner { width: fit-content; max-width: calc(100% - 2 * var(--gutter)); margin-inline: auto; }
 .title { font-size: clamp(1.9rem, 7vw, 2.8rem); color: var(--red); }
