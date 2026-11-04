@@ -6,3 +6,18 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+# The site moved from b360.ro to b360design.ro (November 2026): every address on the old domain,
+# with or without www, goes permanently to the same path on the new one, so links, bookmarks and
+# Google's ranking follow it. Answered at Netlify's edge, before the site itself runs.
+[[redirects]]
+  from = "https://www.b360.ro/*"
+  to = "https://www.b360design.ro/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://b360.ro/*"
+  to = "https://www.b360design.ro/:splat"
+  status = 301
+  force = true

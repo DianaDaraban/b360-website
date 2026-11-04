@@ -133,7 +133,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
 
     const totalText = result && selected.length ? `${eur(result.low)} – ${eur(result.high)}` : null
     // the WhatsApp message arrives already written, with the configuration and the estimate
-    const whatsappHref = totalText && `${site.whatsapp}?text=${encodeURIComponent(`Bună ziua! Am folosit calculatorul de pe b360.ro: ${bodyTypes.find(b => b.id === body)!.label}, ${jobName.toLowerCase()}, ${result!.lines.length} ${result!.lines.length === 1 ? "piesă" : "piese"}, estimare ${totalText} ${vatName}. Aș dori o ofertă.`)}`
+    const whatsappHref = totalText && `${site.whatsapp}?text=${encodeURIComponent(`Bună ziua! Am folosit calculatorul de pe ${site.url.replace(/^https?:\/\/(www\.)?/, "")}:${bodyTypes.find(b => b.id === body)!.label}, ${jobName.toLowerCase()}, ${result!.lines.length} ${result!.lines.length === 1 ? "piesă" : "piese"}, estimare ${totalText} ${vatName}. Aș dori o ofertă.`)}`
 
     return (
         <SmartForm kind="calculator" className={styles.calc} aria-label="Calculator cost colantare">

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     alternates: { canonical: "/politica-de-confidentialitate" },
 }
 
-const UPDATED = "9 octombrie 2026"
+const UPDATED = "4 noiembrie 2026"
 
 // GDPR notice for the contact, quote and calculator forms, and for Google Analytics (only after consent)
 export default function PrivacyPage() {

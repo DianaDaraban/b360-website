@@ -1,10 +1,11 @@
 export const site = {
     name: "B360",
     tagline: "Producție publicitară",
-    url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.b360.ro",
+    // b360design.ro since November 2026; b360.ro and www.b360.ro redirect here (netlify.toml)
+    url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.b360design.ro",
     phone: "0745 094 195",
     phoneHref: "tel:+40745094195",
-    email: "office@b360.ro",
+    email: "office@b360design.ro",
     instagram: "https://www.instagram.com/b360.ro",
     whatsapp: "https://wa.me/40745094195",
     address: { street: "Strada Ogorului 2", locality: "Corbeanca", region: "Ilfov", country: "RO" },

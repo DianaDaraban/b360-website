@@ -5,8 +5,8 @@ import { site } from "@/lib/site"
 //   RESEND_API_KEY  the Resend API key (without it the forms answer "not configured")
 //   FORM_TO         where the messages go, comma separated (default: the site e-mail)
 //   RESEND_API_URL  only for local tests (a fake mail endpoint)
-//   FORM_FROM       sender; until b360.ro is verified in Resend it must stay onboarding@resend.dev,
-//                   which only delivers to the Resend account's own address
+//   FORM_FROM       sender, on a domain verified in Resend (b360design.ro); without one it must stay
+//                   onboarding@resend.dev, which only delivers to the Resend account's own address
 export const runtime = "nodejs"
 
 const KINDS = {
