@@ -6,7 +6,7 @@ export const site = {
     phone: "0745 094 195",
     phoneHref: "tel:+40745094195",
     email: "office@b360design.ro",
-    instagram: "https://www.instagram.com/b360.ro",
+    instagram: "https://www.instagram.com/b360design",
     whatsapp: "https://wa.me/40745094195",
     address: { street: "Strada Ogorului 2", locality: "Corbeanca", region: "Ilfov", country: "RO" },
     founded: 2012,
