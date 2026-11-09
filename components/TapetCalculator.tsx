@@ -321,18 +321,20 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                             )))}
                         />
                         {walls.length > 1 && (
-                            <div className={`${calc.views} ${styles.switch}`} role="radiogroup" aria-label="Vedere">
-                                <button type="button" role="radio" aria-checked={focus == null} onClick={() => setFocus(null)}>Camera</button>
-                                {names.map((n, i) => <button type="button" role="radio" key={walls[i].id} aria-checked={focus === i} onClick={() => chooseWall(i)}>{n}</button>)}
+                            <div className={styles.viewRow}>
+                                <div className={`${calc.views} ${styles.switch}`} role="radiogroup" aria-label="Vedere">
+                                    <button type="button" role="radio" aria-checked={focus == null} onClick={() => setFocus(null)}>Camera</button>
+                                    {names.map((n, i) => <button type="button" role="radio" key={walls[i].id} aria-checked={focus === i} onClick={() => chooseWall(i)}>{n}</button>)}
+                                </div>
+                                {/* one picture for the whole room, or one per wall: next to the room, where its effect shows */}
+                                {source !== "noi" && (
+                                    <label className={styles.perWall}>
+                                        <input type="checkbox" role="switch" checked={perWall} onChange={e => setPerWall(e.target.checked)} />
+                                        <span className={styles.toggle} aria-hidden="true" />
+                                        <span>Câte o imagine diferită pe fiecare perete</span>
+                                    </label>
+                                )}
                             </div>
-                        )}
-                        {/* one picture for the whole room, or one per wall: next to the room, where its effect shows */}
-                        {source !== "noi" && walls.length > 1 && (
-                            <label className={styles.perWall}>
-                                <input type="checkbox" role="switch" checked={perWall} onChange={e => setPerWall(e.target.checked)} />
-                                <span className={styles.toggle} aria-hidden="true" />
-                                <span>Câte o imagine diferită pe fiecare perete</span>
-                            </label>
                         )}
                         {/* with a wall chosen in 3D, a design goes straight on that wall from this strip */}
                         {focus != null && focus < walls.length && (
