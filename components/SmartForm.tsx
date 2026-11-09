@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import { site } from "@/lib/site"
 import { setLeadData, track } from "@/lib/analytics"
 
-type Kind = "oferta" | "contact" | "calculator"
+type Kind = "oferta" | "contact" | "calculator" | "tapet"
 type Status = "idle" | "sending" | "sent" | "error"
 
 const MAX_FILES_BYTES = 4 * 1024 * 1024

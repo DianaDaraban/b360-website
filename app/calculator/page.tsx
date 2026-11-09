@@ -1,5 +1,6 @@
 import type { Metadata } from "next"
 import { Calculator } from "@/components/Calculator"
+import { CalculatorTabs } from "@/components/CalculatorTabs"
 import { getPricing } from "@/lib/pricing-store"
 import form from "../form.module.css"
 import styles from "./calculator.module.css"
@@ -19,7 +20,7 @@ export default async function CalculatorPage() {
         <section className={`${form.page} ${styles.page}`}>
             <div className={`container ${styles.inner}`}>
                 <header className={styles.head}>
-                    <p className="eyebrow">Calculator</p>
+                    <CalculatorTabs active="/calculator" />
                     <h1 className={styles.title}>Cât costă colantarea mașinii tale?</h1>
                     <p className={styles.lead}>Șapte pași simpli: alegi mașina, apeși pe piese și răspunzi la trei întrebări. Noi alegem materialul potrivit și îți arătăm estimarea pe loc.</p>
                 </header>

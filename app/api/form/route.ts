@@ -1,6 +1,6 @@
 import { site } from "@/lib/site"
 
-// Receives the three site forms (ofertă, contact, calculator) and mails them to B360 through Resend
+// Receives the site forms (ofertă, contact, the car and the wallpaper calculators) and mails them to B360 through Resend
 // (https://resend.com). Settings, all on the host, none in the code:
 //   RESEND_API_KEY  the Resend API key (without it the forms answer "not configured")
 //   FORM_TO         where the messages go, comma separated (default: the site e-mail)
@@ -13,6 +13,7 @@ const KINDS = {
     oferta: { subject: "Cerere ofertă colantare", required: ["nume", "telefon", "email"] },
     contact: { subject: "Mesaj de pe site", required: ["nume", "email", "mesaj"] },
     calculator: { subject: "Cerere din calculatorul de preț", required: ["nume", "telefon", "email"] },
+    tapet: { subject: "Cerere din calculatorul de tapet", required: ["nume", "telefon", "email"] },
 } as const
 
 // readable names for the field keys, in the order they appear in the e-mail
@@ -21,6 +22,7 @@ const LABELS: Record<string, string> = {
     serviciu: "Serviciu", tip: "Tip colantare", vehicul: "Tip vehicul", altTip: "Alt tip de vehicul", vehicule: "Număr vehicule",
     caroserie: "Caroserie", model: "Model", durata: "Cât ține folia", lucrare: "Lucrare", material: "Material ales", grafica: "Grafică", piese: "Piese selectate", estimare: "Estimare afișată",
     folie: "Folie", extra: "Servicii suplimentare", zone: "Zone", suprafata: "Suprafață", design: "Are deja designul",
+    pereti: "Pereți", imagine: "Imagine", camera: "Unde se montează", montaj: "Montaj",
     mesaj: "Mesaj",
 }
 const SKIP = new Set(["kind", "gdpr", "website", "t", "fisiere"])

@@ -24,7 +24,8 @@ export function Footer() {
             <nav aria-label="Subsol" className="container">
                 <ul className={styles.links}>
                     {nav.map(item => <li key={item.href}><Link href={item.href} className="ulink">{item.label}</Link></li>)}
-                    <li><Link href="/calculator" className="ulink">Calculator</Link></li>
+                    <li><Link href="/calculator" className="ulink">Calculator colantare</Link></li>
+                    <li><Link href="/calculator-tapet" className="ulink">Calculator tapet</Link></li>
                     <li><Link href="/oferta" className="ulink">Cerere ofertă</Link></li>
                     <li><CookieSettings className={`ulink ${styles.cookies}`} /></li>
                 </ul>

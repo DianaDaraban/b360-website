@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ...toateServiciile.map(s => page(`/servicii/${s.slug}`, 0.9)),
         page("/portofoliu", 0.8, "weekly"),
         page("/calculator", 0.8),
+        page("/calculator-tapet", 0.7),
         page("/despre-noi", 0.6),
         page("/contact", 0.7),
         page("/oferta", 0.7),

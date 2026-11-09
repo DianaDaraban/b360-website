@@ -1,0 +1,42 @@
+/* the calculator switch: a long cream track; the open calculator is a raised white card with a teal
+   underline, the other reads as a plain tab you can press. No red (the page has enough), no black. */
+.tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    width: min(100%, 640px);
+    margin: 0 auto 14px;
+    padding: 6px;
+    border: 1px solid rgb(60 20 20 / 0.1);
+    border-radius: 20px;
+    background: linear-gradient(180deg, #efe5da, #e8dccf);
+    box-shadow: inset 0 2px 6px rgb(60 20 20 / 0.08);
+}
+.tab {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 50px;
+    padding: 10px 20px;
+    border-radius: 15px;
+    color: rgb(58 54 56 / 0.72);
+    font: 800 1rem/1 var(--font-head);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.25s, color 0.25s, box-shadow 0.25s, translate 0.25s var(--ease-out);
+}
+.tab svg { opacity: 0.7; transition: opacity 0.25s; }
+.tab:hover { color: var(--ink-strong); background: rgb(255 255 255 / 0.45); }
+.tab:hover svg { opacity: 1; }
+.tab[aria-current="page"] {
+    background: #fff;
+    color: var(--ink-strong);
+    box-shadow: 0 8px 20px rgb(60 20 20 / 0.12), 0 1px 0 rgb(255 255 255 / 0.8) inset;
+    translate: 0 -1px;
+}
+.tab[aria-current="page"] svg { opacity: 1; }
+@media (max-width: 480px) {
+    .tab { min-height: 52px; padding: 8px 10px; gap: 8px; font-size: 0.95rem; }
+}

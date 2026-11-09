@@ -15,7 +15,7 @@ export type Serviciu = {
     typesText: string
     types: { title: string; items: string[] }[]
     comparison?: boolean     // the integral / partial car slider
-    calculator?: boolean     // the calculator prices it: "Află prețul pe loc" in the hero
+    calculator?: boolean | string   // a calculator prices it: "Află prețul pe loc" in the hero (a path: its own calculator)
     benefits: string[]
     benefitsPhoto: string
     extra?: { title: string; question: string; text: string; link?: { href: string; label: string } }   // link: the banner button (else the gallery)
@@ -121,6 +121,7 @@ export const servicii: Serviciu[] = [
     },
     {
         slug: "tapet-printat",
+        calculator: "/calculator-tapet",
         title: "Tapet Printat și Fototapet Personalizat",
         short: "Tapet printat",
         teaser: "Pereți cu imaginea aleasă de tine, printați și montați de noi",
@@ -148,7 +149,7 @@ export const servicii: Serviciu[] = [
             { q: "Cât durează de la comandă la montaj?", a: "De obicei câteva zile: aprobăm împreună grafica, printăm în atelierul nostru și programăm montajul." },
             { q: "Se poate curăța tapetul?", a: "Da, cu o lavetă ușor umedă, fără detergenți agresivi." },
             { q: "Care e diferența dintre tapet printat și fototapet?", a: "Practic niciuna: fototapetul este un tapet printat cu o fotografie sau o imagine mare, pe tot peretele. Noi îl printăm la comandă, la dimensiunea exactă a peretelui, cu orice imagine aleasă de tine." },
-            { q: "Cât costă tapetul printat?", a: "Prețul depinde de suprafața peretelui, de material și de montaj. Trimite-ne lățimea și înălțimea peretelui și imaginea dorită, iar noi îți spunem prețul exact." },
+            { q: "Cât costă tapetul printat?", a: "Prețul depinde de suprafața peretelui, de material și de montaj. În calculatorul de tapet scrii lățimea și înălțimea pereților și vezi suprafața pe loc; trimite-ne și imaginea dorită, iar noi îți spunem prețul exact." },
             { q: "Pot vedea cum arată înainte de print?", a: "Da. Îți trimitem grafica pregătită pentru peretele tău și printăm doar după ce o aprobi." },
             { q: "Se poate monta tapet în bucătărie sau în baie?", a: "În zonele cu abur sau umezeală alegem materiale potrivite și îți spunem dinainte ce se poate, ca tapetul să arate bine în timp." },
         ],
