@@ -25,7 +25,10 @@ const nextConfig: NextConfig = {
             ...to("/servicii/colantare-autocare", "/colantare-autocare", "/colantari-autocare"),
             ...to("/servicii/colantare-autoutilitare", "/colantare-utilitare"),
             ...to("/servicii/colantare-barci-avioane", "/colantare-barci", "/colantare-avioane"),
-            ...to("/servicii/colantare-vitrine", "/folii-sablare-geam", "/folii-geam-window-graphics", "/2019/05/30/folie-electrostatica-pentru-suprafete-vitrate"),
+            // old WordPress addresses Google still crawls and found missing (404 in Search Console, Nov 2026)
+            ...to("/", "/home", "/testimonials", "/testimonials/:path*"),
+            ...to("/servicii/colantare-vitrine", "/folii-window-graphics"),
+            ...to("/servicii/colantare-vitrine", "/folii-sablare-geam","/folii-geam-window-graphics", "/2019/05/30/folie-electrostatica-pentru-suprafete-vitrate"),
             ...to("/servicii/autocolante-inscriptionari", "/stickere-asfalt-podea"),
             ...to("/servicii/tapet-printat", "/folia-autoadeziva-pentru-caramizi"),
             ...to("/servicii", "/grafica-si-design"),
