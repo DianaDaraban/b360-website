@@ -215,9 +215,20 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
 
     // a design picked for one wall from the 3D view: switch to the catalogue, one design per wall, and
     // keep what the other walls showed (the shared design, if there was one)
+    // switching to one picture per wall: each wall starts from the picture the whole room had
+    const onePerWall = (on: boolean) => {
+        if (on) setPicks(m => {
+            const next = { ...m }
+            walls.forEach(w => { if (next[w.id] === undefined) next[w.id] = m.shared })
+            return next
+        })
+        setPerWall(on)
+    }
+
     const putOnWall = (wi: number, code: string) => {
         const id = walls[wi].id
-        if (walls.length === 1) { setSource("catalog"); setPicks(m => ({ ...m, shared: code })); return }
+        // one wall, or the switch set to one picture for the room: the design goes on every wall
+        if (walls.length === 1 || !perWall) { setSource("catalog"); setPicks(m => ({ ...m, shared: code })); return }
         setPicks(m => {
             const next = { ...m }
             if (!split || source !== "catalog") walls.forEach(w => { if (next[w.id] === undefined) next[w.id] = source === "catalog" ? m.shared : undefined })
@@ -225,7 +236,6 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
             return next
         })
         setSource("catalog")
-        setPerWall(true)
         setTarget(wi)
     }
 
@@ -329,7 +339,7 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                                 {/* one picture for the whole room, or one per wall: next to the room, where its effect shows */}
                                 {source !== "noi" && (
                                     <label className={styles.perWall}>
-                                        <input type="checkbox" role="switch" checked={perWall} onChange={e => setPerWall(e.target.checked)} />
+                                        <input type="checkbox" role="switch" checked={perWall} onChange={e => onePerWall(e.target.checked)} />
                                         <span className={styles.toggle} aria-hidden="true" />
                                         <span>Câte o imagine diferită pe fiecare perete</span>
                                     </label>
@@ -340,7 +350,7 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                         {focus != null && focus < walls.length && (
                             <div className={styles.quickPick}>
                                 <div className={styles.stripBar}>
-                                    <p>Alege un model pentru <b>{walls.length === 1 ? "perete" : `peretele ${names[focus].toLowerCase()}`}</b>:</p>
+                                    <p>Alege un model pentru <b>{walls.length === 1 ? "perete" : !perWall ? "toți pereții" : `peretele ${names[focus].toLowerCase()}`}</b>:</p>
                                     <select value={stripStyle} onChange={e => setStripStyle(e.target.value as CatalogStyle | "toate")} aria-label="Stilul modelelor">
                                         <option value="toate">Toate stilurile</option>
                                         {CATALOG_STYLES.map(st => <option key={st.id} value={st.id}>{st.label}</option>)}
