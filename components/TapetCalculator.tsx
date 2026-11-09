@@ -326,6 +326,14 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                                 {names.map((n, i) => <button type="button" role="radio" key={walls[i].id} aria-checked={focus === i} onClick={() => chooseWall(i)}>{n}</button>)}
                             </div>
                         )}
+                        {/* one picture for the whole room, or one per wall: next to the room, where its effect shows */}
+                        {source !== "noi" && walls.length > 1 && (
+                            <label className={styles.perWall}>
+                                <input type="checkbox" role="switch" checked={perWall} onChange={e => setPerWall(e.target.checked)} />
+                                <span className={styles.toggle} aria-hidden="true" />
+                                <span>Câte o imagine diferită pe fiecare perete</span>
+                            </label>
+                        )}
                         {/* with a wall chosen in 3D, a design goes straight on that wall from this strip */}
                         {focus != null && focus < walls.length && (
                             <div className={styles.quickPick}>
@@ -362,12 +370,6 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                 <div className={`${calc.choices} ${calc.three}`} role="radiogroup" aria-label="Imaginea">
                     {IMAGE_SOURCES.map(x => <Choice key={x.id} name="tapet-imagine" checked={source === x.id} onChange={() => setSource(x.id)} title={x.label} text={x.hint} />)}
                 </div>
-                {source !== "noi" && walls.length > 1 && (
-                    <div className={`${calc.views} ${styles.switch}`} role="radiogroup" aria-label="Imagini pe pereți">
-                        <button type="button" role="radio" aria-checked={!perWall} onClick={() => setPerWall(false)}>Aceeași imagine pe toți pereții</button>
-                        <button type="button" role="radio" aria-checked={perWall} onClick={() => setPerWall(true)}>Câte o imagine pe fiecare perete</button>
-                    </div>
-                )}
                 {/* every upload field stays in the page, so a picked file is never lost when switching;
                     only the ones in use are named, and so sent */}
                 <div className={styles.uploads} hidden={source !== "am"}>
