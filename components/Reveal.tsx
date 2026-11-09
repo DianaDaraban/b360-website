@@ -40,7 +40,16 @@ export function Reveal() {
             el.dataset.reveal = ""
             observer.observe(el)
         }
-        return () => observer.disconnect()
+        // unmark what has not arrived yet: when the effect runs again (React's dev double run, a hot
+        // reload) an element left marked but no longer watched would stay invisible for good
+        return () => {
+            observer.disconnect()
+            for (const el of elements) {
+                if (el.dataset.in != null) continue
+                delete el.dataset.reveal
+                el.style.removeProperty("--i")
+            }
+        }
     }, [pathname])
 
     return null

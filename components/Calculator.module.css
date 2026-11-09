@@ -322,10 +322,6 @@
     .finish .contact { grid-template-columns: 1fr; }
     .finish .sendRow { grid-template-columns: 1fr; justify-items: center; }
 }
-@media (min-width: 1100px) {
-    /* body type cards and the model search on one row */
-    .carRow { grid-template-columns: 1fr 300px; align-items: start; }
-}
 @media (min-width: 1024px) {
     .float { bottom: 18px; }
 }
@@ -357,7 +353,7 @@
    car cards, and the 3D board takes the height that is left (--fit-chrome: everything else in them) */
 .calc { --fit-chrome: 390px; --car3d-h: clamp(240px, calc(100svh - var(--header-h) - var(--fit-chrome)), 600px); }
 .bodyCard { gap: 2px; padding: 5px 6px 6px; font-size: 0.82rem; }
-.bodyCard img { max-height: 48px; }
+.bodyCard img { max-height: 56px; }
 @media (max-width: 639px) {
     /* phones: the cards in one row you swipe */
     .calc { --fit-chrome: calc(var(--bar-h) + 470px); }    /* the phone bar at the bottom too */
