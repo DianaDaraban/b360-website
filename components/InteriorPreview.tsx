@@ -13,7 +13,9 @@ const ROOMS = [
 ] as const
 type View = (typeof ROOMS)[number]["id"] | "intreg"
 
-export type Design = { url: string; name: string }
+// url: the picture for walls and rooms; full: a sharper one for the design seen whole; thumb: a
+// small one shown at once, under the larger while it loads
+export type Design = { url: string; name: string; full?: string; thumb?: string }
 
 // One tile per chosen design (with a magnifier); a tap opens it in the interiors, room by room.
 export function InteriorPreview({ designs }: { designs: Design[] }) {
@@ -35,6 +37,9 @@ export function InteriorPreview({ designs }: { designs: Design[] }) {
         </div>
     )
 }
+
+// the picture over its small version, so something shows straight away
+const layers = (d: Design) => [d.url, d.thumb].filter(Boolean).map(u => `url(${u})`).join(", ")
 
 export function Lens() {
     return <svg viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5" /><path d="m15.5 15.5 5 5" /></svg>
@@ -59,6 +64,23 @@ export function InteriorDialog({ designs, index, onIndex, full = false, action }
         if (index != null && !d.open) d.showModal()
         if (index == null && d.open) d.close()
     }, [index])
+
+    // the four rooms load ahead, once the page is idle, so changing room is instant
+    useEffect(() => {
+        const load = () => ROOMS.forEach(r => { new Image().src = `/tapet/interior/${r.id}.webp` })
+        if ("requestIdleCallback" in window) { const id = requestIdleCallback(load); return () => cancelIdleCallback(id) }
+        const t = setTimeout(load, 1500)
+        return () => clearTimeout(t)
+    }, [])
+
+    // the designs next to the open one load ahead too, so the arrows feel instant
+    useEffect(() => {
+        if (index == null || designs.length < 2) return
+        for (const i of [index + 1, index - 1, index + 2]) {
+            const d = designs[(i + designs.length) % designs.length]
+            new Image().src = d.url
+        }
+    }, [index, designs])
 
     // the arrow keys step through the designs
     useEffect(() => {
@@ -85,15 +107,20 @@ export function InteriorDialog({ designs, index, onIndex, full = false, action }
                         <button type="button" className={styles.close} onClick={() => onIndex(null)} aria-label="Închide">×</button>
                     </div>
                     <div className={styles.stage}>
-                        {room ? (
-                            <div className={styles.scene} style={{ "--ratio": room.ratio } as React.CSSProperties}>
-                                <div className={styles.paper} style={{ left: `${room.box.x}%`, top: `${room.box.y}%`, width: `${room.box.w}%`, height: `${room.box.h}%`, backgroundImage: `url(${current.url})` }} />
+                        {/* every room stays in place, only the chosen one shows: switching is instant */}
+                        {ROOMS.map(r => (
+                            <div key={r.id} className={styles.scene} hidden={r.id !== view} style={{ "--ratio": r.ratio } as React.CSSProperties}>
+                                <div className={styles.paper} style={{ left: `${r.box.x}%`, top: `${r.box.y}%`, width: `${r.box.w}%`, height: `${r.box.h}%`, backgroundImage: layers(current) }} />
                                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                                <img src={`/tapet/interior/${room.id}.webp`} alt={`${room.label} cu tapetul ${current.name}`} className={styles.room} />
+                                <img src={`/tapet/interior/${r.id}.webp`} alt={`${r.label} cu tapetul ${current.name}`} className={styles.room} decoding="async" />
                             </div>
-                        ) : (
-                            // eslint-disable-next-line @next/next/no-img-element
-                            <img src={current.url} alt={current.name} className={styles.whole} />
+                        ))}
+                        {!room && (
+                            <div className={styles.wholeBox}>
+                                {/* the lighter picture on ordinary screens, the sharper one on dense (retina) ones */}
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img key={current.url} src={current.url} srcSet={current.full ? `${current.url} 1000w, ${current.full} 1600w` : undefined} sizes="(max-width: 1140px) 92vw, 1060px" alt={current.name} className={styles.whole} />
+                            </div>
                         )}
                         {many && (
                             <>

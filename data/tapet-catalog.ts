@@ -259,4 +259,6 @@ export const CATALOG: CatalogItem[] = [
     { code: "HA-04", style: "harti", title: "Harta lumii", artist: "Paolo Petrini", year: "1700", ratio: 1.257, source: "https://commons.wikimedia.org/wiki/File:1700_map_of_the_world_by_Paolo_Petrini.jpg", full: "https://upload.wikimedia.org/wikipedia/commons/e/ed/1700_map_of_the_world_by_Paolo_Petrini.jpg" },
 ]
 
-export const catalogImage = (code: string, small = false) => `/tapet/catalog/${code}${small ? "-s" : ""}.webp`
+// three sizes of each design: "s" 480 px for the gallery, "m" 1000 px for the walls and the
+// interiors (light, so they appear at once), "full" 1600 px for the design seen whole
+export const catalogImage = (code: string, size: "s" | "m" | "full" = "m") => `/tapet/catalog/${code}${size === "full" ? "" : `-${size}`}.webp`

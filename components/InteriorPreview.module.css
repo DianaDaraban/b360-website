@@ -65,7 +65,7 @@
     border-radius: 12px;
     background: #ddd;
 }
-.paper { position: absolute; background: center / cover no-repeat; }
+.paper { position: absolute; background-position: center; background-size: cover; background-repeat: no-repeat; }
 /* soft light falling from the window side and the ceiling, so the print sits in the room */
 .paper::after {
     content: "";
@@ -79,7 +79,9 @@
 .caption { margin: 0; font-size: 0.84rem; color: var(--muted); }
 /* the picture and the arrows that step through the catalogue */
 .stage { position: relative; }
-.whole { display: block; max-width: 100%; max-height: calc(96vh - 190px); margin-inline: auto; border-radius: 12px; box-shadow: 0 10px 30px rgb(0 0 0 / 0.18); }
+.wholeBox { width: fit-content; max-width: 100%; margin-inline: auto; border-radius: 12px; box-shadow: 0 10px 30px rgb(0 0 0 / 0.18); }
+.whole { display: block; max-width: 100%; max-height: calc(96vh - 190px); border-radius: 12px; }
+.scene[hidden] { display: none; }
 .step {
     position: absolute;
     top: 50%;

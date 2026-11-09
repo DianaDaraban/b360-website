@@ -21,3 +21,31 @@
   to = "https://www.b360design.ro/:splat"
   status = 301
   force = true
+
+# Pictures and 3D models: the browser keeps them a week and, after that, still shows its copy while
+# it checks for a newer one, so returning visitors (and the wallpaper rooms, the car models) load at
+# once. A file replaced under the same name reaches everyone within a week at most.
+[[headers]]
+  for = "/tapet/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=2592000"
+[[headers]]
+  for = "/calculator/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=2592000"
+[[headers]]
+  for = "/models/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=2592000"
+[[headers]]
+  for = "/img/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=2592000"
+[[headers]]
+  for = "/lucrari/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=2592000"
+[[headers]]
+  for = "/clienti/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, stale-while-revalidate=2592000"

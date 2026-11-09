@@ -346,7 +346,7 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                                         return (
                                             <button type="button" key={d.code} aria-pressed={on} title={d.title} onClick={() => putOnWall(focus, d.code)}>
                                                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                                                <img src={catalogImage(d.code, true)} alt={d.title} loading="lazy" width={120} height={67} />
+                                                <img src={catalogImage(d.code, "s")} alt={d.title} loading="lazy" width={120} height={67} />
                                             </button>
                                         )
                                     })}
@@ -408,7 +408,7 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                                     <div key={d.code} className={styles.designWrap}>
                                         <button type="button" className={styles.design} aria-pressed={picks[key] === d.code} onClick={() => setPicks(m => ({ ...m, [key]: d.code }))}>
                                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                                            <img src={catalogImage(d.code, true)} alt="" loading="lazy" width={240} height={Math.round(240 / d.ratio)} />
+                                            <img src={catalogImage(d.code, "s")} alt="" loading="lazy" width={240} height={Math.round(240 / d.ratio)} />
                                             <span><b>{d.title}</b><small>{d.artist} · {d.code}</small></span>
                                         </button>
                                         <button type="button" className={styles.zoom} onClick={() => setZoom(i)} aria-label={`Vezi ${d.title} mare și într-un interior`} title="Vezi mare și într-un interior"><Lens /></button>
@@ -417,7 +417,7 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                             </div>
                             <InteriorDialog
                                 full
-                                designs={shown.map(d => ({ url: catalogImage(d.code), name: `${d.title} · ${d.ai ? "design B360" : d.artist}` }))}
+                                designs={shown.map(d => ({ url: catalogImage(d.code), full: catalogImage(d.code, "full"), thumb: catalogImage(d.code, "s"), name: `${d.title} · ${d.ai ? "design B360" : d.artist}` }))}
                                 index={zoom != null && zoom < shown.length ? zoom : null}
                                 onIndex={setZoom}
                                 action={{ label: split ? `Alege pentru ${names[Math.min(target, walls.length - 1)].toLowerCase()}` : "Alege acest model", run: i => setPicks(m => ({ ...m, [key]: shown[i].code })) }}
