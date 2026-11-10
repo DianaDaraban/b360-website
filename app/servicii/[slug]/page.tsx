@@ -90,7 +90,7 @@ export default async function ServiciuPage({ params }: Props) {
                     <RevealTitle text={s.title} delay={0.2} />
                     <p className={styles.heroTeaser}>{s.teaser}</p>
                     <div className={styles.heroCta}>
-                        <Link href="/oferta" className="btn-ghost"><Icon name="mail" size={20} /> Cere o ofertă</Link>
+                        <Link href="/oferta" className="btn-ghost"><Icon name="at" size={20} /> Cere o ofertă</Link>
                         {s.calculator && <Link href={typeof s.calculator === "string" ? s.calculator : "/calculator"} className="btn-ghost"><Icon name="calculator" size={20} /> Află prețul pe loc</Link>}
                     </div>
                 </div>
