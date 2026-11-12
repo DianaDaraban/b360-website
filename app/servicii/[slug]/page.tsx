@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const s = getServiciu((await params).slug)
     if (!s) return {}
     return {
-        title: s.title.replace(/ – .*/, ""),
+        title: s.metaTitle ?? s.title.replace(/ – .*/, ""),
         description: s.metaDescription,
         alternates: { canonical: `/servicii/${s.slug}` },
         openGraph: { images: [s.hero] },

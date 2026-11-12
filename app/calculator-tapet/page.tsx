@@ -5,8 +5,8 @@ import form from "../form.module.css"
 import styles from "../calculator/calculator.module.css"
 
 export const metadata: Metadata = {
-    title: "Calculator tapet printat și fototapet",
-    description: "Scrie lățimea și înălțimea pereților și vezi pe loc câți metri pătrați de tapet printat îți trebuie. Încarcă imaginea ta și vezi dacă are rezoluție destulă pentru perete.",
+    title: "Calculator preț tapet printat și fototapet",
+    description: "Scrie dimensiunile pereților și vezi pe loc prețul tapetului printat: 220 lei/mp + TVA, cu print și montaj. Alege din peste 200 de modele sau încarcă imaginea ta.",
     alternates: { canonical: "/calculator-tapet" },
 }
 
