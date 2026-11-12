@@ -47,6 +47,8 @@ export function Lens() {
 
 // The design big: whole, or on the wall of a furnished room. With many designs (the catalogue) it
 // steps through them with arrows; with an action it can choose the design straight from here.
+let nudged = false
+
 export function InteriorDialog({ designs, index, onIndex, full = false, action }: {
     designs: Design[]
     index: number | null
@@ -56,6 +58,28 @@ export function InteriorDialog({ designs, index, onIndex, full = false, action }
 }) {
     const [view, setView] = useState<View>(full ? "intreg" : "living")
     const dialog = useRef<HTMLDialogElement>(null)
+    // the room tabs scroll sideways on a phone: fade the side that still hides tabs, so it reads as a row to swipe
+    const rooms = useRef<HTMLDivElement>(null)
+    const [more, setMore] = useState({ left: false, right: false })
+    const edges = () => {
+        const r = rooms.current
+        if (r) setMore({ left: r.scrollLeft > 2, right: r.scrollLeft + r.clientWidth < r.scrollWidth - 2 })
+    }
+    useEffect(() => {
+        if (index == null) return
+        // after the dialog has opened and laid out its tabs
+        const f = requestAnimationFrame(() => requestAnimationFrame(() => {
+            edges()
+            // the first time on a phone, the row slides a little and back: it shows there are more rooms
+            const r = rooms.current
+            if (nudged || !r || r.scrollWidth <= r.clientWidth + 2) return
+            nudged = true
+            r.scrollTo({ left: 60, behavior: "smooth" })
+            setTimeout(() => r.scrollTo({ left: 0, behavior: "smooth" }), 650)
+        }))
+        addEventListener("resize", edges)
+        return () => { cancelAnimationFrame(f); removeEventListener("resize", edges) }
+    }, [index])
     const many = designs.length > 6
 
     useEffect(() => {
@@ -101,8 +125,8 @@ export function InteriorDialog({ designs, index, onIndex, full = false, action }
             {current && index != null && (
                 <div className={styles.panel}>
                     <div className={styles.bar}>
-                        <div className={styles.rooms} role="tablist" aria-label="Încăperea">
-                            {tabs.map(t => <button type="button" role="tab" key={t.id} aria-selected={view === t.id} onClick={() => setView(t.id)}>{t.label}</button>)}
+                        <div ref={rooms} className={styles.rooms} role="tablist" aria-label="Încăperea" onScroll={edges} data-more-left={more.left || undefined} data-more-right={more.right || undefined}>
+                            {tabs.map(t => <button type="button" role="tab" key={t.id} aria-selected={view === t.id} onClick={e => { setView(t.id); const b = e.currentTarget, row = b.parentElement!; row.scrollTo({ left: b.offsetLeft - (row.clientWidth - b.offsetWidth) / 2, behavior: "smooth" }) }}>{t.label}</button>)}
                         </div>
                         <button type="button" className={styles.close} onClick={() => onIndex(null)} aria-label="Închide">×</button>
                     </div>
