@@ -132,8 +132,24 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
     const subtypes = subtypesOf(pricing, job)
 
     const totalText = result && selected.length ? `${eur(result.low)} – ${eur(result.high)}` : null
-    // the WhatsApp message arrives already written, with the configuration and the estimate
-    const whatsappHref = totalText && `${site.whatsapp}?text=${encodeURIComponent(`Bună ziua! Am folosit calculatorul de pe ${site.url.replace(/^https?:\/\/(www\.)?/, "")}:${bodyTypes.find(b => b.id === body)!.label}, ${jobName.toLowerCase()}, ${result!.lines.length} ${result!.lines.length === 1 ? "piesă" : "piese"}, estimare ${totalText} ${vatName}. Aș dori o ofertă.`)}`
+    // the WhatsApp message arrives already written: the configuration, every chosen piece with its price
+    // (as in the breakdown on the page) and the estimate
+    const whatsappText = totalText && result ? [
+        `Bună ziua! Am folosit calculatorul de pe ${site.url.replace(/^https?:\/\/(www\.)?/, "")}:`,
+        "",
+        `${bodyTypes.find(b => b.id === body)!.label} · ${jobName}`,
+        `Folie: ${materialName} · ${durationName}`,
+        `Grafică: ${graphicsName}`,
+        "",
+        `Piese (${result.lines.length}):`,
+        ...result.lines.map(l => `• ${panelLabel(l.id)}: ${eur(l.total)}`),
+        ...(result.graphicsTotal > 0 ? [`• Grafică: ${eur(result.graphicsTotal)}`] : []),
+        "",
+        `Estimare: ${totalText} ${vatName}`,
+        "",
+        "Aș dori o ofertă.",
+    ].join("\n") : null
+    const whatsappHref = whatsappText && `${site.whatsapp}?text=${encodeURIComponent(whatsappText)}`
 
     return (
         <SmartForm kind="calculator" className={styles.calc} aria-label="Calculator cost colantare">

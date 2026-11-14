@@ -1,5 +1,274 @@
 [
  {
+  "slug": "surugiu-rugby",
+  "title": "Surugiu Pro Rugby Academy – Ford Transit Custom",
+  "client": "Surugiu Pro Rugby Academy",
+  "cat": "autoutilitare",
+  "photos": [
+   {
+    "src": "/lucrari/proiecte/surugiu-rugby/1.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/surugiu-rugby/2.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/surugiu-rugby/3.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/surugiu-rugby/4.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/surugiu-rugby/5.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/surugiu-rugby/6.webp",
+    "w": 1600,
+    "h": 1200
+   }
+  ]
+ },
+ {
+  "slug": "hyundai-ioniq-5",
+  "title": "Hyundai Ioniq 5 – colantare integrală aurie mată, cu dungi colorate",
+  "client": "Hyundai",
+  "cat": "autoturisme",
+  "photos": [
+   {
+    "src": "/lucrari/proiecte/hyundai-ioniq-5/1.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/hyundai-ioniq-5/2.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/hyundai-ioniq-5/3.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/hyundai-ioniq-5/4.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/hyundai-ioniq-5/5.webp",
+    "w": 1600,
+    "h": 1200
+   }
+  ]
+ },
+ {
+  "slug": "tiriac-vitrine",
+  "title": "Țiriac Auto Rulate – vitrine pentru evenimente",
+  "client": "Tiriac Auto",
+  "cat": "vitrine",
+  "photos": [
+   {
+    "src": "/lucrari/proiecte/tiriac-vitrine/1.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/tiriac-vitrine/2.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/tiriac-vitrine/3.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/tiriac-vitrine/4.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/tiriac-vitrine/5.webp",
+    "w": 1600,
+    "h": 1200
+   }
+  ]
+ },
+ {
+  "slug": "vdc",
+  "title": "VDC Profile Decorative – Renault Kangoo",
+  "client": "VDC",
+  "cat": "autoutilitare",
+  "photos": [
+   {
+    "src": "/lucrari/proiecte/vdc/1.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/vdc/2.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/vdc/3.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/vdc/4.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/vdc/5.webp",
+    "w": 1600,
+    "h": 1200
+   }
+  ]
+ },
+ {
+  "slug": "trivale",
+  "title": "Trivale – Renault Trafic",
+  "client": "Trivale",
+  "cat": "autoutilitare",
+  "photos": [
+   {
+    "src": "/lucrari/proiecte/trivale/1.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/trivale/2.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/trivale/3.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/trivale/4.webp",
+    "w": 1600,
+    "h": 1200
+   }
+  ]
+ },
+ {
+  "slug": "monster-energy",
+  "title": "Monster Energy – VW Transporter",
+  "client": "Monster Energy",
+  "cat": "autoutilitare",
+  "photos": [
+   {
+    "src": "/lucrari/proiecte/monster-energy/1.webp",
+    "w": 1600,
+    "h": 1200
+   }
+  ]
+ },
+ {
+  "slug": "fli",
+  "title": "fli.ro – flota Service Centrale",
+  "client": "FLI",
+  "cat": "autoturisme",
+  "photos": [
+   {
+    "src": "/lucrari/proiecte/fli/1.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/fli/2.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/fli/3.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/fli/4.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/fli/5.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/fli/6.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/fli/7.webp",
+    "w": 1600,
+    "h": 1200
+   }
+  ]
+ },
+ {
+  "slug": "aco",
+  "title": "ACO – flota de separatoare de grăsimi",
+  "client": null,
+  "cat": "autoutilitare",
+  "photos": [
+   {
+    "src": "/lucrari/proiecte/aco/1.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/aco/2.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/aco/3.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/aco/4.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/aco/5.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/aco/6.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/aco/7.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/aco/8.webp",
+    "w": 1600,
+    "h": 1200
+   }
+  ]
+ },
+ {
   "slug": "the-home",
   "title": "The Home – flota de autoutilitare",
   "client": "The Home",
@@ -426,19 +695,6 @@
   ]
  },
  {
-  "slug": "fli",
-  "title": "fli.ro – Dacia Logan",
-  "client": "FLI",
-  "cat": "autoturisme",
-  "photos": [
-   {
-    "src": "/lucrari/proiecte/fli/1.webp",
-    "w": 1600,
-    "h": 1200
-   }
-  ]
- },
- {
   "slug": "pickup-dungi",
   "title": "Pickup cu dungi personalizate",
   "client": null,
@@ -495,34 +751,6 @@
    },
    {
     "src": "/lucrari/proiecte/ford-mustang/3.webp",
-    "w": 1600,
-    "h": 1200
-   }
-  ]
- },
- {
-  "slug": "aco",
-  "title": "ACO – separatoare de grăsimi",
-  "client": null,
-  "cat": "autoutilitare",
-  "photos": [
-   {
-    "src": "/lucrari/proiecte/aco/1.webp",
-    "w": 1600,
-    "h": 1200
-   },
-   {
-    "src": "/lucrari/proiecte/aco/2.webp",
-    "w": 1600,
-    "h": 1200
-   },
-   {
-    "src": "/lucrari/proiecte/aco/3.webp",
-    "w": 1600,
-    "h": 1200
-   },
-   {
-    "src": "/lucrari/proiecte/aco/4.webp",
     "w": 1600,
     "h": 1200
    }
