@@ -3,16 +3,24 @@
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { CONSENT_KEY, CONSENT_OPEN, GA_ID, readConsent, track } from "@/lib/analytics"
+import { rememberSource } from "@/lib/source"
 import styles from "./CookieConsent.module.css"
 
-function loadAnalytics() {
+// Consent Mode (advanced): the Google tag loads on every visit, but until "Accept" it sets no cookies
+// and sends only anonymous pings without identifiers, from which Google estimates the visits and
+// requests it cannot count. "Accept" allows statistics and measuring our Google Ads (which ad brought
+// a request); remarketing and personalised ads stay off either way.
+const GRANTED = { analytics_storage: "granted", ad_storage: "granted", ad_user_data: "granted" }
+const DENIED = { analytics_storage: "denied", ad_storage: "denied", ad_user_data: "denied" }
+
+function loadAnalytics(accepted: boolean) {
     if (!GA_ID || window.gtag) return
     window.dataLayer = window.dataLayer ?? []
     // gtag.js reads the arguments object itself, so this has to stay a plain function
     window.gtag = function () { window.dataLayer!.push(arguments) }
-    // Consent Mode: the visitor accepted statistics and measuring our Google Ads (which ad brought a
-    // request); no remarketing or personalised ads
-    window.gtag("consent", "default", { analytics_storage: "granted", ad_storage: "granted", ad_user_data: "granted", ad_personalization: "denied" })
+    window.gtag("consent", "default", { ...(accepted ? GRANTED : DENIED), ad_personalization: "denied" })
+    // without consent, ad click IDs are dropped from the pings too
+    window.gtag("set", "ads_data_redaction", true)
     window.gtag("js", new Date())
     window.gtag("config", GA_ID)
     const s = document.createElement("script")
@@ -21,15 +29,16 @@ function loadAnalytics() {
     document.head.appendChild(s)
 }
 
-// Asks once and remembers the answer; analytics starts only after "Accept"
+// Asks once and remembers the answer; cookies and identifiers only after "Accept"
 export function CookieConsent() {
     const [open, setOpen] = useState(false)
 
     useEffect(() => {
+        rememberSource()
         if (!GA_ID) return
         const answer = readConsent()
-        if (answer === "da") loadAnalytics()
-        else if (answer === null) setOpen(true)
+        loadAnalytics(answer === "da")
+        if (answer === null) setOpen(true)
         const reopen = () => setOpen(true)
         window.addEventListener(CONSENT_OPEN, reopen)
         // phone, WhatsApp and email taps anywhere on the site count as contacts
@@ -47,14 +56,12 @@ export function CookieConsent() {
     const answer = (value: "da" | "nu") => {
         try { localStorage.setItem(CONSENT_KEY, value) } catch {}
         setOpen(false)
-        if (value === "da") return loadAnalytics()
-        // consent withdrawn: the _ga cookies go, and a reload drops the script already running
-        if (window.gtag) {
-            for (const name of document.cookie.split(";").map(c => c.split("=")[0].trim()).filter(n => n.startsWith("_ga"))) {
-                document.cookie = `${name}=; max-age=0; path=/; domain=.${location.hostname.replace(/^www\./, "")}`
-                document.cookie = `${name}=; max-age=0; path=/`
-            }
-            location.reload()
+        window.gtag?.("consent", "update", value === "da" ? GRANTED : DENIED)
+        if (value === "da") return
+        // refused or withdrawn: the tag keeps to anonymous pings, and any _ga cookies already set go
+        for (const name of document.cookie.split(";").map(c => c.split("=")[0].trim()).filter(n => n.startsWith("_ga"))) {
+            document.cookie = `${name}=; max-age=0; path=/; domain=.${location.hostname.replace(/^www\./, "")}`
+            document.cookie = `${name}=; max-age=0; path=/`
         }
     }
 

@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 import { site } from "@/lib/site"
 import { setLeadData, track } from "@/lib/analytics"
+import { sourceFields } from "@/lib/source"
 
 type Kind = "oferta" | "contact" | "calculator" | "tapet"
 type Status = "idle" | "sending" | "sent" | "error"
@@ -31,6 +32,8 @@ export function SmartForm({ kind, className, children, ...rest }: { kind: Kind; 
         const data = new FormData(e.currentTarget)
         data.set("kind", kind)
         data.set("t", String(shownAt.current))
+        // where the visitor came from (Google Ads, search, social…), shown in the request e-mail
+        for (const [k, v] of Object.entries(sourceFields())) data.set(k, v)
         const size = data.getAll("fisiere").reduce((n, f) => n + (f instanceof File ? f.size : 0), 0)
         if (size > MAX_FILES_BYTES) {
             setError(ERRORS.files)

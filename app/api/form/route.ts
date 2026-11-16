@@ -24,6 +24,7 @@ const LABELS: Record<string, string> = {
     folie: "Folie", extra: "Servicii suplimentare", zone: "Zone", suprafata: "Suprafață", design: "Are deja designul",
     pereti: "Pereți", imagine: "Imagine", camera: "Unde se montează", montaj: "Montaj",
     mesaj: "Mesaj",
+    sursa: "De unde a venit", intrare: "Prima pagină vizitată", trimisDe: "Trimis de pe pagina",
 }
 const SKIP = new Set(["kind", "gdpr", "website", "t", "fisiere"])
 const MAX_FILES_BYTES = 4 * 1024 * 1024 // the host accepts ~4.5 MB per request
@@ -64,6 +65,8 @@ export async function POST(req: Request) {
     keys.sort((a, b) => (Object.keys(LABELS).indexOf(a) + 1 || 99) - (Object.keys(LABELS).indexOf(b) + 1 || 99))
     const rows = keys
         .map(k => [LABELS[k] ?? k, data.getAll(k).map(v => String(v).trim()).filter(Boolean).join(", ")] as const)
+        // the visit's source comes from the browser: kept short, it is only ever shown as text
+        .map(([l, v]) => [l, l === LABELS.sursa || l === LABELS.intrare || l === LABELS.trimisDe ? v.slice(0, 200) : v] as const)
         .filter(([, v]) => v)
     if (kind !== "contact" && value("telefon")) {
         const i = rows.findIndex(([l]) => l === "Telefon")

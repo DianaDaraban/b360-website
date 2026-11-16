@@ -103,14 +103,21 @@ export default function PrivacyPage() {
                 <p>
                     Folosim Google Analytics (Google Ireland Ltd.) ca să aflăm câți vizitatori avem, ce pagini citesc și dacă folosesc
                     calculatorul sau formularele, și dacă vizita a venit dintr-o reclamă B360 din Google (Google Ads), ca să știm care reclame
-                    aduc cereri. Datele sunt agregate; nu le folosim pentru remarketing sau reclame personalizate. Analytics pornește și pune
-                    cookie-urile _ga numai după ce apeși „Accept” în bannerul de cookie-uri; dacă refuzi, nu se încarcă deloc.
+                    aduc cereri. Datele sunt agregate; nu le folosim pentru remarketing sau reclame personalizate. Cookie-urile _ga se pun
+                    numai după ce apeși „Accept” în bannerul de cookie-uri. Până atunci, sau dacă refuzi, nu se pune niciun cookie: Google
+                    primește doar semnale anonime (de exemplu „o pagină a fost vizitată” sau „un formular a fost trimis”), fără cookie-uri
+                    și fără identificatori care să te recunoască, din care estimează statistic numărul de vizite și cereri.
                 </p>
                 <p>
                     Dacă ai acceptat cookie-urile și trimiți un formular, adresa de email și numărul de telefon din formular sunt transmise
                     către Google în formă criptată (hash SHA-256, calculat chiar în browserul tău), ca Google Ads să poată număra cererea
                     venită dintr-o reclamă B360 („conversii îmbunătățite”). Google nu primește datele în clar, iar noi nu le folosim pentru
                     reclame personalizate. Dacă refuzi cookie-urile, nu se transmite nimic.
+                </p>
+                <p>
+                    Când trimiți un formular, mesajul pe care îl primim include și de unde ai ajuns pe site (de exemplu dintr-o căutare Google,
+                    dintr-o reclamă B360 sau de pe Facebook), prima pagină vizitată și pagina de pe care ai trimis formularul, ca să știm ce
+                    funcționează. Pentru asta nu se salvează nimic în browserul tău și nu se transmite nimic altcuiva.
                 </p>
                 <p>
                     Alegerea ta rămâne salvată în browser și o poți schimba oricând din linkul „Setări cookie-uri” din subsolul site-ului.
