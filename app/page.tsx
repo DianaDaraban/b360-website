@@ -50,10 +50,10 @@ export default async function Home() {
                     </h1>
                     <p className={styles.heroLead}>
                         La <strong>B360</strong> transformăm ideile în vizibilitate: colantări auto, branding de flote,
-                        vitrine și stickere, de la concept grafic la montaj.
+                        vitrine, stickere și tapet printat, de la concept grafic la montaj.
                     </p>
                     <div className={styles.heroActions}>
-                        <Link href="/calculator" className="btn-ghost"><Icon name="calculator" size={20} /> Calculează costul</Link>
+                        <Link href="/calculator" className="btn"><Icon name="calculator" size={20} /> Calculează costul</Link>
                         <Link href="/portofoliu" className="btn-ghost"><Icon name="gallery" size={20} /> Vezi lucrările</Link>
                     </div>
                 </div>
