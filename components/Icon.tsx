@@ -124,7 +124,7 @@ export function Icon({ name, size = 24, className, uncut }: { name: IconName; si
                     <clipPath id={`${id}r`}><polygon points="-200,-200 290,-200 -200,290" /></clipPath>
                     <clipPath id={`${id}g`}><polygon points="300,-200 400,-200 400,400 -200,400 -200,300" /></clipPath>
                 </defs>
-                <g clipPath={`url(#${id}r)`} style={{ color: "var(--red)" }}>{node}</g>
+                <g clipPath={`url(#${id}r)`} style={{ color: "var(--icon-corner, var(--red))" }}>{node}</g>
                 <g clipPath={`url(#${id}g)`}>{node}</g>
             </svg>
         )

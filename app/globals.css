@@ -277,7 +277,8 @@ a:hover > .peel, a:focus-visible > .peel, button:hover > .peel {
     box-shadow: 0 3px 8px rgb(120 0 0 / 0.25);
     cursor: pointer;
 }
-.btn { --c: 32px; }
+/* a red corner would vanish on the red pill, so icons cut on the diagonal keep it white here */
+.btn { --c: 32px; --icon-corner: var(--white); }
 .btn:hover, .btn:focus-visible { --c: 48px; }
 .btn:active { translate: 0 1px; }
 
