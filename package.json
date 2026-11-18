@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@netlify/blobs": "^10.7.13",
-    "next": "^16.4.3",
+    "next": "^16.4.6",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "read-excel-file": "^9.3.12",
@@ -27,7 +27,7 @@
     "@types/react-dom": "^19",
     "@types/three": "^0.186.0",
     "eslint": "^9",
-    "eslint-config-next": "^16.4.0",
+    "eslint-config-next": "^16.4.6",
     "sharp": "^0.35.5",
     "typescript": "^5"
   },

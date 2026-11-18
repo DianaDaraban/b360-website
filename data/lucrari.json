@@ -1185,7 +1185,7 @@
  {
   "src": "/lucrari/camioane/ibb.webp",
   "cat": "camioane",
-  "client": "IBB",
+  "client": "IBB Holding",
   "w": 1600,
   "h": 721
  },
@@ -1199,14 +1199,14 @@
  {
   "src": "/lucrari/camioane/lebada-luxury-1.webp",
   "cat": "camioane",
-  "client": "Lebada Luxury",
+  "client": "Lebăda Luxury",
   "w": 1600,
   "h": 1200
  },
  {
   "src": "/lucrari/camioane/lebada-luxury-2.webp",
   "cat": "camioane",
-  "client": "Lebada Luxury",
+  "client": "Lebăda Luxury",
   "w": 1600,
   "h": 1200
  },
@@ -1559,5 +1559,208 @@
   "client": "Wipro",
   "w": 1192,
   "h": 1600
+ },
+ {
+  "src": "/lucrari/camioane/ibb-1.webp",
+  "cat": "camioane",
+  "client": "IBB Holding",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/ibb-2.webp",
+  "cat": "camioane",
+  "client": "IBB Holding",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/ibb-3.webp",
+  "cat": "camioane",
+  "client": "IBB Holding",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/ibb-4.webp",
+  "cat": "camioane",
+  "client": "IBB Holding",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/mecano-valmar-1.webp",
+  "cat": "autoutilitare",
+  "client": "Mecano Valmar",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/mecano-valmar-2.webp",
+  "cat": "autoutilitare",
+  "client": "Mecano Valmar",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/mecano-valmar-3.webp",
+  "cat": "autoutilitare",
+  "client": "Mecano Valmar",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/mecano-valmar-4.webp",
+  "cat": "autoutilitare",
+  "client": "Mecano Valmar",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/mecano-valmar-5.webp",
+  "cat": "autoutilitare",
+  "client": "Mecano Valmar",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/mecano-valmar-6.webp",
+  "cat": "autoutilitare",
+  "client": "Mecano Valmar",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/rkm-logistics-3.webp",
+  "cat": "camioane",
+  "client": "RKM Logistics",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/lebada-luxury-3.webp",
+  "cat": "camioane",
+  "client": "Lebăda Luxury",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/lebada-luxury-4.webp",
+  "cat": "camioane",
+  "client": "Lebăda Luxury",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/lebada-luxury-5.webp",
+  "cat": "camioane",
+  "client": "Lebăda Luxury",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/pm-solutions-1.webp",
+  "cat": "autoturisme",
+  "client": "PM Solutions",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/pm-solutions-2.webp",
+  "cat": "autoturisme",
+  "client": "PM Solutions",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/pragosa-1.webp",
+  "cat": "camioane",
+  "client": "Pragosa",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/pragosa-2.webp",
+  "cat": "camioane",
+  "client": "Pragosa",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/holcim-3.webp",
+  "cat": "camioane",
+  "client": "Holcim",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/signalistica/adm-1.webp",
+  "cat": "signalistica",
+  "client": "ADM",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/signalistica/adm-2.webp",
+  "cat": "signalistica",
+  "client": "ADM",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/sos-ucraina-1.webp",
+  "cat": "camioane",
+  "client": "SOS Ucraina",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/camioane/sos-ucraina-2.webp",
+  "cat": "camioane",
+  "client": "SOS Ucraina",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/nhdp-1.webp",
+  "cat": "autoturisme",
+  "client": "NHDP",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/nhdp-2.webp",
+  "cat": "autoturisme",
+  "client": "NHDP",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/nhdp-3.webp",
+  "cat": "autoturisme",
+  "client": "NHDP",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/hai-sa-vaslim-1.webp",
+  "cat": "autoutilitare",
+  "client": "Hai să Vâslim",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoutilitare/hai-sa-vaslim-2.webp",
+  "cat": "autoutilitare",
+  "client": "Hai să Vâslim",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/orostar-1.webp",
+  "cat": "autoturisme",
+  "client": "Orostar Invest Security",
+  "w": 1600,
+  "h": 1200
  }
 ]
