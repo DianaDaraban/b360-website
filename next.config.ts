@@ -7,7 +7,8 @@ const root = path.resolve(import.meta.dirname)
 const nextConfig: NextConfig = {
     turbopack: { root },
     outputFileTracingRoot: root,
-    images: { formats: ["image/avif", "image/webp"] },
+    // 55: the hero photos that only fade in later (app/page.tsx); 75: everything else
+    images: { formats: ["image/avif", "image/webp"], qualities: [55, 75] },
     // the old WordPress site's addresses, already known to Google: each goes, permanently, to the
     // page that now covers it, so the ranking they earned carries over
     async redirects() {

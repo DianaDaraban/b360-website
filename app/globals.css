@@ -149,16 +149,16 @@ html:has(dialog[open]) { overflow: hidden; }
     position: absolute;
     width: var(--s);
     aspect-ratio: 1;
-    border-radius: 40% 60% 60% 40% / 40% 40% 60% 60%;
-    background: radial-gradient(circle at 35% 35%, var(--col) 0, color-mix(in srgb, var(--col) 50%, transparent) 40%, transparent 70%);
-    filter: blur(50px);
-    /* only transform is animated: it runs on the GPU; changing the shape would repaint the blur every frame */
+    /* the gradient itself fades out well inside the shape, so no blur filter is needed: blurring
+       44 large layers cost phones seconds of drawing before the hero photo could show */
+    background: radial-gradient(closest-side, var(--col) 0, color-mix(in srgb, var(--col) 62%, transparent) 30%, color-mix(in srgb, var(--col) 24%, transparent) 62%, color-mix(in srgb, var(--col) 6%, transparent) 84%, transparent 100%);
+    /* only transform is animated: it runs on the GPU; changing the shape would repaint every frame */
     animation: blobFloat var(--d1) ease-in-out infinite;
     will-change: transform;
 }
 .blobs-page span { opacity: 0.32; }
-.blobs-photo span { opacity: 0.6; mix-blend-mode: screen; filter: blur(40px); }
-.blobs-soft span { opacity: 0.4; mix-blend-mode: multiply; filter: blur(46px); }
+.blobs-photo span { opacity: 0.6; mix-blend-mode: screen; }
+.blobs-soft span { opacity: 0.4; mix-blend-mode: multiply; }
 .blobs span:nth-child(1) { --s: min(70vw, 520px); --col: #ee3338; --d1: 26s; --d2: 11s; top: 4%; left: -8%; }
 .blobs span:nth-child(2) { --s: min(80vw, 600px); --col: #7bb152; --d1: 34s; --d2: 15s; bottom: -6%; right: -10%; animation-delay: -8s, -3s; }
 .blobs span:nth-child(3) { --s: min(60vw, 420px); --col: #f39a2e; --d1: 22s; --d2: 13s; top: 42%; left: 48%; animation-delay: -14s, -6s; }

@@ -23,10 +23,17 @@ function loadAnalytics(accepted: boolean) {
     window.gtag("set", "ads_data_redaction", true)
     window.gtag("js", new Date())
     window.gtag("config", GA_ID)
-    const s = document.createElement("script")
-    s.async = true
-    s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`
-    document.head.appendChild(s)
+    // the tag (about 200 KB) is fetched once the page has loaded and the browser is idle, so it never
+    // competes with the hero; everything sent before then waits in dataLayer and goes out with it
+    const inject = () => {
+        const s = document.createElement("script")
+        s.async = true
+        s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`
+        document.head.appendChild(s)
+    }
+    const whenIdle = () => "requestIdleCallback" in window ? requestIdleCallback(inject, { timeout: 2000 }) : setTimeout(inject, 1000)
+    if (document.readyState === "complete") whenIdle()
+    else window.addEventListener("load", whenIdle, { once: true })
 }
 
 // Asks once and remembers the answer; cookies and identifiers only after "Accept"
