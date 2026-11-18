@@ -1762,5 +1762,54 @@
   "client": "Orostar Invest Security",
   "w": 1600,
   "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/mercedes-benz-1.webp",
+  "cat": "autocare",
+  "client": "Mercedes Benz",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/mercedes-benz-2.webp",
+  "cat": "autocare",
+  "client": "Mercedes Benz",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/mercedes-benz-3.webp",
+  "cat": "autocare",
+  "client": "Mercedes Benz",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/mercedes-benz-4.webp",
+  "cat": "autocare",
+  "client": "Mercedes Benz",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autocare/junii-sibiului-1.webp",
+  "cat": "autocare",
+  "client": "Junii Sibiului",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/city-grill-8.webp",
+  "cat": "autoturisme",
+  "client": "City Grill",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/autoturisme/city-grill-9.webp",
+  "cat": "autoturisme",
+  "client": "City Grill",
+  "w": 1600,
+  "h": 1200
  }
 ]
