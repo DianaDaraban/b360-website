@@ -71,10 +71,12 @@ test.describe("mobile", () => {
 
 test("portfolio filter shows one category and keeps it in the URL", async ({ page }) => {
     await open(page, "/portofoliu")
-    await until(() => page.getByRole("button", { name: "Vitrine" }).click(), () => expect(page).toHaveURL(/categorie=vitrine/, { timeout: 3000 }))
+    // exact: a project tile's label can contain the word too ("... vitrine pentru evenimente")
+    await until(() => page.getByRole("button", { name: "Vitrine", exact: true }).click(), () => expect(page).toHaveURL(/categorie=vitrine/, { timeout: 3000 }))
     const alts = await tileAlts(page)
     expect(alts.length).toBeGreaterThan(0)
-    for (const alt of alts) expect(alt).toMatch(/vitrină/)
+    // older photos are titled "Colantare vitrină – client", newer projects by their own name ("... vitrine ...")
+    for (const alt of alts) expect(alt).toMatch(/vitrin/i)
 })
 
 test("portfolio lightbox opens a project, steps through its photos and closes", async ({ page }) => {

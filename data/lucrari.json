@@ -1811,5 +1811,33 @@
   "client": "City Grill",
   "w": 1600,
   "h": 1200
+ },
+ {
+  "src": "/lucrari/vitrine/godac-1.webp",
+  "cat": "vitrine",
+  "client": "Godac",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/vitrine/godac-2.webp",
+  "cat": "vitrine",
+  "client": "Godac",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/vitrine/godac-3.webp",
+  "cat": "vitrine",
+  "client": "Godac",
+  "w": 1600,
+  "h": 1200
+ },
+ {
+  "src": "/lucrari/vitrine/godac-4.webp",
+  "cat": "vitrine",
+  "client": "Godac",
+  "w": 1600,
+  "h": 1200
  }
 ]
