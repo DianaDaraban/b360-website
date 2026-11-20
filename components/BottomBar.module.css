@@ -7,7 +7,8 @@
     display: grid;
     grid-template-columns: 1fr 88px 1fr;
     align-items: center;
-    background: var(--red);
+    /* a shade deeper than the UI red, so the small cream labels keep a 4.5:1 contrast (WCAG AA) */
+    background: #cf1b23;
     color: var(--white);
     box-shadow: 0 -4px 14px rgb(0 0 0 / 0.15);
 }
@@ -17,8 +18,8 @@
     align-items: center;
     gap: 8px;
     min-height: 56px;
-    font-size: 0.8rem;
-    font-weight: 650;
+    font-size: 0.84rem;
+    font-weight: 700;
     line-height: 1.2;
     text-decoration: none;
 }

@@ -82,6 +82,13 @@ export async function POST(req: Request) {
             ${files.length ? `<p style="margin-top:16px">Fișiere atașate: ${files.map(f => esc(f.name)).join(", ")}</p>` : ""}
             <p style="margin-top:20px;font-size:12px;color:#8d8a8e">Trimis de pe ${esc(site.url)} · Răspunde direct la acest email ca să-i scrii clientului.</p>
         </div>`
+    // a plain-text copy next to the HTML: an HTML-only message is one of the signals spam filters count against it
+    const text = [
+        config.subject, "",
+        ...rows.map(([l, v]) => `${l}: ${v}`),
+        ...(files.length ? ["", `Fișiere atașate: ${files.map(f => f.name).join(", ")}`] : []),
+        "", `Trimis de pe ${site.url} · Răspunde direct la acest email ca să-i scrii clientului.`,
+    ].join("\n")
 
     const res = await fetch(process.env.RESEND_API_URL ?? "https://api.resend.com/emails", {
         method: "POST",
@@ -92,6 +99,7 @@ export async function POST(req: Request) {
             reply_to: email,
             subject: `${config.subject} – ${value("nume")}`,
             html,
+            text,
             attachments: await Promise.all(files.map(async f => ({ filename: f.name, content: Buffer.from(await f.arrayBuffer()).toString("base64") }))),
         }),
     })

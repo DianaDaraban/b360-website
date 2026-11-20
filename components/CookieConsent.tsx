@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { CONSENT_KEY, CONSENT_OPEN, GA_ID, readConsent, track } from "@/lib/analytics"
+import { CLARITY_ID, CONSENT_KEY, CONSENT_OPEN, GA_ID, readConsent, track } from "@/lib/analytics"
 import { rememberSource } from "@/lib/source"
 import styles from "./CookieConsent.module.css"
 
@@ -31,9 +31,29 @@ function loadAnalytics(accepted: boolean) {
         s.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`
         document.head.appendChild(s)
     }
+    afterLoad(inject)
+}
+
+// runs a script injection once the page has loaded and the browser is idle, so it never competes with the hero
+function afterLoad(inject: () => void) {
     const whenIdle = () => "requestIdleCallback" in window ? requestIdleCallback(inject, { timeout: 2000 }) : setTimeout(inject, 1000)
     if (document.readyState === "complete") whenIdle()
     else window.addEventListener("load", whenIdle, { once: true })
+}
+
+// Microsoft Clarity: recordings and heatmaps, so only with consent; on the live domain only, so local
+// tests and previews are not recorded. Form fields are masked (also set to "Strict" in the Clarity panel).
+function loadClarity() {
+    if (window.clarity || !/(^|\.)b360design\.ro$/.test(location.hostname)) return
+    const clarity = Object.assign((...args: unknown[]) => { (clarity.q ??= []).push(args) }, { q: undefined as unknown[][] | undefined })
+    window.clarity = clarity
+    window.clarity("consent")
+    afterLoad(() => {
+        const s = document.createElement("script")
+        s.async = true
+        s.src = `https://www.clarity.ms/tag/${CLARITY_ID}`
+        document.head.appendChild(s)
+    })
 }
 
 // Asks once and remembers the answer; cookies and identifiers only after "Accept"
@@ -45,6 +65,7 @@ export function CookieConsent() {
         if (!GA_ID) return
         const answer = readConsent()
         loadAnalytics(answer === "da")
+        if (answer === "da") loadClarity()
         if (answer === null) setOpen(true)
         const reopen = () => setOpen(true)
         window.addEventListener(CONSENT_OPEN, reopen)
@@ -64,9 +85,11 @@ export function CookieConsent() {
         try { localStorage.setItem(CONSENT_KEY, value) } catch {}
         setOpen(false)
         window.gtag?.("consent", "update", value === "da" ? GRANTED : DENIED)
-        if (value === "da") return
-        // refused or withdrawn: the tag keeps to anonymous pings, and any _ga cookies already set go
-        for (const name of document.cookie.split(";").map(c => c.split("=")[0].trim()).filter(n => n.startsWith("_ga"))) {
+        if (value === "da") return loadClarity()
+        // refused or withdrawn: the tag keeps to anonymous pings, Clarity stops recording and erases its
+        // cookies, and any _ga / Clarity cookies already set go
+        window.clarity?.("consent", false)
+        for (const name of document.cookie.split(";").map(c => c.split("=")[0].trim()).filter(n => n.startsWith("_ga") || n.startsWith("_cl"))) {
             document.cookie = `${name}=; max-age=0; path=/; domain=.${location.hostname.replace(/^www\./, "")}`
             document.cookie = `${name}=; max-age=0; path=/`
         }
@@ -82,7 +105,7 @@ export function CookieConsent() {
             <div className={styles.text}>
                 <h2 id="cookie-title">Cookie-uri doar cu acordul tău</h2>
                 <p>
-                    Folosim Google Analytics ca să vedem ce pagini sunt utile și dacă reclamele noastre din Google aduc cereri. Fără remarketing.{" "}
+                    Folosim Google Analytics și Microsoft Clarity ca să vedem ce pagini sunt utile, unde se blochează vizitatorii și dacă reclamele noastre din Google aduc cereri. Fără remarketing.{" "}
                     <Link href="/politica-de-confidentialitate#cookie">Detalii</Link>
                 </p>
             </div>

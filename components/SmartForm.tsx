@@ -71,7 +71,8 @@ export function SmartForm({ kind, className, children, ...rest }: { kind: Kind; 
     }
 
     return (
-        <form className={className} onSubmit={onSubmit} {...rest}>
+        // data-clarity-mask: whatever is typed here never reaches Microsoft Clarity, whatever its panel settings
+        <form className={className} onSubmit={onSubmit} data-clarity-mask="true" {...rest}>
             {/* people never see or fill this field; bots usually do */}
             <label className="sr-only" aria-hidden="true">Site web<input name="website" tabIndex={-1} autoComplete="off" /></label>
             <fieldset disabled={status === "sending"} className="form-body">

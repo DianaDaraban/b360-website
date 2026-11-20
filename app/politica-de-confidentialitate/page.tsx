@@ -115,6 +115,13 @@ export default function PrivacyPage() {
                     reclame personalizate. Dacă refuzi cookie-urile, nu se transmite nimic.
                 </p>
                 <p>
+                    Tot numai după „Accept” folosim Microsoft Clarity (Microsoft Corporation), care înregistrează anonim cum este folosit
+                    site-ul (clicuri, derulare, mișcarea pe pagină) și din care facem hărți de clicuri, ca să vedem unde se blochează
+                    vizitatorii și ce putem îmbunătăți. Ce scrii în câmpurile formularelor este mascat și nu ajunge la Clarity. Cookie-urile
+                    Clarity (_clck, _clsk) expiră după cel mult un an. Dacă refuzi sau îți retragi acordul, Clarity nu se încarcă, iar
+                    cookie-urile lui se șterg.
+                </p>
+                <p>
                     Când trimiți un formular, mesajul pe care îl primim include și de unde ai ajuns pe site (de exemplu dintr-o căutare Google,
                     dintr-o reclamă B360 sau de pe Facebook), prima pagină vizitată și pagina de pe care ai trimis formularul, ca să știm ce
                     funcționează. Pentru asta nu se salvează nimic în browserul tău și nu se transmite nimic altcuiva.

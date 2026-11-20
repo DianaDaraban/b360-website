@@ -136,10 +136,11 @@
     right: 82px;
     top: 50%;
     translate: 0 -170%;
-    font: 700 0.78rem/1 var(--font-head);
+    font: 700 0.8rem/1 var(--font-head);
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--red);
+    /* the darker red: small text on the cream page needs a 4.5:1 contrast */
+    color: var(--red-dark);
     white-space: nowrap;
     transition: translate 0.35s var(--ease-out);
 }

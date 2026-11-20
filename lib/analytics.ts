@@ -1,11 +1,13 @@
 // Google Analytics 4 with Consent Mode: cookies and identifiers only after the visitor accepts the
 // cookie banner, anonymous pings before that (components/CookieConsent)
 export const GA_ID = process.env.NEXT_PUBLIC_GA_ID ?? ""
+// Microsoft Clarity (session recordings, click and scroll maps): only after "Accept", only on the live site
+export const CLARITY_ID = "zgnd2u6pol"
 export const CONSENT_KEY = "b360-cookies"          // "da" | "nu", kept in the visitor's browser
 export const CONSENT_OPEN = "b360:cookies-open"    // the footer link fires this to show the banner again
 
 declare global {
-    interface Window { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void }
+    interface Window { dataLayer?: unknown[]; gtag?: (...args: unknown[]) => void; clarity?: ((...args: unknown[]) => void) & { q?: unknown[][] } }
 }
 
 export function readConsent(): string | null {
