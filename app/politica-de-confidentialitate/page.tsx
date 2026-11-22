@@ -36,7 +36,8 @@ export default function PrivacyPage() {
                 <p>Colectăm doar datele pe care ni le trimiți singur prin formularele de pe site:</p>
                 <ul>
                     <li><strong>Cerere ofertă:</strong> nume și prenume, companie (opțional), telefon, email, detaliile proiectului și fișierele atașate.</li>
-                    <li><strong>Calculator:</strong> opțiunile alese, nume, telefon și email.</li>
+                    <li><strong>Calculator:</strong> opțiunile alese, nume, telefon și email (opțional).</li>
+                    <li><strong>„Te sunăm noi” din calculator:</strong> numărul de telefon și opțiunile alese în calculator, ca să te sunăm cu oferta.</li>
                     <li><strong>Mesaj de contact:</strong> nume, email, subiectul și mesajul.</li>
                 </ul>
                 <p>

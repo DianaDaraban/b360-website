@@ -42,7 +42,9 @@ export const TAPET = {
     bleedCm: 5,             // printed beyond each edge of the wall and trimmed at fitting
     printLossM: 1,          // roll length lost at the printer, once per order
     // print, material and fitting, per square metre of material, lei without VAT; null = coming soon
-    pricePerMp: { casa: 220, umed: null, comercial: null } as Record<Room, number | null>,
+    // living rooms: 180 lei/mp + TVA from Nov 2026 (was 220); the site's texts quote it too (data/servicii.ts,
+    // app/calculator-tapet): change them together
+    pricePerMp: { casa: 180, umed: null, comercial: null } as Record<Room, number | null>,
     vat: 0.21,
 }
 export const roomReady = (room: Room) => TAPET.pricePerMp[room] != null

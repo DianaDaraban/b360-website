@@ -15,8 +15,12 @@ export function readConsent(): string | null {
 }
 
 // a no-op until the tag has loaded; without consent Google receives it as an anonymous ping
+// the same event also goes to Clarity (when it runs, i.e. after consent), so its recordings can be
+// filtered by it ("saw the price", "asked to be called"...)
 export function track(event: string, params: Record<string, string | number> = {}) {
-    if (typeof window !== "undefined") window.gtag?.("event", event, params)
+    if (typeof window === "undefined") return
+    window.gtag?.("event", event, params)
+    window.clarity?.("event", event)
 }
 
 // Enhanced conversions for leads: the email and phone from a sent form go with the next event

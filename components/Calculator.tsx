@@ -5,6 +5,8 @@ import dynamic from "next/dynamic"
 import type { View3D } from "./Car3D"
 import { CarBlueprint } from "./CarBlueprint"
 import { Consent, SmartForm } from "./SmartForm"
+import { CallFirst } from "./CallFirst"
+import { useInView, useTrackSeen, useTrackWhen } from "./useTrackOnce"
 import { autoPanels, bodyTypes, hasDrawing, panelLabel, panelsOf, sidePanels, type BodyId, type Mode, type View } from "@/data/calculator"
 import { track } from "@/lib/analytics"
 import { DURATIONS, estimate, JOB_TYPES, jobAvailable, pickMaterial, subtypesOf, type Graphics, type JobType, type PricingConfig } from "@/lib/pricing"
@@ -162,6 +164,12 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
         "Aș dori o ofertă.",
     ].join("\n") : null
     const whatsappHref = whatsappText && `${site.whatsapp}?text=${encodeURIComponent(whatsappText)}`
+
+    // the steps, once per visit (GA4 + Clarity): picked a piece, got a price, scrolled to read it
+    useTrackWhen("calculator_piese", selected.length > 0, { caroserie: body })
+    useTrackWhen("calculator_pret", Boolean(totalText), { caroserie: body, lucrare: job })
+    useTrackSeen("calculator_estimare_vazuta", "calc-estimare", Boolean(totalText))
+    const estimateInView = useInView("calc-estimare")
 
     return (
         <SmartForm kind="calculator" className={styles.calc} aria-label="Calculator cost colantare">
@@ -339,17 +347,8 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                         </div>
                         {result && selected.length > 0 && <small>{bodyTypes.find(b => b.id === body)!.label} · {materialName}</small>}
                         {result?.shortfall && <small className={styles.notice}>Pentru {durationName.toLowerCase()} recomandăm altă lucrare: folia aleasă ține până la {result.shortfall} ani.</small>}
-                        {/* the moment the price is known, the call comes first: visitors from the ads read the
-                            estimate and then phone rather than fill in the form (Clarity, Nov 2026);
-                            WhatsApp is the way in outside working hours */}
-                        {whatsappHref && (
-                            <div className={styles.reach}>
-                                <p className={styles.reachLead}>Vrei prețul exact? <b>Sună-ne:</b> îți spunem pe loc cât costă și când putem începe.</p>
-                                <a href={site.phoneHref} className={`btn ${styles.call}`}><Icon name="phone" size={30} uncut />Sună: {site.phone}</a>
-                                <small className={styles.hours}>{site.hours.label} · în rest, scrie-ne pe WhatsApp și te sunăm noi</small>
-                                <a href={whatsappHref} target="_blank" rel="noopener" className="btn-ghost" aria-label="Trimite estimarea pe WhatsApp"><Icon name="whatsapp" size={30} uncut />Trimite pe WhatsApp</a>
-                            </div>
-                        )}
+                        {/* the moment the price is known, the call comes first (components/CallFirst) */}
+                        {whatsappHref && <CallFirst from="calculator" whatsappHref={whatsappHref} whatsappLabel="Trimite estimarea pe WhatsApp" />}
                         <small className={styles.disclaimer}>Prețul final îl confirmăm după ce vedem mașina și grafica.</small>
                     </div>
                     <div className={styles.lines}>
@@ -392,7 +391,8 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                         Telefon *
                         <span className={form.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" pattern="[0-9 ]{9,12}" required /></span>
                     </label>
-                    <label className={form.field}>Email *<input name="email" type="email" autoComplete="email" required /></label>
+                    {/* email optional: fewer required fields, more requests sent; we answer by phone anyway */}
+                    <label className={form.field}>Email <small>(opțional)</small><input name="email" type="email" autoComplete="email" /></label>
                     <label className={`${form.field} ${styles.details}`}>
                         Detalii suplimentare <small>(opțional)</small>
                         <textarea name="mesaj" rows={3} maxLength={2000} placeholder="ex. modelul exact al mașinii, câte mașini sunt, termenul dorit, ce vrei să apară pe grafică" />
@@ -407,7 +407,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
 
             {/* the running total stays in view while the questions are answered; once there is a price,
                 WhatsApp rides beside it as a round sticker */}
-            <div className={styles.float}>
+            <div className={styles.float} data-away={estimateInView || undefined}>
                 <a href="#calc-estimare" className={styles.liveTotal} data-empty={!totalText || undefined}>
                     <span>Estimare</span>
                     <strong>{totalText ?? "alege piesele"}</strong>

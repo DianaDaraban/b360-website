@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react"
 import { Consent, SmartForm } from "./SmartForm"
+import { CallFirst } from "./CallFirst"
+import { useInView, useTrackSeen, useTrackWhen } from "./useTrackOnce"
 import { Icon } from "./Icon"
 import { Room3D, wallNames, type RoomWall } from "./Room3D"
 import { InteriorDialog, InteriorPreview, Lens } from "./InteriorPreview"
@@ -210,7 +212,14 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
     const openingsCount = sized.reduce((n, x) => n + x.openings.length, 0)
     const whatsappHref = valid.length > 0 && `${site.whatsapp}?text=${encodeURIComponent(`Bună ziua! Am folosit calculatorul de tapet de pe ${site.url.replace(/^https?:\/\/(www\.)?/, "")}: ${valid.map(x => `${x.w} × ${x.h} cm`).join(", ")}${openingsCount ? ` cu ${openingsCount} ${openingsCount === 1 ? "ușă/fereastră" : "uși și ferestre"}` : ""} (${mp(net)} de tapet pe perete), ${roomName.toLowerCase()}, ${finishName.toLowerCase()}, ${placeName}${totalText ? `, estimare ${totalText}` : ""}. Aș dori o ofertă.`)}`
 
-    const room3d: RoomWall[] = sized.map(x => ({ ...x, w: Math.max(x.w, 20), h: Math.max(x.h, 20), image: imageOf(x.id)?.url }))
+    // the steps, once per visit (GA4 + Clarity): own wall sizes, a picture chosen, the price card read
+    const touchedWalls = walls.length > 1 || walls[0].w !== "350" || walls[0].h !== "260" || walls[0].openings.length > 0
+    useTrackWhen("tapet_pereti", touchedWalls)
+    useTrackWhen("tapet_imagine", Object.values(picks).some(Boolean) || Object.values(images).some(Boolean), { sursa: source })
+    useTrackSeen("tapet_estimare_vazuta", "tapet-estimare", allValid)
+    const estimateInView = useInView("tapet-estimare")
+
+    const room3d: RoomWall[] =sized.map(x => ({ ...x, w: Math.max(x.w, 20), h: Math.max(x.h, 20), image: imageOf(x.id)?.url }))
 
 
     // a design picked for one wall from the 3D view: switch to the catalogue, one design per wall, and
@@ -469,14 +478,12 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                         <div className={calc.total}>
                             <span>Estimare orientativă</span>
                             {!allValid ? <strong>Completează pereții</strong> : totalText ? <strong>{totalText}</strong> : <p className={styles.soon}>Prețul apare aici în curând</p>}
-                            {result ? <small>{lei(result.gross)} cu TVA · print, material și montaj incluse{place === "alt" ? " · plus transportul" : ""}{source === "noi" ? " · grafica o ofertăm separat" : ""}</small> : allValid && <small>Până atunci, trimite-ne pereții și îți spunem prețul exact, de obicei în aceeași zi.</small>}
+                            {/* the fitting is in the price: said plainly, right under it */}
+                            {result && <b className={styles.included}><Icon name="check" size={18} uncut /> Montajul este inclus în preț</b>}
+                            {result ? <small>{lei(result.gross)} cu TVA · {TAPET.pricePerMp[room]} lei/mp + TVA, cu print, material și montaj{place === "alt" ? " · plus transportul" : ""}{source === "noi" ? " · grafica o ofertăm separat" : ""}</small> : allValid && <small>Până atunci, trimite-ne pereții și îți spunem prețul exact, de obicei în aceeași zi.</small>}
                             <small className={calc.disclaimer}>Prețul final îl confirmăm după ce vedem imaginea și peretele.</small>
-                            {whatsappHref && (
-                                <div className={calc.reach}>
-                                    <a href={site.phoneHref} className="btn"><Icon name="phone" size={30} uncut />Sună</a>
-                                    <a href={whatsappHref} target="_blank" rel="noopener" className="btn-ghost" aria-label="Trimite pereții pe WhatsApp"><Icon name="whatsapp" size={30} uncut />WhatsApp</a>
-                                </div>
-                            )}
+                            {/* the call first, as in the car calculator (components/CallFirst) */}
+                            {whatsappHref && <CallFirst from="tapet" whatsappHref={whatsappHref} whatsappLabel="Trimite pereții pe WhatsApp" />}
                         </div>
                         {valid.length > 0 && (
                             <ul className={styles.facts}>
@@ -494,14 +501,15 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                 <input type="hidden" name="montaj" value={`Montaj B360, ${placeName}`} />
                 <input type="hidden" name="estimare" value={result ? `${lei(result.net)} + TVA (${lei(result.gross)} cu TVA)` : ""} />
 
-                <Step n={6} title="Trimite-ne pereții" hint="Îți trimitem oferta finală după ce vedem imaginea.">
+                <Step n={6} title="Trimite-ne pereții" hint="Preferi oferta în scris? Lasă-ne datele și ți-o trimitem după ce vedem imaginea.">
                     <div className={calc.contact}>
                         <label className={form.field}>Nume și prenume *<input name="nume" autoComplete="name" required /></label>
                         <label className={form.field}>
                             Telefon *
                             <span className={form.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" pattern="[0-9 ]{9,12}" required /></span>
                         </label>
-                        <label className={form.field}>Email *<input name="email" type="email" autoComplete="email" required /></label>
+                        {/* email optional, as in the car calculator: we answer by phone anyway */}
+                        <label className={form.field}>Email <small>(opțional)</small><input name="email" type="email" autoComplete="email" /></label>
                         <label className={`${form.field} ${calc.details}`}>
                             Detalii suplimentare <small>(opțional)</small>
                             <textarea name="mesaj" rows={3} maxLength={2000} placeholder={place === "alt" ? "ex. orașul, ce fel de imagine îți dorești, termenul dorit" : "ex. ce fel de imagine îți dorești, dacă peretele e proaspăt zugrăvit, termenul dorit"} />
@@ -516,11 +524,11 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
 
             {/* once there are prices, the running total stays in view, as in the car calculator */}
             {totalText && (
-                <div className={calc.float}>
+                <div className={calc.float} data-away={estimateInView || undefined}>
                     <a href="#tapet-estimare" className={calc.liveTotal}>
                         <span>Estimare</span>
                         <strong>{totalText}</strong>
-                        <small>{result && lei(result.gross)} cu TVA · vezi detalii</small>
+                        <small>{result && lei(result.gross)} cu TVA · montaj inclus</small>
                     </a>
                     {whatsappHref && <a href={whatsappHref} target="_blank" rel="noopener" className={`${calc.floatIcon} peel`} aria-label="Trimite pereții pe WhatsApp"><Icon name="whatsapp" size={34} uncut /></a>}
                 </div>

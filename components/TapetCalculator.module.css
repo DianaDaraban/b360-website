@@ -140,6 +140,8 @@
 .chip:has(input:focus-visible) { outline: 3px solid #17a398; outline-offset: 2px; }
 
 /* the estimate while prices are still to come */
+/* "the fitting is included", as a light pill under the price on the dark card */
+.included { justify-self: center; display: inline-flex; align-items: center; gap: 6px; margin: 2px 0; padding: 5px 12px; border-radius: 999px; background: rgb(143 224 214 / 0.18); color: #8fe0d6; font-size: 0.9rem; font-weight: 700; }
 .soon { margin: 0; font: 800 clamp(1.2rem, 3.2vw, 1.5rem)/1.2 var(--font-head); color: var(--cream); }
 .facts { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .facts li { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; border-radius: 10px; background: #f6f1ec; font-size: 0.9rem; }

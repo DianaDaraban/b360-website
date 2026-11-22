@@ -9,16 +9,20 @@ import { site } from "@/lib/site"
 //                   onboarding@resend.dev, which only delivers to the Resend account's own address
 export const runtime = "nodejs"
 
-const KINDS = {
-    oferta: { subject: "Cerere ofertă colantare", required: ["nume", "telefon", "email"] },
-    contact: { subject: "Mesaj de pe site", required: ["nume", "email", "mesaj"] },
-    calculator: { subject: "Cerere din calculatorul de preț", required: ["nume", "telefon", "email"] },
-    tapet: { subject: "Cerere din calculatorul de tapet", required: ["nume", "telefon", "email"] },
-} as const
+// consent: the GDPR box is ticked on the full forms; a callback (just a phone number, to be called
+// back about the configuration the visitor made) is a step the visitor asks for before a contract
+const KINDS: Record<string, { subject: string; required: readonly string[]; consent: boolean }> = {
+    oferta: { subject: "Cerere ofertă colantare", required: ["nume", "telefon", "email"], consent: true },
+    contact: { subject: "Mesaj de pe site", required: ["nume", "email", "mesaj"], consent: true },
+    // email optional in the calculators: fewer required fields, more requests (Nov 2026)
+    calculator: { subject: "Cerere din calculatorul de preț", required: ["nume", "telefon"], consent: true },
+    tapet: { subject: "Cerere din calculatorul de tapet", required: ["nume", "telefon"], consent: true },
+    callback: { subject: "SUNAȚI-MĂ: cerere de apel din calculator", required: ["telefon"], consent: false },
+}
 
 // readable names for the field keys, in the order they appear in the e-mail
 const LABELS: Record<string, string> = {
-    nume: "Nume", companie: "Companie", telefon: "Telefon", email: "Email", subiect: "Subiect",
+    calculatorul: "Din", nume: "Nume", companie: "Companie", telefon: "Telefon", email: "Email", subiect: "Subiect",
     serviciu: "Serviciu", tip: "Tip colantare", vehicul: "Tip vehicul", altTip: "Alt tip de vehicul", vehicule: "Număr vehicule",
     caroserie: "Caroserie", model: "Model", durata: "Cât ține folia", lucrare: "Lucrare", material: "Material ales", grafica: "Grafică", piese: "Piese selectate", estimare: "Estimare afișată",
     folie: "Folie", extra: "Servicii suplimentare", zone: "Zone", suprafata: "Suprafață", design: "Are deja designul",
@@ -40,8 +44,8 @@ export async function POST(req: Request) {
         return reply(400, { error: "invalid" })
     }
 
-    const kind = String(data.get("kind")) as keyof typeof KINDS
-    const config = KINDS[kind]
+    const kind = String(data.get("kind"))
+    const config = Object.hasOwn(KINDS, kind) ? KINDS[kind] : undefined
     if (!config) return reply(400, { error: "invalid" })
 
     // spam traps: a hidden field people never fill in, and a form sent less than 3 s after it was shown
@@ -49,9 +53,11 @@ export async function POST(req: Request) {
     if (data.get("website") || (shownAt && Date.now() - shownAt < 3000)) return reply(200, { ok: true })
 
     const value = (k: string) => String(data.get(k) ?? "").trim()
-    if (config.required.some(k => !value(k)) || data.get("gdpr") !== "da") return reply(422, { error: "missing" })
+    if (config.required.some(k => !value(k)) || (config.consent && data.get("gdpr") !== "da")) return reply(422, { error: "missing" })
+    // optional on some forms, but when given it has to look like an address (it becomes the reply-to)
     const email = value("email")
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return reply(422, { error: "email" })
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return reply(422, { error: "email" })
+    if (kind === "callback" && !/^\+?[\d ]{9,14}$/.test(value("telefon"))) return reply(422, { error: "missing" })
 
     const files = data.getAll("fisiere").filter((f): f is File => f instanceof File && f.size > 0)
     if (files.reduce((n, f) => n + f.size, 0) > MAX_FILES_BYTES) return reply(413, { error: "files" })
@@ -61,7 +67,8 @@ export async function POST(req: Request) {
     if (!key) return reply(503, { error: "not-configured" })
 
     // every filled field, grouped (checkbox lists joined), known fields first
-    const keys = [...new Set([...data.keys()])].filter(k => !SKIP.has(k))
+    // calc-… / tapet-…: the calculators' own radio groups, already written out in the hidden fields
+    const keys = [...new Set([...data.keys()])].filter(k => !SKIP.has(k) && !/^(calc|tapet)-/.test(k))
     keys.sort((a, b) => (Object.keys(LABELS).indexOf(a) + 1 || 99) - (Object.keys(LABELS).indexOf(b) + 1 || 99))
     const rows = keys
         .map(k => [LABELS[k] ?? k, data.getAll(k).map(v => String(v).trim()).filter(Boolean).join(", ")] as const)
@@ -70,9 +77,12 @@ export async function POST(req: Request) {
         .filter(([, v]) => v)
     if (kind !== "contact" && value("telefon")) {
         const i = rows.findIndex(([l]) => l === "Telefon")
-        if (i >= 0 && !value("telefon").startsWith("+")) rows[i] = ["Telefon", `+40 ${value("telefon")}`]
+        // a leading 0 (0722…) is dropped, so the number reads +40 722…
+        if (i >= 0 && !value("telefon").startsWith("+")) rows[i] = ["Telefon", `+40 ${value("telefon").replace(/^0+/, "")}`]
     }
 
+    // without an e-mail address there is nobody to reply to: the footer says to phone instead
+    const footer = `Trimis de pe ${site.url} · ${email ? "Răspunde direct la acest email ca să-i scrii clientului." : "Clientul nu a lăsat email: sună-l la numărul de mai sus."}`
     const html = `
         <div style="font-family:Arial,sans-serif;color:#3a3638;max-width:620px">
             <h2 style="color:#ee3338;margin:0 0 16px">${esc(config.subject)}</h2>
@@ -80,14 +90,14 @@ export async function POST(req: Request) {
                 ${rows.map(([l, v]) => `<tr><td style="padding:8px 12px;border-bottom:1px solid #eadccf;font-weight:bold;white-space:nowrap;vertical-align:top">${esc(l)}</td><td style="padding:8px 12px;border-bottom:1px solid #eadccf;white-space:pre-wrap">${esc(v)}</td></tr>`).join("")}
             </table>
             ${files.length ? `<p style="margin-top:16px">Fișiere atașate: ${files.map(f => esc(f.name)).join(", ")}</p>` : ""}
-            <p style="margin-top:20px;font-size:12px;color:#8d8a8e">Trimis de pe ${esc(site.url)} · Răspunde direct la acest email ca să-i scrii clientului.</p>
+            <p style="margin-top:20px;font-size:12px;color:#8d8a8e">${esc(footer)}</p>
         </div>`
     // a plain-text copy next to the HTML: an HTML-only message is one of the signals spam filters count against it
     const text = [
         config.subject, "",
         ...rows.map(([l, v]) => `${l}: ${v}`),
         ...(files.length ? ["", `Fișiere atașate: ${files.map(f => f.name).join(", ")}`] : []),
-        "", `Trimis de pe ${site.url} · Răspunde direct la acest email ca să-i scrii clientului.`,
+        "", footer,
     ].join("\n")
 
     const res = await fetch(process.env.RESEND_API_URL ?? "https://api.resend.com/emails", {
@@ -96,8 +106,8 @@ export async function POST(req: Request) {
         body: JSON.stringify({
             from: process.env.FORM_FROM ?? "Site B360 <onboarding@resend.dev>",
             to: (process.env.FORM_TO ?? site.email).split(",").map(s => s.trim()),
-            reply_to: email,
-            subject: `${config.subject} – ${value("nume")}`,
+            ...(email ? { reply_to: email } : {}),
+            subject: `${config.subject} – ${value("nume") || (value("telefon").startsWith("+") ? value("telefon") : `+40 ${value("telefon").replace(/^0+/, "")}`)}`,
             html,
             text,
             attachments: await Promise.all(files.map(async f => ({ filename: f.name, content: Buffer.from(await f.arrayBuffer()).toString("base64") }))),

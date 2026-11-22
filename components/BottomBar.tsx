@@ -11,12 +11,15 @@ import styles from "./BottomBar.module.css"
 export function BottomBar() {
     const pathname = usePathname()
     const onForm = pathname.startsWith("/calculator") || pathname.startsWith("/oferta")
+    // on the wallpaper pages the estimate is the wallpaper calculator: visitors from the wallpaper ads
+    // tapped "Calcul" and landed on the car calculator (Clarity, Nov 2026)
+    const tapet = pathname.startsWith("/servicii/tapet-printat") || pathname.startsWith("/calculator-tapet")
 
     return (
         <nav className={styles.bar} aria-label="Acțiuni rapide">
-            <Link href="/calculator" className={styles.side}>
+            <Link href={tapet ? "/calculator-tapet" : "/calculator"} className={styles.side}>
                 <Icon name="calculator" size={40} />
-                <span>Calcul estimativ colantare</span>
+                <span>{tapet ? "Calcul estimativ tapet" : "Calcul estimativ colantare"}</span>
             </Link>
 
             {/* The drop shadow sits on the link so it follows the round sticker */}
@@ -33,7 +36,7 @@ export function BottomBar() {
                 </Link>
             ) : (
                 <Link href="/oferta" className={`${styles.side} ${styles.right}`}>
-                    <span>Cerere ofertă colantare</span>
+                    <span>{tapet ? "Cerere ofertă tapet" : "Cerere ofertă colantare"}</span>
                     <Icon name="at" size={36} className={styles.at} />
                 </Link>
             )}

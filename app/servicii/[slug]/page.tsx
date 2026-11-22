@@ -89,9 +89,11 @@ export default async function ServiciuPage({ params }: Props) {
                     <p className={`eyebrow ${styles.heroKicker}`}>{specializat ? "Colantări specializate B360" : "Servicii B360"}</p>
                     <RevealTitle text={s.title} delay={0.2} />
                     <p className={styles.heroTeaser}>{s.teaser}</p>
+                    {/* the price first: visitors from the ads look for it, and left quickly or went hunting
+                        through the menu when it was one of two equal buttons (Clarity, Nov 2026) */}
                     <div className={styles.heroCta}>
+                        {s.calculator && <Link href={typeof s.calculator === "string" ? s.calculator : "/calculator"} className="btn"><Icon name="calculator" size={22} uncut /> Află prețul pe loc</Link>}
                         <Link href="/oferta" className="btn-ghost"><Icon name="at" size={22} /> Cere o ofertă</Link>
-                        {s.calculator && <Link href={typeof s.calculator === "string" ? s.calculator : "/calculator"} className="btn-ghost"><Icon name="calculator" size={22} /> Află prețul pe loc</Link>}
                     </div>
                 </div>
             </section>

@@ -131,7 +131,7 @@ export const servicii: Serviciu[] = [
         intro: "Printăm tapet personalizat cu orice imagine, la dimensiunea exactă a peretelui, și îl montăm noi: pentru case, birouri, restaurante și magazine.",
         lead: {
             title: "Un perete care spune povestea ta",
-            text: "Printăm **tapet personalizat** și **fototapet** în atelierul **B360**, la dimensiunea exactă a peretelui, cu imaginea aleasă de tine sau cu o grafică făcută de noi: o fotografie de familie, un peisaj, un model abstract sau logo-ul firmei. Ne ocupăm de tot: măsurători, pregătirea fișierului, print și **montaj**, în București, Ilfov și împrejurimi. Pentru locuințe, prețul este **220 lei/mp + TVA**, cu print, material și montaj incluse.",
+            text: "Printăm **tapet personalizat** și **fototapet** în atelierul **B360**, la dimensiunea exactă a peretelui, cu imaginea aleasă de tine sau cu o grafică făcută de noi: o fotografie de familie, un peisaj, un model abstract sau logo-ul firmei. Ne ocupăm de tot: măsurători, pregătirea fișierului, print și **montaj**, în București, Ilfov și împrejurimi. Pentru locuințe, prețul este **180 lei/mp + TVA**, cu print, material și montaj incluse.",
         },
         typesTitle: "Ce realizăm",
         typesText: "De la o cameră de copil la recepția unei firme, tapetul printat schimbă complet un spațiu. Fiecare tapet e unic: îl printăm doar după ce aprobi grafica.",
@@ -144,7 +144,7 @@ export const servicii: Serviciu[] = [
         benefitsPhoto: "/lucrari/proiecte/tapet-flori-de-cires/1.webp",
         extra: { title: "Tapet pentru firma ta", question: "Ai un birou, un restaurant sau un magazin?", text: "Transformăm pereții în **branding**: logo, culorile firmei sau imagini care spun povestea afacerii tale." },
         faq: [
-            { q: "Cât costă tapetul printat?", a: "Pentru living, dormitor, camera copiilor, hol sau birou acasă, tapetul printat costă 220 lei/mp + TVA, cu print, material și montaj incluse. În calculatorul de tapet scrii lățimea și înălțimea pereților și vezi prețul pe loc. Pentru băi, bucătării și spații comerciale îți facem o ofertă separată." },
+            { q: "Cât costă tapetul printat?", a: "Pentru living, dormitor, camera copiilor, hol sau birou acasă, tapetul printat costă 180 lei/mp + TVA, cu print, material și montaj incluse. În calculatorul de tapet scrii lățimea și înălțimea pereților și vezi prețul pe loc. Pentru băi, bucătării și spații comerciale îți facem o ofertă separată." },
             { q: "Ce aspect poate avea tapetul?", a: "Ai două variante: aspect de canvas, cu împletitura pânzei în relief, ca un tablou pictat, sau aspect de perete zugrăvit, mat, cu ușoare denivelări, ca și cum imaginea ar fi pictată direct pe perete." },
             { q: "Nu am o imagine. De unde aleg?", a: "Din catalogul nostru, cu peste 200 de modele: botanic, japonez, geometric, marmură, peisaje, animal print și modele pentru camera copiilor. Le vezi direct pe pereții tăi în calculatorul de tapet." },
             { q: "Pot folosi o fotografie făcută de mine?", a: "Da, dacă are rezoluția potrivită pentru dimensiunea peretelui. O verificăm noi și îți spunem sincer cum va arăta; dacă nu ajunge, îți propunem alternative." },
@@ -158,8 +158,8 @@ export const servicii: Serviciu[] = [
         ],
         portfolio: { label: "Vezi toate lucrările cu tapet", category: "tapet" },
         showcase: { kicker: "Din atelier, pe pereți" },
-        metaTitle: "Tapet și Fototapet Personalizat – 220 lei/mp + TVA, cu Montaj",
-        metaDescription: "Tapet printat și fototapet personalizat la comandă, cu orice imagine, la dimensiunea exactă a peretelui. 220 lei/mp + TVA cu print și montaj. Vezi prețul pe loc în calculator.",
+        metaTitle: "Tapet și Fototapet Personalizat – 180 lei/mp + TVA, cu Montaj",
+        metaDescription: "Tapet printat și fototapet personalizat la comandă, cu orice imagine, la dimensiunea exactă a peretelui. 180 lei/mp + TVA cu print și montaj. Vezi prețul pe loc în calculator.",
     },
     {
         slug: "folie-ppf",
