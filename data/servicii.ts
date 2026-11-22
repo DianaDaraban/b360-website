@@ -131,7 +131,7 @@ export const servicii: Serviciu[] = [
         intro: "Printăm tapet personalizat cu orice imagine, la dimensiunea exactă a peretelui, și îl montăm noi: pentru case, birouri, restaurante și magazine.",
         lead: {
             title: "Un perete care spune povestea ta",
-            text: "Printăm **tapet personalizat** și **fototapet** în atelierul **B360**, la dimensiunea exactă a peretelui, cu imaginea aleasă de tine sau cu o grafică făcută de noi: o fotografie de familie, un peisaj, un model abstract sau logo-ul firmei. Ne ocupăm de tot: măsurători, pregătirea fișierului, print și **montaj**, în București, Ilfov și împrejurimi. Pentru locuințe, prețul este **180 lei/mp + TVA**, cu print, material și montaj incluse.",
+            text: "Printăm **tapet personalizat** și **fototapet** la comandă în atelierul **B360**, la dimensiunea exactă a peretelui, cu imaginea aleasă de tine sau cu o grafică făcută de noi: o fotografie de familie, un peisaj, un model abstract sau logo-ul firmei. Ne ocupăm de tot: măsurători, pregătirea fișierului, print și **montaj**, în București, Ilfov și împrejurimi. Pentru locuințe, prețul este **180 lei/mp + TVA**, cu print, material și montaj incluse.",
         },
         typesTitle: "Ce realizăm",
         typesText: "De la o cameră de copil la recepția unei firme, tapetul printat schimbă complet un spațiu. Fiecare tapet e unic: îl printăm doar după ce aprobi grafica.",
@@ -145,9 +145,11 @@ export const servicii: Serviciu[] = [
         extra: { title: "Tapet pentru firma ta", question: "Ai un birou, un restaurant sau un magazin?", text: "Transformăm pereții în **branding**: logo, culorile firmei sau imagini care spun povestea afacerii tale." },
         faq: [
             { q: "Cât costă tapetul printat?", a: "Pentru living, dormitor, camera copiilor, hol sau birou acasă, tapetul printat costă 180 lei/mp + TVA, cu print, material și montaj incluse. În calculatorul de tapet scrii lățimea și înălțimea pereților și vezi prețul pe loc. Pentru băi, bucătării și spații comerciale îți facem o ofertă separată." },
+            { q: "Cât costă un fototapet personalizat pe un perete întreg?", a: "Înmulțești suprafața peretelui cu 180 lei/mp + TVA. De exemplu, un perete de 3 m lățime și 2,60 m înălțime are 7,8 mp, deci fototapetul costă aproximativ 1.404 lei + TVA, cu print, material și montaj incluse. Ușile și ferestrele se scad din suprafață; calculatorul de tapet face socoteala pentru toți pereții tăi." },
+            { q: "Cât costă montajul tapetului?", a: "Montajul este inclus în prețul de 180 lei/mp + TVA: nu plătești separat pentru print, material sau montaj." },
             { q: "Ce aspect poate avea tapetul?", a: "Ai două variante: aspect de canvas, cu împletitura pânzei în relief, ca un tablou pictat, sau aspect de perete zugrăvit, mat, cu ușoare denivelări, ca și cum imaginea ar fi pictată direct pe perete." },
             { q: "Nu am o imagine. De unde aleg?", a: "Din catalogul nostru, cu peste 200 de modele: botanic, japonez, geometric, marmură, peisaje, animal print și modele pentru camera copiilor. Le vezi direct pe pereții tăi în calculatorul de tapet." },
-            { q: "Pot folosi o fotografie făcută de mine?", a: "Da, dacă are rezoluția potrivită pentru dimensiunea peretelui. O verificăm noi și îți spunem sincer cum va arăta; dacă nu ajunge, îți propunem alternative." },
+            { q: "Pot face fototapet cu poza mea?", a: "Da, cu orice fotografie a ta, dacă are rezoluția potrivită pentru dimensiunea peretelui. O verificăm noi și îți spunem sincer cum va arăta; dacă nu ajunge, îți propunem alternative." },
             { q: "Cum aflu ce dimensiune îmi trebuie?", a: "Ne trimiți lățimea și înălțimea peretelui, iar pentru proiecte mai mari venim noi la măsurători. Printăm cu o mică rezervă pentru o potrivire exactă la montaj." },
             { q: "Pe ce pereți se poate monta tapetul?", a: "Pe pereți netezi, uscați și curați, vopsiți sau gletuiți. Dacă peretele are denivelări sau igrasie, le evaluăm înainte de montaj." },
             { q: "Cât durează de la comandă la montaj?", a: "De obicei câteva zile: aprobăm împreună grafica, printăm în atelierul nostru și programăm montajul." },
@@ -231,8 +233,10 @@ export const vehicule: Serviciu[] = [
             { q: "Faceți stickere moto pe care să le aplic singur?", a: "Da. Printăm și tăiem pe contur stickere și kituri grafice gata de aplicat și îți explicăm cum le pui corect, fără bule." },
         ],
         portfolio: { label: "Vezi lucrări moto, bărci și avioane", category: "speciale" },
+        // the title in Google (shown at place 5-7 but little clicked): the searched words and the area
+        metaTitle: "Colantare Moto București – Carenaje, Kituri și Stickere",
         showcase: { kicker: "Din atelier", projects: ["/lucrari/speciale/1.webp", "/lucrari/speciale/4.webp", "/lucrari/speciale/2.webp", "/lucrari/speciale/3.webp"] },
-        metaDescription: "Colantare moto și căști: schimbarea culorii carenajelor, kituri grafice, replici ale stickerelor originale, stickere moto la comandă și dungi pe jante. Atelier B360, Corbeanca, Ilfov.",
+        metaDescription: "Colantăm motociclete în atelierul nostru de lângă București: culoare nouă pe carenaje, replici ale stickerelor originale și kituri grafice personalizate. Trimite-ne câteva poze și îți spunem prețul.",
     },
     {
         slug: "colantare-camioane",
