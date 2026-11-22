@@ -203,8 +203,8 @@ export function Gallery({ items, categories, clients }: { items: Proiect[]; cate
                     <Image key={`pre-${item.src}`} src={item.src} alt="" aria-hidden width={item.w} height={item.h} sizes="(min-width: 1240px) 1200px, 100vw" loading="eager" className={styles.preload} />
                 ))}
                 <button className={styles.close} onClick={() => dialog.current?.close()} aria-label="Închide"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg></button>
-                <button className={styles.prev} onClick={() => step(-1)} aria-label="Fotografia anterioară"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg></button>
-                <button className={styles.next} onClick={() => step(1)} aria-label="Fotografia următoare"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg></button>
+                <button className={styles.prev} onClick={() => step(-1)} aria-label="Fotografia anterioară"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M16.4 5l-7 7 7 7" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg></button>
+                <button className={styles.next} onClick={() => step(1)} aria-label="Fotografia următoare"><svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path d="M7.6 5l7 7-7 7" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg></button>
             </dialog>
         </>
     )

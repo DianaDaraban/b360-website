@@ -58,11 +58,10 @@
     /* always red on the light disc, whatever colour the page asks for (light arrows vanished on it) */
     .arrow { position: absolute; top: 50%; z-index: 2; width: 34px; height: 34px; margin-top: -17px; border-radius: 50%; background: rgb(255 250 246 / 0.95); box-shadow: 0 2px 8px rgb(60 20 20 / 0.22); color: var(--red); }
     .arrow:hover { color: var(--red-dark); }
-    /* the chevrons are drawn off-centre in their box: nudged into the middle of the disc, and no hover
-       slide (a tap leaves "hover" on, which pushed the arrow off-centre) */
+    /* no hover slide on the disc (a tap leaves "hover" on, which pushed the arrow off-centre); the
+       chevrons themselves are drawn optically centred (Carousel.tsx) */
     .arrow svg { width: 20px; height: 20px; filter: none; }
-    .prev svg, .prev:hover:not(:disabled) svg { translate: 1px 0; }
-    .next svg, .next:hover:not(:disabled) svg { translate: -1px 0; }
+    .prev:hover:not(:disabled) svg, .next:hover:not(:disabled) svg { translate: none; }
     .prev { left: calc(-1 * var(--gutter) + 6px); }
     .next { right: calc(-1 * var(--gutter) + 6px); }
     .arrow:disabled { opacity: 0; pointer-events: none; }
