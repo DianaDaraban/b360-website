@@ -2,7 +2,10 @@
 /* the chips ride in a Carousel (faded ends, arrows), tighter than the client stickers */
 .filters { margin: 12px 0 0; }
 .chips { --carousel-gap: 8px; --carousel-pad: 6px 4px 8px; }
-.chips li { display: flex; }
+/* a flex row, not the carousel's grid: the grid kept the column widths from before a chip was picked
+   (the picked chip grows), so the chips ran over each other */
+.chips ul { display: flex; }
+.chips li { display: flex; flex: none; }
 .chip {
     position: relative;
     isolation: isolate;
@@ -244,7 +247,7 @@
 @media (min-width: 1024px) {
     .grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
     /* all categories on one centred row; where they don't fit the row scrolls, never a lone chip on a second row */
-    .chips ul { justify-content: safe center; --carousel-gap: 6px; }
+    .chips ul { justify-content: safe center; gap: 6px; }
     .chip { padding: 8px 12px; font-size: 0.86rem; }
     .chip[aria-pressed="true"] { padding: 10px 30px 10px 14px; }
 }

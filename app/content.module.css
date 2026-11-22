@@ -4,10 +4,13 @@
 /* Portofoliu: a short head so the photos show up on the first screen */
 /* (doubled with .section so it wins over the global section padding, whichever file loads last) */
 :global(.section).compact { padding-top: 32px; }
-.intro { max-width: 70ch; margin: 0 auto; }
+/* one line: the short sentence on a phone, the whole one on wider screens */
+.intro { margin: 0 auto; }
+.narrowOnly { display: none; }
 @media (max-width: 767px) {
     :global(.section).compact { padding-top: 14px; }
     .pageTitle { margin-bottom: 2px; }
     .intro { font-size: 0.95rem; }
     .wideOnly { display: none; }
+    .narrowOnly { display: inline; }
 }

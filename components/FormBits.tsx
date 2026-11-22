@@ -45,10 +45,16 @@ export function Stepper({ name, min = 1, max = 999, label }: { name: string; min
 
 // The optional fields of a short form, folded under one line ("+ Adaugă …, opțional"): the form shows
 // only what is required, and whoever wants to say more opens it. Fields inside are sent either way.
-export function Extras({ summary, children }: { summary: string; children: React.ReactNode }) {
+// Drawn as a dashed button (a paper clip, the line, "opțional" under it, a round + on the right that
+// turns into ×), so it reads as something to press, not as a heading.
+export function Extras({ summary, note, children }: { summary: string; note: string; children: React.ReactNode }) {
     return (
         <details className={styles.extras}>
-            <summary><span aria-hidden="true">+</span> {summary} <small>(opțional)</small></summary>
+            <summary>
+                <svg className={styles.clip} viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5l-7.8 7.8a5 5 0 01-7.1-7.1l8.5-8.5a3.3 3.3 0 014.7 4.7l-8.5 8.5a1.7 1.7 0 01-2.4-2.4l7.8-7.8" /></svg>
+                <span className={styles.extrasText}>{summary}<small>{note}</small></span>
+                <span className={styles.plus} aria-hidden="true" />
+            </summary>
             <div className={styles.extrasBody}>{children}</div>
         </details>
     )

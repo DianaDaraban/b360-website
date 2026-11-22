@@ -117,16 +117,22 @@ export function Room3D({ walls, focus, onFocus, onMoveOpening, onResizeWall }: {
             setTurn(from.turn + (ev.clientX - startX) * 0.4)
             setTilt(Math.max(-40, Math.min(0, from.tilt - (ev.clientY - startY) * 0.25)))
         }
-        const up = () => {
+        const stop = () => {
             window.removeEventListener("pointermove", move)
             window.removeEventListener("pointerup", up)
+            window.removeEventListener("pointercancel", stop)
             setRotating(false)
+        }
+        const up = () => {
+            stop()
             if (moved) return
             const i = target ? Number(target.dataset.wall) : null
             onFocus(i === f ? null : i)
         }
         window.addEventListener("pointermove", move)
         window.addEventListener("pointerup", up)
+        // a vertical swipe is handed to the page (touch-action: pan-y): the browser cancels the drag
+        window.addEventListener("pointercancel", stop)
     }
 
     // a door or window follows the finger; on a wall seen at an angle the move is approximate, and

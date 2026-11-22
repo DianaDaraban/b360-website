@@ -30,7 +30,7 @@ export default async function PortofoliuPage() {
                 <div className="container">
                     <h1 className={styles.pageTitle}>Portofoliu</h1>
                     {/* short on a phone: the photos are what people came for (the how-to half shows on wide screens only) */}
-                    <p className={`${styles.center} ${styles.intro}`}>Proiectele noastre, de la o singură mașină la flote întregi.<span className={styles.wideOnly}> Deschide un proiect ca să vezi toate fotografiile, sau alege o categorie ori un client.</span></p>
+                    <p className={`${styles.center} ${styles.intro}`}><span className={styles.wideOnly}>Proiectele noastre, d</span><span className={styles.narrowOnly}>D</span>e la o singură mașină la flote întregi.<span className={styles.wideOnly}> Deschide un proiect sau alege o categorie ori un client.</span></p>
                     {/* The filter reads ?categorie= on the client; the static HTML (what Google sees) holds the first photos */}
                     <Suspense fallback={<StaticGrid proiecte={proiecte} />}>
                         <Gallery items={proiecte} categories={categorii} clients={clienti.filter(c => c.match).map(({ slug, name, logo }) => ({ slug, name, logo }))} />

@@ -174,8 +174,6 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 10px;
-    max-height: 560px;
-    overflow-y: auto;
     padding: 4px;
     margin: -4px;
 }
@@ -225,10 +223,18 @@
 .chosen { margin: 0; font-size: 0.9rem; color: var(--ink); }
 .chosen a { color: #0e7d75; font-weight: 700; }
 .chosen small { color: var(--muted); }
-@media (max-width: 559px) { .designs { grid-template-columns: repeat(2, 1fr); max-height: 480px; } .design img { height: 90px; } }
+@media (max-width: 559px) { .designs { grid-template-columns: repeat(2, 1fr); } .design img { height: 90px; } }
 
 /* under the 3D room, with a wall chosen: designs to tap straight onto it */
-.quickPick { justify-self: stretch; display: grid; gap: 6px; }
+/* the designs under the 3D room: a light card with a clear call to pick one, so the room reads as
+   "put a picture on these walls" before anyone scrolls to step 2 */
+.quickPick { justify-self: stretch; display: grid; gap: 6px; padding: 10px 12px 8px; border-radius: 14px; background: rgb(23 163 152 / 0.08); border: 1.5px solid rgb(23 163 152 / 0.25); }
+.stripLead { display: inline-flex; align-items: center; gap: 6px; font: 700 0.98rem/1.3 var(--font-head); color: var(--ink-strong); }
+.stripLead::before { content: ""; flex: none; width: 10px; height: 10px; border-radius: 50%; background: #17a398; box-shadow: 0 0 0 0 rgb(23 163 152 / 0.5); animation: ping 1.8s ease-out infinite; }
+@keyframes ping { 70% { box-shadow: 0 0 0 9px rgb(23 163 152 / 0); } 100% { box-shadow: 0 0 0 0 rgb(23 163 152 / 0); } }
+@media (prefers-reduced-motion: reduce) { .stripLead::before { animation: none; } }
+.quickPick .stripMore { font-size: 0.8rem; color: var(--muted); }
+.stripMore a { color: #0f7f76; font-weight: 600; }
 .quickPick p { margin: 0; font-size: 0.86rem; color: var(--ink); }
 .stripBar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
 .stripBar p { flex: 1 1 200px; }
@@ -264,6 +270,8 @@
 .strip button:hover { translate: 0 -2px; }
 .strip button[aria-pressed="true"] { border-color: #17a398; }
 .strip img { display: block; width: 104px; height: 62px; object-fit: cover; border-radius: 7px; }
+/* the strip fades out on the right: there are more designs to swipe to */
+.strip { mask: linear-gradient(90deg, #000 85%, transparent); }
 
 /* next to the 3D room: one picture for every wall, or a different one on each */
 .viewRow { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 10px; justify-self: stretch; }
@@ -275,3 +283,7 @@
 .perWall input:checked + .toggle::after { translate: 18px 0; }
 .perWall input:focus-visible + .toggle { outline: 2px solid #17a398; outline-offset: 2px; }
 .perWall:hover { border-color: #17a398; }
+
+/* the catalogue grows by a page of designs at a time (no inner scroll box: it caught the finger on phones) */
+.moreDesigns { display: flex; justify-content: center; }
+.moreDesigns small { font-weight: 500; opacity: 0.75; }

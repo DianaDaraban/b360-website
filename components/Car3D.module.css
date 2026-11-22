@@ -1,5 +1,5 @@
 .wrap { position: relative; }
 /* the height comes from the calculator (what is left of the screen beside steps 1 and 2) */
 .host { width: 100%; height: var(--car3d-h, clamp(260px, 46vw, 470px)); }
-.host canvas { display: block; width: 100% !important; height: 100% !important; touch-action: none; }
+.host canvas { display: block; width: 100% !important; height: 100% !important; touch-action: pan-y; }   /* up/down swipes scroll the page (Car3D.tsx) */
 .state { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; font-weight: 700; color: var(--muted); pointer-events: none; }

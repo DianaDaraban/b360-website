@@ -76,6 +76,9 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
         controls.autoRotate = true
         controls.autoRotateSpeed = 1.1
         controls.addEventListener("start", () => { controls.autoRotate = false })
+        // OrbitControls takes every touch (touch-action: none): on a phone a finger on the car could not
+        // scroll the page. Sideways drags still turn the car; up/down swipes go to the page
+        renderer.domElement.style.touchAction = "pan-y"
 
         const panels = new Map<string, THREE.Mesh>()
         let hovered: string | null = null

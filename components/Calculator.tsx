@@ -395,7 +395,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                     </label>
                     {/* only name and phone in view; the rest folded away, optional (fewer fields in sight, more
                         requests sent). Clients like to send their own mock-up, so photos have a place too */}
-                    <Extras summary="Adaugă poze, simularea ta, email sau detalii">
+                    <Extras summary="Adaugă poze sau simularea ta" note="și emailul sau alte detalii · toate opționale">
                         <FileDrop name="fisiere" accept="image/*,.pdf,.ai,.eps,.svg,.cdr" maxMb={4} title="Poze cu mașina sau simularea ta" />
                         <label className={form.field}>Email <small>(opțional)</small><input name="email" type="email" autoComplete="email" /></label>
                         <label className={`${form.field} ${styles.details}`}>

@@ -1,4 +1,4 @@
-/* The room in CSS 3D on the calculator's drawing board: walls with the client's image, skirting
+/* The room in CSS 3D on the calculator's drawing board: walls with the client's image, oak skirting
    boards, a plank floor, panelled doors and framed windows with their dimension lines. Walls seen
    from behind are not drawn, so the room stays open to look into. */
 .board {
@@ -15,7 +15,9 @@
     -webkit-user-select: none;
     isolation: isolate;
     cursor: grab;
-    touch-action: none;         /* every drag on the board turns the room */
+    /* a sideways drag turns the room; an up/down swipe scrolls the page (with "none" a finger on the
+       room could not get past it); the mouse still tilts it up and down */
+    touch-action: pan-y;
     contain: paint;             /* the near ends of the walls are cut at the board's edge */
 }
 .room {
@@ -62,7 +64,8 @@
     /* soft shadow in the corners, as on a real wall */
     box-shadow: inset 0 0 50px rgb(40 25 10 / 0.16), inset 0 0 0 1px rgb(58 54 56 / 0.1);
 }
-/* a white skirting board along the floor */
+/* a skirting board in the oak of the floor (white, it read as a gap between the wall and the floor):
+   the same plank texture, a lit top edge and a little shade where it meets the wall */
 .face::before {
     content: "";
     position: absolute;
@@ -71,9 +74,11 @@
     bottom: 0;
     z-index: 1;
     height: 3.2%;
-    min-height: 3px;
-    background: linear-gradient(#fdfcfa, #ebe6df);
-    box-shadow: 0 -1px 3px rgb(0 0 0 / 0.1);
+    min-height: 4px;
+    background:
+        linear-gradient(rgb(255 240 215 / 0.55) 0 1.5px, rgb(255 255 255 / 0) 2px, rgb(60 35 15 / 0) 70%, rgb(60 35 15 / 0.25)),
+        #c9a77a url("/tapet/room/floor.webp") 0 0 / 260px auto repeat-x;
+    box-shadow: 0 -1px 3px rgb(40 25 10 / 0.25);
     pointer-events: none;
 }
 /* light from above and the front left: each side its own shade, a little darker near the floor */

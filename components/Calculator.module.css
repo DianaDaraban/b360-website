@@ -230,19 +230,24 @@
 .callback { display: grid; gap: 8px; margin-top: 4px; padding: 12px; border-radius: 14px; background: rgb(243 234 225 / 0.08); text-align: left; }
 .callback label { font-size: 0.92rem; line-height: 1.35; color: var(--cream); }
 .callback label b { color: #8fe0d6; }
-.callbackRow { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 8px; }
-.callbackRow > span { font-weight: 700; color: rgb(243 234 225 / 0.8); }
-.callbackRow input { min-width: 0; padding: 11px 12px; border: 1.5px solid rgb(243 234 225 / 0.35); border-radius: 12px; background: rgb(255 255 255 / 0.95); color: var(--ink-strong); font: 600 1rem/1.2 var(--font-body, inherit); }
-.callbackRow input:focus-visible { outline: 3px solid #8fe0d6; outline-offset: 1px; }
-/* a number missing or cut short: the field turns red, the note under it says what to write */
-.callbackRow input[aria-invalid] { border-color: #ff6b6f; box-shadow: 0 0 0 3px rgb(255 107 111 / 0.35); }
-/* "Sună-mă": a filled mint button, so it reads as the second way in next to the red call button */
-.callbackBtn { display: inline-flex; align-items: center; gap: 6px; padding: 11px 16px; border: 0; border-radius: 999px; background: #8fe0d6; color: #0f3b37; font: 800 0.98rem/1 var(--font-head); white-space: nowrap; cursor: pointer; box-shadow: 0 6px 16px rgb(0 0 0 / 0.25); transition: background 0.2s, translate 0.2s; }
-.callbackBtn:hover, .callbackBtn:focus-visible { background: #b5efe7; translate: 0 -1px; }
-.callbackBtn:active { translate: 0 1px; }
+/* one white capsule: +40, the number, and the "Sună-mă" button sitting inside its right end, all with
+   the same round ends (a square field beside a pill button looked patched together and cramped) */
+.callbackRow { display: flex; align-items: center; gap: 6px; min-height: 54px; padding: 5px 5px 5px 16px; border: 2px solid transparent; border-radius: 999px; background: var(--white); box-shadow: 0 4px 14px rgb(0 0 0 / 0.18); transition: border-color 0.2s, box-shadow 0.2s; }
+.callbackRow:focus-within { border-color: #8fe0d6; box-shadow: 0 0 0 3px rgb(143 224 214 / 0.35); }
+.callbackRow > span { flex: none; font-weight: 700; color: var(--muted); }
+/* width 0 + flex 1: the field takes what is left, so the capsule never pushes past the card */
+.callback { min-width: 0; }
+.callbackRow input { flex: 1; width: 0; min-width: 0; padding: 8px 2px; border: 0; background: transparent; color: var(--ink-strong); font: 600 1.05rem/1.2 var(--font-body, inherit); }
+.callbackRow input:focus { outline: none; }
+/* a number missing or cut short: the capsule turns red, the note under it says what to write */
+.callbackRow:has(input[aria-invalid]) { border-color: #ff6b6f; box-shadow: 0 0 0 3px rgb(255 107 111 / 0.35); }
+/* "Sună-mă": a filled mint pill inside the capsule, the second way in next to the red call button */
+.callbackBtn { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: #17a398; color: var(--white); font: 800 1rem/1 var(--font-head); white-space: nowrap; cursor: pointer; transition: background 0.2s, scale 0.15s; }
+.callbackBtn:hover, .callbackBtn:focus-visible { background: #0f8a80; }
+.callbackBtn:active { scale: 0.96; }
 .callbackBtn:disabled { opacity: 0.7; cursor: progress; }
 /* narrow phones: the number gets the room, the button drops its icon */
-@media (max-width: 420px) { .callbackBtn svg { display: none; } .callbackBtn { padding-inline: 14px; } .callbackRow { gap: 6px; } }
+@media (max-width: 420px) { .callbackBtn svg { display: none; } .callbackBtn { padding-inline: 16px; } }
 .total .callbackNote { font-size: 0.75rem; color: rgb(243 234 225 / 0.65); }
 .total .callbackNote[data-error] { font-size: 0.85rem; font-weight: 700; color: #ffb3b5; }
 .total .callbackNote a { color: inherit; }

@@ -17,6 +17,8 @@ import styles from "./TapetCalculator.module.css"
 
 const MAX_WALLS = 4         // the 3D room goes round four walls
 const MAX_OPENINGS = 4
+const DESIGNS_PAGE = 12     // catalogue designs shown at once, more on request
+const EXAMPLE = "PE-09"     // the design shown on the walls until the client picks one ("Munți în ceața dimineții")
 const MAX_FILE = 4 * 1024 * 1024      // what the form can carry; bigger images come by e-mail or WhatsApp
 const lei = (n: number) => `${n.toLocaleString("ro-RO")} lei`
 const mp = (n: number) => `${n.toLocaleString("ro-RO", { maximumFractionDigits: 1 })} mp`
@@ -61,6 +63,7 @@ export function TapetCalculator() {
     // catalogue designs picked: one for all the walls ("shared") or one per wall (by wall id)
     const [picks, setPicks] = useState<Record<string, string | undefined>>({})
     const [catStyle, setCatStyle] = useState<CatalogStyle | "toate">("toate")
+    const [designsShown, setDesignsShown] = useState(DESIGNS_PAGE)
     const [target, setTarget] = useState(0)          // the wall a catalogue pick goes on, one per wall
     // the wall looked at in 3D and the wall chosen in the catalogue are kept the same
     const chooseWall = (i: number | null) => { setFocus(i); if (i != null) setTarget(i) }
@@ -218,9 +221,16 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
     useTrackWhen("tapet_pereti", touchedWalls)
     useTrackWhen("tapet_imagine", Object.values(picks).some(Boolean) || Object.values(images).some(Boolean), { sursa: source })
     useTrackSeen("tapet_estimare_vazuta", "tapet-estimare", allValid)
-    const estimateInView = useInView("tapet-estimare")
+    // the floating total also steps aside over the design strip under the room, which it covered on phones
+    const cardInView = useInView("tapet-estimare")
+    const stripInView = useInView("tapet-modele")
+    const estimateInView = cardInView || stripInView
 
-    const room3d: RoomWall[] =sized.map(x => ({ ...x, w: Math.max(x.w, 20), h: Math.max(x.h, 20), image: imageOf(x.id)?.url }))
+    // until a design is chosen, the 3D room shows an example on its walls, so it says at first sight that
+    // pictures go there; only a look, never sent as the client's choice (imageOf stays empty)
+    const nothingYet = source === "catalog" && !Object.values(picks).some(Boolean)
+    const example = nothingYet ? catalogImage(EXAMPLE) : undefined
+    const room3d: RoomWall[] = sized.map(x => ({ ...x, w: Math.max(x.w, 20), h: Math.max(x.h, 20), image: imageOf(x.id)?.url ?? example }))
 
 
     // a design picked for one wall from the 3D view: switch to the catalogue, one design per wall, and
@@ -356,11 +366,15 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                                 )}
                             </div>
                         )}
-                        {/* with a wall chosen in 3D, a design goes straight on that wall from this strip */}
-                        {focus != null && focus < walls.length && (
-                            <div className={styles.quickPick}>
+                        {/* the designs right under the room from the start (they showed only once a wall was
+                            picked, so the 3D room did not say pictures could go on it): one tap puts a design on
+                            the walls; with a wall chosen in 3D, on that wall */}
+                        {(() => {
+                            const wi = focus != null && focus < walls.length ? focus : Math.min(target, walls.length - 1)
+                            return (
+                            <div className={styles.quickPick} id="tapet-modele">
                                 <div className={styles.stripBar}>
-                                    <p>Alege un model pentru <b>{walls.length === 1 ? "perete" : !perWall ? "toți pereții" : `peretele ${names[focus].toLowerCase()}`}</b>:</p>
+                                    <p><b className={styles.stripLead}>{nothingYet ? "Pe pereți e un exemplu: alege modelul tău" : "Alege un model și îl vezi pe loc pe pereți"}</b> {walls.length > 1 && <>pentru <b>{!perWall ? "toți pereții" : `peretele ${names[wi].toLowerCase()}`}</b></>}</p>
                                     <select value={stripStyle} onChange={e => setStripStyle(e.target.value as CatalogStyle | "toate")} aria-label="Stilul modelelor">
                                         <option value="toate">Toate stilurile</option>
                                         {CATALOG_STYLES.map(st => <option key={st.id} value={st.id}>{st.label}</option>)}
@@ -372,17 +386,19 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                                 </div>
                                 <div className={styles.strip}>
                                     {shuffled(CATALOG.filter(d => stripStyle === "toate" || d.style === stripStyle), seed).map(d => {
-                                        const on = imageOf(walls[focus].id)?.url === catalogImage(d.code)
+                                        const on = imageOf(walls[wi].id)?.url === catalogImage(d.code)
                                         return (
-                                            <button type="button" key={d.code} aria-pressed={on} title={d.title} onClick={() => putOnWall(focus, d.code)}>
+                                            <button type="button" key={d.code} aria-pressed={on} title={d.title} onClick={() => putOnWall(wi, d.code)}>
                                                 {/* eslint-disable-next-line @next/next/no-img-element */}
                                                 <img src={catalogImage(d.code, "s")} alt={d.title} loading="lazy" width={120} height={67} />
                                             </button>
                                         )
                                     })}
                                 </div>
+                                <p className={styles.stripMore}>Glisează pentru mai multe modele · <a href="#tapet-step-2">toată colecția și imaginea ta, la pasul 2</a></p>
                             </div>
-                        )}
+                            )
+                        })()}
                     </div>
                 </div>
             </Step>
@@ -422,13 +438,15 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                             <div className={styles.chips} role="radiogroup" aria-label="Stilul">
                                 {[{ id: "toate" as const, label: "Toate" }, ...CATALOG_STYLES].map(st => (
                                     <label key={st.id} className={styles.chip}>
-                                        <input type="radio" name="tapet-stil" checked={catStyle === st.id} onChange={() => setCatStyle(st.id)} />
+                                        <input type="radio" name="tapet-stil" checked={catStyle === st.id} onChange={() => { setCatStyle(st.id); setDesignsShown(DESIGNS_PAGE) }} />
                                         {st.label}
                                     </label>
                                 ))}
                             </div>
+                            {/* a few rows at a time, with "more" under them: the list used to be a box with its own
+                                scroll, which caught the finger on phones instead of scrolling the page */}
                             <div className={styles.designs}>
-                                {shown.map((d, i) => (
+                                {shown.slice(0, designsShown).map((d, i) => (
                                     <div key={d.code} className={styles.designWrap}>
                                         <button type="button" className={styles.design} aria-pressed={picks[key] === d.code} onClick={() => setPicks(m => ({ ...m, [key]: d.code }))}>
                                             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -439,6 +457,13 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                                     </div>
                                 ))}
                             </div>
+                            {shown.length > designsShown && (
+                                <div className={styles.moreDesigns}>
+                                    <button type="button" className="btn-ghost on-light" onClick={() => setDesignsShown(n => n + DESIGNS_PAGE)}>
+                                        Arată mai multe modele <small>({shown.length - designsShown} rămase)</small>
+                                    </button>
+                                </div>
+                            )}
                             <InteriorDialog
                                 full
                                 designs={shown.map(d => ({ url: catalogImage(d.code), full: catalogImage(d.code, "full"), thumb: catalogImage(d.code, "s"), name: `${d.title} · ${d.ai ? "design B360" : d.artist}` }))}
@@ -510,7 +535,7 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                             <span className={form.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" pattern="[0-9 ]{9,12}" required /></span>
                         </label>
                         {/* as in the car calculator: only name and phone in view, the rest folded away and optional */}
-                        <Extras summary="Adaugă poze cu peretele, email sau detalii">
+                        <Extras summary="Adaugă poze cu peretele" note="și emailul sau alte detalii · toate opționale">
                             <FileDrop name="fisiere" accept="image/*,.pdf" maxMb={4} title="Poze cu peretele sau camera" />
                             <label className={form.field}>Email <small>(opțional)</small><input name="email" type="email" autoComplete="email" /></label>
                             <label className={`${form.field} ${calc.details}`}>

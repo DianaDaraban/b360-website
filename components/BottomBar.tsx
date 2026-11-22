@@ -42,7 +42,8 @@ export function BottomBar() {
 
             {onCalculator ? home(styles.right) : (
                 <Link href={tapet ? "/calculator-tapet" : "/calculator"} className={`${styles.side} ${styles.right}`}>
-                    <span>{tapet ? "Calculator tapet" : "Calculator colantare"}</span>
+                    {/* both calculators are a tab apart, so outside the wallpaper pages the label names both */}
+                    <span>{tapet ? "Calculator tapet" : "Calculator colantare / tapet"}</span>
                     <Icon name="calculator" size={40} />
                 </Link>
             )}
