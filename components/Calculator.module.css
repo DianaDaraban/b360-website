@@ -131,6 +131,10 @@
 /* only a caption: taps go through it to the turn arrows it sits beside on phones */
 .hoverName { position: absolute; left: 0; right: 0; bottom: 12px; pointer-events: none; text-align: center; font-size: 0.92rem; font-weight: 700; color: var(--ink-strong); }
 .hoverName em { font-style: normal; font-weight: 500; color: var(--muted); }
+/* a tap beside the pieces: the hint in red for a moment, with a small nudge */
+.hoverName[data-miss] { color: var(--red-dark); animation: nudge 0.35s ease-out; }
+@keyframes nudge { 25% { translate: -6px 0; } 50% { translate: 5px 0; } 75% { translate: -3px 0; } }
+@media (prefers-reduced-motion: reduce) { .hoverName[data-miss] { animation: none; } }
 
 .viewBar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
 /* the angle switch: white with a border, the chosen angle red */

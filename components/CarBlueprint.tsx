@@ -13,13 +13,15 @@ type Props = {
     selection: Record<string, Mode>
     onPick: (panelId: string) => void
     onHover: (panelId: string | null) => void
+    // a tap that hits no panel (glass, wheels, lamps or the space around the car)
+    onMiss?: () => void
 }
 
 // A photo of the car with clickable panels. The chosen work is painted over the car only (masked
 // by the photo's alpha) in multiply mode, so the paint keeps the car's real light and shadow:
 // wrap = the whole piece in orange-yellow with a thick yellow contour, inscription = the part
 // below the window line in blue, wrap + logo = wrap with a pattern of logo badges.
-export function CarBlueprint({ body, view, selection, onPick, onHover }: Props) {
+export function CarBlueprint({ body, view, selection, onPick, onHover, onMiss }: Props) {
     const uid = useId().replace(/:/g, "")
     const b = bodyType(body)
     const top = view === "sus"
@@ -87,6 +89,9 @@ export function CarBlueprint({ body, view, selection, onPick, onHover }: Props) 
                         )
                     })}
                 </g>
+
+                {/* under the panels: a tap that misses them all, so the visitor can be told why nothing happened */}
+                {onMiss && <rect width={W} height={H} fill="transparent" onClick={onMiss} />}
 
                 {/* click areas: the hover tint is masked to the car, the hit area is the outline */}
                 <g mask={`url(#${uid}-car)`}>

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import dynamic from "next/dynamic"
 import type { View3D } from "./Car3D"
 import { CarBlueprint } from "./CarBlueprint"
@@ -102,7 +102,19 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
         // a full wrap starts with every piece picked; taking pieces off makes it a partial wrap
         if (id === "integrală") setSelected(all)
     }
-    const pick = (id: string) => setSelected(sel => (sel.includes(id) ? sel.filter(x => x !== id) : [...sel, id]))
+    // a tap beside the pieces (glass, wheels, lamps): for a moment the line under the car says why nothing happened
+    const [missed, setMissed] = useState(false)
+    const missTimer = useRef<ReturnType<typeof setTimeout>>(undefined)
+    const miss = () => {
+        setMissed(true)
+        clearTimeout(missTimer.current)
+        missTimer.current = setTimeout(() => setMissed(false), 2500)
+    }
+    useEffect(() => () => clearTimeout(missTimer.current), [])
+    const pick = (id: string) => {
+        setMissed(false)
+        setSelected(sel => (sel.includes(id) ? sel.filter(x => x !== id) : [...sel, id]))
+    }
     const turn = (dir: 1 | -1) => setView(v => views[(views.findIndex(x => x.id === v) + dir + views.length) % views.length].id)
 
     // PPF is clear film: there is no graphics to design, so step 5 is switched off and costs nothing
@@ -156,7 +168,9 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
             {/* ---------- 1: the car ---------- */}
             <Step n={1} compact title="Ce mașină ai?" hint="Alege tipul de caroserie care seamănă cel mai bine cu mașina ta: calculul e același pentru mașini similare.">
                 <div className={styles.carRow}>
-                <div className={styles.bodyCards} role="radiogroup" aria-label="Tip caroserie">
+                {/* data-clarity-unmask: the car pictures and piece names hold nothing personal, so Clarity's
+                    recordings may show them (the contact fields stay masked) */}
+                <div className={styles.bodyCards} role="radiogroup" aria-label="Tip caroserie" data-clarity-unmask="true">
                     {bodyTypes.map(b => (
                         <button type="button" role="radio" key={b.id} className={styles.bodyCard} aria-checked={body === b.id} onClick={() => chooseBody(b.id)}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -171,7 +185,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
             {/* ---------- 2: the pieces ---------- */}
             <Step n={2} compact title="Ce piese colantăm?" hint={show3d ? "Rotește mașina trăgând de ea (sau cu degetul) și apasă pe piesele pe care vrei să le colantăm." : "Apasă pe piese, direct pe mașină. Întoarce mașina cu săgețile ca să vezi și plafonul sau cealaltă parte."}>
                 {show3d ? (
-                    <div className={styles.canvas3d}>
+                    <div className={styles.canvas3d} data-clarity-unmask="true">
                         {start3d ? <Car3D body={body} selected={selected} view={view3d} onPick={pick} onHover={setHovered} /> : <p className={styles.loading3d}>Se încarcă mașina 3D…</p>}
                         <p className={styles.hoverName} aria-live="polite">
                             {hovered ? <>{panelLabel(hovered)} · <em>{selected.includes(hovered) ? "apasă ca s-o scoți" : "apasă ca s-o adaugi"}</em></> : selected.length ? `${selected.length} ${selected.length === 1 ? "piesă aleasă" : "piese alese"}` : "Trage ca s-o rotești · apasă pe o piesă ca s-o alegi"}
@@ -191,18 +205,18 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                         )}
                     </div>
                 ) : (
-                    <div className={styles.canvas}>
+                    <div className={styles.canvas} data-clarity-unmask="true">
                         <button type="button" className={`${styles.turn} ${styles.turnLeft}`} onClick={() => turn(-1)} aria-label="Unghiul anterior">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8" /></svg>
                         </button>
                         <div key={view} className={styles.flip}>
-                            <CarBlueprint body={body} view={view} selection={selection} onPick={pick} onHover={setHovered} />
+                            <CarBlueprint body={body} view={view} selection={selection} onPick={pick} onHover={setHovered} onMiss={miss} />
                         </div>
                         <button type="button" className={`${styles.turn} ${styles.turnRight}`} onClick={() => turn(1)} aria-label="Unghiul următor">
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8" /></svg>
                         </button>
-                        <p className={styles.hoverName} aria-live="polite">
-                            {hovered ? <>{panelLabel(hovered)} · <em>{selected.includes(hovered) ? "apasă ca s-o scoți" : "apasă ca s-o adaugi"}</em></> : selected.length ? `${selected.length} ${selected.length === 1 ? "piesă aleasă" : "piese alese"}` : "Apasă pe o piesă ca s-o alegi"}
+                        <p className={styles.hoverName} aria-live="polite" data-miss={missed || undefined}>
+                            {missed ? <>Aici nu se pune folie · <em>apasă pe caroserie</em></> : hovered ? <>{panelLabel(hovered)} · <em>{selected.includes(hovered) ? "apasă ca s-o scoți" : "apasă ca s-o adaugi"}</em></> : selected.length ? `${selected.length} ${selected.length === 1 ? "piesă aleasă" : "piese alese"}` : "Apasă pe o piesă ca s-o alegi"}
                         </p>
                     </div>
                 )}
