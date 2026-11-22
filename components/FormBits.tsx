@@ -43,8 +43,19 @@ export function Stepper({ name, min = 1, max = 999, label }: { name: string; min
     )
 }
 
+// The optional fields of a short form, folded under one line ("+ Adaugă …, opțional"): the form shows
+// only what is required, and whoever wants to say more opens it. Fields inside are sent either way.
+export function Extras({ summary, children }: { summary: string; children: React.ReactNode }) {
+    return (
+        <details className={styles.extras}>
+            <summary><span aria-hidden="true">+</span> {summary} <small>(opțional)</small></summary>
+            <div className={styles.extrasBody}>{children}</div>
+        </details>
+    )
+}
+
 // File drop zone: click or drag files onto it; lists the chosen files with their total size
-export function FileDrop({ name, accept, maxMb }: { name: string; accept: string; maxMb: number }) {
+export function FileDrop({ name, accept, maxMb, title = "Atașează schițe, logo sau poze" }: { name: string; accept: string; maxMb: number; title?: string }) {
     const input = useRef<HTMLInputElement>(null)
     const [files, setFiles] = useState<File[]>([])
     const [over, setOver] = useState(false)
@@ -74,7 +85,7 @@ export function FileDrop({ name, accept, maxMb }: { name: string; accept: string
             <span className={styles.dropIcon} aria-hidden="true" />
             {files.length === 0 ? (
                 <span className={styles.dropText}>
-                    <strong>Atașează schițe, logo sau poze</strong>
+                    <strong>{title}</strong>
                     <small>Trage fișierele aici sau apasă pentru a alege · până la {maxMb} MB în total</small>
                 </span>
             ) : (

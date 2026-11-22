@@ -19,6 +19,9 @@ const MAX_FILES_BYTES = 4 * 1024 * 1024
 export function CallFirst({ from, whatsappHref, whatsappLabel }: { from: "calculator" | "tapet"; whatsappHref: string; whatsappLabel: string }) {
     const [phone, setPhone] = useState("")
     const [status, setStatus] = useState<Status>("idle")
+    // the button is always pressable; pressing it without a whole number marks the field and says why
+    const [invalid, setInvalid] = useState(false)
+    const input = useRef<HTMLInputElement>(null)
     const shownAt = useRef(0)
     const box = useRef<HTMLDivElement>(null)
     useEffect(() => { shownAt.current = Date.now() }, [])
@@ -28,7 +31,8 @@ export function CallFirst({ from, whatsappHref, whatsappLabel }: { from: "calcul
     const valid = digits.length === 9
 
     const send = async () => {
-        if (!valid || status === "sending") return
+        if (status === "sending") return
+        if (!valid) { setInvalid(true); input.current?.focus(); return }
         const outer = box.current?.closest("form")
         const data = outer ? new FormData(outer) : new FormData()
         // the visitor's own number from here; the long form's contact fields go too, if they were filled in
@@ -67,25 +71,29 @@ export function CallFirst({ from, whatsappHref, whatsappLabel }: { from: "calcul
                     <div className={calc.callbackRow}>
                         <span>+40</span>
                         <input
+                            ref={input}
                             id={`cb-${from}`}
                             type="tel"
                             inputMode="tel"
                             autoComplete="tel-national"
                             placeholder="722 12 34 56"
                             value={phone}
-                            onChange={e => setPhone(e.target.value)}
+                            onChange={e => { setPhone(e.target.value); setInvalid(false) }}
                             // Enter here asks for the call, not for the long form below
                             onKeyDown={e => { if (e.key === "Enter") { e.preventDefault(); send() } }}
+                            aria-invalid={invalid || undefined}
                             aria-describedby={`cb-${from}-note`}
                         />
-                        <button type="button" className="btn-ghost" onClick={send} disabled={!valid || status === "sending"}>
-                            {status === "sending" ? "Se trimite…" : "Sună-mă"}
+                        <button type="button" className={calc.callbackBtn} onClick={send} disabled={status === "sending"}>
+                            <Icon name="phone" size={20} uncut />{status === "sending" ? "Se trimite…" : "Sună-mă"}
                         </button>
                     </div>
-                    <small id={`cb-${from}-note`} className={calc.callbackNote}>
+                    <small id={`cb-${from}-note`} className={calc.callbackNote} data-error={invalid || status === "error" || undefined} role={invalid ? "alert" : undefined}>
                         {status === "error"
                             ? <>Nu s-a putut trimite. Sună-ne la <a href={site.phoneHref}>{site.phone}</a>.</>
-                            : <>Primim și configurația de mai sus. Folosim numărul doar ca să te sunăm (<Link href="/politica-de-confidentialitate" target="_blank">confidențialitate</Link>).</>}
+                            : invalid
+                                ? <>{digits.length ? "Numărul pare incomplet: " : "Scrie mai întâi numărul tău de telefon: "}9 cifre după +40, de exemplu 722 12 34 56.</>
+                                : <>Primim și configurația de mai sus. Folosim numărul doar ca să te sunăm (<Link href="/politica-de-confidentialitate" target="_blank">confidențialitate</Link>).</>}
                     </small>
                 </div>
             )}

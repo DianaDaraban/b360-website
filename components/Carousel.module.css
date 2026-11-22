@@ -4,7 +4,7 @@
 .track {
     list-style: none;
     margin: 0;
-    padding: 14px 6px 22px;
+    padding: var(--carousel-pad, 14px 6px 22px);
     display: grid;
     grid-auto-flow: column;
     gap: var(--carousel-gap, 18px);
@@ -48,12 +48,18 @@
 .prev:hover:not(:disabled) svg { translate: -4px 0; }
 .next:hover:not(:disabled) svg { translate: 4px 0; }
 
-/* on phones the strip is swiped; the arrows sit underneath */
+.carousel[data-fits] .arrow { visibility: hidden; }
+
+/* on phones the strip is swiped edge to edge; the arrows ride on its ends, over the faded part, as small
+   round buttons (a row of arrows underneath took a whole line of the screen), and leave once that end is reached */
 @media (max-width: 767px) {
-    .carousel { grid-template-columns: 1fr 1fr; }
-    .track { grid-column: 1 / -1; grid-row: 1; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
-    .prev { grid-row: 2; justify-self: end; margin-right: 8px; }
-    .next { grid-row: 2; justify-self: start; margin-left: 8px; }
+    .carousel { display: block; }
+    .track { margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
+    .arrow { position: absolute; top: 50%; z-index: 2; width: 34px; height: 34px; margin-top: -17px; border-radius: 50%; background: rgb(255 250 246 / 0.92); box-shadow: 0 2px 8px rgb(60 20 20 / 0.22); }
+    .arrow svg { width: 20px; height: 20px; filter: none; }
+    .prev { left: calc(-1 * var(--gutter) + 6px); }
+    .next { right: calc(-1 * var(--gutter) + 6px); }
+    .arrow:disabled { opacity: 0; pointer-events: none; }
 }
 /* on wide screens the arrows move out into the margin, beyond the content column */
 @media (min-width: 1320px) {

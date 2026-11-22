@@ -6,21 +6,32 @@ import { Icon } from "./Icon"
 import { site } from "@/lib/site"
 import styles from "./BottomBar.module.css"
 
-// Mobile action bar from the Figma: estimate on the left, the peeled phone sticker in the
-// middle, quote request on the right (replaced by "Acasă" on the calculator and quote pages)
+// Mobile action bar from the Figma: quote request on the left, the peeled phone sticker in the middle,
+// the calculator on the right, under the right thumb, since it is the most used (Nov 2026). Each side
+// keeps its place and turns into "Acasă" on its own page.
 export function BottomBar() {
     const pathname = usePathname()
-    const onForm = pathname.startsWith("/calculator") || pathname.startsWith("/oferta")
-    // on the wallpaper pages the estimate is the wallpaper calculator: visitors from the wallpaper ads
-    // tapped "Calcul" and landed on the car calculator (Clarity, Nov 2026)
+    // on the wallpaper pages both actions are about wallpaper: the wallpaper calculator, the quote form
+    // opened on wallpaper (visitors from the wallpaper ads landed on the car calculator before)
     const tapet = pathname.startsWith("/servicii/tapet-printat") || pathname.startsWith("/calculator-tapet")
+    const onOferta = pathname.startsWith("/oferta")
+    const onCalculator = pathname.startsWith("/calculator")
+
+    const home = (side: string) => (
+        <Link href="/" className={`${styles.side} ${side} ${styles.home}`}>
+            <Icon name="home" size={30} />
+            <span>Acasă</span>
+        </Link>
+    )
 
     return (
         <nav className={styles.bar} aria-label="Acțiuni rapide">
-            <Link href={tapet ? "/calculator-tapet" : "/calculator"} className={styles.side}>
-                <Icon name="calculator" size={40} />
-                <span>{tapet ? "Calcul estimativ tapet" : "Calcul estimativ colantare"}</span>
-            </Link>
+            {onOferta ? home("") : (
+                <Link href={tapet ? "/oferta?serviciu=tapet" : "/oferta"} className={styles.side}>
+                    <Icon name="at" size={36} className={styles.at} />
+                    <span>{tapet ? "Cerere ofertă tapet" : "Cerere ofertă"}</span>
+                </Link>
+            )}
 
             {/* The drop shadow sits on the link so it follows the round sticker */}
             <a href={site.phoneHref} className={styles.phone} aria-label={`Sună-ne: ${site.phone}`}>
@@ -29,15 +40,10 @@ export function BottomBar() {
                 </span>
             </a>
 
-            {onForm ? (
-                <Link href="/" className={`${styles.side} ${styles.right} ${styles.home}`}>
-                    <Icon name="home" size={30} />
-                    <span>Acasă</span>
-                </Link>
-            ) : (
-                <Link href="/oferta" className={`${styles.side} ${styles.right}`}>
-                    <span>{tapet ? "Cerere ofertă tapet" : "Cerere ofertă colantare"}</span>
-                    <Icon name="at" size={36} className={styles.at} />
+            {onCalculator ? home(styles.right) : (
+                <Link href={tapet ? "/calculator-tapet" : "/calculator"} className={`${styles.side} ${styles.right}`}>
+                    <span>{tapet ? "Calculator tapet" : "Calculator colantare"}</span>
+                    <Icon name="calculator" size={40} />
                 </Link>
             )}
         </nav>

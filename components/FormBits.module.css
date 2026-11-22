@@ -73,3 +73,20 @@
 .dropText strong { font: 700 0.95rem/1.3 var(--font-head); color: var(--cream); overflow-wrap: anywhere; }
 .dropText small { font-size: 0.8rem; color: rgb(243 234 225 / 0.75); }
 .drop[data-error] small { color: #ffb3b5; }
+
+/* the folded optional fields of the calculators' short forms (light cards) */
+.extras { grid-column: 1 / -1; border-radius: 14px; background: #f6f1ec; }
+.extras summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; padding: 13px 14px; list-style: none; cursor: pointer; font: 700 0.95rem/1.3 var(--font-head); color: var(--ink-strong); }
+.extras summary::-webkit-details-marker { display: none; }
+.extras summary span { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--red); color: var(--white); font-size: 1rem; line-height: 1; transition: rotate 0.2s; }
+.extras[open] summary span { rotate: 45deg; }
+.extras summary small { font: 500 0.82rem/1.3 var(--font); color: var(--muted); }
+.extras summary:focus-visible { outline: 3px solid #17a398; outline-offset: 2px; border-radius: 14px; }
+.extrasBody { display: grid; gap: 12px; padding: 0 14px 14px; }
+/* the drop zone on a light card: dark text, red dashed border */
+.extras .drop { border-color: rgb(238 51 56 / 0.45); background: var(--white); color: var(--ink-strong); }
+.extras .drop:hover, .extras .drop[data-over] { border-color: var(--red); background: #fff7f5; }
+.extras .dropIcon { background: rgb(238 51 56 / 0.12); }
+.extras .dropText strong { color: var(--ink-strong); }
+.extras .dropText small { color: var(--muted); }
+.extras .drop[data-error] small { color: var(--red-dark); }

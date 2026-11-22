@@ -12,7 +12,8 @@ export const runtime = "nodejs"
 // consent: the GDPR box is ticked on the full forms; a callback (just a phone number, to be called
 // back about the configuration the visitor made) is a step the visitor asks for before a contract
 const KINDS: Record<string, { subject: string; required: readonly string[]; consent: boolean }> = {
-    oferta: { subject: "Cerere ofertă colantare", required: ["nume", "telefon", "email"], consent: true },
+    // email optional here too (Nov 2026): the phone is how we answer
+    oferta: { subject: "Cerere ofertă", required: ["nume", "telefon"], consent: true },
     contact: { subject: "Mesaj de pe site", required: ["nume", "email", "mesaj"], consent: true },
     // email optional in the calculators: fewer required fields, more requests (Nov 2026)
     calculator: { subject: "Cerere din calculatorul de preț", required: ["nume", "telefon"], consent: true },
@@ -26,7 +27,7 @@ const LABELS: Record<string, string> = {
     serviciu: "Serviciu", tip: "Tip colantare", vehicul: "Tip vehicul", altTip: "Alt tip de vehicul", vehicule: "Număr vehicule",
     caroserie: "Caroserie", model: "Model", durata: "Cât ține folia", lucrare: "Lucrare", material: "Material ales", grafica: "Grafică", piese: "Piese selectate", estimare: "Estimare afișată",
     folie: "Folie", extra: "Servicii suplimentare", zone: "Zone", suprafata: "Suprafață", design: "Are deja designul",
-    pereti: "Pereți", imagine: "Imagine", camera: "Unde se montează", montaj: "Montaj",
+    pereti: "Pereți", imagine: "Imagine", camera: "Unde se montează", montaj: "Montaj", oras: "Oraș",
     mesaj: "Mesaj",
     sursa: "De unde a venit", intrare: "Prima pagină vizitată", trimisDe: "Trimis de pe pagina",
 }

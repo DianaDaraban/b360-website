@@ -6,6 +6,7 @@ import type { View3D } from "./Car3D"
 import { CarBlueprint } from "./CarBlueprint"
 import { Consent, SmartForm } from "./SmartForm"
 import { CallFirst } from "./CallFirst"
+import { Extras, FileDrop } from "./FormBits"
 import { useInView, useTrackSeen, useTrackWhen } from "./useTrackOnce"
 import { autoPanels, bodyTypes, hasDrawing, panelLabel, panelsOf, sidePanels, type BodyId, type Mode, type View } from "@/data/calculator"
 import { track } from "@/lib/analytics"
@@ -316,12 +317,13 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                             title={g.label}
                             text={g.hint}
                             extra={g.id === "am" && !noGraphics && (
-                                <button type="button" className={styles.infoBtn} aria-expanded={info || graphics === "am"} aria-controls="calc-graphics-info" onClick={e => { e.preventDefault(); setInfo(v => !v) }} aria-label="Ce înseamnă grafică gata de print">i</button>
+                                <button type="button" className={styles.infoBtn} aria-expanded={info} aria-controls="calc-graphics-info" onClick={e => { e.preventDefault(); setInfo(v => !v) }} aria-label="Ce înseamnă grafică gata de print">i</button>
                             )}
                         />
                     ))}
                 </div>
-                {!noGraphics && (info || graphics === "am") && (
+                {/* the print-ready rules only when asked for (the "i"): open by default they made the phone page long and busy */}
+                {!noGraphics && info && (
                     <div id="calc-graphics-info" className={styles.infoBox}>
                         <strong>Grafica ta e considerată gata de print dacă:</strong>
                         <ul>
@@ -391,12 +393,16 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                         Telefon *
                         <span className={form.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" pattern="[0-9 ]{9,12}" required /></span>
                     </label>
-                    {/* email optional: fewer required fields, more requests sent; we answer by phone anyway */}
-                    <label className={form.field}>Email <small>(opțional)</small><input name="email" type="email" autoComplete="email" /></label>
-                    <label className={`${form.field} ${styles.details}`}>
-                        Detalii suplimentare <small>(opțional)</small>
-                        <textarea name="mesaj" rows={3} maxLength={2000} placeholder="ex. modelul exact al mașinii, câte mașini sunt, termenul dorit, ce vrei să apară pe grafică" />
-                    </label>
+                    {/* only name and phone in view; the rest folded away, optional (fewer fields in sight, more
+                        requests sent). Clients like to send their own mock-up, so photos have a place too */}
+                    <Extras summary="Adaugă poze, simularea ta, email sau detalii">
+                        <FileDrop name="fisiere" accept="image/*,.pdf,.ai,.eps,.svg,.cdr" maxMb={4} title="Poze cu mașina sau simularea ta" />
+                        <label className={form.field}>Email <small>(opțional)</small><input name="email" type="email" autoComplete="email" /></label>
+                        <label className={`${form.field} ${styles.details}`}>
+                            Detalii suplimentare <small>(opțional)</small>
+                            <textarea name="mesaj" rows={3} maxLength={2000} placeholder="ex. modelul exact al mașinii, câte mașini sunt, termenul dorit, ce vrei să apară pe grafică" />
+                        </label>
+                    </Extras>
                 </div>
                 <div className={styles.sendRow}>
                     <Consent />

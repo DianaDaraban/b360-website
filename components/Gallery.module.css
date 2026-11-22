@@ -1,13 +1,8 @@
 /* ---------- category chips ---------- */
-.filters {
-    margin: 18px calc(-1 * var(--gutter)) 6px;
-    padding: 6px var(--gutter);
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    scrollbar-width: none;
-}
-.filters::-webkit-scrollbar { display: none; }
+/* the chips ride in a Carousel (faded ends, arrows), tighter than the client stickers */
+.filters { margin: 12px 0 0; }
+.chips { --carousel-gap: 8px; --carousel-pad: 6px 4px 8px; }
+.chips li { display: flex; }
 .chip {
     position: relative;
     isolation: isolate;
@@ -75,6 +70,12 @@
 /* ---------- client stickers (shared look in globals .client-sticker) ---------- */
 /* small stickers like before, with plenty of room between them */
 .clients { --carousel-gap: 40px; margin: 0 0 14px; }
+/* phones: smaller stickers, closer together, so more clients show and the photos come sooner */
+@media (max-width: 767px) {
+    .clients { --carousel-gap: 22px; --carousel-pad: 8px 6px 14px; margin-bottom: 4px; }
+    .clients :global(.client-sticker) { --d: 66px; }
+    .chip { min-height: 40px; padding: 7px 16px; font-size: 0.88rem; }
+}
 .clients li { display: grid; place-items: center; padding: 2px; }
 .clients :global(.client-sticker) { --d: 78px; }
 .clientSticker { opacity: 0.92; transition: --c 0.45s cubic-bezier(0.3, 0.9, 0.4, 1), --lift 0.45s cubic-bezier(0.3, 0.9, 0.4, 1), opacity 0.3s, scale 0.35s var(--ease-out), box-shadow 0.35s; }
@@ -243,7 +244,7 @@
 @media (min-width: 1024px) {
     .grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
     /* all categories on one centred row; where they don't fit the row scrolls, never a lone chip on a second row */
-    .filters { justify-content: safe center; flex-wrap: nowrap; gap: 6px; margin-inline: 0; }
+    .chips ul { justify-content: safe center; --carousel-gap: 6px; }
     .chip { padding: 8px 12px; font-size: 0.86rem; }
     .chip[aria-pressed="true"] { padding: 10px 30px 10px 14px; }
 }

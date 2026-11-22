@@ -32,7 +32,7 @@ export function Gallery({ items, categories, clients }: { items: Proiect[]; cate
 
     // the pressed category chip is brought to the middle of the (scrollable) chip strip
     useEffect(() => {
-        const strip = filters.current
+        const strip = filters.current?.querySelector("ul")
         const chip = strip?.querySelector<HTMLElement>("[aria-pressed='true']")
         if (!strip || !chip || strip.scrollWidth <= strip.clientWidth) return
         strip.scrollTo({ left: chip.offsetLeft - (strip.clientWidth - chip.offsetWidth) / 2, behavior: "smooth" })
@@ -70,11 +70,15 @@ export function Gallery({ items, categories, clients }: { items: Proiect[]; cate
 
     return (
         <>
-            <div ref={filters} className={styles.filters} role="group" aria-label="Filtrează după categorie">
-                <button className={styles.chip} aria-pressed={!category && !client} onClick={() => go("")}>Toate</button>
-                {categories.map(c => (
-                    <button key={c.slug} className={styles.chip} aria-pressed={category === c.slug && !client} onClick={() => go(`categorie=${c.slug}`)}>{c.label}</button>
-                ))}
+            {/* the categories in the same strip as the clients: faded ends and arrows show there are more
+                (on a phone the bare scrolling row hid that more categories followed) */}
+            <div ref={filters} className={styles.filters}>
+                <Carousel label="Filtrează după categorie" className={styles.chips}>
+                    <li><button className={styles.chip} aria-pressed={!category && !client} onClick={() => go("")}>Toate</button></li>
+                    {categories.map(c => (
+                        <li key={c.slug}><button className={styles.chip} aria-pressed={category === c.slug && !client} onClick={() => go(`categorie=${c.slug}`)}>{c.label}</button></li>
+                    ))}
+                </Carousel>
             </div>
 
             {/* client stickers in a carousel: pressing one shows only that client's work */}

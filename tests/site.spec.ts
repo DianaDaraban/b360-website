@@ -64,7 +64,7 @@ test.describe("mobile", () => {
         await page.goto("/", { waitUntil: "domcontentloaded" })
         const bar = page.getByRole("navigation", { name: "Acțiuni rapide" })
         await expect(bar.getByRole("link", { name: /Sună-ne/ })).toHaveAttribute("href", "tel:+40745094195")
-        await expect(bar.getByRole("link", { name: /Calcul estimativ/ })).toHaveAttribute("href", "/calculator")
+        await expect(bar.getByRole("link", { name: /Calculator colantare/ })).toHaveAttribute("href", "/calculator")
         await expect(bar.getByRole("link", { name: /Cerere ofertă/ })).toHaveAttribute("href", "/oferta")
     })
 })

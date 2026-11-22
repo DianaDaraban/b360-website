@@ -2,4 +2,12 @@
 .pageTitle { font-size: clamp(1.8rem, 7vw, 3rem); text-align: center; margin-bottom: 6px; }
 .center { text-align: center; text-wrap: balance; }
 /* Portofoliu: a short head so the photos show up on the first screen */
-.compact { padding-top: 32px; }
+/* (doubled with .section so it wins over the global section padding, whichever file loads last) */
+:global(.section).compact { padding-top: 32px; }
+.intro { max-width: 70ch; margin: 0 auto; }
+@media (max-width: 767px) {
+    :global(.section).compact { padding-top: 14px; }
+    .pageTitle { margin-bottom: 2px; }
+    .intro { font-size: 0.95rem; }
+    .wideOnly { display: none; }
+}

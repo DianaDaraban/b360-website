@@ -178,7 +178,7 @@
 }
 .choice input { position: absolute; opacity: 0; pointer-events: none; }
 .choice strong { font: 700 0.92rem/1.3 var(--font-head); color: var(--ink-strong); }
-.choice small { font-size: 0.78rem; line-height: 1.4; color: var(--muted); }
+.choice small { font-size: 0.84rem; line-height: 1.4; color: var(--muted); }
 .choice:hover:not([data-disabled]) { border-color: rgb(238 51 56 / 0.5); translate: 0 -2px; box-shadow: 0 10px 20px rgb(60 20 20 / 0.08); }
 .choice:has(input:focus-visible) { outline: 3px solid var(--red); outline-offset: 3px; }
 .choice:has(input:checked) { border-color: var(--red); background: #fff; box-shadow: 0 0 0 4px rgb(238 51 56 / 0.15); }
@@ -234,9 +234,17 @@
 .callbackRow > span { font-weight: 700; color: rgb(243 234 225 / 0.8); }
 .callbackRow input { min-width: 0; padding: 11px 12px; border: 1.5px solid rgb(243 234 225 / 0.35); border-radius: 12px; background: rgb(255 255 255 / 0.95); color: var(--ink-strong); font: 600 1rem/1.2 var(--font-body, inherit); }
 .callbackRow input:focus-visible { outline: 3px solid #8fe0d6; outline-offset: 1px; }
-.reach .callbackRow :global(.btn-ghost) { padding: 11px 16px; white-space: nowrap; }
-.reach .callbackRow :global(.btn-ghost):disabled { opacity: 0.55; cursor: default; }
+/* a number missing or cut short: the field turns red, the note under it says what to write */
+.callbackRow input[aria-invalid] { border-color: #ff6b6f; box-shadow: 0 0 0 3px rgb(255 107 111 / 0.35); }
+/* "Sună-mă": a filled mint button, so it reads as the second way in next to the red call button */
+.callbackBtn { display: inline-flex; align-items: center; gap: 6px; padding: 11px 16px; border: 0; border-radius: 999px; background: #8fe0d6; color: #0f3b37; font: 800 0.98rem/1 var(--font-head); white-space: nowrap; cursor: pointer; box-shadow: 0 6px 16px rgb(0 0 0 / 0.25); transition: background 0.2s, translate 0.2s; }
+.callbackBtn:hover, .callbackBtn:focus-visible { background: #b5efe7; translate: 0 -1px; }
+.callbackBtn:active { translate: 0 1px; }
+.callbackBtn:disabled { opacity: 0.7; cursor: progress; }
+/* narrow phones: the number gets the room, the button drops its icon */
+@media (max-width: 420px) { .callbackBtn svg { display: none; } .callbackBtn { padding-inline: 14px; } .callbackRow { gap: 6px; } }
 .total .callbackNote { font-size: 0.75rem; color: rgb(243 234 225 / 0.65); }
+.total .callbackNote[data-error] { font-size: 0.85rem; font-weight: 700; color: #ffb3b5; }
 .total .callbackNote a { color: inherit; }
 .callbackDone { margin: 4px 0 0; padding: 12px; border-radius: 14px; background: rgb(143 224 214 / 0.16); font-size: 0.92rem; line-height: 1.4; color: var(--cream); }
 .callbackDone b { color: #8fe0d6; }
@@ -349,7 +357,8 @@
 }
 
 /* the shared form fields are made for the photo pages (cream labels): dark labels on this light page */
-.contact > label { color: var(--ink-strong); text-shadow: none; }
+/* every label of the contact step, also those folded inside "Adaugă poze…" */
+.contact label { color: var(--ink-strong); text-shadow: none; }
 .contact input { border: 1.5px solid rgb(60 20 20 / 0.18); }
 .sendRow :global(.consent), .sendRow :global(.consent) * { color: var(--ink); text-shadow: none; }
 
@@ -396,7 +405,7 @@
 /* step 7: the optional details take the whole row */
 .details { grid-column: 1 / -1; }
 .details small { font-weight: 500; color: var(--muted); }
-.details textarea { width: 100%; min-height: 84px; padding: 10px 12px; border: 1.5px solid rgb(60 20 20 / 0.18); border-radius: 12px; background: var(--white); color: var(--ink-strong); font: 500 1rem/1.4 var(--font); resize: vertical; }
+.details textarea { width: 100%; min-height: 84px; padding: 10px 12px; border: 1.5px solid rgb(60 20 20 / 0.18); border-radius: 12px; background: var(--white); color: var(--ink-strong); font: 500 1rem/1.4 var(--font); max-height: 50vh; resize: none; field-sizing: content; overflow-y: auto; }   /* grows with the text, no drag handle (see app/form.module.css) */
 .details textarea:focus { outline: none; border-color: #17a398; box-shadow: 0 0 0 3px rgb(23 163 152 / 0.18); }
 /* the thank-you after sending: the shared one is made for photo pages (cream text); here it sits on cream */
 .calc:global(.form-done) { color: var(--ink); }

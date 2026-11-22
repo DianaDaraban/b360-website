@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Consent, SmartForm } from "./SmartForm"
 import { CallFirst } from "./CallFirst"
+import { Extras, FileDrop } from "./FormBits"
 import { useInView, useTrackSeen, useTrackWhen } from "./useTrackOnce"
 import { Icon } from "./Icon"
 import { Room3D, wallNames, type RoomWall } from "./Room3D"
@@ -508,12 +509,15 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                             Telefon *
                             <span className={form.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" pattern="[0-9 ]{9,12}" required /></span>
                         </label>
-                        {/* email optional, as in the car calculator: we answer by phone anyway */}
-                        <label className={form.field}>Email <small>(opțional)</small><input name="email" type="email" autoComplete="email" /></label>
-                        <label className={`${form.field} ${calc.details}`}>
-                            Detalii suplimentare <small>(opțional)</small>
-                            <textarea name="mesaj" rows={3} maxLength={2000} placeholder={place === "alt" ? "ex. orașul, ce fel de imagine îți dorești, termenul dorit" : "ex. ce fel de imagine îți dorești, dacă peretele e proaspăt zugrăvit, termenul dorit"} />
-                        </label>
+                        {/* as in the car calculator: only name and phone in view, the rest folded away and optional */}
+                        <Extras summary="Adaugă poze cu peretele, email sau detalii">
+                            <FileDrop name="fisiere" accept="image/*,.pdf" maxMb={4} title="Poze cu peretele sau camera" />
+                            <label className={form.field}>Email <small>(opțional)</small><input name="email" type="email" autoComplete="email" /></label>
+                            <label className={`${form.field} ${calc.details}`}>
+                                Detalii suplimentare <small>(opțional)</small>
+                                <textarea name="mesaj" rows={3} maxLength={2000} placeholder={place === "alt" ? "ex. orașul, ce fel de imagine îți dorești, termenul dorit" : "ex. ce fel de imagine îți dorești, dacă peretele e proaspăt zugrăvit, termenul dorit"} />
+                            </label>
+                        </Extras>
                     </div>
                     <div className={calc.sendRow}>
                         <Consent />

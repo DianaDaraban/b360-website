@@ -53,7 +53,9 @@
     background-size: 20px;
     transition: background-color 0.25s, box-shadow 0.25s;
 }
-.field textarea { min-height: 120px; resize: vertical; }
+/* the message box grows with what is typed (up to half the screen, then it scrolls) and has no drag
+   handle: on a phone, swiping down the page over its corner stretched the box instead of scrolling */
+.field textarea { min-height: 120px; max-height: 50vh; resize: none; field-sizing: content; overflow-y: auto; }
 .field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m5 9 7 7 7-7' fill='none' stroke='%2335558f' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E"); }
 /* red line drawn under the field on focus */
 .field input:focus, .field select:focus, .field textarea:focus {
