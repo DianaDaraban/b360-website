@@ -55,7 +55,7 @@ export default function ContactPage() {
                 <SmartForm kind="contact" className={`${form.form} ${styles.card}`} aria-labelledby="mesaj">
                     <h2 id="mesaj" className={styles.cardTitle}>Trimite-ne un mesaj</h2>
                     <p className={styles.cardText}>Feedback, păreri, propuneri de colaborare sau o întrebare. Citim tot ce primim.</p>
-                    <div className={styles.fields}>
+                    <div className={styles.fields} data-clarity-mask="true">
                         <label className={form.field}>Nume *<input name="nume" autoComplete="name" required /></label>
                         <label className={form.field}>Email *<input name="email" type="email" autoComplete="email" required /></label>
                         <div className={`${form.field} ${styles.topic}`}>

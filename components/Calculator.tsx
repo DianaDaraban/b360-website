@@ -387,7 +387,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
 
             {/* ---------- 7: send ---------- */}
             <Step n={7} title="Trimite-ne configurația" hint="Preferi oferta în scris? Lasă-ne datele și ți-o trimitem după ce vedem detaliile.">
-                <div className={styles.contact}>
+                <div className={styles.contact} data-clarity-mask="true">
                     <label className={form.field}>Nume și prenume *<input name="nume" autoComplete="name" required /></label>
                     <label className={form.field}>
                         Telefon *

@@ -528,7 +528,7 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                 <input type="hidden" name="estimare" value={result ? `${lei(result.net)} + TVA (${lei(result.gross)} cu TVA)` : ""} />
 
                 <Step n={6} title="Trimite-ne pereții" hint="Preferi oferta în scris? Lasă-ne datele și ți-o trimitem după ce vedem imaginea.">
-                    <div className={calc.contact}>
+                    <div className={calc.contact} data-clarity-mask="true">
                         <label className={form.field}>Nume și prenume *<input name="nume" autoComplete="name" required /></label>
                         <label className={form.field}>
                             Telefon *
@@ -578,7 +578,7 @@ function Size({ label, value, onChange, onBlur, aria }: { label: string; value: 
 
 function Upload({ hidden, name, img, label, onChange }: { hidden: boolean; name: boolean; img?: Img; label: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void }) {
     return (
-        <label className={styles.upload} hidden={hidden}>
+        <label className={styles.upload} hidden={hidden} data-clarity-mask="true">
             <input type="file" name={name ? "fisiere" : undefined} accept="image/*" onChange={onChange} />
             {img ? <span className={styles.thumb} style={{ backgroundImage: `url(${img.url})` }} aria-hidden="true" /> : null}
             <span className={`btn-ghost ${styles.pick}`}>{img ? "Schimbă" : "Încarcă imaginea"}</span>

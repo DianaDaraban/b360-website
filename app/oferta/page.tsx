@@ -54,7 +54,7 @@ export default function OfertaPage() {
                 <SmartForm kind="oferta" className={`${form.form} ${styles.card}`} aria-label="Cerere ofertă colantare">
                     <div className={styles.block}>
                         <h2 className={styles.blockTitle}><span>1</span>Datele tale</h2>
-                        <div className={styles.fields}>
+                        <div className={styles.fields} data-clarity-mask="true">
                             <label className={form.field}>Nume și prenume *<input name="nume" autoComplete="name" required /></label>
                             <label className={form.field}>Companie<input name="companie" autoComplete="organization" /></label>
                             <label className={form.field}>
@@ -74,7 +74,7 @@ export default function OfertaPage() {
                     <div className={styles.block}>
                         <h2 className={styles.blockTitle}><span>3</span>Detalii și fișiere</h2>
                         <FileDrop name="fisiere" accept="image/*,.pdf,.ai,.eps,.svg,.cdr" maxMb={4} />
-                        <label className={form.field}>
+                        <label className={form.field} data-clarity-mask="true">
                             <span className="sr-only">Informații suplimentare</span>
                             <textarea name="mesaj" placeholder="Informații suplimentare: culori, termen, unde e lucrarea, orice ne ajută." />
                         </label>

@@ -23,7 +23,7 @@ export function Pills({ name, options, type = "checkbox", other }: { name: strin
                         <span>{other.label}</span>
                     </label>
                     {/* the free-text box opens only when "other" is ticked */}
-                    <input className={styles.otherInput} data-open={otherOn || undefined} name={other.name} placeholder={other.placeholder} aria-label={other.placeholder} tabIndex={otherOn ? 0 : -1} />
+                    <input className={styles.otherInput} data-clarity-mask="true" data-open={otherOn || undefined} name={other.name} placeholder={other.placeholder} aria-label={other.placeholder} tabIndex={otherOn ? 0 : -1} />
                 </>
             )}
         </div>
@@ -81,6 +81,7 @@ export function FileDrop({ name, accept, maxMb, title = "Atașează schițe, log
     return (
         <label
             className={styles.drop}
+            data-clarity-mask="true"
             data-over={over || undefined}
             data-error={tooBig || undefined}
             onDragOver={e => { e.preventDefault(); setOver(true) }}
