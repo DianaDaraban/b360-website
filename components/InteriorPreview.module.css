@@ -103,7 +103,7 @@
     cursor: pointer;
     box-shadow: 0 4px 14px rgb(0 0 0 / 0.25);
 }
-/* drawn chevrons, optically centred like the site's other arrows (the ‹ › characters sat low and to one side) */
+/* drawn chevrons, centred like the site's other arrows (the ‹ › characters sat low and to one side) */
 .step svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 .step:hover { background: #fff; scale: 1.06; }
 .prev { left: 10px; }

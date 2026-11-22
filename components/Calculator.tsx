@@ -216,13 +216,13 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                 ) : (
                     <div className={styles.canvas} data-clarity-unmask="true">
                         <button type="button" className={`${styles.turn} ${styles.turnLeft}`} onClick={() => turn(-1)} aria-label="Unghiul anterior">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.9 4l-8 8 8 8" /></svg>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 4l-8 8 8 8" /></svg>
                         </button>
                         <div key={view} className={styles.flip}>
                             <CarBlueprint body={body} view={view} selection={selection} onPick={pick} onHover={setHovered} onMiss={miss} />
                         </div>
                         <button type="button" className={`${styles.turn} ${styles.turnRight}`} onClick={() => turn(1)} aria-label="Unghiul următor">
-                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.1 4l8 8-8 8" /></svg>
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4l8 8-8 8" /></svg>
                         </button>
                         <p className={styles.hoverName} aria-live="polite" data-miss={missed || undefined}>
                             {missed ? <>Aici nu se pune folie · <em>apasă pe caroserie</em></> : hovered ? <>{panelLabel(hovered)} · <em>{selected.includes(hovered) ? "apasă ca s-o scoți" : "apasă ca s-o adaugi"}</em></> : selected.length ? `${selected.length} ${selected.length === 1 ? "piesă aleasă" : "piese alese"}` : "Apasă pe o piesă ca s-o alegi"}

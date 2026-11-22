@@ -148,8 +148,8 @@ export function InteriorDialog({ designs, index, onIndex, full = false, action }
                         )}
                         {many && (
                             <>
-                                <button type="button" className={`${styles.step} ${styles.prev}`} onClick={() => onIndex((index - 1 + designs.length) % designs.length)} aria-label="Modelul anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.9 4l-8 8 8 8" /></svg></button>
-                                <button type="button" className={`${styles.step} ${styles.next}`} onClick={() => onIndex((index + 1) % designs.length)} aria-label="Modelul următor"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.1 4l8 8-8 8" /></svg></button>
+                                <button type="button" className={`${styles.step} ${styles.prev}`} onClick={() => onIndex((index - 1 + designs.length) % designs.length)} aria-label="Modelul anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 4l-8 8 8 8" /></svg></button>
+                                <button type="button" className={`${styles.step} ${styles.next}`} onClick={() => onIndex((index + 1) % designs.length)} aria-label="Modelul următor"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4l8 8-8 8" /></svg></button>
                             </>
                         )}
                     </div>

@@ -34,6 +34,9 @@
 
 html {
     -webkit-text-size-adjust: 100%;
+    /* no blue box flashed over whatever is tapped on Android: the buttons show their own pressed state,
+       and the keyboard focus ring (:focus-visible below) stays */
+    -webkit-tap-highlight-color: transparent;
     scroll-padding-top: calc(var(--header-h) + 12px);
     background: var(--paper);
     /* with this on html, body's own clip stays on body (instead of passing to the viewport),

@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react"
 import styles from "./Carousel.module.css"
 
-// (the site's chevrons, here and in Calculator / Gallery, are drawn optically centred in their 24-unit
-// box: a "<" or ">" centred by its outline looks pushed toward its point, so each is moved ~1 unit
-// toward its open side)
+// (the site's chevrons, here and in Calculator / Gallery / InteriorPreview, are drawn centred exactly
+// in their 24-unit box, so they sit in the middle of their round buttons; an "optical" nudge toward
+// the open side was tried and read as off-centre)
 // Horizontal strip that scrolls by itself (touch, trackpad) or with the two arrows;
 // an arrow fades out once that end is reached. Children are the <li> items.
 export function Carousel({ label, children, className = "" }: { label: string; children: React.ReactNode; className?: string }) {
@@ -35,11 +35,11 @@ export function Carousel({ label, children, className = "" }: { label: string; c
         // data-fits: everything is in view, so the arrows step aside
         <div className={`${styles.carousel} ${className}`} role="region" aria-label={label} data-no-reveal data-fits={(atStart && atEnd) || undefined}>
             <button type="button" className={`${styles.arrow} ${styles.prev}`} onClick={() => move(-1)} disabled={atStart} aria-label="Înapoi">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.9 4l-8 8 8 8" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 4l-8 8 8 8" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </button>
             <ul ref={track} className={styles.track} data-start={atStart || undefined} data-end={atEnd || undefined}>{children}</ul>
             <button type="button" className={`${styles.arrow} ${styles.next}`} onClick={() => move(1)} disabled={atEnd} aria-label="Înainte">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.1 4l8 8-8 8" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4l8 8-8 8" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </button>
         </div>
     )
