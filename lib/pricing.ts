@@ -38,11 +38,17 @@ export type PricingConfig = {
     graphics: { from: number; to: number; eur: number }[]
     // labour: the coefficient for a small job (up to 4 doors and the boot); it slides down to labourLarge
     // as the job grows toward a whole coach (by square metres, between smallMp and largeMp)
-    settings: { labour: number; labourLarge?: number; smallMp?: number; largeMp?: number; ink: number; eurRate: number | "BNR"; vat: number; margin: number; aiSurcharge: number }
+    // discount: percent taken off every price the calculator shows (the estimate is only a starting
+    // point; the offer is settled with the client). Without the row in Setări: DEFAULT_DISCOUNT
+    settings: { labour: number; labourLarge?: number; smallMp?: number; largeMp?: number; ink: number; eurRate: number | "BNR"; vat: number; margin: number; aiSurcharge: number; discount?: number }
     updatedAt?: string
 }
 
-export type Choice = { years: number; job: JobType; subtype: string; graphics: Graphics; withVat: boolean }
+// B360, Nov 2026: the shown estimates 15% lower, so the price does not scare off a request that is
+// then fitted to the client's needs on the phone anyway
+export const DEFAULT_DISCOUNT = 15
+
+export type Choice ={ years: number; job: JobType; subtype: string; graphics: Graphics; withVat: boolean }
 
 // the material for a job: the cheapest of that type (and kind) lasting at least as long as asked;
 // when nothing lasts that long, the longest-lasting one, with a note
@@ -93,7 +99,9 @@ export function estimate(cfg: PricingConfig, body: string, pieceIds: string[], c
     const lines = areas.map(l => ({ ...l, eur: l.mp * perMp * labour }))
     const graphicsEur = graphicsPrice(cfg, pieceIds.length, choice.graphics)
     const eur = lines.reduce((n, l) => n + l.eur, 0) + graphicsEur
-    const vat = choice.withVat ? 1 + cfg.settings.vat / 100 : 1
+    // every shown amount (each piece, the graphics, the total) carries the same discount, so they still add up
+    const off = 1 - (cfg.settings.discount ?? DEFAULT_DISCOUNT) / 100
+    const vat = (choice.withVat ? 1 + cfg.settings.vat / 100 : 1) * off
     const total = eur * rate * vat
     const round = (n: number) => Math.round(n / 5) * 5
     const m = cfg.settings.margin / 100

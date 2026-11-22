@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
-import type { PricingConfig } from "@/lib/pricing"
+import { DEFAULT_DISCOUNT, type PricingConfig } from "@/lib/pricing"
 import type { PricingStatus } from "@/lib/pricing-store"
 import { savePricingLink, syncPricingNow, uploadPricing } from "./actions"
 import styles from "./admin.module.css"
@@ -68,7 +68,7 @@ export function PricingTab({ link, status, pricing, usingDefaults }: { link: str
                         ))}
                     </tbody>
                 </table>
-                <p className={styles.note}>Manoperă ×{s.labour} · cerneală {s.ink} €/mp · curs {s.eurRate === "BNR" ? "BNR (automat)" : `${s.eurRate} lei`} · TVA {s.vat}% · interval ±{s.margin}% · grafică AI +{s.aiSurcharge}% · grafică: {pricing.graphics.map(g => `${g.from}–${g.to} piese ${g.eur} €`).join(", ")}</p>
+                <p className={styles.note}>Manoperă ×{s.labour} · cerneală {s.ink} €/mp · curs {s.eurRate === "BNR" ? "BNR (automat)" : `${s.eurRate} lei`} · TVA {s.vat}% · interval ±{s.margin}% · grafică AI +{s.aiSurcharge}% · reducere estimare −{s.discount ?? DEFAULT_DISCOUNT}% ·grafică: {pricing.graphics.map(g => `${g.from}–${g.to} piese ${g.eur} €`).join(", ")}</p>
             </details>
 
             <details className={styles.more}>

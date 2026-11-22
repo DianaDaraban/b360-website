@@ -339,14 +339,18 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                         </div>
                         {result && selected.length > 0 && <small>{bodyTypes.find(b => b.id === body)!.label} · {materialName}</small>}
                         {result?.shortfall && <small className={styles.notice}>Pentru {durationName.toLowerCase()} recomandăm altă lucrare: folia aleasă ține până la {result.shortfall} ani.</small>}
-                        <small className={styles.disclaimer}>Prețul final îl confirmăm după ce vedem mașina și grafica.</small>
-                        {/* the moment the price is known: one tap to talk to us, before the form below */}
+                        {/* the moment the price is known, the call comes first: visitors from the ads read the
+                            estimate and then phone rather than fill in the form (Clarity, Nov 2026);
+                            WhatsApp is the way in outside working hours */}
                         {whatsappHref && (
                             <div className={styles.reach}>
-                                <a href={site.phoneHref} className="btn"><Icon name="phone" size={30} uncut />Sună</a>
-                                <a href={whatsappHref} target="_blank" rel="noopener" className="btn-ghost" aria-label="Trimite estimarea pe WhatsApp"><Icon name="whatsapp" size={30} uncut />WhatsApp</a>
+                                <p className={styles.reachLead}>Vrei prețul exact? <b>Sună-ne:</b> îți spunem pe loc cât costă și când putem începe.</p>
+                                <a href={site.phoneHref} className={`btn ${styles.call}`}><Icon name="phone" size={30} uncut />Sună: {site.phone}</a>
+                                <small className={styles.hours}>{site.hours.label} · în rest, scrie-ne pe WhatsApp și te sunăm noi</small>
+                                <a href={whatsappHref} target="_blank" rel="noopener" className="btn-ghost" aria-label="Trimite estimarea pe WhatsApp"><Icon name="whatsapp" size={30} uncut />Trimite pe WhatsApp</a>
                             </div>
                         )}
+                        <small className={styles.disclaimer}>Prețul final îl confirmăm după ce vedem mașina și grafica.</small>
                     </div>
                     <div className={styles.lines}>
                         {!selected.length || !result ? (
@@ -381,7 +385,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
             <input type="hidden" name="estimare" value={totalText ? `${totalText} ${vatName}` : ""} />
 
             {/* ---------- 7: send ---------- */}
-            <Step n={7} title="Trimite-ne configurația" hint="Îți trimitem oferta finală după ce vedem detaliile.">
+            <Step n={7} title="Trimite-ne configurația" hint="Preferi oferta în scris? Lasă-ne datele și ți-o trimitem după ce vedem detaliile.">
                 <div className={styles.contact}>
                     <label className={form.field}>Nume și prenume *<input name="nume" autoComplete="name" required /></label>
                     <label className={form.field}>

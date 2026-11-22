@@ -132,8 +132,8 @@ export async function parseWorkbook(input: Buffer): Promise<{ config: PricingCon
     // ---------- Setări ----------
     const settings: Partial<PricingConfig["settings"]> = {}
     // the order matters: the more specific labels first ("manopera lucrare mare" before "manopera")
-    const keys: [keyof PricingConfig["settings"], string][] = [["labourLarge", "manopera lucrare mare"], ["smallMp", "mp lucrare mica"], ["largeMp", "mp lucrare mare"], ["labour", "manoper"], ["ink", "cerneal"], ["eurRate", "curs"], ["vat", "tva"], ["margin", "marj"], ["aiSurcharge", "reproducere"]]
-    const optional = new Set(["labourLarge", "smallMp", "largeMp"])
+    const keys: [keyof PricingConfig["settings"], string][] = [["labourLarge", "manopera lucrare mare"], ["smallMp", "mp lucrare mica"], ["largeMp", "mp lucrare mare"], ["labour", "manoper"], ["ink", "cerneal"], ["eurRate", "curs"], ["vat", "tva"], ["margin", "marj"], ["aiSurcharge", "reproducere"], ["discount", "reducere"]]
+    const optional = new Set(["labourLarge", "smallMp", "largeMp", "discount"])
     for (const r of table("Setări", { key: ["setare"], value: ["valoare"] })) {
         const label = plain(r.get("key"))
         const key = keys.find(([, w]) => label.includes(w))?.[0]
@@ -169,7 +169,7 @@ export function diffPricing(before: PricingConfig, after: PricingConfig): string
     for (const [body, list] of Object.entries(after.pieces)) for (const [k, ml] of Object.entries(list)) if (before.pieces[body]?.[k] !== ml) pieceChanges++
     if (pieceChanges) out.push(`Piese: ${pieceChanges} ${pieceChanges === 1 ? "valoare de metri liniari schimbată" : "valori de metri liniari schimbate"}`)
     if (JSON.stringify(before.graphics) !== JSON.stringify(after.graphics)) out.push(`Grafică: ${after.graphics.map(g => `${g.from}–${g.to} piese ${g.eur} €`).join(", ")}`)
-    const names: Record<string, string> = { labourLarge: "coeficient manoperă lucrare mare", smallMp: "mp lucrare mică", largeMp: "mp lucrare mare", labour: "coeficient manoperă", ink: "cerneală", eurRate: "curs EUR", vat: "TVA", margin: "marjă interval", aiSurcharge: "majorare grafică AI" }
+    const names: Record<string, string> = { labourLarge: "coeficient manoperă lucrare mare", smallMp: "mp lucrare mică", largeMp: "mp lucrare mare", labour: "coeficient manoperă", ink: "cerneală", eurRate: "curs EUR", vat: "TVA", margin: "marjă interval", aiSurcharge: "majorare grafică AI", discount: "reducere estimare" }
     for (const [k, label] of Object.entries(names)) {
         const a = before.settings[k as keyof PricingConfig["settings"]], b = after.settings[k as keyof PricingConfig["settings"]]
         if (a !== b) out.push(`Setări: ${label} ${a} → ${b}`)
