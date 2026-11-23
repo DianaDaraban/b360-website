@@ -532,10 +532,10 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                         <label className={form.field}>Nume și prenume *<input name="nume" autoComplete="name" required /></label>
                         <label className={form.field}>
                             Telefon *
-                            <span className={form.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" pattern="[0-9 ]{9,12}" required /></span>
+                            <span className={form.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" required /></span>
                         </label>
                         {/* as in the car calculator: only name and phone in view, the rest folded away and optional */}
-                        <Extras summary="Adaugă poze cu peretele" note="și emailul sau alte detalii · toate opționale">
+                        <Extras summary="Adaugă email, detalii sau poze" note="opțional · poze cu peretele sau camera, ca prețul să fie exact">
                             <FileDrop name="fisiere" accept="image/*,.pdf" maxMb={4} title="Poze cu peretele sau camera" />
                             <label className={form.field}>Email <small>(opțional)</small><input name="email" type="email" autoComplete="email" /></label>
                             <label className={`${form.field} ${calc.details}`}>

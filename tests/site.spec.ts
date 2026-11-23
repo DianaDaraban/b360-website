@@ -109,3 +109,28 @@ test("client sticker filters the gallery to that client", async ({ page }) => {
     expect(alts.length).toBeGreaterThan(0)
     for (const alt of alts) expect(alt).toMatch(/City Grill/)
 })
+
+// the quote form explains what is wrong under the field (not the browser's bubble) and sends nothing
+test("quote form says why a phone number or name is not accepted", async ({ page }) => {
+    let posted = false
+    await page.route("**/api/form", route => { posted = true; return route.fulfill({ json: { ok: true } }) })
+    await open(page, "/oferta")
+    const form = page.locator("form").filter({ has: page.locator('input[name="telefon"]') })
+    await form.locator('input[name="nume"]').fill("Al")
+    await form.locator('input[name="telefon"]').fill("0722 123")
+    await until(() => form.getByRole("button", { name: /Trimite/ }).click(), () => expect(form.getByText(/Numărul pare incomplet/)).toBeVisible())
+    await expect(form.getByText(/cel puțin 3 litere/)).toBeVisible()
+    await expect(form.getByText(/Bifează acordul/)).toBeVisible()
+    // a number written with +40 and dashes is fine: its message goes away
+    await form.locator('input[name="telefon"]').fill("+40 722-123-456")
+    await expect(form.getByText(/Numărul pare incomplet/)).toHaveCount(0)
+    expect(posted).toBe(false)
+})
+
+test("car calculator shows the optional extras open on a computer screen, folded on a phone", async ({ page }) => {
+    await open(page, "/calculator")
+    const extras = page.locator("details").filter({ hasText: "Adaugă email, detalii sau poze" })
+    const wide = (page.viewportSize()?.width ?? 0) >= 768
+    if (wide) await expect(extras).toHaveAttribute("open", "", { timeout: 20_000 })
+    else { await page.waitForLoadState("load"); await expect(extras).not.toHaveAttribute("open") }
+})

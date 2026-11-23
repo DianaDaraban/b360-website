@@ -391,11 +391,11 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                     <label className={form.field}>Nume și prenume *<input name="nume" autoComplete="name" required /></label>
                     <label className={form.field}>
                         Telefon *
-                        <span className={form.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" pattern="[0-9 ]{9,12}" required /></span>
+                        <span className={form.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" required /></span>
                     </label>
                     {/* only name and phone in view; the rest folded away, optional (fewer fields in sight, more
                         requests sent). Clients like to send their own mock-up, so photos have a place too */}
-                    <Extras summary="Adaugă poze sau simularea ta" note="și emailul sau alte detalii · toate opționale">
+                    <Extras summary="Adaugă email, detalii sau poze" note="opțional · poze cu mașina sau simularea ta, ca prețul să fie exact">
                         <FileDrop name="fisiere" accept="image/*,.pdf,.ai,.eps,.svg,.cdr" maxMb={4} title="Poze cu mașina sau simularea ta" />
                         <label className={form.field}>Email <small>(opțional)</small><input name="email" type="email" autoComplete="email" /></label>
                         <label className={`${form.field} ${styles.details}`}>

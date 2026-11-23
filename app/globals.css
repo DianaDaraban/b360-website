@@ -110,6 +110,12 @@ html:has(dialog[open]) { overflow: hidden; }
 .form-status { margin-top: 10px; font-size: 0.92rem; color: var(--cream); text-align: center; }
 .form-error { padding: 10px 14px; border-radius: 10px; background: rgb(150 20 25 / 0.55); }
 .form-status a { color: inherit; font-weight: 700; }
+/* a field's own message (components/SmartForm): a red tag under it, readable on the dark forms and the light calculator cards */
+.field-error { justify-self: start; margin-top: 2px; padding: 5px 10px; border-radius: 8px; background: var(--red-dark); color: #fff; font: 600 0.84rem/1.35 var(--font); text-shadow: none; }
+.consent { flex-wrap: wrap; }
+.consent .field-error { flex-basis: 100%; margin-left: 28px; }
+/* a field with a message: red line, and not the browser's "valid" tick (the browser only knows "required") */
+[aria-invalid="true"]:not([type="checkbox"]) { box-shadow: inset 0 -3px 0 var(--red) !important; background-image: none !important; }
 .form-done { display: grid; justify-items: center; gap: 10px; padding: 40px 24px; text-align: center; color: var(--cream); }
 .form-done h2 { color: var(--cream); font-size: clamp(1.5rem, 5vw, 2rem); }
 .form-done a { color: inherit; font-weight: 700; }

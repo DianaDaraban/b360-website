@@ -59,7 +59,7 @@ export default function OfertaPage() {
                             <label className={form.field}>Companie<input name="companie" autoComplete="organization" /></label>
                             <label className={form.field}>
                                 Telefon *
-                                <span className={form.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" pattern="[0-9 ]{9,12}" required /></span>
+                                <span className={form.phoneRow}><span>+40</span><input name="telefon" type="tel" autoComplete="tel-national" inputMode="tel" placeholder="722 12 34 56" required /></span>
                             </label>
                             <label className={form.field}>Email <small>(opțional)</small><input name="email" type="email" autoComplete="email" /></label>
                         </div>
