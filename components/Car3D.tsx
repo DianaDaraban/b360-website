@@ -38,13 +38,15 @@ type Props = {
     view: { name: View3D; n: number } | null     // a quick-view request (n changes on every press)
     onPick: (panel: string) => void
     onHover: (panel: string | null) => void
+    onMiss?: () => void     // a tap on the car where no foil goes (wheels, glass, lamps, trim)
 }
 
-export default function Car3D({ body, selected, view, onPick, onHover }: Props) {
+export default function Car3D({ body, selected, view, onPick, onHover, onMiss }: Props) {
     const host = useRef<HTMLDivElement>(null)
     const api = useRef<{ setSelected: (s: string[]) => void; goTo: (v: View3D) => void } | null>(null)
-    const pickRef = useRef(onPick), hoverRef = useRef(onHover), selectedRef = useRef(selected)
+    const pickRef = useRef(onPick), hoverRef = useRef(onHover), missRef = useRef(onMiss), selectedRef = useRef(selected)
     pickRef.current = onPick
+    missRef.current = onMiss
     hoverRef.current = onHover
     selectedRef.current = selected
     const [loading, setLoading] = useState(true)
@@ -102,6 +104,7 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
         }
         api.current = { setSelected: () => paint(), goTo }
 
+        let shadowMesh: THREE.Object3D | null = null
         const loader = new GLTFLoader()
         loader.setMeshoptDecoder(MeshoptDecoder)
         loader.load(`/calculator/3d/${body}.glb`, gltf => {
@@ -134,6 +137,7 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
             shadow.scale.set(size.x * 0.62, size.z * 0.75, 1)
             shadow.position.set(center.x, box.min.y + 0.002, center.z)
             scene.add(shadow)
+            shadowMesh = shadow
             paint()
             setLoading(false)
         }, undefined, err => { console.error("Car3D", err); if (!disposed) { setFailed(true); setLoading(false) } })
@@ -148,12 +152,20 @@ export default function Car3D({ body, selected, view, onPick, onHover }: Props) 
             const name = hit && meshName(hit.object)
             return name && panels.has(name) ? name : null
         }
+        // after panelAt: the same ray hit the car itself, not the floor shadow or the empty space around it
+        const onCar = () => {
+            const hit = ray.intersectObjects(scene.children, true)[0]
+            return !!hit && hit.object !== shadowMesh
+        }
         let down: { x: number; y: number } | null = null
         const onDown = (e: PointerEvent) => { down = { x: e.clientX, y: e.clientY } }
         const onUp = (e: PointerEvent) => {
             if (down && Math.hypot(e.clientX - down.x, e.clientY - down.y) < 6) {
                 const name = panelAt(e)
                 if (name) pickRef.current(name)
+                // on the wheels or the glass nothing can be picked: say so (taps beside the car are left
+                // alone, they are usually the start of a turn)
+                else if (onCar()) missRef.current?.()
             }
             down = null
         }

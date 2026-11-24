@@ -195,9 +195,9 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
             <Step n={2} compact title="Ce piese colantăm?" hint={show3d ? "Rotește mașina trăgând de ea (sau cu degetul) și apasă pe piesele pe care vrei să le colantăm." : "Apasă pe piese, direct pe mașină. Întoarce mașina cu săgețile ca să vezi și plafonul sau cealaltă parte."}>
                 {show3d ? (
                     <div className={styles.canvas3d} data-clarity-unmask="true">
-                        {start3d ? <Car3D body={body} selected={selected} view={view3d} onPick={pick} onHover={setHovered} /> : <p className={styles.loading3d}>Se încarcă mașina 3D…</p>}
-                        <p className={styles.hoverName} aria-live="polite">
-                            {hovered ? <>{panelLabel(hovered)} · <em>{selected.includes(hovered) ? "apasă ca s-o scoți" : "apasă ca s-o adaugi"}</em></> : selected.length ? `${selected.length} ${selected.length === 1 ? "piesă aleasă" : "piese alese"}` : "Trage ca s-o rotești · apasă pe o piesă ca s-o alegi"}
+                        {start3d ? <Car3D body={body} selected={selected} view={view3d} onPick={pick} onHover={setHovered} onMiss={miss} /> : <p className={styles.loading3d}>Se încarcă mașina 3D…</p>}
+                        <p className={styles.hoverName} aria-live="polite" data-miss={missed || undefined}>
+                            {missed ? <>Aici nu se pune folie · <em>apasă pe caroserie</em></> : hovered ? <>{panelLabel(hovered)} · <em>{selected.includes(hovered) ? "apasă ca s-o scoți" : "apasă ca s-o adaugi"}</em></> : selected.length ? `${selected.length} ${selected.length === 1 ? "piesă aleasă" : "piese alese"}` : "Trage ca s-o rotești · apasă pe o piesă ca s-o alegi"}
                         </p>
                         {CREDITS_3D[body] && (
                             <p className={styles.credit}>
