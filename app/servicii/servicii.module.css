@@ -19,7 +19,7 @@
     border: 1.5px solid rgb(237 28 36 / 0.22);
     border-radius: 20px;
     /* no backdrop-filter: next to the 3D sticker flaps Chrome makes blurred layers flicker away */
-    background: rgb(243 234 225 / 0.94);
+    background: var(--cream);
     overflow: hidden;
     text-decoration: none;
     box-shadow: 0 4px 14px rgb(60 20 20 / 0.06);

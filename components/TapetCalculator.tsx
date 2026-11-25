@@ -214,7 +214,7 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
         + (verdicts.length ? `\n${verdicts.map(v => `${v.img.name}, ${v.img.w} × ${v.img.h} px, ~${Math.round(v.dpi)} dpi${v.who ? ` (${v.who.toLowerCase()})` : ""}`).join("\n")}` : "")
         + (tooBig ? "\nimagine peste 4 MB, neatașată" : "")
     const openingsCount = sized.reduce((n, x) => n + x.openings.length, 0)
-    const whatsappHref = valid.length > 0 && `${site.whatsapp}?text=${encodeURIComponent(`Bună ziua! Am folosit calculatorul de tapet de pe ${site.url.replace(/^https?:\/\/(www\.)?/, "")}: ${valid.map(x => `${x.w} × ${x.h} cm`).join(", ")}${openingsCount ? ` cu ${openingsCount} ${openingsCount === 1 ? "ușă/fereastră" : "uși și ferestre"}` : ""} (${mp(net)} de tapet pe perete), ${roomName.toLowerCase()}, ${finishName.toLowerCase()}, ${placeName}${totalText ? `, estimare ${totalText}` : ""}. Aș dori o ofertă.`)}`
+    const whatsappHref = valid.length > 0 && `${site.whatsapp}?text=${encodeURIComponent(`Bună ziua! Am folosit calculatorul de tapet de pe ${site.url.replace(/^https?:\/\/(www\.)?/, "")}: ${valid.map(x => `${x.w} × ${x.h} cm`).join(", ")}${openingsCount ? ` cu ${openingsCount} ${openingsCount === 1 ? "ușă/fereastră" : "uși și ferestre"}` : ""} (${mp(net)} de tapet pe perete), ${roomName.toLowerCase()}, ${finishName.toLowerCase()}, ${placeName}${totalText ? `, estimare ${totalText}` : ""}. Aș dori o ofertă exactă. Mă puteți suna?`)}`
 
     // the steps, once per visit (GA4 + Clarity): own wall sizes, a picture chosen, the price card read
     const touchedWalls = walls.length > 1 || walls[0].w !== "350" || walls[0].h !== "260" || walls[0].openings.length > 0
@@ -509,7 +509,7 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                             {result ? <small>{lei(result.gross)} cu TVA · {TAPET.pricePerMp[room]} lei/mp + TVA, cu print, material și montaj{place === "alt" ? " · plus transportul" : ""}{source === "noi" ? " · grafica o ofertăm separat" : ""}</small> : allValid && <small>Până atunci, trimite-ne pereții și îți spunem prețul exact, de obicei în aceeași zi.</small>}
                             <small className={calc.disclaimer}>Prețul final îl confirmăm după ce vedem imaginea și peretele.</small>
                             {/* the call first, as in the car calculator (components/CallFirst) */}
-                            {whatsappHref && <CallFirst from="tapet" whatsappHref={whatsappHref} whatsappLabel="Trimite pereții pe WhatsApp" />}
+                            {whatsappHref && <CallFirst from="tapet" whatsappHref={whatsappHref} whatsappLabel="Trimite-mi estimarea pe WhatsApp" />}
                         </div>
                         {valid.length > 0 && (
                             <ul className={styles.facts}>
@@ -557,9 +557,9 @@ ${names[i]}: ${imageOf(w.id)?.name ?? "nealeasă"}`).join("") : `: ${imageOf(wal
                     <a href="#tapet-estimare" className={calc.liveTotal}>
                         <span>Estimare</span>
                         <strong>{totalText}</strong>
-                        <small>{result && lei(result.gross)} cu TVA · montaj inclus</small>
+                        <svg className={calc.go} viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
                     </a>
-                    {whatsappHref && <a href={whatsappHref} target="_blank" rel="noopener" className={`${calc.floatIcon} peel`} aria-label="Trimite pereții pe WhatsApp"><Icon name="whatsapp" size={34} uncut /></a>}
+                    {whatsappHref && <a href={whatsappHref} target="_blank" rel="noopener" className={`${calc.floatWa} peel`}><Icon name="whatsapp" size={22} uncut />Trimite-mi estimarea pe WhatsApp</a>}
                 </div>
             )}
         </SmartForm>

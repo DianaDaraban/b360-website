@@ -75,7 +75,7 @@
     padding: 22px 22px 18px;
     border: 1px solid rgb(238 51 56 / 0.35);
     border-radius: 16px;
-    background: rgb(243 234 225 / 0.75);
+    background: var(--cream);
     box-shadow: 0 6px 18px rgb(60 20 20 / 0.06);
     transition: border-color 0.3s, box-shadow 0.4s var(--ease-out);
 }

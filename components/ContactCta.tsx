@@ -17,10 +17,10 @@ export function ContactCta() {
                 <p className={styles.text}>pentru o ofertă personalizată și hai să lucrăm împreună la imaginea brandului tău!</p>
                 {/* four ways in, as round stickers with the Figma icons */}
                 <ul className={styles.actions}>
-                    <li><a href={site.phoneHref} className={styles.action}><span className={`${styles.icon} peel`}><Icon name="phone" size={26} /></span><span>Sună-ne</span></a></li>
-                    <li><a href={`mailto:${site.email}`} className={styles.action}><span className={`${styles.icon} peel`}><Icon name="at" size={28} /></span><span>Scrie-ne</span></a></li>
-                    <li><Link href="/oferta" className={styles.action}><span className={`${styles.icon} peel`}><Icon name="mail" size={30} /></span><span>Cere ofertă</span></Link></li>
-                    <li><Link href="/calculator" className={styles.action}><span className={`${styles.icon} peel`}><Icon name="calculator" size={28} /></span><span>Calculează costul</span></Link></li>
+                    <li><a href={site.phoneHref} className={styles.action}><span className={`${styles.icon} peel`}><Icon name="phone" size={21} /></span><span>Sună-ne</span></a></li>
+                    <li><a href={`mailto:${site.email}`} className={styles.action}><span className={`${styles.icon} peel`}><Icon name="at" size={22} /></span><span>Scrie-ne</span></a></li>
+                    <li><Link href="/oferta" className={styles.action}><span className={`${styles.icon} peel`}><Icon name="mail" size={24} /></span><span>Cere ofertă</span></Link></li>
+                    <li><Link href="/calculator" className={styles.action}><span className={`${styles.icon} peel`}><Icon name="calculator" size={22} /></span><span>Calculează costul</span></Link></li>
                 </ul>
             </div>
         </section>

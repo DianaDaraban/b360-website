@@ -33,23 +33,23 @@
     transform-origin: left;
     transition: scale 0.45s var(--ease-out);
 }
-.chip:hover { color: var(--white); border-color: var(--red); translate: 0 -2px; box-shadow: 0 6px 14px rgb(238 51 56 / 0.25); }
+.chip:hover { color: var(--white); border-color: var(--red); translate: 0 -2px; box-shadow: 0 3px 8px rgb(120 0 0 / 0.2); }
 .chip:hover::before { scale: 1 1; }
 /* active: a red sticker whose corner pops up */
 .chip[aria-pressed="true"] {
     color: var(--white);
-    border-width: 0;
-    background: linear-gradient(40deg, #ee3338 55%, #c9161f);
-    padding: 10px 40px 10px 22px;
+    border-color: transparent;          /* same box as the other chips: only a little room for the corner */
+    background: linear-gradient(40deg, #ee3338 55%, #c9161f) border-box;
+    padding: 8px 30px 8px 20px;
     animation: chipPop 0.5s cubic-bezier(0.34, 1.6, 0.5, 1);
-    box-shadow: 0 6px 14px rgb(238 51 56 / 0.3);
+    box-shadow: 0 2px 6px rgb(120 0 0 / 0.22);     /* tight, like the red buttons: a wide red glow looked smeared */
 }
 .chip[aria-pressed="true"]::before {
     scale: 1 1;
     z-index: 1;
     inset: 0 0 auto auto;
-    width: 26px;
-    height: 26px;
+    width: 20px;
+    height: 20px;
     border-radius: 0;
     background: linear-gradient(225deg, var(--cream) 0 50%, transparent 50%);
 }
@@ -58,8 +58,8 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 26px;
-    height: 26px;
+    width: 20px;
+    height: 20px;
     z-index: 2;
     border-bottom-left-radius: 70%;
     background: linear-gradient(225deg, transparent 50%, #c27f7d 50%, #f3d0cf 75%, #fffdfd);
@@ -67,7 +67,8 @@
     transform-origin: top right;
     animation: flap 0.6s cubic-bezier(0.34, 1.45, 0.5, 1) 0.1s both;
 }
-@keyframes chipPop { 0% { scale: 0.9; } 60% { scale: 1.06; } 100% { scale: 1; } }
+@keyframes chipPop { 0% { scale: 0.97; } 60% { scale: 1.02; } 100% { scale: 1; } }
+.chip[aria-pressed="true"]:hover { translate: none; }   /* the picked chip stays put */
 @keyframes flap { from { scale: 0; } }
 
 /* ---------- client stickers (shared look in globals .client-sticker) ---------- */

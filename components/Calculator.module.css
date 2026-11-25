@@ -10,7 +10,7 @@
     padding: clamp(16px, 2.2vw, 22px);
     border: 1px solid rgb(60 20 20 / 0.1);
     border-radius: 20px;
-    background: rgb(255 255 255 / 0.72);
+    background: #fdfbf9;      /* solid: the drifting blobs pass under the cards, not through them */
     box-shadow: 0 14px 34px rgb(60 20 20 / 0.08);
     color: var(--ink);
     scroll-margin-top: calc(var(--header-h) + 16px);
@@ -218,18 +218,19 @@
 .total small { font-size: 0.85rem; color: rgb(243 234 225 / 0.82); }
 .total .notice { background: rgb(247 168 35 / 0.22); color: var(--cream); }
 .total .disclaimer { margin-top: 6px; font-size: 0.78rem; color: rgb(243 234 225 / 0.65); }
-/* right under the price: the call first and large, WhatsApp as the quieter way in after hours */
+/* right under the price: WhatsApp, then 'we call you', both in the card's own teal (the page has red enough) */
 .reach { display: grid; gap: 10px; margin-top: 12px; padding-top: 14px; border-top: 1px solid rgb(243 234 225 / 0.18); }
-.reachLead { margin: 0; font-size: 0.98rem; line-height: 1.4; color: var(--cream); }
-.reachLead b { color: #8fe0d6; }
 .reach > a { min-width: 0; justify-content: center; }
-/* the call pill keeps room on the right for its peeled corner */
-.call { padding: 16px 44px 16px 22px; font-size: 1.12rem; box-shadow: 0 10px 24px rgb(238 51 56 / 0.4); }
-.total .hours { margin-top: -2px; font-size: 0.78rem; color: rgb(243 234 225 / 0.7); }
+/* WhatsApp: a red pill as tall as the number capsule under it, in the same band */
+.waBtn { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 54px; padding: 8px 18px; border-radius: 999px; background: var(--red); color: #fff; font: 800 1rem/1.2 var(--font-head); text-align: center; text-decoration: none; box-shadow: 0 4px 14px rgb(0 0 0 / 0.18); transition: background 0.2s, scale 0.15s; }
+.waBtn:hover, .waBtn:focus-visible { background: var(--red-dark); }
+.waBtn:active { scale: 0.98; }
+.total .waNote { text-align: center; font-size: 0.78rem; color: rgb(243 234 225 / 0.7); }
+.callbackForm { display: grid; gap: 8px; margin-top: 6px; padding-top: 12px; border-top: 1px solid rgb(243 234 225 / 0.14); }
 /* "leave your number, we call you": one field and a button, on a lighter band of the dark card */
 .callback { display: grid; gap: 8px; margin-top: 4px; padding: 12px; border-radius: 14px; background: rgb(243 234 225 / 0.08); text-align: left; }
-.callback label { font-size: 0.92rem; line-height: 1.35; color: var(--cream); }
-.callback label b { color: #8fe0d6; }
+.callbackForm label { font-size: 0.92rem; line-height: 1.35; color: var(--cream); }
+.callbackForm label b { color: #8fe0d6; }
 /* one white capsule: +40, the number, and the "Sună-mă" button sitting inside its right end, all with
    the same round ends (a square field beside a pill button looked patched together and cramped) */
 .callbackRow { display: flex; align-items: center; gap: 6px; min-height: 54px; padding: 5px 5px 5px 16px; border: 2px solid transparent; border-radius: 999px; background: var(--white); box-shadow: 0 4px 14px rgb(0 0 0 / 0.18); transition: border-color 0.2s, box-shadow 0.2s; }
@@ -241,9 +242,9 @@
 .callbackRow input:focus { outline: none; }
 /* a number missing or cut short: the capsule turns red, the note under it says what to write */
 .callbackRow:has(input[aria-invalid]) { border-color: #ff6b6f; box-shadow: 0 0 0 3px rgb(255 107 111 / 0.35); }
-/* "Sună-mă": a filled mint pill inside the capsule, the second way in next to the red call button */
-.callbackBtn { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: #17a398; color: var(--white); font: 800 1rem/1 var(--font-head); white-space: nowrap; cursor: pointer; transition: background 0.2s, scale 0.15s; }
-.callbackBtn:hover, .callbackBtn:focus-visible { background: #0f8a80; }
+/* "Sună-mă": the same red and type as the WhatsApp pill above it */
+.callbackBtn { flex: none; display: inline-flex; align-items: center; gap: 6px; height: 44px; padding: 0 18px; border: 0; border-radius: 999px; background: var(--red); color: #fff; font: 800 1rem/1 var(--font-head); white-space: nowrap; cursor: pointer; transition: background 0.2s, scale 0.15s; }
+.callbackBtn:hover, .callbackBtn:focus-visible { background: var(--red-dark); }
 .callbackBtn:active { scale: 0.96; }
 .callbackBtn:disabled { opacity: 0.7; cursor: progress; }
 /* narrow phones: the number gets the room, the button drops its icon */
@@ -253,8 +254,6 @@
 .total .callbackNote a { color: inherit; }
 .callbackDone { margin: 4px 0 0; padding: 12px; border-radius: 14px; background: rgb(143 224 214 / 0.16); font-size: 0.92rem; line-height: 1.4; color: var(--cream); }
 .callbackDone b { color: #8fe0d6; }
-.reach :global(.btn-ghost) { padding-inline: 18px; font-size: 0.92rem; border-color: rgb(243 234 225 / 0.85); color: var(--cream); }
-.reach :global(.btn-ghost):hover, .reach :global(.btn-ghost):focus-visible { background: var(--cream); border-color: var(--cream); color: var(--ink-strong); }
 .vat { display: flex; gap: 16px; justify-content: center; font-size: 0.92rem; font-weight: 600; color: var(--cream); }
 .vat label { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
 .vat input { width: 18px; height: 18px; accent-color: #17a398; }
@@ -275,19 +274,18 @@
 .sendRow :global(.consent) { justify-self: start; }
 
 /* the running total, stuck to the bottom of the screen while scrolling through the steps,
-   with the WhatsApp sticker beside it once there is a price */
+   with WhatsApp under it once there is a price */
 .float {
     position: sticky;
     bottom: calc(var(--bar-h) + env(safe-area-inset-bottom) + 10px);
     z-index: 30;
-    justify-self: end;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    justify-self: center;
+    display: grid;
+    gap: 6px;
 }
 .liveTotal {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto;
     align-items: center;
     column-gap: 12px;
     padding: 10px 18px;
@@ -299,28 +297,41 @@
 }
 .liveTotal span { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.85; }
 .liveTotal strong { font: 800 1.05rem/1.2 var(--font-head); color: var(--white); }
-.liveTotal small { grid-column: 1 / -1; justify-self: end; font-size: 0.75rem; opacity: 0.85; }
+.liveTotal em { margin-left: 6px; font: 600 0.74rem/1 var(--font); font-style: normal; opacity: 0.85; }
+/* a small round arrow instead of "vezi detalii": the bubble leads down to the estimate card */
+.go { width: 28px; height: 28px; padding: 5px; border-radius: 50%; background: rgb(255 255 255 / 0.26); }
+/* with the arrow: the same space above, below and to the right of it; 36px tall, like the WhatsApp bubble */
+.liveTotal:has(.go) { box-sizing: border-box; height: 36px; padding: 4px 4px 4px 18px; display: flex; align-items: center; gap: 12px; }
+/* only the arrow goes to the right end; the label and the price stay together on the left */
+.liveTotal .go { margin-left: auto; flex: none; }
 .liveTotal[data-empty] { background: var(--ink-strong); box-shadow: 0 10px 26px rgb(0 0 0 / 0.25); }
-/* round WhatsApp sticker, in the teal of the total */
-.floatIcon {
-    --c: 24px;
-    --lift: 128deg;
-    flex: none;
-    display: grid;
-    place-items: center;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: linear-gradient(40deg, #0b4f4a, #13877e);
-    color: var(--white);
-    box-shadow: 0 10px 26px rgb(8 60 56 / 0.35);
+/* once there is a price, WhatsApp in its own bubble under the total, as wide as it: light, with a teal
+   border so it does not melt into the cream page */
+.floatWa {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 7px 16px;
+    border: 2px solid #13877e;
+    border-radius: 999px;
+    background: var(--white);
+    color: #0b4f4a;
+    font: 700 0.92rem/1.2 var(--font);
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgb(8 60 56 / 0.2);
 }
-.float .floatIcon:hover, .float .floatIcon:focus-visible { --c: 30px; --lift: 112deg; }
+/* the whole WhatsApp bubble is a peeling sticker (globals .peel): beige, dark teal under the lifted
+   corner, the back of the flap green all over (lighter at the tip, deeper at the fold) */
+.floatWa { --c: 22px; --lift: 140deg; --backing: #0b4f4a; box-sizing: border-box; height: 36px; padding-block: 0; padding-right: 30px; border-width: 1.5px; }
+.floatWa::after {
+    /* green, then the last ~12% by the fold (next to the dark teal under it) turns bright turquoise */
+    background: linear-gradient(225deg, #4fb8aa 0, #2a9d90 calc(var(--c) * 0.32), #17897d calc(var(--c) * 0.46), #2fb5a6 calc(var(--c) * 0.57), #5fd3c4 calc(var(--c) * 0.7071));
+}
+.floatWa:hover, .floatWa:focus-visible { --c: 32px; --lift: 118deg; }
 /* while the estimate card is on screen the floating total steps aside, so it never covers its buttons */
 .float { transition: opacity 0.25s, translate 0.25s, visibility 0.25s; }
 .float[data-away] { opacity: 0; translate: 0 12px; visibility: hidden; pointer-events: none; }
-/* the speech bubble's tail weighs the glyph down and to the left: nudged so the bubble sits in the middle */
-.floatIcon svg { translate: 2px -1.5px; }
 
 /* phones: the car uses the full width; the turn arrows sit at the bottom beside the panel name */
 @media (max-width: 639px) {
@@ -335,11 +346,10 @@
     .tick { top: 11px; left: 12px; }
     .four { grid-template-columns: repeat(2, 1fr); }
     /* above the bar and clear of the phone sticker that rises out of it */
-    .float { justify-self: stretch; gap: 8px; bottom: calc(var(--bar-h) + env(safe-area-inset-bottom) + 46px); }
-    .liveTotal { flex: 1; min-width: 0; grid-template-columns: auto 1fr; column-gap: 8px; padding-inline: 14px; }
+    .float { justify-self: stretch; bottom: calc(var(--bar-h) + env(safe-area-inset-bottom) + 46px); }
+    .liveTotal { min-width: 0; grid-template-columns: auto 1fr auto; column-gap: 8px; padding-inline: 14px; }
     .liveTotal span { font-size: 0.66rem; letter-spacing: 0.08em; }
     .liveTotal strong { font-size: 0.98rem; white-space: nowrap; }
-    .floatIcon { width: 46px; height: 46px; }
     .liveTotal strong { text-align: right; }
 }
 @media (min-width: 640px) {
@@ -375,7 +385,8 @@
 .four .tick { top: 50%; translate: 0 -50%; left: 12px; }
 /* steps 6 and 7 */
 .finish { display: grid; gap: 14px; }
-.details summary { cursor: pointer; padding: 10px 12px; border-radius: 10px; background: #f6f1ec; font-weight: 700; color: var(--ink-strong); }
+.details summary { cursor: pointer; padding: 10px 12px; border: 1.5px solid rgb(60 20 20 / 0.3); border-radius: 10px; background: #fff; font-weight: 700; color: var(--ink-strong); transition: border-color 0.2s; }   /* a border, or it vanishes on the cream card */
+.details summary:hover { border-color: #17a398; }
 .details[open] summary { margin-bottom: 8px; }
 .details ul { max-height: 340px; overflow-y: auto; }
 

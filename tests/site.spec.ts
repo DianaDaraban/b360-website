@@ -114,11 +114,16 @@ test("client sticker filters the gallery to that client", async ({ page }) => {
 test("quote form says why a phone number or name is not accepted", async ({ page }) => {
     let posted = false
     await page.route("**/api/form", route => { posted = true; return route.fulfill({ json: { ok: true } }) })
+    // the cookie question already answered: on a phone its banner covers the send button
+    await page.addInitScript(() => localStorage.setItem("b360-cookies", "nu"))
     await open(page, "/oferta")
     const form = page.locator("form").filter({ has: page.locator('input[name="telefon"]') })
-    await form.locator('input[name="nume"]').fill("Al")
-    await form.locator('input[name="telefon"]').fill("0722 123")
-    await until(() => form.getByRole("button", { name: /Trimite/ }).click(), () => expect(form.getByText(/Numărul pare incomplet/)).toBeVisible())
+    // filled inside the retry: a press before hydration reloads the page and empties the fields
+    await until(async () => {
+        await form.locator('input[name="nume"]').fill("Al")
+        await form.locator('input[name="telefon"]').fill("0722 123")
+        await form.getByRole("button", { name: /Trimite/ }).click()
+    }, () => expect(form.getByText(/Numărul pare incomplet/)).toBeVisible())
     await expect(form.getByText(/cel puțin 3 litere/)).toBeVisible()
     await expect(form.getByText(/Bifează acordul/)).toBeVisible()
     // a number written with +40 and dashes is fine: its message goes away

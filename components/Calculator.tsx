@@ -67,7 +67,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
     const [subtype, setSubtype] = useState("")
     const [graphics, setGraphics] = useState<Graphics>("am")   // "I have the graphics": nothing added until they ask us to design it
     const [info, setInfo] = useState(false)
-    const [withVat, setWithVat] = useState(true)
+    const [withVat, setWithVat] = useState(false)     // firms think without VAT; "+ TVA" says so plainly
     const [prefer2d, setPrefer2d] = useState(true)      // the drawing first; the 3D car is one tap away
     // the 3D viewer (three.js and the model) starts once the page has loaded and the browser is idle,
     // so it never holds up the first paint
@@ -162,7 +162,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
         "",
         `Estimare: ${totalText} ${vatName}`,
         "",
-        "Aș dori o ofertă.",
+        "Aș dori o ofertă exactă. Mă puteți suna?",
     ].join("\n") : null
     const whatsappHref = whatsappText && `${site.whatsapp}?text=${encodeURIComponent(whatsappText)}`
 
@@ -350,7 +350,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                         {result && selected.length > 0 && <small>{bodyTypes.find(b => b.id === body)!.label} · {materialName}</small>}
                         {result?.shortfall && <small className={styles.notice}>Pentru {durationName.toLowerCase()} recomandăm altă lucrare: folia aleasă ține până la {result.shortfall} ani.</small>}
                         {/* the moment the price is known, the call comes first (components/CallFirst) */}
-                        {whatsappHref && <CallFirst from="calculator" whatsappHref={whatsappHref} whatsappLabel="Trimite estimarea pe WhatsApp" />}
+                        {whatsappHref && <CallFirst from="calculator" whatsappHref={whatsappHref} whatsappLabel="Trimite-mi estimarea pe WhatsApp" />}
                         <small className={styles.disclaimer}>Prețul final îl confirmăm după ce vedem mașina și grafica.</small>
                     </div>
                     <div className={styles.lines}>
@@ -412,14 +412,14 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
             </div>
 
             {/* the running total stays in view while the questions are answered; once there is a price,
-                WhatsApp rides beside it as a round sticker */}
+                a labelled WhatsApp strip sits under it */}
             <div className={styles.float} data-away={estimateInView || undefined}>
-                <a href="#calc-estimare" className={styles.liveTotal} data-empty={!totalText || undefined}>
+                <a href="#calc-estimare" className={styles.liveTotal} data-empty={!totalText || undefined} aria-label={totalText ? `Estimare ${totalText} ${vatName}: vezi detaliile` : undefined}>
                     <span>Estimare</span>
-                    <strong>{totalText ?? "alege piesele"}</strong>
-                    {totalText && <small>{vatName} · vezi detalii</small>}
+                    <strong>{totalText ?? "alege piesele"}{totalText && <em>{withVat ? "cu TVA" : "+ TVA"}</em>}</strong>
+                    {totalText && <svg className={styles.go} viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" /></svg>}
                 </a>
-                {whatsappHref && <a href={whatsappHref} target="_blank" rel="noopener" className={`${styles.floatIcon} peel`} aria-label="Trimite estimarea pe WhatsApp"><Icon name="whatsapp" size={34} uncut /></a>}
+                {whatsappHref && <a href={whatsappHref} target="_blank" rel="noopener" className={`${styles.floatWa} peel`}><Icon name="whatsapp" size={22} uncut />Trimite-mi estimarea pe WhatsApp</a>}
             </div>
         </SmartForm>
     )

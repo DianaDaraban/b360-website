@@ -165,15 +165,49 @@ html:has(dialog[open]) { overflow: hidden; }
     animation: blobFloat var(--d1) ease-in-out infinite;
     will-change: transform;
 }
-.blobs-page span { opacity: 0.32; }
 .blobs-photo span { opacity: 0.6; mix-blend-mode: screen; }
 .blobs-soft span { opacity: 0.4; mix-blend-mode: multiply; }
 .blobs span:nth-child(1) { --s: min(70vw, 520px); --col: #ee3338; --d1: 26s; --d2: 11s; top: 4%; left: -8%; }
 .blobs span:nth-child(2) { --s: min(80vw, 600px); --col: #7bb152; --d1: 34s; --d2: 15s; bottom: -6%; right: -10%; animation-delay: -8s, -3s; }
 .blobs span:nth-child(3) { --s: min(60vw, 420px); --col: #f39a2e; --d1: 22s; --d2: 13s; top: 42%; left: 48%; animation-delay: -14s, -6s; }
 .blobs span:nth-child(4) { --s: min(65vw, 460px); --col: #3b4fa0; --d1: 38s; --d2: 17s; bottom: 18%; left: 12%; animation-delay: -20s, -9s; }
-.blobs-page span:nth-child(2) { --col: #f2b8b0; }
-.blobs-page span:nth-child(4) { --col: #e9cfc0; }
+/* the page background: seven warm blobs (yellow, peach, orange, coral, pink) wandering over the whole
+   screen and under the content. Each moves sideways, up and down and in size on three separate
+   timings that never line up, so the paths look random and the blobs keep running into each other.
+   Each also fades between two colours (two layers crossfading). Only translate/transform/scale and
+   opacity change: all on the GPU. */
+.blobs-page span {
+    inset: auto;
+    top: calc(var(--s) / -2);
+    left: calc(var(--s) / -2);
+    background: none;
+    opacity: 0.25;               /* a hint at the edge of sight, not a pull on the eye */
+    translate: var(--x0) 0;
+    animation: blobX var(--tx) ease-in-out infinite alternate, blobS var(--ts) ease-in-out infinite alternate;
+    animation-delay: var(--dx), var(--ds);
+    will-change: translate, scale;
+}
+.blobs-page span::before, .blobs-page span::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateY(var(--y0));
+    animation: blobShift var(--tc) ease-in-out infinite alternate, blobY var(--ty) ease-in-out infinite alternate;
+    animation-delay: var(--dc), var(--dy);
+}
+.blobs-page span::before { background: radial-gradient(closest-side, var(--col) 0, color-mix(in srgb, var(--col) 62%, transparent) 30%, color-mix(in srgb, var(--col) 24%, transparent) 62%, color-mix(in srgb, var(--col) 6%, transparent) 84%, transparent 100%); }
+.blobs-page span::after { background: radial-gradient(closest-side, var(--col2) 0, color-mix(in srgb, var(--col2) 62%, transparent) 30%, color-mix(in srgb, var(--col2) 24%, transparent) 62%, color-mix(in srgb, var(--col2) 6%, transparent) 84%, transparent 100%); animation-direction: alternate-reverse, alternate; }
+.blobs-page span:nth-child(1) { inset: auto; top: calc(var(--s) / -2); left: calc(var(--s) / -2); --s: min(62vw, 800px); --col: #f5c542; --col2: #f39a2e; --x0: -5vw;  --x1: 95vw;  --y0: 10vh;  --y1: 85vh;  --tx: 32s; --ty: 22s; --ts: 11s; --tc: 17s; --dx: -7s; --dy: -14s; --ds: -2s;  --dc: -5s; }
+.blobs-page span:nth-child(2) { inset: auto; top: calc(var(--s) / -2); left: calc(var(--s) / -2); --s: min(58vw, 770px); --col: #f39a2e; --col2: #ee5a5f; --x0: 100vw; --x1: 10vw;  --y0: 70vh;  --y1: 0vh;   --tx: 37s; --ty: 26s; --ts: 14s; --tc: 23s; --dx: -22s; --dy: -4s;  --ds: -8s; --dc: -11s; }
+.blobs-page span:nth-child(3) { inset: auto; top: calc(var(--s) / -2); left: calc(var(--s) / -2); --s: min(48vw, 620px); --col: #f26b5b; --col2: #f7a072; --x0: 30vw;  --x1: 75vw;  --y0: -5vh;  --y1: 105vh; --tx: 25s; --ty: 17s; --ts: 10s; --tc: 14s; --dx: -11s; --dy: -8s; --ds: -5s;  --dc: -7s; }
+.blobs-page span:nth-child(4) { inset: auto; top: calc(var(--s) / -2); left: calc(var(--s) / -2); --s: min(55vw, 740px); --col: #f7a072; --col2: #f5c542; --x0: 85vw;  --x1: -10vw; --y0: 100vh; --y1: 25vh;  --tx: 28s; --ty: 32s; --ts: 13s; --tc: 19s; --dx: -17s; --dy: -25s; --ds: -9s; --dc: -15s; }
+.blobs-page span:nth-child(5) { inset: auto; top: calc(var(--s) / -2); left: calc(var(--s) / -2); --s: min(48vw, 620px); --col: #f2a6b4; --col2: #f26b5b; --x0: 50vw;  --x1: 0vw;   --y0: 40vh;  --y1: -10vh; --tx: 22s; --ty: 19s; --ts: 15s; --tc: 21s; --dx: -3s;  --dy: -10s; --ds: -13s; --dc: -5s; }
+.blobs-page span:nth-child(6) { inset: auto; top: calc(var(--s) / -2); left: calc(var(--s) / -2); --s: min(52vw, 700px); --col: #ee5a5f; --col2: #f2a6b4; --x0: 10vw;  --x1: 110vw; --y0: 95vh;  --y1: 45vh;  --tx: 35s; --ty: 28s; --ts: 11s; --tc: 26s; --dx: -26s; --dy: -17s; --ds: -4s;  --dc: -19s; }
+.blobs-page span:nth-child(7) { inset: auto; top: calc(var(--s) / -2); left: calc(var(--s) / -2); --s: min(44vw, 590px); --col: #f5c542; --col2: #f2a6b4; --x0: 70vw;  --x1: 25vw;  --y0: 15vh;  --y1: 90vh;  --tx: 26s; --ty: 23s; --ts: 13s; --tc: 16s; --dx: -14s; --dy: -2s;  --ds: -7s; --dc: -9s; }
+@keyframes blobX { from { translate: var(--x0) 0; } to { translate: var(--x1) 0; } }
+@keyframes blobY { from { transform: translateY(var(--y0)); } to { transform: translateY(var(--y1)); } }
+@keyframes blobS { from { scale: 0.85; } to { scale: 1.2; } }
+@keyframes blobShift { 0%, 12% { opacity: 1; } 88%, 100% { opacity: 0; } }
 @keyframes blobFloat {
     0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
     20% { transform: translate(18vw, -10vh) scale(1.1) rotate(10deg); }
@@ -397,7 +431,8 @@ a:hover > .arrow-sticker svg, a:focus-visible > .arrow-sticker svg { translate: 
 /* ---------- lighter motion on phones and tablets (speed and battery) ---------- */
 @media (max-width: 1023px) {
     .blobs-photo, .blobs-soft { display: none; }
-    .blobs-page span { animation: none; }
+    .blobs-page span, .blobs-page span::before, .blobs-page span::after { animation: none; }
+    .blobs-page span:nth-child(n+5) { display: none; }
     .hero-sheen::after { animation-duration: 12s; }
     /* fading in without the blur: blurring every paragraph and list item as it arrives kept the
        phone busy while scrolling, and taps waited behind it */

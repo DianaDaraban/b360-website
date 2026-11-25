@@ -11,11 +11,12 @@ import calc from "./Calculator.module.css"
 type Status = "idle" | "sending" | "sent" | "error"
 const MAX_FILES_BYTES = 4 * 1024 * 1024
 
-// Under a calculator's estimate, on the dark card: the call first and large, then "leave your number,
-// we call you" (one field, for the evening visitors and for those who will not phone), then WhatsApp.
-// Clarity, Nov 2026: visitors from the ads read the estimate, then phone or leave; nobody filled in the
-// long form. It sits inside the calculator's own <form>, so it cannot be a form itself: the callback
-// sends that form's fields (the whole configuration) with the number typed here, as a "callback" request.
+// Under a calculator's estimate, on the dark card, two ways in that look alike: WhatsApp (the visitor
+// sends us the estimate, already written; the line under it says we call back) and "leave your number,
+// we call you". The big call button went (Nov 2026: three differently styled buttons in one small card;
+// on a phone the call stays in the bottom bar). It sits inside the calculator's own <form>, so it cannot
+// be a form itself: the callback sends that form's fields (the whole configuration) with the number
+// typed here, as a "callback" request.
 export function CallFirst({ from, whatsappHref, whatsappLabel }: { from: "calculator" | "tapet"; whatsappHref: string; whatsappLabel: string }) {
     const [phone, setPhone] = useState("")
     const [status, setStatus] = useState<Status>("idle")
@@ -57,17 +58,18 @@ export function CallFirst({ from, whatsappHref, whatsappLabel }: { from: "calcul
 
     return (
         <div className={calc.reach} ref={box}>
-            <p className={calc.reachLead}>Vrei prețul exact? <b>Sună-ne:</b> îți spunem pe loc cât costă și când putem începe.</p>
-            <a href={site.phoneHref} className={`btn ${calc.call}`}><Icon name="phone" size={30} uncut />Sună: {site.phone}</a>
-            <small className={calc.hours}>{site.hours.label}</small>
+            {/* one band, two buttons of the same size and colour: WhatsApp, then the number field */}
+            <div className={calc.callback}>
+            <a href={whatsappHref} target="_blank" rel="noopener" className={calc.waBtn}><Icon name="whatsapp" size={24} uncut />{whatsappLabel}</a>
+            <small className={calc.waNote}>Te sunăm noi, de obicei în aceeași zi.</small>
 
             {status === "sent" ? (
                 <p className={calc.callbackDone} role="status">
                     <b>Mulțumim, te sunăm noi!</b> În programul de lucru, de obicei în aceeași zi. Ai primit deja configurația ta la noi.
                 </p>
             ) : (
-                <div className={calc.callback} data-clarity-mask="true">
-                    <label htmlFor={`cb-${from}`}>Nu poți vorbi acum? <b>Lasă-ne numărul și te sunăm noi:</b></label>
+                <div className={calc.callbackForm} data-clarity-mask="true">
+                    <label htmlFor={`cb-${from}`}>Sau <b>lasă-ne numărul și te sunăm noi:</b></label>
                     <div className={calc.callbackRow}>
                         <span>+40</span>
                         <input
@@ -97,8 +99,7 @@ export function CallFirst({ from, whatsappHref, whatsappLabel }: { from: "calcul
                     </small>
                 </div>
             )}
-
-            <a href={whatsappHref} target="_blank" rel="noopener" className="btn-ghost" aria-label={whatsappLabel}><Icon name="whatsapp" size={30} uncut />Trimite pe WhatsApp</a>
+            </div>
         </div>
     )
 }
