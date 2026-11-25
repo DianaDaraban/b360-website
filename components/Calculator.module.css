@@ -302,8 +302,9 @@
 .go { width: 34px; height: 34px; padding: 7px; border-radius: 50%; background: rgb(255 255 255 / 0.26); }
 /* with the arrow: the same space above, below and to the right of it; 46px tall, like the WhatsApp bubble */
 .liveTotal:has(.go) { box-sizing: border-box; height: 46px; padding: 6px 6px 6px 18px; display: flex; align-items: center; gap: 12px; }
-/* only the arrow goes to the right end; the label and the price stay together on the left */
-.liveTotal .go { margin-left: auto; flex: none; }
+/* the price goes to the right, next to the arrow; the label stays on the left */
+.liveTotal:has(.go) strong { margin-left: auto; text-align: right; }
+.liveTotal .go { flex: none; }
 .liveTotal[data-empty] { background: var(--ink-strong); box-shadow: 0 10px 26px rgb(0 0 0 / 0.25); }
 /* once there is a price, WhatsApp in its own bubble under the total, as wide as it: light, with a teal
    border so it does not melt into the cream page */
@@ -315,7 +316,7 @@
     padding: 7px 16px;
     border: 2px solid #13877e;
     border-radius: 999px;
-    background: var(--white);
+    background: #e4f3ef;          /* a light mint, so it reads on the white page */
     color: #0b4f4a;
     font: 700 0.92rem/1.2 var(--font);
     text-decoration: none;
@@ -323,12 +324,12 @@
 }
 /* the whole WhatsApp bubble is a peeling sticker (globals .peel): beige, dark teal under the lifted
    corner, the back of the flap green all over (lighter at the tip, deeper at the fold) */
-.floatWa { --c: 30px; --lift: 128deg; --backing: #0b4f4a; box-sizing: border-box; height: 46px; padding-block: 0; padding-right: 38px; border-width: 1.5px; }
+.floatWa { --c: 38px; --lift: 118deg; --backing: #0b4f4a; box-sizing: border-box; height: 46px; padding-block: 0; padding-right: 46px; border-width: 1.5px; }
 .floatWa::after {
     /* green, then the last ~12% by the fold (next to the dark teal under it) turns bright turquoise */
     background: linear-gradient(225deg, #4fb8aa 0, #2a9d90 calc(var(--c) * 0.32), #17897d calc(var(--c) * 0.5), #2fb5a6 calc(var(--c) * 0.61), #5fd3c4 calc(var(--c) * 0.7071));
 }
-.floatWa:hover, .floatWa:focus-visible { --c: 40px; --lift: 110deg; }
+.floatWa:hover, .floatWa:focus-visible { --c: 46px; --lift: 104deg; }
 /* while the estimate card is on screen the floating total steps aside, so it never covers its buttons */
 .float { transition: opacity 0.25s, translate 0.25s, visibility 0.25s; }
 .float[data-away] { opacity: 0; translate: 0 12px; visibility: hidden; pointer-events: none; }

@@ -13,5 +13,9 @@
 
 /* click areas: invisible, a light red tint over the car on hover */
 .hit { fill: transparent; cursor: pointer; transition: fill 0.2s; }
-.hit:hover { fill: rgb(23 163 152 / 0.22); stroke: #0b5d57; stroke-width: 2; }
-.hit[data-on]:hover { fill: rgb(255 255 255 / 0.22); }
+/* only with a mouse: on a touch screen the last tapped piece kept its hover tint, so one picked
+   piece looked lighter than the others */
+@media (hover: hover) {
+    .hit:hover { fill: rgb(23 163 152 / 0.22); stroke: #0b5d57; stroke-width: 2; }
+    .hit[data-on]:hover { fill: rgb(255 255 255 / 0.22); }
+}
