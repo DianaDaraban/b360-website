@@ -32,6 +32,14 @@
 .yes { --c: 24px; padding: 0 30px 0 18px; }
 .yes:hover, .yes:focus-visible { --c: 34px; }
 
+.short { display: none; }
+/* phones and tablets: a slim strip (one line and the two buttons), not a card over half the screen */
+@media (max-width: 1023px) {
+    .banner { grid-template-columns: 1fr; gap: 8px; padding: 10px 12px; border-radius: 16px; }
+    .icon, .text h2, .long { display: none; }
+    .short { display: inline; }
+    .actions button { height: 40px; }
+}
 @media (min-width: 1024px) {
     .banner { bottom: 24px; left: 24px; right: auto; margin: 0; width: 400px; }
 }

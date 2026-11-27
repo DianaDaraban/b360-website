@@ -67,6 +67,14 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
     const [subtype, setSubtype] = useState("")
     const [graphics, setGraphics] = useState<Graphics>("am")   // "I have the graphics": nothing added until they ask us to design it
     const [info, setInfo] = useState(false)
+    const cars = useRef<HTMLDivElement>(null)
+    // which ends of the car row can still be scrolled to: an arrow shows only where there is more
+    const [carEnds, setCarEnds] = useState({ start: true, end: false })
+    const readCarEnds = () => {
+        const el = cars.current
+        if (el) setCarEnds({ start: el.scrollLeft < 4, end: el.scrollLeft + el.clientWidth > el.scrollWidth - 4 })
+    }
+    useEffect(readCarEnds, [])
     const [withVat, setWithVat] = useState(false)     // firms think without VAT; "+ TVA" says so plainly
     const [prefer2d, setPrefer2d] = useState(true)      // the drawing first; the 3D car is one tap away
     // the 3D viewer (three.js and the model) starts once the page has loaded and the browser is idle,
@@ -170,15 +178,16 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
     useTrackWhen("calculator_pret", Boolean(totalText), { caroserie: body, lucrare: job })
     useTrackSeen("calculator_estimare_vazuta", "calc-estimare", Boolean(totalText))
     const estimateInView = useInView("calc-estimare")
+    const sendInView = useInView("calc-trimite")
 
     return (
         <SmartForm kind="calculator" className={styles.calc} aria-label="Calculator cost colantare">
             {/* ---------- 1: the car ---------- */}
-            <Step n={1} compact title="Ce mașină ai?" hint="Alege tipul de caroserie care seamănă cel mai bine cu mașina ta: calculul e același pentru mașini similare.">
+            <Step n={1} id="calc-pas-1" compact title="Ce mașină ai?" hint="Alege tipul de caroserie care seamănă cel mai bine cu mașina ta: calculul e același pentru mașini similare.">
                 <div className={styles.carRow}>
                 {/* data-clarity-unmask: the car pictures and piece names hold nothing personal, so Clarity's
                     recordings may show them (the contact fields stay masked) */}
-                <div className={styles.bodyCards} role="radiogroup" aria-label="Tip caroserie" data-clarity-unmask="true">
+                <div ref={cars} onScroll={readCarEnds} className={styles.bodyCards} data-start={carEnds.start || undefined} data-end={carEnds.end || undefined} role="radiogroup" aria-label="Tip caroserie" data-clarity-unmask="true">
                     {bodyTypes.map(b => (
                         <button type="button" role="radio" key={b.id} className={styles.bodyCard} aria-checked={body === b.id} onClick={() => chooseBody(b.id)}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -187,6 +196,17 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                         </button>
                     ))}
                 </div>
+                {/* phones: the row scrolls; the arrow says more vehicles follow (vans, trucks: the fleets) */}
+                {!carEnds.start && (
+                    <button type="button" className={`${styles.moreCars} ${styles.moreCarsLeft}`} onClick={() => cars.current?.scrollBy({ left: -240, behavior: "smooth" })} aria-label="Tipurile de vehicule de dinainte">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+                    </button>
+                )}
+                {!carEnds.end && (
+                    <button type="button" className={styles.moreCars} onClick={() => cars.current?.scrollBy({ left: 240, behavior: "smooth" })} aria-label="Mai multe tipuri de vehicule">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" /></svg>
+                    </button>
+                )}
                 </div>
             </Step>
 
@@ -229,26 +249,20 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                     </div>
                 )}
                 <div className={styles.viewBar}>
+                    {/* one switch: the angles, then 2D/3D at its end (two switches made three rows on a phone) */}
                     <div className={styles.viewGroup}>
-                        {MODELS_3D.has(body) && hasDrawing(body) && (
-                            <div className={styles.views} role="radiogroup" aria-label="Vedere">
-                                <button type="button" role="radio" aria-checked={show3d} onClick={() => setPrefer2d(false)}>3D</button>
-                                <button type="button" role="radio" aria-checked={!show3d} onClick={() => setPrefer2d(true)}>2D</button>
-                            </div>
-                        )}
-                        {show3d ? (
-                            <div className={styles.views} aria-label="Unghi">
-                                {VIEWS_3D.map(v => (
+                        <div className={styles.views} aria-label="Unghi">
+                            {show3d
+                                ? VIEWS_3D.map(v => (
                                     <button type="button" key={v.id} aria-pressed={view3d?.name === v.id} onClick={() => setView3d({ name: v.id, n: Date.now() })}>{v.label}</button>
+                                ))
+                                : views.map(v => (
+                                    <button type="button" key={v.id} aria-pressed={view === v.id} onClick={() => setView(v.id)}>{v.label}</button>
                                 ))}
-                            </div>
-                        ) : (
-                            <div className={styles.views} role="tablist" aria-label="Unghi">
-                                {views.map(v => (
-                                    <button type="button" key={v.id} role="tab" aria-selected={view === v.id} onClick={() => setView(v.id)}>{v.label}</button>
-                                ))}
-                            </div>
-                        )}
+                            {MODELS_3D.has(body) && hasDrawing(body) && (
+                                <button type="button" className={styles.mode} onClick={() => setPrefer2d(show3d)} aria-label={show3d ? "Vezi desenul 2D" : "Vezi mașina în 3D"}>{show3d ? "2D" : "3D"}</button>
+                            )}
+                        </div>
                     </div>
                     <div className={styles.quick}>
                         <button type="button" onClick={() => setSelected(all)}>
@@ -261,14 +275,14 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                         </button>
                         <button type="button" className={styles.clear} onClick={() => setSelected([])} disabled={!selected.length}>
                             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
-                            Șterge tot
+                            Șterge<span className={styles.wideOnly}> tot</span>
                         </button>
                     </div>
                 </div>
             </Step>
 
             {/* ---------- 3-5: three questions; the material is chosen behind them ---------- */}
-            <Step n={3} title="Cât timp vei ține folia pe mașină?">
+            <Step n={3} id="calc-pas-3" title="Cât timp vei ține folia pe mașină?">
                 <div className={`${styles.choices} ${styles.four}`} role="radiogroup" aria-label="Cât timp ții folia">
                     {DURATIONS.map(d => (
                         <Choice key={d.years} name="calc-years" checked={years === d.years} onChange={() => setYears(d.years)} title={d.label} />
@@ -276,22 +290,19 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                 </div>
             </Step>
 
-            <Step n={4} title="Ce fel de lucrare vrei?">
-                <div className={styles.choices} role="radiogroup" aria-label="Ce fel de lucrare">
-                    {JOB_TYPES.map(j => {
-                        const available = jobAvailable(pricing, j.id)
-                        return (
-                            <Choice
-                                key={j.id}
-                                name="calc-job"
-                                checked={job === j.id}
-                                disabled={!available}
-                                onChange={() => chooseJob(j.id)}
-                                title={jobLabel(j.id)}
-                                text={available ? j.hint : "în curând"}
-                            />
-                        )
-                    })}
+            <Step n={4} id="calc-pas-4" title="Ce fel de lucrare vrei?">
+                {/* the works without prices yet ("în curând") are left out: on a phone they only made the page longer */}
+                <div className={`${styles.choices} ${styles.jobs}`} role="radiogroup" aria-label="Ce fel de lucrare">
+                    {JOB_TYPES.filter(j => jobAvailable(pricing, j.id)).map(j => (
+                        <Choice
+                            key={j.id}
+                            name="calc-job"
+                            checked={job === j.id}
+                            onChange={() => chooseJob(j.id)}
+                            title={jobLabel(j.id)}
+                            text={j.hint}
+                        />
+                    ))}
                 </div>
                 {subtypes.length > 1 && (
                     <label className={styles.subtype}>
@@ -303,7 +314,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                 )}
             </Step>
 
-            <Step n={5} title="Ai grafica sau o facem noi?" hint={noGraphics ? "Folia PPF e transparentă: nu are grafică, deci pasul ăsta nu se aplică." : undefined}>
+            <Step n={5} id="calc-pas-5" title="Ai grafica sau o facem noi?" hint={noGraphics ? "Folia PPF e transparentă: nu are grafică, deci pasul ăsta nu se aplică." : undefined}>
                 <div className={`${styles.choices} ${styles.three}`} role="radiogroup" aria-label="Grafica">
                     {GRAPHICS.map(g => (
                         <Choice
@@ -345,7 +356,17 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                             <label><input type="radio" name="calc-vat" checked={withVat} onChange={() => setWithVat(true)} /> cu TVA</label>
                             <label><input type="radio" name="calc-vat" checked={!withVat} onChange={() => setWithVat(false)} /> fără TVA</label>
                         </div>
-                        {result && selected.length > 0 && <small>{bodyTypes.find(b => b.id === body)!.label} · {materialName}</small>}
+                        {/* what the price is for, each part a link back to its step: the defaults (sedan, 5 years,
+                            printed film, own graphics) were often left as they were without being noticed */}
+                        {result && selected.length > 0 && (
+                            <small className={styles.picks}>
+                                <a href="#calc-pas-1">{bodyTypes.find(b => b.id === body)!.label}</a>{" · "}
+                                <a href="#calc-pas-3">{durationName}</a>{" · "}
+                                <a href="#calc-pas-4">{jobName}</a>
+                                {!noGraphics && <>{" · "}<a href="#calc-pas-5">{graphicsName}</a></>}
+                                <span> · apasă ca să schimbi</span>
+                            </small>
+                        )}
                         {result?.shortfall && <small className={styles.notice}>Pentru {durationName.toLowerCase()} recomandăm altă lucrare: folia aleasă ține până la {result.shortfall} ani.</small>}
                         {/* the moment the price is known, the call comes first (components/CallFirst) */}
                         {whatsappHref && <CallFirst from="calculator" whatsappHref={whatsappHref} whatsappLabel="Trimite-mi estimarea pe WhatsApp" />}
@@ -384,7 +405,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
             <input type="hidden" name="estimare" value={totalText ? `${totalText} ${vatName}` : ""} />
 
             {/* ---------- 7: send ---------- */}
-            <Step n={7} title="Trimite-ne configurația" hint="Preferi oferta în scris? Lasă-ne datele și ți-o trimitem după ce vedem detaliile.">
+            <Step n={7} id="calc-trimite" title="Trimite-ne configurația" hint="Preferi oferta în scris? Lasă-ne datele și ți-o trimitem după ce vedem detaliile.">
                 <div className={styles.contact} data-clarity-mask="true">
                     <label className={form.field}>Nume și prenume *<input name="nume" autoComplete="name" required /></label>
                     <label className={form.field}>
@@ -411,7 +432,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
 
             {/* the running total stays in view while the questions are answered; once there is a price,
                 a labelled WhatsApp strip sits under it */}
-            <div className={styles.float} data-away={estimateInView || undefined}>
+            <div className={styles.float} data-away={estimateInView || sendInView || undefined}>
                 <a href="#calc-estimare" className={styles.liveTotal} data-empty={!totalText || undefined} aria-label={totalText ? `Estimare ${totalText} ${vatName}: vezi detaliile` : undefined}>
                     <span>Estimare</span>
                     <strong>{totalText ?? "alege piesele"}{totalText && <em>{withVat ? "cu TVA" : "+ TVA"}</em>}</strong>

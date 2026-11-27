@@ -22,7 +22,8 @@ export default async function CalculatorPage() {
                 <header className={styles.head}>
                     <CalculatorTabs active="/calculator" />
                     <h1 className={styles.title}>Cât costă colantarea mașinii tale?</h1>
-                    <p className={styles.lead}>Șapte pași simpli: alegi mașina, apeși pe piese și răspunzi la trei întrebări. Noi alegem materialul potrivit și îți arătăm estimarea pe loc.</p>
+                    {/* short on a phone, so the first step shows on the first screen */}
+                    <p className={styles.lead}><span className={styles.long}>Șapte pași simpli: alegi mașina, apeși pe piese și răspunzi la trei întrebări. Noi alegem materialul potrivit și îți arătăm estimarea pe loc.</span><span className={styles.short}>Alegi mașina și piesele, vezi prețul pe loc.</span></p>
                 </header>
                 <Calculator pricing={pricing} />
             </div>

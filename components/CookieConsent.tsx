@@ -105,7 +105,8 @@ export function CookieConsent() {
             <div className={styles.text}>
                 <h2 id="cookie-title">Cookie-uri doar cu acordul tău</h2>
                 <p>
-                    Folosim Google Analytics și Microsoft Clarity ca să vedem ce pagini sunt utile, unde se blochează vizitatorii și dacă reclamele noastre din Google aduc cereri. Fără remarketing.{" "}
+                    <span className={styles.long}>Folosim Google Analytics și Microsoft Clarity ca să vedem ce pagini sunt utile, unde se blochează vizitatorii și dacă reclamele noastre din Google aduc cereri. Fără remarketing.</span>
+                    <span className={styles.short}>Cookie-uri de analiză (Google Analytics, Clarity), fără remarketing.</span>{" "}
                     <Link href="/politica-de-confidentialitate#cookie">Detalii</Link>
                 </p>
             </div>

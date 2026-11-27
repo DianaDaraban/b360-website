@@ -14,7 +14,7 @@ export function CalculatorTabs({ active }: { active: "/calculator" | "/calculato
         <nav className={styles.tabs} aria-label="Calculatoare">
             {TABS.map(t => (
                 <Link key={t.href} href={t.href} className={styles.tab} aria-current={t.href === active ? "page" : undefined} scroll={false}>
-                    <Icon name={t.icon} size={30} uncut />
+                    <Icon name={t.icon} size={24} uncut />
                     {t.label}
                 </Link>
             ))}

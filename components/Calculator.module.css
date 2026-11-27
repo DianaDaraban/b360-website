@@ -158,7 +158,8 @@
     transition: border-color 0.2s, background 0.2s, color 0.2s;
 }
 .quick svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
-.quick button:hover:not(:disabled) { border-color: var(--red); background: var(--red); color: var(--white); }
+/* only with a mouse: on a phone the tapped button kept the red hover */
+@media (hover: hover) { .quick button:hover:not(:disabled) { border-color: var(--red); background: var(--red); color: var(--white); } }
 .quick .clear { border-color: rgb(238 51 56 / 0.6); color: var(--red-dark); }
 .quick button:disabled { border-color: rgb(60 20 20 / 0.15); background: rgb(255 255 255 / 0.5); color: rgb(60 20 20 / 0.35); cursor: default; }
 
@@ -282,6 +283,10 @@
     justify-self: center;
     display: grid;
     gap: 6px;
+    /* no room of its own at the page's end (it left a blank band under step 7): the bubbles rise out
+       of a zero-height box, and step away while the estimate or step 7 is on screen */
+    height: 0;
+    align-content: end;
 }
 .liveTotal {
     display: grid;
@@ -429,3 +434,38 @@
 .calc:global(.form-done) h2 { color: var(--ink-strong); text-shadow: none; }
 .calc:global(.form-done) p { text-shadow: none; }
 .calc:global(.form-done) .btn-ghost, .calc:global(.form-done) :global(.btn-ghost) { color: var(--ink-strong); border-color: rgb(58 54 56 / 0.4); }
+
+/* ---------- phones, Nov 2026 (83% of the ad clicks come from phones) ---------- */
+.wideOnly { display: inline; }
+.moreCars { display: none; }
+.views .mode { margin-left: 4px; }
+/* the "i": a 44px touch area around the small circle */
+.infoBtn::before { content: ""; position: absolute; inset: -9px; border-radius: 50%; }
+/* what the price is for: links back to the steps */
+.picks a { color: inherit; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; }
+.picks span { opacity: 0.7; }
+@media (max-width: 639px) {
+    .wideOnly { display: none; }
+    /* the car row: a fade and an arrow at its right end say more vehicles follow */
+    .carRow { position: relative; }
+    /* the fade only on the side that still scrolls */
+    .bodyCards { mask-image: linear-gradient(to right, transparent, #000 18%, #000 82%, transparent); }
+    .bodyCards[data-start] { mask-image: linear-gradient(to right, #000 82%, transparent); }
+    .bodyCards[data-end] { mask-image: linear-gradient(to right, transparent, #000 18%); }
+    .bodyCards[data-start][data-end] { mask-image: none; }
+    .moreCars { display: grid; place-items: center; position: absolute; right: -4px; top: 50%; translate: 0 -50%; width: 40px; height: 40px; border: 0; border-radius: 50%; background: #fff; color: var(--red); box-shadow: 0 3px 10px rgb(60 20 20 / 0.2); cursor: pointer; }
+    .moreCarsLeft { right: auto; left: -4px; }
+    .moreCars svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+    /* under the car: one row for the angle and 2D/3D, one row for the quick picks, all 44px tall */
+    .viewBar { gap: 8px; }
+    .viewGroup, .views { width: 100%; }
+    .views button { flex: 1; min-height: 40px; padding: 8px 6px; font-size: 0.88rem; }
+    .quick { width: 100%; flex-wrap: wrap; gap: 6px; }   /* one row; a second only on the narrowest phones */
+    .quick button { flex: 1 1 auto; justify-content: center; min-height: 44px; padding: 6px 10px; font-size: 0.82rem; white-space: nowrap; }
+    .quick svg { display: none; }   /* the words fit on one line without the icons */
+    /* the works: one line of hint each */
+    .jobs .choice small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+@media (max-width: 420px) {
+    .waBtn { padding-inline: 12px; gap: 6px; font-size: 0.9rem; }
+}

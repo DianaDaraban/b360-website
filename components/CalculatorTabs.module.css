@@ -4,9 +4,9 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 6px;
-    width: min(100%, 640px);
+    width: min(100%, 460px);
     margin: 0 auto 14px;
-    padding: 6px;
+    padding: 4px;
     border: 1px solid rgb(60 20 20 / 0.1);
     border-radius: 20px;
     background: linear-gradient(180deg, #efe5da, #e8dccf);
@@ -17,12 +17,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    min-height: 50px;
-    padding: 10px 20px;
-    border-radius: 15px;
+    gap: 8px;
+    min-height: 40px;
+    padding: 6px 14px;
+    border-radius: 14px;
     color: rgb(58 54 56 / 0.72);
-    font: 800 1rem/1 var(--font-head);
+    font: 800 0.9rem/1 var(--font-head);
     text-decoration: none;
     white-space: nowrap;
     transition: background 0.25s, color 0.25s, box-shadow 0.25s, translate 0.25s var(--ease-out);
@@ -38,5 +38,6 @@
 }
 .tab[aria-current="page"] svg { opacity: 1; }
 @media (max-width: 480px) {
-    .tab { min-height: 52px; padding: 8px 10px; gap: 8px; font-size: 0.95rem; }
+    .tab { min-height: 40px; padding: 6px 8px; gap: 6px; font-size: 0.86rem; }
+    .tab svg { width: 22px; height: 22px; }
 }

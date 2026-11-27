@@ -4,3 +4,6 @@
 .title { margin-top: 2px; font-size: clamp(1.45rem, 4.2vw, 2rem); line-height: 1.15; }
 .lead { max-width: 640px; margin: 6px auto 0; font-size: 0.95rem; color: var(--ink); }
 
+
+.short { display: none; }
+@media (max-width: 639px) { .long { display: none; } .short { display: inline; } }
