@@ -1456,6 +1456,13 @@
   "h": 313
  },
  {
+  "src": "/lucrari/speciale/nautikal.webp",
+  "cat": "speciale",
+  "client": "NautikAL",
+  "w": 1600,
+  "h": 1200
+ },
+ {
   "src": "/lucrari/stickere/1.webp",
   "cat": "stickere",
   "client": null,

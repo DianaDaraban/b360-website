@@ -1,5 +1,66 @@
 [
  {
+  "slug": "frig-industrial",
+  "title": "Frig Industrial – Peugeot Boxer, branding HVAC Service",
+  "client": "Frig Industrial",
+  "cat": "autoutilitare",
+  "photos": [
+   {
+    "src": "/lucrari/proiecte/frig-industrial/1.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/frig-industrial/2.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/frig-industrial/3.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/frig-industrial/4.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/frig-industrial/5.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/frig-industrial/6.webp",
+    "w": 1600,
+    "h": 1200
+   }
+  ]
+ },
+ {
+  "slug": "cfi",
+  "title": "CFI – inscripționare excavator Liebherr",
+  "client": "CFI",
+  "cat": "camioane",
+  "photos": [
+   {
+    "src": "/lucrari/proiecte/cfi/1.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/cfi/2.webp",
+    "w": 1600,
+    "h": 1200
+   },
+   {
+    "src": "/lucrari/proiecte/cfi/3.webp",
+    "w": 1600,
+    "h": 1200
+   }
+  ]
+ },
+ {
   "slug": "surugiu-rugby",
   "title": "Surugiu Pro Rugby Academy – Ford Transit Custom",
   "client": "Surugiu Pro Rugby Academy",

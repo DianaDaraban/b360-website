@@ -4,11 +4,11 @@
 
 export type JobType = "decupată" | "print" | "integrală" | "specială" | "PPF"
 export const JOB_TYPES: { id: JobType; label: string; hint: string }[] = [
-    { id: "decupată", label: "Branding cu folie decupată", hint: "litere, logo-uri și forme tăiate din folie colorată" },
+    { id: "decupată", label: "Branding cu folie decupată", hint: "litere și logo-uri din folie colorată" },
     { id: "print", label: "Branding cu folie printată și laminată", hint: "grafică color, fotografii, degradeuri" },
-    { id: "integrală", label: "Colantare cu folie premium", hint: "schimbare de culoare sau grafică, pe toată mașina sau doar pe câteva piese" },
+    { id: "integrală", label: "Colantare cu folie premium", hint: "schimbare de culoare sau grafică" },
     { id: "specială", label: "Folie specială", hint: "carbon, cameleon, mat, satin și altele" },
-    { id: "PPF", label: "Protecție cu folie PPF", hint: "folie transparentă care protejează vopseaua" },
+    { id: "PPF", label: "Protecție cu folie PPF", hint: "folie transparentă pe vopsea" },
 ]
 export const DURATIONS = [
     { years: 1, label: "1–2 ani" },        // the short-life films (1 year in the workbook) qualify

@@ -133,12 +133,20 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
     // the duration tick follows the film actually chosen: when the cheapest film that lasts long enough
     // lasts longer than the duration ticked (e.g. the only full-wrap film lasts 7 years), the tick moves
     // to the longest duration that film covers
+    // The durations no film of this work lasts are greyed out, and a tick on one of them moves down to
+    // the longest that is offered (a 7-year tick with the premium film used to stay, with a note under the price)
+    const maxYears = Math.max(0, ...pricing.materials.filter(m => m.type === job && m.years > 0 && (!subtype || m.subtype === subtype)).map(m => m.years))
+    const yearsOffered = (y: number) => !maxYears || y <= maxYears
     useEffect(() => {
+        if (maxYears && years > maxYears) {
+            const down = [...DURATIONS].reverse().find(d => d.years <= maxYears)?.years
+            if (down) { setYears(down); return }
+        }
         const m = pickMaterial(pricing, job, years, subtype)?.material
         if (!m) return
         const match = [...DURATIONS].reverse().find(d => d.years <= m.years)?.years
         if (match && match > years) setYears(match)
-    }, [pricing, job, years, subtype])
+    }, [pricing, job, years, subtype, maxYears])
     // the printed-film job is named after what the chosen duration gets: laminated or not
     const printLaminated = Boolean(pickMaterial(pricing, "print", years)?.laminate)
     const jobLabel = (id: JobType) => (id === "print" ? (printLaminated ? "Branding cu folie printată și laminată" : "Branding cu folie printată") : JOB_TYPES.find(j => j.id === id)!.label)
@@ -285,7 +293,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
             <Step n={3} id="calc-pas-3" title="Cât timp vei ține folia pe mașină?">
                 <div className={`${styles.choices} ${styles.four}`} role="radiogroup" aria-label="Cât timp ții folia">
                     {DURATIONS.map(d => (
-                        <Choice key={d.years} name="calc-years" checked={years === d.years} onChange={() => setYears(d.years)} title={d.label} />
+                        <Choice key={d.years} name="calc-years" checked={years === d.years} disabled={!yearsOffered(d.years)} onChange={() => setYears(d.years)} title={d.label} />
                     ))}
                 </div>
             </Step>
