@@ -83,11 +83,10 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
 
     const all = panelsOf(body)
     const show3d = MODELS_3D.has(body) && (!prefer2d || !hasDrawing(body))   // the big vehicles exist only in 3D
-    // a full wrap also covers the pillars and the sills: painted and priced on their own
-    // pillars and sills are not drawn as pieces to pick: they are added for a full wrap, and for any
-    // film (print, cut, PPF...) once the whole car is selected
+    // pillars and sills are not drawn as pieces to pick: they are added, for any film, once the whole
+    // car is selected
     const wholeCar = all.length > 0 && all.every(id => selected.includes(id))
-    const pieces = useMemo(() => ((job === "integrală" || wholeCar) && selected.length ? [...selected, ...autoPanels(body)] : selected), [job, selected, body, wholeCar])
+    const pieces = useMemo(() => (wholeCar ? [...selected, ...autoPanels(body)] : selected), [selected, body, wholeCar])
     const selection = useMemo(() => Object.fromEntries(pieces.map(id => [id, "colantare" as Mode])), [pieces])
     const partial = job === "integrală" && selected.length > 0 && selected.length < all.length
 
@@ -97,13 +96,13 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
         setHovered(null)
         // pieces the new body has stay picked (side doors etc. differ between bodies); a full wrap stays full
         const allowed = panelsOf(id)
-        setSelected(sel => (job === "integrală" && sel.length === all.length ? allowed : sel.filter(k => allowed.includes(k))))
+        setSelected(sel => (wholeCar ? allowed : sel.filter(k => allowed.includes(k))))
     }
     const chooseJob = (id: JobType) => {
         setJob(id)
         setSubtype(subtypesOf(pricing, id)[0] ?? "")
-        // a full wrap starts with every piece picked; taking pieces off makes it a partial wrap
-        if (id === "integrală") setSelected(all)
+        // the premium film no longer picks the whole car by itself (Clarity, Nov 2026: someone wanted it on
+        // one piece and lost their pick); "Toată mașina" above does that
     }
     // a tap beside the pieces (glass, wheels, lamps): for a moment the line under the car says why nothing happened
     const [missed, setMissed] = useState(false)
@@ -135,7 +134,7 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
     // the printed-film job is named after what the chosen duration gets: laminated or not
     const printLaminated = Boolean(pickMaterial(pricing, "print", years)?.laminate)
     const jobLabel = (id: JobType) => (id === "print" ? (printLaminated ? "Branding cu folie printată și laminată" : "Branding cu folie printată") : JOB_TYPES.find(j => j.id === id)!.label)
-    const jobName = partial ? "Colantare parțială cu folie premium" : jobLabel(job)
+    const jobName = job === "integrală" ? (partial ? "Colantare parțială cu folie premium" : "Colantare integrală cu folie premium") : jobLabel(job)
     const durationName = DURATIONS.find(d => d.years === years)!.label
     const graphicsName = noGraphics ? "Fără grafică (folie PPF transparentă)" : GRAPHICS.find(g => g.id === graphics)!.label
     // what the client reads: the material's description (brand and range), never the codes; the codes
@@ -288,13 +287,12 @@ export function Calculator({ pricing }: { pricing: PricingConfig }) {
                                 checked={job === j.id}
                                 disabled={!available}
                                 onChange={() => chooseJob(j.id)}
-                                title={j.id === "integrală" && partial ? "Colantare parțială cu folie premium" : jobLabel(j.id)}
+                                title={jobLabel(j.id)}
                                 text={available ? j.hint : "în curând"}
                             />
                         )
                     })}
                 </div>
-                {partial && <p className={styles.notice}>Ai scos câteva piese: calculăm o colantare parțială cu folie premium. Apasă „Toată mașina” ca să revii la integrală.</p>}
                 {subtypes.length > 1 && (
                     <label className={styles.subtype}>
                         Ce folie?
